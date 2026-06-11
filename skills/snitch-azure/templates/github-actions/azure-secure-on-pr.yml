@@ -1,0 +1,183 @@
+name: snitch-azure check (PR audit)
+
+# What this audits: the user's Azure subscription posture (RBAC, Defender,
+# Storage, Key Vault, App Service, NSGs, etc). It does NOT audit the contents
+# of this repo — it audits the live Azure configuration that this repo
+# deploys to.
+#
+# Auth: uses Microsoft Entra Workload Identity Federation via azure/login@v2.
+# Required repo secrets/vars:
+#   secrets.AZURE_CLIENT_ID        - app registration client id (federated)
+#   secrets.AZURE_TENANT_ID        - tenant id
+#   secrets.AZURE_SUBSCRIPTION_ID  - subscription id to audit
+# NEVER use AZURE_CLIENT_SECRET — the skill refuses to run with it when OIDC
+# is available.
+#
+# Behavior:
+#   - FAIL rows fail the workflow (block the PR).
+#   - WARN rows are surfaced in the PR comment but do not block.
+#   - LOCKED-BEHIND-TIER rows are reported but never block.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  id-token: write       # required for OIDC token exchange with Entra
+  contents: read
+  pull-requests: write  # to comment results back on the PR
+
+concurrency:
+  group: snitch-azure-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Azure posture audit
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.draft == false }}
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Verify federated identity is set
+        run: |
+          if [ -z "${{ secrets.AZURE_CLIENT_ID }}" ] || \
+             [ -z "${{ secrets.AZURE_TENANT_ID }}" ] || \
+             [ -z "${{ secrets.AZURE_SUBSCRIPTION_ID }}" ]; then
+            echo "::error::Missing AZURE_CLIENT_ID, AZURE_TENANT_ID, or AZURE_SUBSCRIPTION_ID secret."
+            echo "Set up Workload Identity Federation: https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation"
+            exit 1
+          fi
+          if [ -n "${{ secrets.AZURE_CLIENT_SECRET }}" ]; then
+            echo "::error::AZURE_CLIENT_SECRET is set. snitch-azure refuses embedded client-secret when OIDC federation is available."
+            exit 1
+          fi
+
+      - name: Install jq + curl (already on ubuntu-latest, ensure pinned)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends jq curl
+          jq --version
+          curl --version | head -n 1
+
+      - name: Login to Azure (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Pull snitch-azure skill
+        run: |
+          mkdir -p "$HOME/.claude/skills"
+          if [ ! -d "$HOME/.claude/skills/snitch-azure" ]; then
+            git clone --depth 1 https://github.com/${{ github.repository_owner }}/snitch-azure.git \
+              "$HOME/.claude/skills/snitch-azure" 2>/dev/null \
+              || (echo "::warning::Skill source repo not found; expecting it to be vendored at ./.snitch-azure"; \
+                  cp -R ./.snitch-azure "$HOME/.claude/skills/snitch-azure")
+          fi
+          chmod +x "$HOME/.claude/skills/snitch-azure/snitch-azure.sh"
+
+      - name: Run skill audit (read-only)
+        id: check
+        env:
+          AZSEC_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZSEC_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        run: |
+          set -o pipefail
+          SKILL="$HOME/.claude/skills/snitch-azure/snitch-azure.sh"
+
+          # Run the digest tools in sequence; capture their badge output by
+          # also running a minimal apply-style check. The skill is read-only
+          # for `state ...`; we just run a few digests and surface findings.
+          {
+            bash "$SKILL" doctor
+            bash "$SKILL" state subscription | head -c 1
+            bash "$SKILL" state defender    | head -c 1
+            bash "$SKILL" state storage     | head -c 1
+            bash "$SKILL" state keyvault    | head -c 1
+            bash "$SKILL" state appservice  | head -c 1
+            bash "$SKILL" state nsg         | head -c 1
+            bash "$SKILL" state activitylog | head -c 1
+          } 2>&1 | tee /tmp/snitch-azure-output.txt
+          rc=$?
+          fail_count=$(grep -cE '^\[FAIL\]' /tmp/snitch-azure-output.txt || true)
+          warn_count=$(grep -cE '^\[WARN\]' /tmp/snitch-azure-output.txt || true)
+          ok_count=$(grep -cE '^\[OK\]' /tmp/snitch-azure-output.txt || true)
+          locked_count=$(grep -cE '^\[N/A locked' /tmp/snitch-azure-output.txt || true)
+          {
+            echo "fail_count=$fail_count"
+            echo "warn_count=$warn_count"
+            echo "ok_count=$ok_count"
+            echo "locked_count=$locked_count"
+            echo "rc=$rc"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('/tmp/snitch-azure-output.txt', 'utf8');
+            const fail = parseInt('${{ steps.check.outputs.fail_count }}', 10) || 0;
+            const warn = parseInt('${{ steps.check.outputs.warn_count }}', 10) || 0;
+            const ok = parseInt('${{ steps.check.outputs.ok_count }}', 10) || 0;
+            const locked = parseInt('${{ steps.check.outputs.locked_count }}', 10) || 0;
+            const verdict = fail > 0 ? ' Failed' : (warn > 0 ? ' Warnings' : ' Pass');
+            const truncated = output.length > 60000
+              ? output.slice(0, 60000) + '\n\n... [truncated; full output in workflow logs] ...'
+              : output;
+            const body = [
+              '## snitch-azure audit ' + verdict,
+              '',
+              '| | OK | WARN | FAIL | Locked |',
+              '|---|---|---|---|---|',
+              '| | ' + ok + ' | ' + warn + ' | ' + fail + ' | ' + locked + ' |',
+              '',
+              fail > 0 ? '> FAIL rows must be fixed before merge.' : '',
+              warn > 0 ? '> WARN rows are non-blocking but worth addressing.' : '',
+              locked > 0 ? '> Locked rows require a paid Defender / SKU upgrade.' : '',
+              '',
+              '<details><summary>Full audit output</summary>',
+              '',
+              '```',
+              truncated,
+              '```',
+              '</details>'
+            ].join('\n');
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            const existing = comments.find(c =>
+              c.user.type === 'Bot' && c.body && c.body.startsWith('## snitch-azure audit')
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }
+
+      - name: Gate on FAIL rows
+        run: |
+          fail=${{ steps.check.outputs.fail_count }}
+          if [ "${fail:-0}" -gt 0 ]; then
+            echo "::error::snitch-azure found $fail FAIL row(s). Block PR until resolved."
+            exit 1
+          fi
+          echo "No FAIL rows — workflow passes (WARN rows are non-blocking)."

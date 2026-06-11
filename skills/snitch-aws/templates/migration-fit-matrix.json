@@ -1,0 +1,266 @@
+{
+  "static-spa": {
+    "verdict": "strong",
+    "recommended_path": "S3 + CloudFront. Drop the build output (dist/, build/, out/) into a versioned S3 bucket; serve via a CloudFront distribution with OAC (Origin Access Control). Use Amplify Hosting if you want a connected git workflow without writing CloudFormation/CDK.",
+    "caveats": [
+      "Always serve via CloudFront, never directly from S3 — the bucket should not be public.",
+      "Use a CloudFront Function for security headers; see templates/cloudfront-functions/security-headers.js."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nextjs": {
+    "verdict": "strong",
+    "recommended_path": "Two solid AWS-native paths: (1) Amplify Hosting with the built-in Next.js SSR/SSG support — easiest. (2) OpenNext + Lambda + CloudFront via SST or pure CDK — more control, more parts. For pure-static export, use S3 + CloudFront.",
+    "caveats": [
+      "Amplify Hosting bills on build minutes + traffic + SSR compute; SST/OpenNext bills Lambda + CloudFront — pick the model that matches your traffic shape.",
+      "next/image with loader='default' triggers Lambda image optimization on every variant; cache it aggressively or pre-generate.",
+      "ISR / on-demand revalidation works on Amplify and OpenNext but the storage backend differs (Amplify uses internal; OpenNext uses S3 + DynamoDB)."
+    ],
+    "dependencies_to_flag": ["sharp (Lambda layer needed)", "node:net", "node:dgram"]
+  },
+  "astro": {
+    "verdict": "strong",
+    "recommended_path": "S3 + CloudFront for static; Amplify Hosting or App Runner for SSR. The @astrojs/aws adapter targets Lambda + CloudFront natively.",
+    "caveats": [],
+    "dependencies_to_flag": ["sharp"]
+  },
+  "sveltekit": {
+    "verdict": "strong",
+    "recommended_path": "Static: S3 + CloudFront. SSR: Amplify Hosting or @sveltejs/adapter-aws-sst on Lambda + CloudFront.",
+    "caveats": ["form actions are POST-heavy — make sure WAFv2 rate-limit rules cover them."],
+    "dependencies_to_flag": []
+  },
+  "remix": {
+    "verdict": "strong",
+    "recommended_path": "Two paths: (1) Lambda + CloudFront with the official Remix Architect/AWS template. (2) Amplify Hosting with the Remix preset. Use App Runner if you want a full Node container with no Lambda cold-start surface.",
+    "caveats": ["Loader/action timeouts are bound by Lambda's 15-minute max; long jobs go to SQS + Lambda or Step Functions."],
+    "dependencies_to_flag": ["@remix-run/node"]
+  },
+  "nuxt": {
+    "verdict": "strong",
+    "recommended_path": "Static: S3 + CloudFront. SSR: Lambda + CloudFront via Nitro's `aws-lambda` preset, or Amplify Hosting.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "vite-spa": {
+    "verdict": "strong",
+    "recommended_path": "S3 + CloudFront — drop the dist/ output. Pure static, no SSR needed.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "express": {
+    "verdict": "partial",
+    "recommended_path": "Three sane targets: (1) Lambda + API Gateway via @vendia/serverless-express or @codegenie/serverless-express — works for stateless APIs. (2) ECS Fargate behind ALB — for long-lived TCP, native modules, anything Lambda doesn't handle cleanly. (3) App Runner — simplest container path, autoscale built in.",
+    "caveats": [
+      "express middleware that uses Buffer extensively or streams large files needs review for Lambda's 6MB request/response limit.",
+      "Sessions in memory require sticky sessions (ALB) or move to ElastiCache / DynamoDB."
+    ],
+    "dependencies_to_flag": ["sharp", "bcrypt", "argon2", "node-canvas", "ws (server)", "socket.io (server)", "express-session (memory store)", "multer (disk)"]
+  },
+  "fastify": {
+    "verdict": "partial",
+    "recommended_path": "Same shape as Express. Fastify has a serverless adapter (@fastify/aws-lambda) that wraps the app for Lambda; ECS Fargate / App Runner remain the right call for stateful or long-lived workloads.",
+    "caveats": ["fastify-multipart streaming uploads → S3 multipart upload via SDK."],
+    "dependencies_to_flag": ["sharp", "bcrypt", "argon2", "@fastify/websocket", "fastify-static (for non-trivial trees)"]
+  },
+  "nestjs": {
+    "verdict": "partial",
+    "recommended_path": "NestJS works on Lambda via @vendia/serverless-express but the cold-start penalty is real for large dependency graphs. Honest path for a non-trivial NestJS app: ECS Fargate behind ALB, or App Runner.",
+    "caveats": [
+      "Microservices via TCP/Redis transports → use SQS/SNS or EventBridge instead of those microservice transports on AWS.",
+      "TypeORM / Sequelize are fine on Fargate; on Lambda watch the connection pool — every cold start opens a new pool. Use RDS Proxy."
+    ],
+    "dependencies_to_flag": ["@nestjs/microservices", "typeorm", "sequelize", "bcrypt", "argon2"]
+  },
+  "hono": {
+    "verdict": "strong",
+    "recommended_path": "Lambda + API Gateway (or Function URL) via Hono's AWS Lambda adapter. Excellent fit — Hono is built for the edge / serverless world.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "lambda-native": {
+    "verdict": "strong",
+    "recommended_path": "Already on Lambda. Skill focuses on hardening (least-privilege execution role, env-var-secret review, Function URL auth-type, VPC config when needed, layers from a trusted source).",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "static-html": {
+    "verdict": "strong",
+    "recommended_path": "S3 + CloudFront. Drop the directory; done.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "hugo": {
+    "verdict": "strong",
+    "recommended_path": "Amplify Hosting (built-in Hugo support) or S3 + CloudFront. Build command: `hugo --minify`. Output: `public/`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "jekyll": {
+    "verdict": "strong",
+    "recommended_path": "Amplify Hosting or S3 + CloudFront. Output: `_site/`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "eleventy": {
+    "verdict": "strong",
+    "recommended_path": "Amplify Hosting or S3 + CloudFront. Output: `_site/` or `dist/` depending on config.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "gatsby": {
+    "verdict": "strong",
+    "recommended_path": "Amplify Hosting or S3 + CloudFront. Gatsby Cloud is sunset — this is a real migration off, not a lateral move.",
+    "caveats": ["Gatsby Functions don't have a 1:1 mapping — port to Lambda."],
+    "dependencies_to_flag": ["gatsby-cloud-specific-plugins"]
+  },
+  "wordpress": {
+    "verdict": "partial",
+    "recommended_path": "Two solid paths: (1) Lightsail with the WordPress blueprint — single VM, simplest. (2) ECS Fargate + EFS + RDS Aurora MySQL Serverless v2 + CloudFront — production-grade. Bitnami AMI on EC2 also works but you own patching.",
+    "caveats": [
+      "wp-admin, xmlrpc.php, wp-cron.php should be IP-allowlisted (WAF) or behind Cognito / ALB authentication.",
+      "Use S3 + CloudFront for media uploads via a plugin (WP Offload Media)."
+    ],
+    "dependencies_to_flag": ["wp-cron (replace with system cron + ?doing_wp_cron disabled)"]
+  },
+  "laravel": {
+    "verdict": "partial",
+    "recommended_path": "Bref (Laravel on Lambda) is real and works for most apps; the alternative is ECS Fargate or Elastic Beanstalk. RDS for MySQL/Postgres, ElastiCache for sessions/cache, SQS for queues.",
+    "caveats": [
+      "Laravel queue workers go to a separate Lambda worker (Bref) or a Fargate sidecar.",
+      "Sessions/cache MUST move to a shared store (ElastiCache, DynamoDB) when running behind a load balancer."
+    ],
+    "dependencies_to_flag": []
+  },
+  "symfony": {
+    "verdict": "partial",
+    "recommended_path": "Same as Laravel: Bref + Lambda for HTTP, Fargate for queue workers, RDS + ElastiCache.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "rails": {
+    "verdict": "partial",
+    "recommended_path": "ECS Fargate behind ALB + RDS Aurora Postgres + ElastiCache + S3 for ActiveStorage. Elastic Beanstalk works but is older and harder to customize. Lambda is rarely the right call for Rails.",
+    "caveats": [
+      "ActionCable WebSockets need ALB sticky sessions — or use API Gateway WebSocket APIs.",
+      "ActiveJob → SQS-backed worker (good_job + Aurora, or shoryuken + SQS)."
+    ],
+    "dependencies_to_flag": []
+  },
+  "django": {
+    "verdict": "partial",
+    "recommended_path": "ECS Fargate behind ALB + RDS Postgres + ElastiCache + S3 for media. Zappa works but Lambda 6 MB response cap and cold starts are real. Use Mangum + Lambda only for small APIs.",
+    "caveats": [
+      "Django Channels (WebSockets) → API Gateway WebSocket APIs or ECS with sticky sessions."
+    ],
+    "dependencies_to_flag": []
+  },
+  "flask": {
+    "verdict": "partial",
+    "recommended_path": "Lambda + API Gateway via Mangum/Zappa for small APIs. ECS Fargate or App Runner for non-trivial apps. RDS + S3 standard.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "fastapi": {
+    "verdict": "partial",
+    "recommended_path": "Lambda + API Gateway via Mangum is excellent for FastAPI. App Runner / Fargate for stateful or long-lived workloads.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "spring-boot": {
+    "verdict": "partial",
+    "recommended_path": "ECS Fargate behind ALB is the canonical path. Elastic Beanstalk Java / Tomcat is older but works. App Runner is the simplest container path. Lambda + SnapStart works for cold-start-tolerant APIs but rarely for heavy Spring apps.",
+    "caveats": [
+      "JVM cold starts are rough on Lambda; SnapStart helps but it's not magic."
+    ],
+    "dependencies_to_flag": []
+  },
+  "dotnet": {
+    "verdict": "partial",
+    "recommended_path": "ECS Fargate or App Runner with the official .NET SDK image. Elastic Beanstalk .NET works. Lambda + ASP.NET Core via Lambda Annotations is supported and stable.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "go-monolith": {
+    "verdict": "strong",
+    "recommended_path": "Lambda (custom or AL2 runtime) is genuinely good for Go: tiny binaries, fast cold starts. App Runner / Fargate also fine.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "media-processing-heavy": {
+    "verdict": "partial",
+    "recommended_path": "Orchestrate via Lambda; do the actual compute on ECS Fargate (or EC2 GPU) with FFmpeg / Sharp / Playwright. Use S3 events to trigger Lambdas; Lambdas dispatch to Step Functions or SQS to Fargate workers. MediaConvert is the AWS-native option for video specifically.",
+    "caveats": [
+      "Lambda layers can carry FFmpeg / Sharp but the 250 MB unzipped limit bites fast — use container images for Lambda when the binary is big."
+    ],
+    "dependencies_to_flag": ["sharp", "ffmpeg", "imagemagick", "puppeteer", "playwright"]
+  },
+  "mysql-app": {
+    "verdict": "strong",
+    "recommended_path": "RDS for MySQL or Aurora MySQL Serverless v2. Use RDS Proxy if your app opens many short-lived connections (Lambda especially). Migrate via mysqldump or DMS.",
+    "caveats": [
+      "Aurora Serverless v2 scales by ACU; pin a sensible min/max — 0.5 ACU min keeps things responsive.",
+      "Connection string in Secrets Manager + IAM authentication is the modern path."
+    ],
+    "dependencies_to_flag": ["mysql2"]
+  },
+  "postgres-app": {
+    "verdict": "strong",
+    "recommended_path": "RDS Postgres or Aurora Postgres Serverless v2. RDS Proxy for Lambda-heavy apps. DMS or pg_dump for migration.",
+    "caveats": [
+      "Read replicas are easy on RDS; Aurora gives auto-failover and storage auto-scaling but costs more."
+    ],
+    "dependencies_to_flag": ["pg"]
+  },
+  "mongodb-app": {
+    "verdict": "partial",
+    "recommended_path": "DocumentDB is API-compatible with most Mongo workloads up to a version cap (check current support). Otherwise keep MongoDB Atlas in the AWS region next to your VPC and use VPC peering / PrivateLink.",
+    "caveats": [
+      "DocumentDB is NOT MongoDB — version compatibility ends well before current upstream Mongo.",
+      "Operators like $graphLookup behave differently or aren't supported."
+    ],
+    "dependencies_to_flag": ["mongoose", "mongodb"]
+  },
+  "redis-app": {
+    "verdict": "strong",
+    "recommended_path": "ElastiCache for Redis or MemoryDB for Redis (durable). ElastiCache Serverless removes capacity planning.",
+    "caveats": [
+      "Encryption-in-transit + AUTH token are required-by-default in modern best practice.",
+      "MemoryDB has stronger durability (multi-AZ snapshot + replication log) but costs more."
+    ],
+    "dependencies_to_flag": ["ioredis", "redis"]
+  },
+  "websocket-heavy": {
+    "verdict": "partial",
+    "recommended_path": "API Gateway WebSocket APIs + Lambda is the AWS-native serverless path; AppSync supports subscriptions over WebSockets. For long-lived sticky connections at scale, ECS Fargate behind a Network Load Balancer is the pragmatic choice.",
+    "caveats": [
+      "API Gateway WebSocket has a 2-hour idle timeout; reconnect logic is your job.",
+      "ALB does NOT terminate WebSockets the same way HTTP/2 does — verify your client lib's upgrade path."
+    ],
+    "dependencies_to_flag": ["socket.io (server)", "ws (server)"]
+  },
+  "long-running-compute": {
+    "verdict": "strong",
+    "recommended_path": "ECS Fargate / EC2 / Batch for true long-running jobs. Step Functions orchestrates; Lambda's 15-minute hard limit makes it the wrong tool for multi-minute compute.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "s3-storage": {
+    "verdict": "strong",
+    "recommended_path": "Already on S3 if migrating from elsewhere. Use IA / Glacier classes via lifecycle rules for cold data. CloudFront in front for public read paths.",
+    "caveats": [
+      "Public buckets are a footgun: enable Public Access Block at account AND bucket level by default.",
+      "Use OAC (Origin Access Control), not OAI, for new CloudFront distributions."
+    ],
+    "dependencies_to_flag": ["@aws-sdk/client-s3"]
+  },
+  "ml-workload": {
+    "verdict": "partial",
+    "recommended_path": "Two paths: (1) Bedrock for foundation-model inference (no infra). (2) SageMaker for custom training and inference endpoints. ECS/Fargate with GPU works for niche cases. Avoid Lambda for inference unless your model is tiny.",
+    "caveats": [
+      "GPU spend gets large fast — use spot for training; provisioned for inference.",
+      "Cold-start for SageMaker endpoints is in seconds; size the autoscaling floor accordingly."
+    ],
+    "dependencies_to_flag": ["torch", "tensorflow", "transformers"]
+  }
+}

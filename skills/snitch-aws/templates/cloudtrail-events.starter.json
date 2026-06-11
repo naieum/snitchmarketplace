@@ -1,0 +1,26 @@
+{
+  "_comment": "Starter event-selectors for an account-wide multi-region CloudTrail. Apply with: aws cloudtrail put-event-selectors --trail-name <trail> --advanced-event-selectors file://cloudtrail-events.starter.json",
+  "AdvancedEventSelectors": [
+    {
+      "Name": "Management events",
+      "FieldSelectors": [
+        { "Field": "eventCategory", "Equals": ["Management"] }
+      ]
+    },
+    {
+      "Name": "S3 data events on sensitive prefixes",
+      "FieldSelectors": [
+        { "Field": "eventCategory", "Equals": ["Data"] },
+        { "Field": "resources.type", "Equals": ["AWS::S3::Object"] },
+        { "Field": "resources.ARN", "StartsWith": ["arn:aws:s3:::"] }
+      ]
+    },
+    {
+      "Name": "Lambda invoke events",
+      "FieldSelectors": [
+        { "Field": "eventCategory", "Equals": ["Data"] },
+        { "Field": "resources.type", "Equals": ["AWS::Lambda::Function"] }
+      ]
+    }
+  ]
+}

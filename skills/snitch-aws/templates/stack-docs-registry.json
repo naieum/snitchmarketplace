@@ -1,0 +1,155 @@
+{
+  "static-spa": {
+    "framework_docs": [],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/getting-started-secure-static-website-cloudformation-template.html",
+      "https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html",
+      "https://docs.aws.amazon.com/amplify/latest/userguide/welcome.html"
+    ],
+    "security_advisories": []
+  },
+  "nextjs": {
+    "framework_docs": [
+      "https://nextjs.org/docs/app/building-your-application/deploying"
+    ],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/amplify/latest/userguide/server-side-rendering-amplify.html",
+      "https://aws.amazon.com/blogs/mobile/host-a-next-js-ssr-app-with-real-time-data-on-aws-amplify/",
+      "https://opennext.js.org/aws"
+    ],
+    "security_advisories": [
+      "https://github.com/vercel/next.js/security"
+    ]
+  },
+  "astro": {
+    "framework_docs": ["https://docs.astro.build/en/guides/integrations-guide/aws/"],
+    "aws_docs": ["https://docs.aws.amazon.com/amplify/latest/userguide/welcome.html"],
+    "security_advisories": []
+  },
+  "sveltekit": {
+    "framework_docs": ["https://kit.svelte.dev/docs/adapters"],
+    "aws_docs": ["https://docs.aws.amazon.com/amplify/latest/userguide/welcome.html"],
+    "security_advisories": []
+  },
+  "remix": {
+    "framework_docs": ["https://remix.run/docs/en/main/start/quickstart"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/amplify/latest/userguide/welcome.html",
+      "https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-readme.html"
+    ],
+    "security_advisories": []
+  },
+  "nuxt": {
+    "framework_docs": ["https://nuxt.com/docs/getting-started/deployment"],
+    "aws_docs": ["https://docs.aws.amazon.com/amplify/latest/userguide/welcome.html"],
+    "security_advisories": []
+  },
+  "vite-spa": {
+    "framework_docs": ["https://vitejs.dev/guide/static-deploy.html"],
+    "aws_docs": ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html"],
+    "security_advisories": []
+  },
+  "express": {
+    "framework_docs": ["https://expressjs.com/en/advanced/best-practice-security.html"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html",
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+      "https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html"
+    ],
+    "security_advisories": ["https://github.com/expressjs/express/security/advisories"]
+  },
+  "fastify": {
+    "framework_docs": ["https://fastify.dev/docs/latest/Guides/Serverless/"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html"
+    ],
+    "security_advisories": []
+  },
+  "nestjs": {
+    "framework_docs": ["https://docs.nestjs.com/faq/serverless"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+      "https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html"
+    ],
+    "security_advisories": []
+  },
+  "hono": {
+    "framework_docs": ["https://hono.dev/getting-started/aws-lambda"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html"
+    ],
+    "security_advisories": []
+  },
+  "lambda-native": {
+    "framework_docs": [],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html",
+      "https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html",
+      "https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html"
+    ],
+    "security_advisories": []
+  },
+  "wordpress": {
+    "framework_docs": ["https://wordpress.org/documentation/article/hardening-wordpress/"],
+    "aws_docs": [
+      "https://aws.amazon.com/getting-started/hands-on/launch-wordpress-website/",
+      "https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-tutorial-launching-and-configuring-wordpress.html"
+    ],
+    "security_advisories": ["https://wordpress.org/news/category/security/"]
+  },
+  "laravel": {
+    "framework_docs": ["https://laravel.com/docs"],
+    "aws_docs": [
+      "https://bref.sh/docs/frameworks/laravel.html",
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html"
+    ],
+    "security_advisories": []
+  },
+  "rails": {
+    "framework_docs": ["https://guides.rubyonrails.org/security.html"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+      "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_Ruby_rails.html"
+    ],
+    "security_advisories": []
+  },
+  "django": {
+    "framework_docs": ["https://docs.djangoproject.com/en/stable/topics/security/"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+      "https://docs.aws.amazon.com/lambda/latest/dg/python-package.html"
+    ],
+    "security_advisories": []
+  },
+  "flask": {
+    "framework_docs": ["https://flask.palletsprojects.com/"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/lambda/latest/dg/python-package.html"
+    ],
+    "security_advisories": []
+  },
+  "fastapi": {
+    "framework_docs": ["https://fastapi.tiangolo.com/deployment/"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/lambda/latest/dg/python-package.html",
+      "https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html"
+    ],
+    "security_advisories": []
+  },
+  "spring-boot": {
+    "framework_docs": ["https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+      "https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html"
+    ],
+    "security_advisories": []
+  },
+  "dotnet": {
+    "framework_docs": ["https://learn.microsoft.com/en-us/aspnet/core/security/"],
+    "aws_docs": [
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+      "https://docs.aws.amazon.com/lambda/latest/dg/lambda-csharp.html"
+    ],
+    "security_advisories": []
+  }
+}

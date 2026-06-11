@@ -1,0 +1,76 @@
+{
+  "Name": "snitch-aws-baseline",
+  "Scope": "REGIONAL",
+  "DefaultAction": { "Allow": {} },
+  "VisibilityConfig": {
+    "SampledRequestsEnabled": true,
+    "CloudWatchMetricsEnabled": true,
+    "MetricName": "snitch-aws-baseline"
+  },
+  "Rules": [
+    {
+      "Name": "AWS-AWSManagedRulesCommonRuleSet",
+      "Priority": 0,
+      "OverrideAction": { "None": {} },
+      "Statement": {
+        "ManagedRuleGroupStatement": {
+          "VendorName": "AWS",
+          "Name": "AWSManagedRulesCommonRuleSet"
+        }
+      },
+      "VisibilityConfig": {
+        "SampledRequestsEnabled": true,
+        "CloudWatchMetricsEnabled": true,
+        "MetricName": "AWS-Common"
+      }
+    },
+    {
+      "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+      "Priority": 1,
+      "OverrideAction": { "None": {} },
+      "Statement": {
+        "ManagedRuleGroupStatement": {
+          "VendorName": "AWS",
+          "Name": "AWSManagedRulesKnownBadInputsRuleSet"
+        }
+      },
+      "VisibilityConfig": {
+        "SampledRequestsEnabled": true,
+        "CloudWatchMetricsEnabled": true,
+        "MetricName": "AWS-KnownBadInputs"
+      }
+    },
+    {
+      "Name": "AWS-AWSManagedRulesAmazonIpReputationList",
+      "Priority": 2,
+      "OverrideAction": { "None": {} },
+      "Statement": {
+        "ManagedRuleGroupStatement": {
+          "VendorName": "AWS",
+          "Name": "AWSManagedRulesAmazonIpReputationList"
+        }
+      },
+      "VisibilityConfig": {
+        "SampledRequestsEnabled": true,
+        "CloudWatchMetricsEnabled": true,
+        "MetricName": "AWS-IpReputation"
+      }
+    },
+    {
+      "Name": "RateLimit5perMinute",
+      "Priority": 3,
+      "Action": { "Block": {} },
+      "Statement": {
+        "RateBasedStatement": {
+          "Limit": 300,
+          "AggregateKeyType": "IP"
+        }
+      },
+      "VisibilityConfig": {
+        "SampledRequestsEnabled": true,
+        "CloudWatchMetricsEnabled": true,
+        "MetricName": "RateLimit"
+      }
+    }
+  ]
+}

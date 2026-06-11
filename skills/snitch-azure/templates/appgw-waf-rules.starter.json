@@ -1,0 +1,44 @@
+{
+  "_comment": "Starter Application Gateway WAF v2 + WAF Policy. Switch to Prevention mode after a 1-2 week observation window in Detection.",
+  "wafPolicy": {
+    "name": "azsec-waf-baseline",
+    "policySettings": {
+      "state": "Enabled",
+      "mode": "Detection",
+      "requestBodyCheck": true,
+      "maxRequestBodySizeInKb": 128,
+      "fileUploadLimitInMb": 100
+    },
+    "managedRules": {
+      "managedRuleSets": [
+        {
+          "ruleSetType": "OWASP",
+          "ruleSetVersion": "3.2",
+          "ruleGroupOverrides": []
+        },
+        {
+          "ruleSetType": "Microsoft_BotManagerRuleSet",
+          "ruleSetVersion": "1.0"
+        }
+      ]
+    },
+    "customRules": [
+      {
+        "name": "RateLimitAuthEndpoints",
+        "priority": 10,
+        "ruleType": "RateLimitRule",
+        "rateLimitDuration": "OneMin",
+        "rateLimitThreshold": 30,
+        "groupByUserSession": [{"variableName": "ClientAddr"}],
+        "matchConditions": [
+          {
+            "matchVariables": [{"variableName": "RequestUri"}],
+            "operator": "Contains",
+            "matchValues": ["/login", "/signin", "/api/auth/"]
+          }
+        ],
+        "action": "Block"
+      }
+    ]
+  }
+}

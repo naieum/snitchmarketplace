@@ -1,0 +1,82 @@
+{
+  "_comment": "Starter NSG rules: deny-by-default with explicit allow for required ports. Adapt source CIDRs to your environment before applying.",
+  "rules": [
+    {
+      "name": "Allow-HTTPS-from-Internet",
+      "priority": 100,
+      "direction": "Inbound",
+      "access": "Allow",
+      "protocol": "Tcp",
+      "sourceAddressPrefix": "Internet",
+      "sourcePortRange": "*",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "443"
+    },
+    {
+      "name": "Allow-HTTP-redirect-from-Internet",
+      "priority": 110,
+      "direction": "Inbound",
+      "access": "Allow",
+      "protocol": "Tcp",
+      "sourceAddressPrefix": "Internet",
+      "sourcePortRange": "*",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "80"
+    },
+    {
+      "name": "Deny-SSH-from-Internet",
+      "priority": 200,
+      "direction": "Inbound",
+      "access": "Deny",
+      "protocol": "Tcp",
+      "sourceAddressPrefix": "Internet",
+      "sourcePortRange": "*",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "22"
+    },
+    {
+      "name": "Deny-RDP-from-Internet",
+      "priority": 210,
+      "direction": "Inbound",
+      "access": "Deny",
+      "protocol": "Tcp",
+      "sourceAddressPrefix": "Internet",
+      "sourcePortRange": "*",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "3389"
+    },
+    {
+      "name": "Deny-WinRM-from-Internet",
+      "priority": 220,
+      "direction": "Inbound",
+      "access": "Deny",
+      "protocol": "Tcp",
+      "sourceAddressPrefix": "Internet",
+      "sourcePortRange": "*",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "5985-5986"
+    },
+    {
+      "name": "Allow-VNet-internal",
+      "priority": 4000,
+      "direction": "Inbound",
+      "access": "Allow",
+      "protocol": "*",
+      "sourceAddressPrefix": "VirtualNetwork",
+      "sourcePortRange": "*",
+      "destinationAddressPrefix": "VirtualNetwork",
+      "destinationPortRange": "*"
+    },
+    {
+      "name": "Deny-All-Inbound",
+      "priority": 4096,
+      "direction": "Inbound",
+      "access": "Deny",
+      "protocol": "*",
+      "sourceAddressPrefix": "*",
+      "sourcePortRange": "*",
+      "destinationAddressPrefix": "*",
+      "destinationPortRange": "*"
+    }
+  ]
+}

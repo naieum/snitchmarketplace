@@ -1,0 +1,63 @@
+{
+  "_comment": "Defender for Cloud plan recommendations per workload. Standard tier is paid. Apply with: az security pricing create -n <plan> --tier Standard. Run for each plan.",
+  "recommendations": [
+    {
+      "plan": "VirtualMachines",
+      "recommended_tier": "Standard",
+      "monthly_cost_per_vm_usd_approx": 15,
+      "value": "OS-level threat detection, JIT VM access, file integrity monitoring, regulatory compliance reports."
+    },
+    {
+      "plan": "AppServices",
+      "recommended_tier": "Standard",
+      "monthly_cost_per_app_usd_approx": 0.02,
+      "billing_unit": "per-vCore-hour",
+      "value": "Detect anomalous traffic, web shell uploads, brute-force on login pages."
+    },
+    {
+      "plan": "StorageAccounts",
+      "recommended_tier": "Standard",
+      "value": "Anomalous access detection, malware scanning (paid extra), sensitive data scanning."
+    },
+    {
+      "plan": "SqlServers",
+      "recommended_tier": "Standard",
+      "value": "Vulnerability assessment, anomalous queries, SQL injection detection."
+    },
+    {
+      "plan": "KeyVaults",
+      "recommended_tier": "Standard",
+      "value": "Anomalous secret access detection."
+    },
+    {
+      "plan": "Arm",
+      "recommended_tier": "Standard",
+      "value": "Detect malicious or anomalous Resource Manager operations (cleanup roles, disabled logging)."
+    },
+    {
+      "plan": "Dns",
+      "recommended_tier": "Standard",
+      "value": "Detect DNS-based exfiltration / data theft."
+    },
+    {
+      "plan": "ContainerRegistry",
+      "recommended_tier": "Standard",
+      "value": "Image vulnerability scanning."
+    },
+    {
+      "plan": "KubernetesService",
+      "recommended_tier": "Standard",
+      "value": "Cluster runtime threat detection."
+    },
+    {
+      "plan": "OpenSourceRelationalDatabases",
+      "recommended_tier": "Standard",
+      "value": "Anomalous queries on Postgres / MySQL / MariaDB Flexible Servers."
+    },
+    {
+      "plan": "CosmosDbs",
+      "recommended_tier": "Standard",
+      "value": "Anomalous query / access detection on Cosmos DB."
+    }
+  ]
+}

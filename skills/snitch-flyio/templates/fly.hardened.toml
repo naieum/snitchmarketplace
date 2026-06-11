@@ -1,0 +1,66 @@
+# fly.hardened.toml — snitch-flyio baseline. Adjust regions, internal_port,
+# resources, and process_groups for your stack.
+
+app = "your-app-name"
+primary_region = "iad"      # region affinity: stick to one or pin replicas
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[build]
+  # dockerfile = "Dockerfile"
+
+# Sensitive values: `fly secrets set` only — never put them here.
+[env]
+  PORT = "8080"
+  LOG_LEVEL = "info"
+
+[http_service]
+  internal_port = 8080
+  force_https = true              # reject plain HTTP
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/health"
+
+# Concurrency caps so a runaway client can't pin the whole machine.
+[http_service.concurrency]
+  type = "connections"
+  hard_limit = 200
+  soft_limit = 150
+
+[processes]
+  app = ""
+  # worker = "bin/worker"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+# Internal services: omit any [[services.ports]] block entirely.
+# Reachable only at <app>.internal:8080 from other apps in the org.
+
+# [mounts]
+#   source = "data"
+#   destination = "/data"
+#   initial_size = "10gb"
+#   snapshot_retention = 14         # ≥ 14 days for prod data
+#   auto_extend_size_threshold = 80
+#   auto_extend_size_increment = "5gb"
+#   auto_extend_size_limit = "50gb"
+
+# [[statics]]
+#   guest_path = "/app/public"
+#   url_prefix = "/static/"
+
+[deploy]
+  strategy = "rolling"
+  # release_command = "bin/migrate"

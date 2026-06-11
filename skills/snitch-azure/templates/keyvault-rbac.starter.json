@@ -1,0 +1,40 @@
+{
+  "_comment": "Recommended Key Vault RBAC role assignments. Apply with: az role assignment create --role <id> --assignee <principal> --scope /subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.KeyVault/vaults/<vault>",
+  "roles": [
+    {
+      "role": "Key Vault Reader",
+      "id": "21090545-7ca7-4776-b22c-e363652d74d2",
+      "use_for": "Read-only audit / inventory access. Assign to security tooling principals."
+    },
+    {
+      "role": "Key Vault Secrets Officer",
+      "id": "b86a8fe4-44ce-4948-aee5-eccb2c155cd7",
+      "use_for": "Manage secret values. Assign to deployment service principals (NOT to humans on a regular basis)."
+    },
+    {
+      "role": "Key Vault Secrets User",
+      "id": "4633458b-17de-408a-b874-0445c86b69e6",
+      "use_for": "Read secret values at runtime. Assign to App Service / Function / VM managed identities."
+    },
+    {
+      "role": "Key Vault Crypto Officer",
+      "id": "14b46e9e-c2b7-41b4-b07b-48a6ebf60603",
+      "use_for": "Manage keys. Assign to encryption key administrators."
+    },
+    {
+      "role": "Key Vault Crypto User",
+      "id": "12338af0-0e69-4776-bea7-57ae8d297424",
+      "use_for": "Use keys for encrypt/decrypt/sign/verify. Assign to workload identities that need crypto operations."
+    },
+    {
+      "role": "Key Vault Certificates Officer",
+      "id": "a4417e6f-fecd-4de8-b567-7b0420556985",
+      "use_for": "Manage certificates."
+    }
+  ],
+  "anti_patterns": [
+    "Do NOT assign 'Key Vault Administrator' to deployment principals — too broad.",
+    "Do NOT use legacy Access Policies if migrating to a new vault — RBAC is the path forward.",
+    "Do NOT skip 'Key Vault Reader' for ops humans — they often need just to see what's there."
+  ]
+}

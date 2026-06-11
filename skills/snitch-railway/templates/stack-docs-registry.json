@@ -1,0 +1,251 @@
+{
+  "_comment": "Canonical doc URLs per stack. Used by lib/stack_docs.sh to emit URL lists for Claude to WebFetch + WebSearch.",
+
+  "nextjs": {
+    "framework_docs": [
+      "https://nextjs.org/docs",
+      "https://nextjs.org/docs/app/building-your-application/deploying"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/nextjs"
+    ],
+    "security_advisories": [
+      "https://github.com/vercel/next.js/security/advisories"
+    ]
+  },
+
+  "astro": {
+    "framework_docs": [
+      "https://docs.astro.build/",
+      "https://docs.astro.build/en/guides/integrations-guide/node/"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/astro"
+    ],
+    "security_advisories": [
+      "https://github.com/withastro/astro/security/advisories"
+    ]
+  },
+
+  "sveltekit": {
+    "framework_docs": [
+      "https://kit.svelte.dev/docs",
+      "https://kit.svelte.dev/docs/adapter-node"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/sveltekit"
+    ],
+    "security_advisories": [
+      "https://github.com/sveltejs/kit/security/advisories"
+    ]
+  },
+
+  "remix": {
+    "framework_docs": [
+      "https://remix.run/docs/en/main"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/remix"
+    ],
+    "security_advisories": [
+      "https://github.com/remix-run/remix/security/advisories"
+    ]
+  },
+
+  "nuxt": {
+    "framework_docs": [
+      "https://nuxt.com/docs"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/nuxt"
+    ],
+    "security_advisories": [
+      "https://github.com/nuxt/nuxt/security/advisories"
+    ]
+  },
+
+  "express": {
+    "framework_docs": [
+      "https://expressjs.com/en/advanced/best-practice-security.html"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/express"
+    ],
+    "security_advisories": [
+      "https://github.com/expressjs/express/security/advisories"
+    ]
+  },
+
+  "fastify": {
+    "framework_docs": [
+      "https://fastify.dev/docs/latest/Reference/Server/",
+      "https://fastify.dev/docs/latest/Guides/Recommendations/"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/fastify"
+    ],
+    "security_advisories": [
+      "https://github.com/fastify/fastify/security/advisories"
+    ]
+  },
+
+  "nestjs": {
+    "framework_docs": [
+      "https://docs.nestjs.com/security/helmet",
+      "https://docs.nestjs.com/security/cors"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/nestjs"
+    ],
+    "security_advisories": [
+      "https://github.com/nestjs/nest/security/advisories"
+    ]
+  },
+
+  "hono": {
+    "framework_docs": [
+      "https://hono.dev/docs/"
+    ],
+    "railway_docs": [],
+    "security_advisories": [
+      "https://github.com/honojs/hono/security/advisories"
+    ]
+  },
+
+  "rails": {
+    "framework_docs": [
+      "https://guides.rubyonrails.org/security.html"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/rails"
+    ],
+    "security_advisories": [
+      "https://github.com/rails/rails/security/advisories",
+      "https://discuss.rubyonrails.org/c/security-announcements/9"
+    ]
+  },
+
+  "django": {
+    "framework_docs": [
+      "https://docs.djangoproject.com/en/stable/topics/security/"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/django"
+    ],
+    "security_advisories": [
+      "https://docs.djangoproject.com/en/stable/releases/security/"
+    ]
+  },
+
+  "flask": {
+    "framework_docs": [
+      "https://flask.palletsprojects.com/en/latest/security/"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/flask"
+    ],
+    "security_advisories": [
+      "https://github.com/pallets/flask/security/advisories"
+    ]
+  },
+
+  "fastapi": {
+    "framework_docs": [
+      "https://fastapi.tiangolo.com/tutorial/security/"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/fastapi"
+    ],
+    "security_advisories": [
+      "https://github.com/tiangolo/fastapi/security/advisories"
+    ]
+  },
+
+  "spring-boot": {
+    "framework_docs": [
+      "https://docs.spring.io/spring-boot/reference/features/spring-application.html",
+      "https://docs.spring.io/spring-security/reference/"
+    ],
+    "railway_docs": [],
+    "security_advisories": [
+      "https://spring.io/security",
+      "https://github.com/spring-projects/spring-boot/security/advisories"
+    ]
+  },
+
+  "dotnet": {
+    "framework_docs": [
+      "https://learn.microsoft.com/en-us/aspnet/core/security/"
+    ],
+    "railway_docs": [],
+    "security_advisories": [
+      "https://github.com/dotnet/aspnetcore/security/advisories"
+    ]
+  },
+
+  "go-monolith": {
+    "framework_docs": [
+      "https://go.dev/doc/security/best-practices"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/go"
+    ],
+    "security_advisories": [
+      "https://pkg.go.dev/vuln/list"
+    ]
+  },
+
+  "rust": {
+    "framework_docs": [
+      "https://doc.rust-lang.org/cargo/"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/rust"
+    ],
+    "security_advisories": [
+      "https://rustsec.org/advisories/"
+    ]
+  },
+
+  "deno": {
+    "framework_docs": [
+      "https://docs.deno.com/runtime/manual/"
+    ],
+    "railway_docs": [],
+    "security_advisories": [
+      "https://github.com/denoland/deno/security/advisories"
+    ]
+  },
+
+  "bun": {
+    "framework_docs": [
+      "https://bun.sh/docs"
+    ],
+    "railway_docs": [],
+    "security_advisories": [
+      "https://github.com/oven-sh/bun/security/advisories"
+    ]
+  },
+
+  "elixir": {
+    "framework_docs": [
+      "https://hexdocs.pm/phoenix/overview.html"
+    ],
+    "railway_docs": [
+      "https://docs.railway.com/guides/phoenix"
+    ],
+    "security_advisories": [
+      "https://github.com/phoenixframework/phoenix/security/advisories"
+    ]
+  },
+
+  "crystal": {
+    "framework_docs": [
+      "https://crystal-lang.org/reference/"
+    ],
+    "railway_docs": [],
+    "security_advisories": [
+      "https://github.com/crystal-lang/crystal/security/advisories"
+    ]
+  }
+}

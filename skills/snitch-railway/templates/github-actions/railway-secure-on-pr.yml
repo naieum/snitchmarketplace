@@ -1,0 +1,80 @@
+name: snitch-railway
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
+      - name: Auth
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::error::set secrets.RAILWAY_TOKEN to a project-scoped token"
+            exit 1
+          fi
+
+      - name: Install snitch-railway skill
+        run: |
+          mkdir -p ~/.claude/skills
+          # Replace the source path with the canonical install (e.g., a tarball
+          # or a clone of your home directory's .claude/skills tree). For now,
+          # this assumes the skill is checked into the repo at scripts/snitch-railway.
+          if [ -d scripts/snitch-railway ]; then
+            cp -r scripts/snitch-railway ~/.claude/skills/snitch-railway
+          else
+            echo "::warning::scripts/snitch-railway not present in repo; skipping"
+            exit 0
+          fi
+
+      - name: Doctor
+        run: bash ~/.claude/skills/snitch-railway/snitch-railway.sh doctor
+
+      - name: Detect
+        run: bash ~/.claude/skills/snitch-railway/snitch-railway.sh detect
+
+      - name: State (project + services + env + databases + domains)
+        env:
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+          RWSEC_PROJECT_ID:  ${{ vars.RAILWAY_PROJECT_ID }}
+          RWSEC_ENVIRONMENT: production
+        run: |
+          bash ~/.claude/skills/snitch-railway/snitch-railway.sh state project   > project.json
+          bash ~/.claude/skills/snitch-railway/snitch-railway.sh state services  > services.json
+          bash ~/.claude/skills/snitch-railway/snitch-railway.sh state env       > env.json
+          bash ~/.claude/skills/snitch-railway/snitch-railway.sh state databases > databases.json
+          bash ~/.claude/skills/snitch-railway/snitch-railway.sh state domains   > domains.json
+          bash ~/.claude/skills/snitch-railway/snitch-railway.sh state tcp-proxies > tcp.json
+
+      - name: Fail on EOL DB or unverified domains
+        run: |
+          eol=$(jq '.databases_summary.eol | length' databases.json)
+          unverified=$(jq '.domains_summary.custom_domain_unverified | length' domains.json)
+          if [ "$eol" != "0" ] || [ "$unverified" != "0" ]; then
+            echo "::error::EOL DB count=$eol; unverified domain count=$unverified"
+            jq . databases.json domains.json
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: snitch-railway-state
+          path: |
+            project.json
+            services.json
+            env.json
+            databases.json
+            domains.json
+            tcp.json

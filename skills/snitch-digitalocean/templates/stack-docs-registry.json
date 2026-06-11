@@ -1,0 +1,181 @@
+{
+  "_comment": "Canonical doc URLs per stack. Used by lib/stack_docs.sh to emit URL lists for Claude to WebFetch + WebSearch.",
+
+  "nextjs": {
+    "framework_docs": [
+      "https://nextjs.org/docs",
+      "https://nextjs.org/docs/app/building-your-application/deploying"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/getting-started/quickstart/",
+      "https://docs.digitalocean.com/products/app-platform/concepts/buildpack-detection/"
+    ],
+    "security_advisories": [
+      "https://github.com/vercel/next.js/security/advisories"
+    ]
+  },
+  "astro": {
+    "framework_docs": [
+      "https://docs.astro.build/",
+      "https://docs.astro.build/en/guides/deploy/"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/spaces/how-to/host-a-static-site/",
+      "https://docs.digitalocean.com/products/app-platform/"
+    ],
+    "security_advisories": [
+      "https://github.com/withastro/astro/security/advisories"
+    ]
+  },
+  "sveltekit": {
+    "framework_docs": [
+      "https://kit.svelte.dev/docs",
+      "https://kit.svelte.dev/docs/adapter-node"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/"
+    ],
+    "security_advisories": [
+      "https://github.com/sveltejs/kit/security/advisories"
+    ]
+  },
+  "remix": {
+    "framework_docs": [
+      "https://remix.run/docs/en/main"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/"
+    ],
+    "security_advisories": [
+      "https://github.com/remix-run/remix/security/advisories"
+    ]
+  },
+  "vite-spa": {
+    "framework_docs": [
+      "https://vitejs.dev/guide/static-deploy.html"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/spaces/how-to/host-a-static-site/"
+    ],
+    "security_advisories": []
+  },
+  "express": {
+    "framework_docs": [
+      "https://expressjs.com/en/advanced/best-practice-security.html"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/",
+      "https://docs.digitalocean.com/products/droplets/"
+    ],
+    "security_advisories": [
+      "https://github.com/expressjs/express/security/advisories"
+    ]
+  },
+  "fastify": {
+    "framework_docs": [
+      "https://fastify.dev/docs/latest/Reference/Server/"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/"
+    ],
+    "security_advisories": [
+      "https://github.com/fastify/fastify/security/advisories"
+    ]
+  },
+  "nestjs": {
+    "framework_docs": [
+      "https://docs.nestjs.com/security/helmet"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/",
+      "https://docs.digitalocean.com/products/kubernetes/"
+    ],
+    "security_advisories": [
+      "https://github.com/nestjs/nest/security/advisories"
+    ]
+  },
+  "hono": {
+    "framework_docs": [
+      "https://hono.dev/docs"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/",
+      "https://docs.digitalocean.com/products/functions/"
+    ],
+    "security_advisories": [
+      "https://github.com/honojs/hono/security/advisories"
+    ]
+  },
+  "wordpress": {
+    "framework_docs": [
+      "https://wordpress.org/documentation/article/hardening-wordpress/"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/marketplace/catalog/wordpress/",
+      "https://docs.digitalocean.com/products/databases/mysql/"
+    ],
+    "security_advisories": [
+      "https://wordpress.org/news/category/security/"
+    ]
+  },
+  "laravel": {
+    "framework_docs": [
+      "https://laravel.com/docs/deployment",
+      "https://laravel.com/docs/security"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/",
+      "https://docs.digitalocean.com/products/databases/postgresql/"
+    ],
+    "security_advisories": [
+      "https://blog.laravel.com/category/security"
+    ]
+  },
+  "rails": {
+    "framework_docs": [
+      "https://guides.rubyonrails.org/security.html"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/",
+      "https://docs.digitalocean.com/products/databases/postgresql/"
+    ],
+    "security_advisories": [
+      "https://groups.google.com/g/rubyonrails-security"
+    ]
+  },
+  "django": {
+    "framework_docs": [
+      "https://docs.djangoproject.com/en/stable/topics/security/"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/",
+      "https://docs.digitalocean.com/products/databases/postgresql/"
+    ],
+    "security_advisories": [
+      "https://docs.djangoproject.com/en/stable/releases/security/"
+    ]
+  },
+  "flask": {
+    "framework_docs": [
+      "https://flask.palletsprojects.com/en/stable/security/"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/app-platform/"
+    ],
+    "security_advisories": [
+      "https://github.com/pallets/flask/security/advisories"
+    ]
+  },
+  "spring-boot": {
+    "framework_docs": [
+      "https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.security"
+    ],
+    "digitalocean_docs": [
+      "https://docs.digitalocean.com/products/droplets/",
+      "https://docs.digitalocean.com/products/kubernetes/"
+    ],
+    "security_advisories": [
+      "https://spring.io/security"
+    ]
+  }
+}

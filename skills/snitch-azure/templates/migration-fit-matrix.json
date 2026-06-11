@@ -1,0 +1,244 @@
+{
+  "static-spa": {
+    "verdict": "strong",
+    "recommended_path": "Azure Static Web Apps. Free tier covers most static use cases. Drop your build output (dist/, out/, build/). Custom domain + free managed certs included.",
+    "caveats": [
+      "Free tier has a 250 MB app size limit and ~100 MB per artifact.",
+      "API (Functions) on Static Web Apps Free is also size-limited; Standard plan removes the limit."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nextjs": {
+    "verdict": "strong",
+    "recommended_path": "Azure Static Web Apps (App Router static export) or Azure App Service / Container Apps for full SSR. SWA Hybrid Next.js (preview) supports App Router + RSC; for production-grade SSR + ISR pick App Service Linux (Node 20) or Container Apps. Functions also works for API-only routes.",
+    "caveats": [
+      "ISR / on-demand revalidation requires App Service or Container Apps — Static Web Apps does not run a Next.js server.",
+      "next/image with sharp needs a Linux App Service plan or Container Apps; sharp is fine on Linux but flaky on Windows plans.",
+      "Server Actions = POST endpoints: rate-limit via Front Door / App Gateway WAF.",
+      "AAD authentication via App Service Easy Auth removes most NextAuth boilerplate."
+    ],
+    "dependencies_to_flag": ["sharp", "puppeteer", "playwright"]
+  },
+  "astro": {
+    "verdict": "strong",
+    "recommended_path": "Azure Static Web Apps with the @astrojs/cloudflare or @astrojs/node adapter (use node adapter for SSR on App Service). Static-only Astro sites are an exact fit for Static Web Apps.",
+    "caveats": [
+      "SSR on Static Web Apps is via the integrated Functions runtime — not full Node.",
+      "If you need Astro endpoints with arbitrary Node modules, deploy to App Service or Container Apps."
+    ],
+    "dependencies_to_flag": ["sharp"]
+  },
+  "sveltekit": {
+    "verdict": "strong",
+    "recommended_path": "Azure Static Web Apps with the SvelteKit adapter, or App Service Linux for full Node SSR.",
+    "caveats": [
+      "Form actions are POST-heavy — verify rate-limit rules on Front Door / App Gateway."
+    ],
+    "dependencies_to_flag": []
+  },
+  "remix": {
+    "verdict": "strong",
+    "recommended_path": "Azure Static Web Apps for static + minimal-server-side, or App Service / Container Apps for full Remix SSR with arbitrary Node.",
+    "caveats": [
+      "Loaders/actions run on the server — verify your runtime is Node 20 on App Service Linux."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nuxt": {
+    "verdict": "strong",
+    "recommended_path": "Azure Static Web Apps via Nitro azure preset, or App Service Linux for full SSR.",
+    "caveats": [
+      "Nuxt's Nitro engine handles abstraction; verify your Nitro modules are Node-compatible."
+    ],
+    "dependencies_to_flag": []
+  },
+  "vite-spa": {
+    "verdict": "strong",
+    "recommended_path": "Azure Static Web Apps. Pure static — drop the dist/ output.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "express": {
+    "verdict": "strong",
+    "recommended_path": "Azure App Service Linux (Node 20) or Azure Container Apps. Both run Express directly — no rewrite. Container Apps gives you scale-to-zero + Dapr if you want it; App Service is simpler.",
+    "caveats": [
+      "App Service basic-auth (SCM/FTP) should be DISABLED — use deployment slots + GitHub Actions OIDC.",
+      "Sessions in memory don't survive scale events — move to Azure Cache for Redis."
+    ],
+    "dependencies_to_flag": ["sharp", "bcrypt", "argon2", "puppeteer", "playwright"]
+  },
+  "fastify": {
+    "verdict": "strong",
+    "recommended_path": "Same as Express. App Service or Container Apps run Fastify directly.",
+    "caveats": [
+      "fastify-multipart streaming uploads → Blob Storage SDK from Functions or Container Apps."
+    ],
+    "dependencies_to_flag": ["sharp", "bcrypt", "argon2"]
+  },
+  "nestjs": {
+    "verdict": "strong",
+    "recommended_path": "Azure App Service Linux or Container Apps. NestJS runs unmodified.",
+    "caveats": [
+      "NestJS microservices via TCP/Redis transport: prefer Container Apps for the inter-service networking."
+    ],
+    "dependencies_to_flag": ["typeorm", "sequelize"]
+  },
+  "hono": {
+    "verdict": "strong",
+    "recommended_path": "Azure Functions (Node) or Azure Container Apps. Hono's Node adapter is mature; for low-latency edge use Front Door in front.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "wordpress": {
+    "verdict": "partial",
+    "recommended_path": "Azure App Service has an official WordPress on Linux managed offering (PHP 8.x + MariaDB Flexible Server). Fits if you want managed PHP. Otherwise, Azure VM + Bitnami AMI / docker-compose, behind Front Door + WAF.",
+    "caveats": [
+      "App Service WordPress offering uses MySQL Flexible Server — check pricing tier carefully (Burstable vs General Purpose).",
+      "wp-admin / xmlrpc.php / wp-cron.php should be IP-allowlisted via App Service IP restrictions or Front Door custom rules.",
+      "Real cron via App Service WebJob, not wp-cron."
+    ],
+    "dependencies_to_flag": []
+  },
+  "laravel": {
+    "verdict": "strong",
+    "recommended_path": "Azure App Service Linux (PHP 8.2+) runs Laravel directly — composer install + artisan migrate. Container Apps is the alternative for Docker-native deployments.",
+    "caveats": [
+      "Queue workers stay on App Service WebJobs or Container Apps as a separate service.",
+      "Sessions: redis driver pointed at Azure Cache for Redis.",
+      "Storage: Laravel filesystem driver 'azure' (league/flysystem-azure-blob-storage)."
+    ],
+    "dependencies_to_flag": []
+  },
+  "rails": {
+    "verdict": "strong",
+    "recommended_path": "Azure App Service Linux (Ruby) or Container Apps. App Service has Ruby support; Container Apps is simpler for Docker-based deployments.",
+    "caveats": [
+      "ActionCable WebSockets work on App Service (enable Web Sockets) and Container Apps.",
+      "Sidekiq workers: separate App Service Web App for the worker process or a Container App with scale-to-zero."
+    ],
+    "dependencies_to_flag": []
+  },
+  "django": {
+    "verdict": "strong",
+    "recommended_path": "Azure App Service Linux (Python 3.11+) or Container Apps. Both run Django directly.",
+    "caveats": [
+      "Channels (WebSockets) work on App Service with Daphne/Uvicorn.",
+      "Celery workers: separate App Service or Container App; broker = Azure Service Bus or Redis Cache."
+    ],
+    "dependencies_to_flag": []
+  },
+  "flask": {
+    "verdict": "strong",
+    "recommended_path": "Same as Django.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "fastapi": {
+    "verdict": "strong",
+    "recommended_path": "App Service Linux Python with Gunicorn+Uvicorn workers, or Container Apps. Both work.",
+    "caveats": [
+      "If you need true autoscale-to-zero: prefer Container Apps."
+    ],
+    "dependencies_to_flag": []
+  },
+  "spring-boot": {
+    "verdict": "strong",
+    "recommended_path": "Azure Spring Apps (managed Spring runtime) is the lowest-friction path. App Service Linux Java 17/21 and Container Apps also work.",
+    "caveats": [
+      "Spring Apps Standard tier is paid but includes config server + service registry.",
+      "Container Apps is cheaper for simple deployments with no Spring-specific bindings."
+    ],
+    "dependencies_to_flag": []
+  },
+  "dotnet": {
+    "verdict": "strong",
+    "recommended_path": "Azure App Service is the canonical .NET host. Functions for serverless. Container Apps for Docker. AAD identity is first-class via Microsoft.Identity.Web.",
+    "caveats": [
+      "App Service .NET on Windows vs Linux: prefer Linux for new builds (cheaper, ARM64 supported).",
+      "Disable SCM basic auth via 'az webapp deployment policy update --name ... --type Allow=false'."
+    ],
+    "dependencies_to_flag": []
+  },
+  "dotnet-blazor": {
+    "verdict": "strong",
+    "recommended_path": "Blazor WebAssembly → Static Web Apps (free tier covers it). Blazor Server → App Service Linux. Auto mode → App Service since you need a server runtime.",
+    "caveats": [
+      "Blazor Server uses SignalR (WebSockets) — enable WebSockets on App Service.",
+      "WASM bundle size matters; trim aggressively."
+    ],
+    "dependencies_to_flag": []
+  },
+  "websocket-heavy": {
+    "verdict": "partial",
+    "recommended_path": "Azure SignalR Service (managed) is the standard answer for WebSocket-heavy workloads. App Service supports WebSockets natively but scaling = SignalR Service. Container Apps + sticky sessions also works.",
+    "caveats": [
+      "SignalR Service free tier is fine for dev; production needs Standard.",
+      "Long-lived connections bill on connection-hours."
+    ],
+    "dependencies_to_flag": ["socket.io (server)", "ws (server)"]
+  },
+  "long-running-compute": {
+    "verdict": "strong",
+    "recommended_path": "Azure Container Apps Jobs, Azure Batch, or AKS. Container Apps Jobs is the simplest for cron-style or queue-triggered batch.",
+    "caveats": [
+      "Functions have a 10-minute default execution limit (60 min on Premium). For longer jobs use Container Apps Jobs."
+    ],
+    "dependencies_to_flag": []
+  },
+  "media-processing-heavy": {
+    "verdict": "strong",
+    "recommended_path": "Azure Container Apps with FFmpeg base image, orchestrated from Azure Functions (queue trigger from Service Bus or Storage Queue), output to Blob Storage.",
+    "caveats": [
+      "Sharp / native deps work fine on Linux Container Apps.",
+      "Browser Rendering / headless Chrome: use Container Apps with playwright base image."
+    ],
+    "dependencies_to_flag": ["ffmpeg", "imagemagick", "puppeteer (runtime)", "playwright (runtime)"]
+  },
+  "mysql-app": {
+    "verdict": "strong",
+    "recommended_path": "Azure Database for MySQL Flexible Server. Direct migration via mysqldump + restore. Use connection-string in Key Vault, App Service references it via 'azure-keyvault://' syntax.",
+    "caveats": [
+      "Burstable tier saves money for dev/test but watches CPU credits.",
+      "Geo-redundant backup is paid + region-pair specific.",
+      "private endpoint = no public IP exposure."
+    ],
+    "dependencies_to_flag": ["mysql2"]
+  },
+  "postgres-app": {
+    "verdict": "strong",
+    "recommended_path": "Azure Database for PostgreSQL Flexible Server. Native Entra (AAD) auth. Connection pooling via PgBouncer is built-in on Flexible Server.",
+    "caveats": [
+      "Read replicas are async; cross-region replicas are paid.",
+      "private endpoint + VNet integration removes public exposure."
+    ],
+    "dependencies_to_flag": ["pg", "@neondatabase/serverless (works against Postgres Flexible)"]
+  },
+  "mongodb-app": {
+    "verdict": "partial",
+    "recommended_path": "Azure Cosmos DB for MongoDB API (vCore or RU-based). Native MongoDB-protocol-compatible. For exact-Mongo behavior, MongoDB Atlas on Azure marketplace is the safer answer.",
+    "caveats": [
+      "Cosmos for MongoDB has compatibility matrix vs Atlas — check your specific aggregations.",
+      "RU-based pricing surprises new users; vCore is more familiar."
+    ],
+    "dependencies_to_flag": ["mongoose", "mongodb"]
+  },
+  "redis-app": {
+    "verdict": "strong",
+    "recommended_path": "Azure Cache for Redis. Three tiers: Basic / Standard / Premium. Premium adds clustering + persistence + VNet integration.",
+    "caveats": [
+      "Basic tier has no SLA — dev/test only.",
+      "Premium is $$ — verify you actually need clustering before paying."
+    ],
+    "dependencies_to_flag": ["ioredis", "redis"]
+  },
+  "s3-storage": {
+    "verdict": "strong",
+    "recommended_path": "Azure Blob Storage. Migration: azcopy sync or AWS DataSync (S3 → Blob). For S3-API compatibility, use Azure's S3-compatible endpoint (preview) or keep app code with @azure/storage-blob.",
+    "caveats": [
+      "Lifecycle policies map to Blob lifecycle management.",
+      "Public bucket access is OFF by default — control via container public access level.",
+      "S3 Select equivalent: Blob Query (preview) or pull-and-process."
+    ],
+    "dependencies_to_flag": ["@aws-sdk/client-s3 (works against S3-compatible Blob with endpoint override)"]
+  }
+}

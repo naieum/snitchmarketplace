@@ -1,0 +1,36 @@
+{
+  "_comment": "Hardened App Service settings. Apply via az webapp config set / az webapp update.",
+  "siteConfig": {
+    "minTlsVersion": "1.2",
+    "ftpsState": "Disabled",
+    "http20Enabled": true,
+    "alwaysOn": true,
+    "webSocketsEnabled": false,
+    "ipSecurityRestrictionsDefaultAction": "Allow",
+    "scmIpSecurityRestrictionsDefaultAction": "Deny",
+    "scmIpSecurityRestrictionsUseMain": false,
+    "remoteDebuggingEnabled": false,
+    "publicNetworkAccess": "Enabled",
+    "use32BitWorkerProcess": false,
+    "loadBalancing": "LeastRequests"
+  },
+  "site": {
+    "httpsOnly": true,
+    "clientAffinityEnabled": false
+  },
+  "basicPublishingCredentialsPolicies": {
+    "ftp": false,
+    "scm": false
+  },
+  "managedIdentity": {
+    "type": "SystemAssigned"
+  },
+  "authV2": {
+    "globalValidation_requireAuthentication": true,
+    "globalValidation_unauthenticatedClientAction": "RedirectToLoginPage",
+    "identityProviders_azureActiveDirectory_enabled": true
+  },
+  "applicationInsights": {
+    "recommended": "Enable Application Insights for production. Use az monitor app-insights component create."
+  }
+}

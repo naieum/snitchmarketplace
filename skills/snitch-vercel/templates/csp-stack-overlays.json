@@ -1,0 +1,60 @@
+{
+  "_comment": "Per-stack CSP overlays. Apply on top of the baseline CSP in vercel.hardened.json. The agent merges the relevant overlay(s) when emitting fix headers.",
+
+  "stripe": {
+    "script_src":  ["https://js.stripe.com", "https://hooks.stripe.com"],
+    "frame_src":   ["https://js.stripe.com", "https://hooks.stripe.com"],
+    "connect_src": ["https://api.stripe.com"]
+  },
+
+  "turnstile": {
+    "script_src": ["https://challenges.cloudflare.com"],
+    "frame_src":  ["https://challenges.cloudflare.com"]
+  },
+
+  "vercel-analytics": {
+    "script_src":  ["https://va.vercel-scripts.com"],
+    "connect_src": ["https://vitals.vercel-insights.com"]
+  },
+
+  "vercel-speed-insights": {
+    "script_src":  ["https://va.vercel-scripts.com"],
+    "connect_src": ["https://vitals.vercel-insights.com"]
+  },
+
+  "vercel-live": {
+    "_comment": "Comments / preview indicator iframe. Required only on preview deployments if you keep Comments enabled.",
+    "script_src": ["https://vercel.live"],
+    "frame_src":  ["https://vercel.live"]
+  },
+
+  "google-analytics": {
+    "script_src":  ["https://www.googletagmanager.com"],
+    "img_src":     ["https://www.google-analytics.com", "https://www.googletagmanager.com"],
+    "connect_src": ["https://www.google-analytics.com", "https://www.googletagmanager.com"]
+  },
+
+  "posthog": {
+    "script_src":  ["https://app.posthog.com", "https://us-assets.i.posthog.com"],
+    "connect_src": ["https://app.posthog.com", "https://us.i.posthog.com"]
+  },
+
+  "sentry": {
+    "connect_src": ["https://*.ingest.sentry.io", "https://*.sentry.io"]
+  },
+
+  "clerk": {
+    "script_src":  ["https://*.clerk.accounts.dev", "https://clerk.com"],
+    "connect_src": ["https://*.clerk.accounts.dev", "https://clerk.com"],
+    "frame_src":   ["https://*.clerk.accounts.dev"]
+  },
+
+  "auth0": {
+    "script_src":  ["https://cdn.auth0.com"],
+    "connect_src": ["https://*.auth0.com"]
+  },
+
+  "supabase": {
+    "connect_src": ["https://*.supabase.co", "wss://*.supabase.co"]
+  }
+}

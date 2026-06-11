@@ -1,0 +1,22 @@
+[
+  "https://docs.digitalocean.com/products/api/",
+  "https://docs.digitalocean.com/reference/doctl/how-to/install/",
+  "https://docs.digitalocean.com/products/networking/firewalls/",
+  "https://docs.digitalocean.com/products/networking/vpc/",
+  "https://docs.digitalocean.com/products/droplets/how-to/back-up/",
+  "https://docs.digitalocean.com/products/monitoring/",
+  "https://docs.digitalocean.com/products/databases/",
+  "https://docs.digitalocean.com/products/databases/postgresql/how-to/secure-cluster/",
+  "https://docs.digitalocean.com/products/spaces/",
+  "https://docs.digitalocean.com/products/spaces/how-to/manage-cors/",
+  "https://docs.digitalocean.com/products/app-platform/concepts/app-spec/",
+  "https://docs.digitalocean.com/products/app-platform/how-to/use-environment-variables/",
+  "https://docs.digitalocean.com/products/networking/load-balancers/",
+  "https://docs.digitalocean.com/products/networking/dns/",
+  "https://docs.digitalocean.com/products/container-registry/",
+  "https://docs.digitalocean.com/products/kubernetes/",
+  "https://docs.digitalocean.com/products/kubernetes/how-to/upgrade-cluster/",
+  "https://docs.digitalocean.com/products/functions/",
+  "https://docs.digitalocean.com/platform/security/two-factor-authentication/",
+  "https://docs.digitalocean.com/products/billing/notifications/"
+]

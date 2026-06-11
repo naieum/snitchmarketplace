@@ -1,0 +1,40 @@
+{
+  "_comment": "DigitalOcean Cloud Firewall starter. Apply with: doctl compute firewall create --name 'web-tier' --inbound-rules '...' --outbound-rules '...' or via Terraform.",
+  "name": "web-tier-hardened",
+  "inbound_rules": [
+    {
+      "protocol": "tcp",
+      "ports": "80",
+      "sources": { "addresses": ["0.0.0.0/0", "::/0"] }
+    },
+    {
+      "protocol": "tcp",
+      "ports": "443",
+      "sources": { "addresses": ["0.0.0.0/0", "::/0"] }
+    },
+    {
+      "protocol": "tcp",
+      "ports": "22",
+      "_note": "REPLACE with your office CIDR or a bastion tag. NEVER 0.0.0.0/0 on 22.",
+      "sources": { "addresses": ["203.0.113.0/24"] }
+    }
+  ],
+  "outbound_rules": [
+    {
+      "protocol": "tcp",
+      "ports": "1-65535",
+      "destinations": { "addresses": ["0.0.0.0/0", "::/0"] }
+    },
+    {
+      "protocol": "udp",
+      "ports": "1-65535",
+      "destinations": { "addresses": ["0.0.0.0/0", "::/0"] }
+    },
+    {
+      "protocol": "icmp",
+      "destinations": { "addresses": ["0.0.0.0/0", "::/0"] }
+    }
+  ],
+  "tags": ["web"],
+  "droplet_ids": []
+}

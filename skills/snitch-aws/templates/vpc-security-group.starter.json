@@ -1,0 +1,20 @@
+{
+  "GroupName": "snitch-aws-baseline-app-sg",
+  "Description": "Baseline application security group: no public ingress, egress to VPC + 443.",
+  "IpPermissions": [],
+  "IpPermissionsEgress": [
+    {
+      "IpProtocol": "tcp",
+      "FromPort": 443,
+      "ToPort": 443,
+      "IpRanges": [{"CidrIp": "0.0.0.0/0", "Description": "https outbound"}]
+    },
+    {
+      "IpProtocol": "tcp",
+      "FromPort": 0,
+      "ToPort": 65535,
+      "UserIdGroupPairs": [{"Description": "intra-VPC traffic via SG references — replace placeholder", "GroupId": "sg-REPLACE-WITH-VPC-DEFAULT"}]
+    }
+  ],
+  "_notes": "Apply via: aws ec2 create-security-group + authorize-security-group-egress. Strip _notes before applying."
+}

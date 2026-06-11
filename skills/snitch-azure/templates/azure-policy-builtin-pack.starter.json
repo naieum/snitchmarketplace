@@ -1,0 +1,32 @@
+{
+  "_comment": "Recommended built-in Azure Policy initiatives to assign. Use 'az policy assignment create --policy-set-definition <id> --display-name ... --enforcement-mode Default'. Start in Audit (DoNotEnforce) for 1-2 weeks before hard-enforcing.",
+  "initiatives": [
+    {
+      "name": "Microsoft cloud security benchmark",
+      "policy_set_definition_id": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8",
+      "use_for": "Baseline. Map to MCSB v1. Always start here."
+    },
+    {
+      "name": "CIS Microsoft Azure Foundations Benchmark v2.0.0",
+      "policy_set_definition_id": "/providers/Microsoft.Authorization/policySetDefinitions/06f19060-9e68-4070-92ca-f15cc126059e",
+      "use_for": "CIS-based audits / SOC 2 readiness."
+    },
+    {
+      "name": "NIST SP 800-53 Rev. 5",
+      "policy_set_definition_id": "/providers/Microsoft.Authorization/policySetDefinitions/179d1daa-458f-4e47-8086-2a68d0d6c38f",
+      "use_for": "Federal / regulated workloads."
+    }
+  ],
+  "individual_policies_required_tag": [
+    {
+      "name": "Require a tag and its value on resources",
+      "policy_definition_id": "/providers/Microsoft.Authorization/policyDefinitions/1e30110a-5ceb-460c-a204-c1c3969c6d62",
+      "params_example": { "tagName": { "value": "owner" } }
+    },
+    {
+      "name": "Require a tag on resource groups",
+      "policy_definition_id": "/providers/Microsoft.Authorization/policyDefinitions/96670d01-0a4d-4649-9c89-2d3abc0a5025",
+      "params_example": { "tagName": { "value": "environment" } }
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "static-spa": {
+    "verdict": "strong",
+    "recommended_path": "DigitalOcean Spaces + Spaces CDN. Drop the build output (dist/, out/, build/) into a private Space and serve via CDN endpoint with custom domain.",
+    "caveats": [
+      "Cache invalidation on Spaces CDN is per-path — bust cache via filename hashes in the build.",
+      "Use signed URLs for any non-public assets."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nextjs": {
+    "verdict": "strong",
+    "recommended_path": "App Platform with the auto-detected Next.js buildpack (Node), OR a Droplet + PM2 / Docker for full Node compatibility. Static export goes to Spaces+CDN.",
+    "caveats": [
+      "App Platform supports Next.js but consult the runtime version pin.",
+      "ISR / on-demand revalidate works on App Platform; ensure the data source is reachable from the app's region.",
+      "next/image runs natively in Node; no special adapter needed."
+    ],
+    "dependencies_to_flag": ["sharp", "puppeteer", "playwright"]
+  },
+  "astro": {
+    "verdict": "strong",
+    "recommended_path": "Spaces+CDN for static output. App Platform with Node adapter for SSR.",
+    "caveats": [
+      "If using Astro DB (libSQL), it's external; not a managed DO product."
+    ],
+    "dependencies_to_flag": ["sharp"]
+  },
+  "sveltekit": {
+    "verdict": "strong",
+    "recommended_path": "App Platform with @sveltejs/adapter-node. Static-only builds go to Spaces+CDN.",
+    "caveats": [
+      "Form actions are POST-heavy — verify rate limits / WAF in front (Cloudflare DNS recommended for WAF/DNSSEC)."
+    ],
+    "dependencies_to_flag": []
+  },
+  "remix": {
+    "verdict": "strong",
+    "recommended_path": "App Platform with the Remix Express adapter, OR Docker on a Droplet.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "nuxt": {
+    "verdict": "strong",
+    "recommended_path": "App Platform with `nuxt build` + Node adapter; Nitro auto-detects.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "vite-spa": {
+    "verdict": "strong",
+    "recommended_path": "Spaces+CDN. Pure static, no SSR needed.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "express": {
+    "verdict": "strong",
+    "recommended_path": "App Platform (Node service component) for low-effort, OR Droplet + PM2 / Docker if you need long-lived TCP, native modules, or non-HTTP workloads.",
+    "caveats": [
+      "App Platform has no SSH access; if you need cron, use the App Platform job component or move to a Droplet.",
+      "Sessions in memory survive only one instance; use Managed Redis for shared sessions."
+    ],
+    "dependencies_to_flag": ["bcrypt (works fine)", "puppeteer (use Droplet, not App Platform)"]
+  },
+  "fastify": {
+    "verdict": "strong",
+    "recommended_path": "Same as Express — App Platform or Droplet + Docker.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "nestjs": {
+    "verdict": "strong",
+    "recommended_path": "App Platform Node service or DOKS for a microservice mesh. NestJS DI works as-is.",
+    "caveats": [
+      "Microservices via TCP transports work on Droplets / DOKS; App Platform is HTTP-only between components.",
+      "TypeORM works against Managed Postgres / MySQL with sslmode=require."
+    ],
+    "dependencies_to_flag": []
+  },
+  "hono": {
+    "verdict": "strong",
+    "recommended_path": "App Platform Node service or Functions (for ultra-light handlers). DOKS if scaling out.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "wordpress": {
+    "verdict": "strong",
+    "recommended_path": "Droplet (or 1-Click WordPress Droplet) + Managed MySQL + Spaces for media. Or App Platform with the WordPress preset.",
+    "caveats": [
+      "wp-admin / xmlrpc.php / wp-cron.php should be IP-allowlisted via Cloud Firewall.",
+      "Use Spaces with the WP Offload Media plugin for /uploads."
+    ],
+    "dependencies_to_flag": []
+  },
+  "laravel": {
+    "verdict": "strong",
+    "recommended_path": "App Platform PHP service component, OR Droplet + nginx + php-fpm + Managed Postgres/MySQL. Queue workers run as App Platform job components or as supervisord on the Droplet.",
+    "caveats": [
+      "Laravel queue workers need a long-lived process — App Platform 'Worker' component handles this.",
+      "Storage::disk('do') points at Spaces."
+    ],
+    "dependencies_to_flag": []
+  },
+  "rails": {
+    "verdict": "strong",
+    "recommended_path": "App Platform Rails buildpack (recent versions detected automatically), OR Droplet + Puma + nginx + Managed Postgres.",
+    "caveats": [
+      "ActionCable (WebSockets) works fine on App Platform with Redis for the cable adapter (Managed Redis).",
+      "Sidekiq / ActiveJob use App Platform Worker component or supervisord on a Droplet."
+    ],
+    "dependencies_to_flag": []
+  },
+  "django": {
+    "verdict": "strong",
+    "recommended_path": "App Platform Python service (gunicorn) + Managed Postgres. Daphne/uvicorn for ASGI / Channels.",
+    "caveats": [
+      "Channels (WebSockets) needs Redis for the channel layer — use Managed Redis.",
+      "Celery workers run as App Platform Worker component or on a Droplet."
+    ],
+    "dependencies_to_flag": []
+  },
+  "flask": {
+    "verdict": "strong",
+    "recommended_path": "App Platform Python service (gunicorn) + Managed Postgres / Redis. Functions for tiny handlers.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "spring-boot": {
+    "verdict": "strong",
+    "recommended_path": "Droplet + systemd or DOKS. App Platform supports Java but JVM tuning is more flexible on a Droplet.",
+    "caveats": [
+      "Heap sizing: pick a Droplet/Pod size with at least 2x your -Xmx.",
+      "Use Managed Postgres / MySQL with sslmode=require in spring.datasource.url."
+    ],
+    "dependencies_to_flag": []
+  },
+  "static-html": {
+    "verdict": "strong",
+    "recommended_path": "Spaces+CDN. Drop the directory; done.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "hugo": {
+    "verdict": "strong",
+    "recommended_path": "Spaces+CDN. App Platform with the Hugo build preset also works.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "jekyll": {
+    "verdict": "strong",
+    "recommended_path": "Spaces+CDN. App Platform with the Jekyll build preset also works.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "eleventy": {
+    "verdict": "strong",
+    "recommended_path": "Spaces+CDN.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "media-processing-heavy": {
+    "verdict": "partial",
+    "recommended_path": "Droplet + queue (Managed Redis + Sidekiq/Celery) for the workers. Spaces for input/output objects. Avoid App Platform — long-running CPU jobs hit limits.",
+    "caveats": [],
+    "dependencies_to_flag": ["sharp (heavy use)", "ffmpeg", "imagemagick", "puppeteer"]
+  },
+  "long-running-compute": {
+    "verdict": "strong",
+    "recommended_path": "Droplet or DOKS (Job resource). Functions are 15min-bounded.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "websocket-heavy": {
+    "verdict": "strong",
+    "recommended_path": "App Platform supports WebSocket services. For sticky-session backends, use a Load Balancer with sticky_sessions in front of Droplets.",
+    "caveats": [
+      "App Platform terminates HTTPS at the edge; the upstream is HTTP — no special config needed for WSS."
+    ],
+    "dependencies_to_flag": []
+  },
+  "mysql-app": {
+    "verdict": "strong",
+    "recommended_path": "Managed MySQL cluster + private VPC + trusted-source firewall (droplet-tag or k8s-cluster).",
+    "caveats": [
+      "sslmode=REQUIRED on the client side.",
+      "Connection pooling: Managed MySQL includes ProxySQL; configure pool size to match your app concurrency."
+    ],
+    "dependencies_to_flag": []
+  },
+  "postgres-app": {
+    "verdict": "strong",
+    "recommended_path": "Managed Postgres cluster + private VPC + trusted-source firewall + connection pool.",
+    "caveats": [
+      "sslmode=require (or verify-full with the CA cert) on the client side.",
+      "Use the read-replica connection string for reporting workloads."
+    ],
+    "dependencies_to_flag": []
+  },
+  "mongodb-app": {
+    "verdict": "strong",
+    "recommended_path": "Managed MongoDB cluster + private VPC + trusted-source firewall.",
+    "caveats": [
+      "tls=true required on the connection string.",
+      "Replica set names are auto-managed; do not hard-code."
+    ],
+    "dependencies_to_flag": []
+  },
+  "redis-app": {
+    "verdict": "strong",
+    "recommended_path": "Managed Redis (Valkey) cluster + private VPC + trusted-source firewall.",
+    "caveats": [
+      "rediss:// scheme required; password comes from the connection string.",
+      "Eviction policy defaults to allkeys-lru — tune for your use case."
+    ],
+    "dependencies_to_flag": []
+  },
+  "s3-storage": {
+    "verdict": "strong",
+    "recommended_path": "Spaces — S3-compatible API. Migrate via `aws s3 sync s3://<src> s3://<dst> --endpoint-url=https://<region>.digitaloceanspaces.com` or `rclone sync s3:bucket spaces:bucket`. Add a Spaces CDN endpoint for public reads.",
+    "caveats": [
+      "Spaces lacks some S3 features (lifecycle classes beyond Standard, S3 Select, Object Lock parity).",
+      "CORS rules use the same XML format as S3."
+    ],
+    "dependencies_to_flag": ["@aws-sdk/client-s3 (works against Spaces with endpoint override)"]
+  }
+}

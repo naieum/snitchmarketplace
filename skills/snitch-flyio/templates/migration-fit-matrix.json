@@ -1,0 +1,264 @@
+{
+  "phoenix-elixir": {
+    "verdict": "strong",
+    "recommended_path": "Fly is Phoenix's home turf. `fly launch` autodetects mix projects, builds a Dockerfile that bakes the BEAM release, and configures clustering via libcluster + DNS. Ideal for LiveView, Channels, presence — Fly's long-lived TCP + per-region affinity exactly matches the model.",
+    "caveats": [
+      "Use the Fly-provided libcluster strategy for node discovery via 6PN private network.",
+      "Set release upgrades carefully — rolling deploys with multi-node clustering need erpc cookies in fly secrets.",
+      "Phoenix Postgres → Managed Postgres or legacy Fly Postgres in the same region as the app."
+    ],
+    "dependencies_to_flag": []
+  },
+  "rails": {
+    "verdict": "strong",
+    "recommended_path": "`fly launch` detects Rails, generates a Dockerfile (or uses the Rails-provided one on Rails 7.1+), and provisions Postgres if the user opts in. Fly handles long-lived processes, ActionCable WebSockets, Sidekiq workers, and ActiveStorage well.",
+    "caveats": [
+      "ActionCable + Redis: provision a Fly Redis (Upstash) or external; private-net URL is faster.",
+      "Sidekiq workers should run as a separate process_group with its own machines.",
+      "ActiveStorage: use Tigris for S3-compatible storage, or external S3."
+    ],
+    "dependencies_to_flag": []
+  },
+  "django": {
+    "verdict": "strong",
+    "recommended_path": "Django + gunicorn/uvicorn deploy cleanly. `fly launch` autodetects manage.py and produces a Dockerfile. Pair with Managed Postgres in the same region. Channels (WebSockets) work because Fly machines are long-lived processes.",
+    "caveats": [
+      "static files: collectstatic + WhiteNoise OR ship to Tigris.",
+      "Celery workers: separate machine group with the same Redis/RabbitMQ broker.",
+      "DEBUG=False in fly secrets (never in [env])."
+    ],
+    "dependencies_to_flag": []
+  },
+  "flask": {
+    "verdict": "strong",
+    "recommended_path": "Flask + gunicorn deploys cleanly. `fly launch` produces a workable Dockerfile. Pair with Tigris (S3) and Managed Postgres if needed.",
+    "caveats": [
+      "ProxyFix middleware: enable so Flask sees the real client IP from Fly's proxy."
+    ],
+    "dependencies_to_flag": []
+  },
+  "fastapi": {
+    "verdict": "strong",
+    "recommended_path": "FastAPI + uvicorn or hypercorn — long-lived ASGI process matches Fly Machines. `fly launch` works.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "express": {
+    "verdict": "strong",
+    "recommended_path": "Node + Express runs natively on Fly Machines. `fly launch` autodetects package.json, generates a Dockerfile.",
+    "caveats": [
+      "If you depend on file-system caching, mount a volume.",
+      "WebSockets work — set min_machines_running to keep at least one process warm in each region."
+    ],
+    "dependencies_to_flag": []
+  },
+  "fastify": {
+    "verdict": "strong",
+    "recommended_path": "Same shape as Express — Node + Fastify runs natively. `fly launch` produces a working baseline.",
+    "caveats": [
+      "trustProxy: enable so the X-Forwarded-* headers are trusted from Fly's proxy."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nestjs": {
+    "verdict": "strong",
+    "recommended_path": "Larger Node app surface but maps onto Fly Machines cleanly. Microservices via Redis/TCP work because the private network supports them.",
+    "caveats": [
+      "Microservices over TCP: use the 6PN private network address (<app>.internal) for inter-app calls.",
+      "TypeORM / Prisma: pair with Managed Postgres in the same region."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nextjs": {
+    "verdict": "strong",
+    "recommended_path": "`fly launch` detects Next and produces a Node-runtime Dockerfile (standalone output). Server-rendered routes, server actions, ISR all work because machines are long-lived.",
+    "caveats": [
+      "Use Next.js standalone output (output: 'standalone' in next.config.js) for the smallest image.",
+      "ISR cache lives on disk — mount a volume if you want it to survive deploys.",
+      "next/image: use the default loader; Fly's network handles the bandwidth fine."
+    ],
+    "dependencies_to_flag": ["sharp (works), node:fs (works on Fly unlike serverless)"]
+  },
+  "hono": {
+    "verdict": "partial",
+    "recommended_path": "Hono is Workers-first; on Fly it runs via the Node adapter (long-lived process). Works, but you're paying for Fly's machine model where Workers' ms-billing might be cheaper. Verdict: partial — pick Fly if you also want websockets/long-lived TCP/volumes; pick Cloudflare Workers otherwise.",
+    "caveats": [
+      "Hono's edge runtime features (cf bindings) won't apply on Fly — strip @cloudflare/* deps."
+    ],
+    "dependencies_to_flag": ["@cloudflare/workers-types (drop)"]
+  },
+  "spring-boot": {
+    "verdict": "strong",
+    "recommended_path": "JVM apps run cleanly on Fly Machines. Build a JLink image or use Eclipse Temurin base. Pair with Managed Postgres.",
+    "caveats": [
+      "Tune -Xmx to the machine's memory_mb minus overhead (~20%).",
+      "First request after deploy is slow due to JIT — set min_machines_running >= 1 for prod."
+    ],
+    "dependencies_to_flag": []
+  },
+  "dotnet": {
+    "verdict": "strong",
+    "recommended_path": "ASP.NET Core runs natively on Fly Machines via the .NET runtime base image. `fly launch` recognizes .csproj.",
+    "caveats": [
+      "DataProtection keys: persist to a mounted volume or Redis to avoid cookie invalidation across machines."
+    ],
+    "dependencies_to_flag": []
+  },
+  "go-monolith": {
+    "verdict": "strong",
+    "recommended_path": "Go services compile to a single static binary; Dockerfile is trivial (FROM scratch / FROM alpine). Excellent fit for Fly — fast cold start, low memory, native long-lived TCP.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "rust": {
+    "verdict": "strong",
+    "recommended_path": "Rust services compile to single static binary. Excellent fit. axum / actix / hyper all work cleanly on Fly Machines.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "deno": {
+    "verdict": "strong",
+    "recommended_path": "Deno runtime in a Dockerfile (denoland/deno:alpine base). Long-lived HTTP fits. WebSockets work.",
+    "caveats": [
+      "Deno KV is Deno-Deploy-only — pick Postgres / Redis / Tigris for state."
+    ],
+    "dependencies_to_flag": ["jsr:@deno/kv (Deploy-only)"]
+  },
+  "bun": {
+    "verdict": "strong",
+    "recommended_path": "Bun runtime in a Dockerfile (oven/bun base). Long-lived process model. Bun's HTTP server is fast.",
+    "caveats": [
+      "Bun is still maturing — pin the bun version in the Dockerfile."
+    ],
+    "dependencies_to_flag": []
+  },
+  "websocket-heavy": {
+    "verdict": "strong",
+    "recommended_path": "Fly's machine model is built for long-lived processes — WebSockets, SSE, gRPC streaming all work natively. min_machines_running >= 1 keeps at least one warm.",
+    "caveats": [
+      "session affinity: HTTP service has sticky sessions via fly-replay header; for chat/presence put state in Redis/Postgres so any machine can serve."
+    ],
+    "dependencies_to_flag": []
+  },
+  "ml-gpu": {
+    "verdict": "strong",
+    "recommended_path": "Fly Machines GPU (A10, L40S, A100, H100) for inference and training. Bill on duration. Pair with R2/Tigris for model artifacts.",
+    "caveats": [
+      "GPU machines are expensive — set auto_stop_machines='stop' aggressively, or use min_machines_running=0 with a slower cold start.",
+      "Image: must use the CUDA-compatible base; build context can grow large."
+    ],
+    "dependencies_to_flag": ["torch + CUDA (large image)"]
+  },
+  "static-spa": {
+    "verdict": "not-recommended",
+    "recommended_path": "Don't pay for a Machine to serve static files. Use Cloudflare Pages, Netlify, Vercel, or another static host. Fly.io's value is long-lived processes.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "static-html": {
+    "verdict": "not-recommended",
+    "recommended_path": "Same as static-spa.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "hugo": {
+    "verdict": "not-recommended",
+    "recommended_path": "Static site generators belong on a CDN host (Pages / Netlify / Vercel), not Fly Machines.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "jekyll": {
+    "verdict": "not-recommended",
+    "recommended_path": "Same as Hugo.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "wordpress": {
+    "verdict": "partial",
+    "recommended_path": "PHP-FPM + nginx in a Dockerfile runs on Fly Machines, but the wp-content/uploads tree needs careful planning: mount a Fly volume (single-region; not multi-writer) OR offload to Tigris/S3 via wp-stateless. Multi-region WP is non-trivial; pick a single primary region and serve elsewhere via cache.",
+    "caveats": [
+      "wp-cron via system cron + ?doing_wp_cron disabled.",
+      "Multi-machine WP needs object cache (Redis) and shared media (S3/Tigris) — ad-hoc setups break.",
+      "Backup: snapshot the volume daily; export DB via `wp db export` to Tigris."
+    ],
+    "dependencies_to_flag": ["wp-cron"]
+  },
+  "laravel": {
+    "verdict": "strong",
+    "recommended_path": "PHP + nginx + Octane (or php-fpm) on Fly Machines. `fly launch` autodetects artisan. Queue workers + scheduler in separate process_groups.",
+    "caveats": [
+      "trust the proxy: TrustProxies middleware with TRUSTED_PROXIES='*' (or the Fly proxy CIDR).",
+      "queues: Horizon-on-Fly works; Redis goes via the private network.",
+      "storage: S3-compat Tigris or external."
+    ],
+    "dependencies_to_flag": []
+  },
+  "mysql-app": {
+    "verdict": "partial",
+    "recommended_path": "Fly doesn't offer Managed MySQL. Run MySQL yourself on a Fly Machine + volume (single primary; replicas non-trivial), or use external (PlanetScale, RDS, etc.).",
+    "caveats": [
+      "Self-hosted MySQL on a single volume = single point of failure. Take snapshots; consider external for prod."
+    ],
+    "dependencies_to_flag": []
+  },
+  "postgres-app": {
+    "verdict": "strong",
+    "recommended_path": "Use Fly Managed Postgres (newer offering) or legacy Fly Postgres (an app you operate). Same-region as your app for low latency.",
+    "caveats": [
+      "Legacy Fly Postgres: you operate it. Set up replicas + snapshot retention. Rotate passwords with `fly pg revoke`.",
+      "Managed Postgres: simpler, billed per-cluster. Less knob-twisting."
+    ],
+    "dependencies_to_flag": []
+  },
+  "mongodb-app": {
+    "verdict": "partial",
+    "recommended_path": "Fly doesn't offer Managed MongoDB. Run MongoDB yourself on a Fly Machine + volume (replica set requires multiple machines + careful coordination), or use MongoDB Atlas (most apps choose this).",
+    "caveats": [
+      "MongoDB replica set on Fly: every member needs static private IP and persistent volume; it's doable but operationally heavy.",
+      "MongoDB Atlas: use the connection string via fly secrets. Latency depends on Atlas region."
+    ],
+    "dependencies_to_flag": []
+  },
+  "redis-app": {
+    "verdict": "strong",
+    "recommended_path": "Use Fly's Upstash-on-Fly Redis (`fly redis create`). TLS by default, private-net URL. Or run your own Redis on a Machine + volume.",
+    "caveats": [
+      "Upstash-on-Fly is the easy path — $X/mo per database, no operational overhead.",
+      "Self-managed Redis: pin to a region; use AOF + RDB; snapshot the volume."
+    ],
+    "dependencies_to_flag": []
+  },
+  "s3-storage": {
+    "verdict": "strong",
+    "recommended_path": "Tigris is Fly's S3-compatible offering, baked into orgs. `fly storage create`. Free egress within Fly. Migrate from S3 with `aws s3 sync ... --endpoint-url=https://fly.storage.tigris.dev`.",
+    "caveats": [
+      "Tigris is global by default — read-after-write within the same region is strong; cross-region is eventually consistent.",
+      "Public buckets: configure CORS for browser uploads."
+    ],
+    "dependencies_to_flag": ["@aws-sdk/client-s3 (works against Tigris with endpoint override)"]
+  },
+  "long-running-compute": {
+    "verdict": "strong",
+    "recommended_path": "Fly Machines run for as long as you need them. Long-running CPU compute is the normal model. For batch / GPU workloads, Machines GPU (auto-stop after the job).",
+    "caveats": [
+      "Set restart_policy=no for one-shot jobs (machines exit and stay exited).",
+      "Use auto_destroy=true for ephemeral compute machines."
+    ],
+    "dependencies_to_flag": []
+  },
+  "media-processing-heavy": {
+    "verdict": "strong",
+    "recommended_path": "FFmpeg / ImageMagick / sharp / headless browsers run inside the Dockerfile. Pair with Tigris for input/output. GPU machines for ML-heavy media (Whisper, Stable Diffusion).",
+    "caveats": [
+      "Build context: keep the Dockerfile slim; use multi-stage so the runtime layer doesn't ship the build toolchain.",
+      "Disk: mount a volume for scratch space if jobs are large."
+    ],
+    "dependencies_to_flag": []
+  },
+  "elixir": {
+    "verdict": "strong",
+    "recommended_path": "Same as phoenix-elixir — Fly is the BEAM's natural home: clustering via 6PN, fly_clustering or libcluster.DNS, hot reloads via mix release.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  }
+}

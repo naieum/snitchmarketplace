@@ -1,0 +1,91 @@
+name: snitch-vercel on PR
+
+on:
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  snitch-vercel-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq + curl
+        run: sudo apt-get install -y jq curl
+
+      - name: Install snitch-vercel skill
+        run: |
+          mkdir -p ~/.claude/skills
+          # Replace with your real distribution path; this assumes the skill is committed to a sibling repo.
+          git clone --depth 1 https://github.com/your-org/snitch-vercel.git ~/.claude/skills/snitch-vercel
+          chmod +x ~/.claude/skills/snitch-vercel/snitch-vercel.sh
+
+      - name: Doctor
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: bash ~/.claude/skills/snitch-vercel/snitch-vercel.sh doctor
+
+      - name: Detect cwd signals
+        run: bash ~/.claude/skills/snitch-vercel/snitch-vercel.sh detect | tee detect.json
+
+      - name: State project (digest)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VRCSEC_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VRCSEC_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: bash ~/.claude/skills/snitch-vercel/snitch-vercel.sh state project | tee state-project.json
+
+      - name: State env (digest)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VRCSEC_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VRCSEC_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: bash ~/.claude/skills/snitch-vercel/snitch-vercel.sh state env | tee state-env.json
+
+      - name: State protection
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VRCSEC_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VRCSEC_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: bash ~/.claude/skills/snitch-vercel/snitch-vercel.sh state protection | tee state-protection.json
+
+      - name: Fail on FAIL findings
+        run: |
+          # state_env digest surfaces NEXT_PUBLIC_* leak suspects + plaintext-secret-name; treat presence as fail.
+          leak_count=$(jq '.sensitive_summary.next_public_secret_shape | length' state-env.json)
+          plaintext_count=$(jq '.sensitive_summary.plaintext_with_secret_name | length' state-env.json)
+          if [[ "$leak_count" -gt 0 ]]; then
+            echo "::error::NEXT_PUBLIC_* secret-shape leak detected ($leak_count vars)"
+            exit 1
+          fi
+          if [[ "$plaintext_count" -gt 0 ]]; then
+            echo "::warning::Plaintext env vars with secret-shaped names: $plaintext_count"
+          fi
+
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const env = JSON.parse(fs.readFileSync('state-env.json', 'utf8'));
+            const prot = JSON.parse(fs.readFileSync('state-protection.json', 'utf8'));
+            const body = [
+              '## snitch-vercel audit',
+              '',
+              '| Area | Finding |',
+              '|---|---|',
+              `| env (NEXT_PUBLIC_*) | ${env.sensitive_summary.next_public_secret_shape.length} secret-shape leak(s) |`,
+              `| env (plaintext) | ${env.sensitive_summary.plaintext_with_secret_name.length} secret-shape name(s) |`,
+              `| protection | sso=${prot.sso_protection ? 'set' : 'none'} pwd=${prot.password_protection ? 'set' : 'none'} |`,
+            ].join('\n');
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });

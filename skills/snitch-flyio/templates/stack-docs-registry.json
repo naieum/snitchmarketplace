@@ -1,0 +1,256 @@
+{
+  "_comment": "Canonical doc URLs per stack. Used by lib/stack_docs.sh to emit URL lists for Claude to WebFetch + WebSearch. Refreshed by lib/refresh_docs.sh.",
+
+  "phoenix-elixir": {
+    "framework_docs": [
+      "https://hexdocs.pm/phoenix/overview.html",
+      "https://hexdocs.pm/phoenix/deployment.html"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/elixir/",
+      "https://fly.io/docs/elixir/getting-started/",
+      "https://fly.io/docs/elixir/the-basics/clustering/"
+    ],
+    "security_advisories": [
+      "https://github.com/phoenixframework/phoenix/security/advisories"
+    ]
+  },
+
+  "rails": {
+    "framework_docs": [
+      "https://guides.rubyonrails.org/security.html",
+      "https://guides.rubyonrails.org/configuring.html"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/rails/",
+      "https://fly.io/docs/rails/getting-started/"
+    ],
+    "security_advisories": [
+      "https://github.com/rails/rails/security/advisories",
+      "https://discuss.rubyonrails.org/c/security-announcements/9"
+    ]
+  },
+
+  "django": {
+    "framework_docs": [
+      "https://docs.djangoproject.com/en/stable/topics/security/",
+      "https://docs.djangoproject.com/en/stable/howto/deployment/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/django/"
+    ],
+    "security_advisories": [
+      "https://docs.djangoproject.com/en/stable/releases/security/",
+      "https://github.com/django/django/security/advisories"
+    ]
+  },
+
+  "flask": {
+    "framework_docs": [
+      "https://flask.palletsprojects.com/en/latest/security/",
+      "https://flask.palletsprojects.com/en/latest/deploying/proxy_fix/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/python/"
+    ],
+    "security_advisories": [
+      "https://github.com/pallets/flask/security/advisories"
+    ]
+  },
+
+  "fastapi": {
+    "framework_docs": [
+      "https://fastapi.tiangolo.com/deployment/",
+      "https://fastapi.tiangolo.com/deployment/server-workers/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/python/"
+    ],
+    "security_advisories": [
+      "https://github.com/tiangolo/fastapi/security/advisories"
+    ]
+  },
+
+  "express": {
+    "framework_docs": [
+      "https://expressjs.com/en/advanced/best-practice-security.html",
+      "https://expressjs.com/en/guide/behind-proxies.html"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/js/",
+      "https://fly.io/docs/js/the-basics/"
+    ],
+    "security_advisories": [
+      "https://github.com/expressjs/express/security/advisories"
+    ]
+  },
+
+  "fastify": {
+    "framework_docs": [
+      "https://fastify.dev/docs/latest/Reference/Server/#trustproxy",
+      "https://fastify.dev/docs/latest/Guides/Recommendations/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/js/"
+    ],
+    "security_advisories": [
+      "https://github.com/fastify/fastify/security/advisories"
+    ]
+  },
+
+  "nestjs": {
+    "framework_docs": [
+      "https://docs.nestjs.com/security/helmet",
+      "https://docs.nestjs.com/security/cors"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/js/"
+    ],
+    "security_advisories": [
+      "https://github.com/nestjs/nest/security/advisories"
+    ]
+  },
+
+  "nextjs": {
+    "framework_docs": [
+      "https://nextjs.org/docs",
+      "https://nextjs.org/docs/app/building-your-application/deploying"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/js/frameworks/nextjs/"
+    ],
+    "security_advisories": [
+      "https://github.com/vercel/next.js/security/advisories"
+    ]
+  },
+
+  "hono": {
+    "framework_docs": [
+      "https://hono.dev/docs/",
+      "https://hono.dev/docs/getting-started/nodejs"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/js/"
+    ],
+    "security_advisories": [
+      "https://github.com/honojs/hono/security/advisories"
+    ]
+  },
+
+  "spring-boot": {
+    "framework_docs": [
+      "https://docs.spring.io/spring-boot/reference/features/spring-application.html",
+      "https://docs.spring.io/spring-security/reference/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/languages-and-frameworks/"
+    ],
+    "security_advisories": [
+      "https://spring.io/security",
+      "https://github.com/spring-projects/spring-boot/security/advisories"
+    ]
+  },
+
+  "dotnet": {
+    "framework_docs": [
+      "https://learn.microsoft.com/en-us/aspnet/core/security/",
+      "https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/languages-and-frameworks/dotnet/"
+    ],
+    "security_advisories": [
+      "https://github.com/dotnet/aspnetcore/security/advisories"
+    ]
+  },
+
+  "go-monolith": {
+    "framework_docs": [
+      "https://go.dev/doc/security/best-practices",
+      "https://pkg.go.dev/net/http"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/go/"
+    ],
+    "security_advisories": [
+      "https://groups.google.com/g/golang-announce"
+    ]
+  },
+
+  "rust": {
+    "framework_docs": [
+      "https://rustsec.org/",
+      "https://docs.rs/axum/latest/axum/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/rust/"
+    ],
+    "security_advisories": [
+      "https://blog.rust-lang.org/category/security.html"
+    ]
+  },
+
+  "deno": {
+    "framework_docs": [
+      "https://docs.deno.com/runtime/",
+      "https://docs.deno.com/runtime/manual/getting_started/installation/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/js/"
+    ],
+    "security_advisories": [
+      "https://github.com/denoland/deno/security/advisories"
+    ]
+  },
+
+  "bun": {
+    "framework_docs": [
+      "https://bun.sh/docs",
+      "https://bun.sh/docs/runtime/web-apis"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/js/"
+    ],
+    "security_advisories": [
+      "https://github.com/oven-sh/bun/security/advisories"
+    ]
+  },
+
+  "elixir": {
+    "framework_docs": [
+      "https://hexdocs.pm/elixir/",
+      "https://hexdocs.pm/mix/Mix.Tasks.Release.html"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/elixir/"
+    ],
+    "security_advisories": [
+      "https://github.com/elixir-lang/elixir/security/advisories"
+    ]
+  },
+
+  "laravel": {
+    "framework_docs": [
+      "https://laravel.com/docs/master/security",
+      "https://laravel.com/docs/master/requests#configuring-trusted-proxies"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/laravel/"
+    ],
+    "security_advisories": [
+      "https://github.com/laravel/laravel/security/advisories"
+    ]
+  },
+
+  "wordpress": {
+    "framework_docs": [
+      "https://wordpress.org/documentation/article/hardening-wordpress/"
+    ],
+    "fly_docs": [
+      "https://fly.io/docs/php/"
+    ],
+    "security_advisories": [
+      "https://wordpress.org/news/category/security/"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Id": "snitch-aws-key-policy",
+  "Statement": [
+    {
+      "Sid": "EnableIAMPermissions",
+      "Effect": "Allow",
+      "Principal": { "AWS": "arn:aws:iam::REPLACE-ACCOUNT:root" },
+      "Action": "kms:*",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:PrincipalType": ["Account", "Role"]
+        }
+      }
+    },
+    {
+      "Sid": "AllowKeyAdministration",
+      "Effect": "Allow",
+      "Principal": { "AWS": "arn:aws:iam::REPLACE-ACCOUNT:role/REPLACE-KEY-ADMIN-ROLE" },
+      "Action": [
+        "kms:Create*", "kms:Describe*", "kms:Enable*", "kms:List*",
+        "kms:Put*", "kms:Update*", "kms:Revoke*", "kms:Disable*",
+        "kms:Get*", "kms:Delete*", "kms:TagResource", "kms:UntagResource",
+        "kms:ScheduleKeyDeletion", "kms:CancelKeyDeletion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowKeyUsageByApplicationRoles",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::REPLACE-ACCOUNT:role/REPLACE-APP-ROLE"
+        ]
+      },
+      "Action": [
+        "kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*",
+        "kms:GenerateDataKey*", "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyExternalAccountUseUnlessGranted",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "kms:*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:PrincipalAccount": "REPLACE-ACCOUNT"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+# nixpacks.hardened.toml — strict, reproducible Nixpacks build.
+# Place at repo root. Override only the phases you need; Nixpacks
+# auto-detects the rest (language runtime, install command, etc.).
+#
+# Hardening principles:
+#   - pin runtime versions
+#   - drop dev dependencies in production
+#   - run as non-root where possible (Nixpacks runs as root in image; use a
+#     Dockerfile if you need true UID isolation)
+#   - keep the image minimal — no compilers in the runtime layer
+
+[phases.setup]
+# Pin language versions explicitly. Replace with your stack's pinning syntax.
+# nixPkgs = ['nodejs_20', 'pnpm']
+
+[phases.install]
+# Default install command is auto-detected. Override only for special cases:
+# cmds = ['pnpm install --frozen-lockfile --prod=false']
+
+[phases.build]
+# Build step — produces the runtime artifact.
+# cmds = ['pnpm build']
+
+[phases.prune]
+# Optional: drop devDependencies after build.
+# cmds = ['pnpm prune --prod']
+
+[start]
+# Required. Always bind to 0.0.0.0:$PORT.
+# cmd = 'node dist/server.js'
+
+[variables]
+# NODE_ENV = 'production'
+# Uncomment for stricter Node defaults:
+# NODE_OPTIONS = '--enable-source-maps --max-http-header-size=16384'

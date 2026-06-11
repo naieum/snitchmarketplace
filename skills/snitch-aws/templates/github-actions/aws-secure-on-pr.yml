@@ -1,0 +1,67 @@
+# .github/workflows/snitch-aws.yml
+# Minimal snitch-aws read-only audit on every PR.
+# Assumes AWS via OIDC (no long-lived secrets in GitHub).
+name: snitch-aws audit
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write    # required for OIDC -> AWS
+  contents: read
+  pull-requests: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::REPLACE_ACCOUNT_ID:role/snitch-aws-audit
+          aws-region: us-east-1
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Clone snitch-aws skill
+        run: |
+          git clone --depth=1 https://github.com/REPLACE_ORG/snitch-aws-skill.git ~/.claude/skills/snitch-aws || true
+
+      - name: Run skill doctor
+        run: bash ~/.claude/skills/snitch-aws/snitch-aws.sh doctor
+
+      - name: Run state digests
+        run: |
+          set +e
+          for area in account iam s3 ec2 vpc cloudtrail guardduty securityhub; do
+            bash ~/.claude/skills/snitch-aws/snitch-aws.sh state "$area" digest \
+              > "$RUNNER_TEMP/state-${area}.json" 2>"$RUNNER_TEMP/state-${area}.err"
+          done
+
+      - name: Comment summary on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const tmp = process.env.RUNNER_TEMP;
+            const areas = ['account','iam','s3','ec2','vpc','cloudtrail','guardduty','securityhub'];
+            let body = '### snitch-aws audit\n\n';
+            body += '| Area | Bytes | Notes |\n|---|---|---|\n';
+            for (const a of areas) {
+              const f = path.join(tmp, `state-${a}.json`);
+              const sz = fs.existsSync(f) ? fs.statSync(f).size : 0;
+              body += `| ${a} | ${sz} | digest collected |\n`;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });

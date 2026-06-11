@@ -1,0 +1,253 @@
+{
+  "nextjs": {
+    "verdict": "strong",
+    "recommended_path": "Railway service with Nixpacks builder. Set start command to `npm run start` after build. Use `${{ Postgres.DATABASE_URL }}` reference for any DB.",
+    "caveats": [
+      "Static-only Next.js (export) is wasted on Railway — point at Vercel/Netlify/Pages instead.",
+      "Image optimization needs `sharp`; Nixpacks installs it automatically.",
+      "ISR / on-demand revalidation: confirm route segment configuration; Railway runs a long-lived Node process so all data-fetching modes are supported."
+    ],
+    "dependencies_to_flag": []
+  },
+  "astro": {
+    "verdict": "partial",
+    "recommended_path": "Server / hybrid Astro is fine on Railway via the Node adapter. Static-only Astro is better off on Pages/Netlify.",
+    "caveats": [
+      "If output is purely static, Railway is the wrong host — no edge cache benefits.",
+      "Use `@astrojs/node` adapter; set startCommand to `node ./dist/server/entry.mjs`."
+    ],
+    "dependencies_to_flag": ["sharp"]
+  },
+  "sveltekit": {
+    "verdict": "strong",
+    "recommended_path": "Railway with `@sveltejs/adapter-node`. Set startCommand to `node build`.",
+    "caveats": [
+      "Use HOST=0.0.0.0 in env (Railway provides PORT)."
+    ],
+    "dependencies_to_flag": []
+  },
+  "remix": {
+    "verdict": "strong",
+    "recommended_path": "Railway with the Remix Node template. `npm run start` after build.",
+    "caveats": [
+      "Loaders/actions are long-lived Node — no edge-runtime constraints."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nuxt": {
+    "verdict": "strong",
+    "recommended_path": "Railway with Nitro Node preset. `node .output/server/index.mjs` after `nuxt build`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "express": {
+    "verdict": "strong",
+    "recommended_path": "Railway is express's natural home. Nixpacks detects, builds, runs `node` against your start script.",
+    "caveats": [
+      "Bind to 0.0.0.0:$PORT — Railway sets PORT in env.",
+      "express-session in-memory: stays in-memory per replica. Use Redis (add a Redis service) when you scale to >1 replica."
+    ],
+    "dependencies_to_flag": ["express-session (memory store at multi-replica)", "multer (disk uploads — use volume or shift to R2)"]
+  },
+  "fastify": {
+    "verdict": "strong",
+    "recommended_path": "Same as Express. Nixpacks detects + runs.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "nestjs": {
+    "verdict": "strong",
+    "recommended_path": "Railway runs NestJS without modification. Build via `npm run build`, run `node dist/main`. TypeORM and the full DI stack are supported.",
+    "caveats": [
+      "Microservices via TCP transport require service-to-service private networking — use Railway private networking via service domains."
+    ],
+    "dependencies_to_flag": []
+  },
+  "hono": {
+    "verdict": "strong",
+    "recommended_path": "Hono on Node adapter runs fine on Railway. If you want the edge-runtime experience, point at Cloudflare Workers instead.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "rails": {
+    "verdict": "strong",
+    "recommended_path": "Railway is one of the cleanest Rails homes after Heroku-style platforms. Nixpacks detects Gemfile.lock, runs `bundle install`, `rails server -b 0.0.0.0`. Sidekiq workers run as a second service.",
+    "caveats": [
+      "ActionCable WebSockets work over Railway's HTTPS endpoint — confirm your client uses wss:// to the public domain.",
+      "ActiveStorage on local disk requires a volume; better path is S3-compatible (R2/S3) backend."
+    ],
+    "dependencies_to_flag": ["activestorage (disk backend)"]
+  },
+  "django": {
+    "verdict": "strong",
+    "recommended_path": "Nixpacks detects requirements.txt. `gunicorn <project>.wsgi --bind 0.0.0.0:$PORT --workers <N>`. Celery workers as a second service.",
+    "caveats": [
+      "Channels (WebSockets/ASGI) — switch to `daphne` or `uvicorn` and serve via the same public domain.",
+      "Static files: collectstatic + serve via WhiteNoise OR ship to R2/S3."
+    ],
+    "dependencies_to_flag": []
+  },
+  "flask": {
+    "verdict": "strong",
+    "recommended_path": "Railway runs Flask via gunicorn just like Django. `gunicorn app:app --bind 0.0.0.0:$PORT`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "fastapi": {
+    "verdict": "strong",
+    "recommended_path": "Railway with `uvicorn main:app --host 0.0.0.0 --port $PORT`. WebSockets supported.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "spring-boot": {
+    "verdict": "strong",
+    "recommended_path": "Railway via Nixpacks Java provider or Dockerfile. Spring Boot's embedded server binds to $PORT.",
+    "caveats": [
+      "JVM cold-start matters at low traffic — consider always-on (no sleep) for production."
+    ],
+    "dependencies_to_flag": []
+  },
+  "dotnet": {
+    "verdict": "strong",
+    "recommended_path": "Railway runs ASP.NET via Nixpacks .NET provider or Dockerfile. Bind to ASPNETCORE_URLS=http://0.0.0.0:$PORT.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "go-monolith": {
+    "verdict": "strong",
+    "recommended_path": "Nixpacks detects go.mod. Builds + runs the resulting binary. Tiny container, fast cold-start.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "rust": {
+    "verdict": "strong",
+    "recommended_path": "Nixpacks detects Cargo.toml. Builds release binary, runs it.",
+    "caveats": [
+      "Build time can be slow — use a Dockerfile with `cargo chef` for caching if iteration speed matters."
+    ],
+    "dependencies_to_flag": []
+  },
+  "deno": {
+    "verdict": "strong",
+    "recommended_path": "Nixpacks supports Deno. Use `deno task start` or `deno run --allow-all main.ts`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "bun": {
+    "verdict": "strong",
+    "recommended_path": "Nixpacks supports Bun. `bun run start` is the canonical entry.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "elixir": {
+    "verdict": "strong",
+    "recommended_path": "Phoenix / OTP apps run well on Railway. Nixpacks builds via `mix release`. Cluster across services using libcluster + private networking.",
+    "caveats": [
+      "Distillery / multi-node clustering: Railway's private networking provides per-service DNS; configure `node_basename` accordingly.",
+      "Long-lived Phoenix Channels (WebSockets) supported on the public HTTPS endpoint."
+    ],
+    "dependencies_to_flag": []
+  },
+  "crystal": {
+    "verdict": "strong",
+    "recommended_path": "Nixpacks supports Crystal. `crystal build src/main.cr --release`, run binary.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "wordpress": {
+    "verdict": "partial",
+    "recommended_path": "WordPress + MySQL works on Railway via Dockerfile. But Railway is not WordPress-focused — managed WP hosts (Kinsta, WP Engine) ship more guardrails.",
+    "caveats": [
+      "wp-content uploads need a volume (Railway volume) or S3-compatible offload.",
+      "wp-cron under load: disable wp_cron and run a Railway cron service."
+    ],
+    "dependencies_to_flag": []
+  },
+  "laravel": {
+    "verdict": "strong",
+    "recommended_path": "Railway runs PHP-FPM via Nixpacks PHP provider or Dockerfile. `php artisan serve` for dev, nginx + php-fpm for prod.",
+    "caveats": [
+      "Queue workers as a separate service.",
+      "Schedule via the Railway cron service kind."
+    ],
+    "dependencies_to_flag": []
+  },
+  "static-html": {
+    "verdict": "not-recommended",
+    "recommended_path": "Don't host static sites on Railway — you pay for a long-lived process to serve files. Use Cloudflare Pages, Netlify, or Vercel for static.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "hugo": {
+    "verdict": "not-recommended",
+    "recommended_path": "Hugo's output is static — Pages/Netlify/Vercel are the right hosts. Railway is paying for compute you don't need.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "jekyll": {
+    "verdict": "not-recommended",
+    "recommended_path": "Same as Hugo. Static output → static host.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "vite-spa": {
+    "verdict": "not-recommended",
+    "recommended_path": "Vite-built SPA is static — point at a static host (Pages/Netlify/Vercel).",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "static": {
+    "verdict": "not-recommended",
+    "recommended_path": "Static sites belong on a static host. Railway is a compute platform.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "media-processing-heavy": {
+    "verdict": "partial",
+    "recommended_path": "Railway can run FFmpeg / sharp / ImageMagick services, but you pay $/vCPU-h for the process. Heavy batch jobs are cheaper on serverless (Lambda / Cloud Run) or Containers.",
+    "caveats": [
+      "Volume IO matters — persistent volumes are local NVMe but bandwidth-priced.",
+      "Headless browsers work via Dockerfile (Playwright / Puppeteer base images)."
+    ],
+    "dependencies_to_flag": ["sharp", "ffmpeg", "imagemagick", "puppeteer", "playwright"]
+  },
+  "mysql-app": {
+    "verdict": "strong",
+    "recommended_path": "Railway provides a managed MySQL add-on. Connect via the `${{ MySQL.DATABASE_URL }}` reference.",
+    "caveats": [
+      "Backups: Railway has no managed snapshot — schedule logical dumps to R2/S3."
+    ],
+    "dependencies_to_flag": []
+  },
+  "postgres-app": {
+    "verdict": "strong",
+    "recommended_path": "Railway's Postgres add-on is the canonical path. Reference via `${{ Postgres.DATABASE_URL }}`.",
+    "caveats": [
+      "Backups: schedule pg_dump to R2/S3.",
+      "PgBouncer is not deployed by default — install via add-on or Dockerfile if you need it."
+    ],
+    "dependencies_to_flag": []
+  },
+  "mongodb-app": {
+    "verdict": "partial",
+    "recommended_path": "Railway has a community MongoDB template, but for production prefer MongoDB Atlas with a cross-region connection — Railway is not a managed Mongo provider.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "redis-app": {
+    "verdict": "strong",
+    "recommended_path": "Railway's Redis add-on is fine for caching and queues. Reference via `${{ Redis.REDIS_URL }}`.",
+    "caveats": [
+      "Persistence config: confirm RDB/AOF settings match your durability needs."
+    ],
+    "dependencies_to_flag": []
+  },
+  "websocket-heavy": {
+    "verdict": "strong",
+    "recommended_path": "Railway runs long-lived processes — WebSockets just work. Scale via numReplicas + sticky session at the client (or Redis pub-sub fanout).",
+    "caveats": [
+      "Public TCP proxy is NOT for WebSockets — use the standard HTTPS domain (wss://) which terminates TLS at Railway's edge."
+    ],
+    "dependencies_to_flag": []
+  }
+}

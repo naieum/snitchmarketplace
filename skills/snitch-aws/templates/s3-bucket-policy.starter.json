@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyInsecureTransport",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::REPLACE-BUCKET",
+        "arn:aws:s3:::REPLACE-BUCKET/*"
+      ],
+      "Condition": {
+        "Bool": { "aws:SecureTransport": "false" }
+      }
+    },
+    {
+      "Sid": "DenyUnEncryptedObjectUploads",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::REPLACE-BUCKET/*",
+      "Condition": {
+        "StringNotEquals": {
+          "s3:x-amz-server-side-encryption": ["AES256", "aws:kms"]
+        }
+      }
+    },
+    {
+      "Sid": "DenyMfaDeleteOff",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": ["s3:DeleteBucket", "s3:DeleteObjectVersion"],
+      "Resource": [
+        "arn:aws:s3:::REPLACE-BUCKET",
+        "arn:aws:s3:::REPLACE-BUCKET/*"
+      ],
+      "Condition": {
+        "BoolIfExists": { "aws:MultiFactorAuthPresent": "false" }
+      }
+    }
+  ]
+}

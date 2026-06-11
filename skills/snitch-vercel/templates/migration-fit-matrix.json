@@ -1,0 +1,228 @@
+{
+  "nextjs": {
+    "verdict": "strong",
+    "recommended_path": "Vercel — native runtime. Push to a linked Git repo and Vercel builds + deploys automatically. App Router, ISR, Edge runtime, Image Optimization, Server Actions, RSC all first-class.",
+    "caveats": [
+      "Hobby plan caps function execution at 10s; Pro extends to 60s, Enterprise to 15m.",
+      "Image Optimization volume bills separately above plan-included free tier.",
+      "Serverless function bundle limit ~50MB unzipped — sharp / canvas / large native deps eat the budget fast."
+    ],
+    "dependencies_to_flag": ["sharp (heavy use)", "canvas", "puppeteer (use @sparticuz/chromium)", "playwright (Edge-incompatible)"]
+  },
+  "astro": {
+    "verdict": "strong",
+    "recommended_path": "Vercel with @astrojs/vercel adapter (serverless or edge). Static + hybrid + server modes all supported.",
+    "caveats": [
+      "Pick the serverless adapter unless you specifically need the edge runtime; edge has a smaller stdlib.",
+      "Astro DB (libSQL) is separate from Vercel Postgres — pick one path."
+    ],
+    "dependencies_to_flag": ["sharp"]
+  },
+  "sveltekit": {
+    "verdict": "strong",
+    "recommended_path": "Vercel with @sveltejs/adapter-vercel. Hands-off setup; the adapter auto-detects Vercel features.",
+    "caveats": [
+      "form actions are POST-heavy — wire a rate-limit at edge middleware or upstream."
+    ],
+    "dependencies_to_flag": []
+  },
+  "remix": {
+    "verdict": "strong",
+    "recommended_path": "Vercel via @vercel/remix or the Remix Vite + Vercel template. Loaders/actions become serverless or edge functions automatically.",
+    "caveats": [
+      "Long-running side-effects in actions need to move to a queue (Vercel Cron + DB job table or Inngest)."
+    ],
+    "dependencies_to_flag": ["@remix-run/node-specific-imports"]
+  },
+  "nuxt": {
+    "verdict": "strong",
+    "recommended_path": "Vercel with `nuxt build --preset=vercel` (or `vercel-edge`). Nitro engine handles the abstraction.",
+    "caveats": [
+      "Verify any Nitro modules used are edge-compatible if you pick the edge preset."
+    ],
+    "dependencies_to_flag": []
+  },
+  "solidstart": {
+    "verdict": "strong",
+    "recommended_path": "Vercel with the SolidStart Vercel preset. SSR + static both supported.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "vite-spa": {
+    "verdict": "strong",
+    "recommended_path": "Vercel — drop the dist/ output as static. Pure SPA, no SSR needed. Vercel's CDN + Image Optimization are still on the table.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "vue": {
+    "verdict": "strong",
+    "recommended_path": "Vercel auto-detects Vue 3 + Vite projects. Static build → CDN. For SSR Vue, use Nuxt instead.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "hono": {
+    "verdict": "strong",
+    "recommended_path": "Vercel as edge functions: `npm i hono @hono/node-server`, deploy as a single edge handler. Hono's adapter for Vercel is the canonical path.",
+    "caveats": [
+      "Edge runtime stdlib is smaller than Node — verify any imported package is edge-safe."
+    ],
+    "dependencies_to_flag": []
+  },
+  "static-html": {
+    "verdict": "strong",
+    "recommended_path": "Vercel — drop the directory; done. Add `vercel.json` only if custom redirects/headers are needed.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "express": {
+    "verdict": "partial",
+    "recommended_path": "API-only Express can be deployed via the `api/` directory pattern (each handler becomes a serverless function), OR wrapped in a single function that mounts Express. Better long-term: rewrite to Hono on edge or move to a long-running host (Fly/Railway/AWS).",
+    "caveats": [
+      "`app.listen()` is a no-op on Vercel — export the Express app as the function handler.",
+      "Sessions / cookies in memory don't survive between invocations — move to Vercel KV or Postgres.",
+      "Serverless function timeouts cap long requests (10s Hobby / 60s Pro / 15m Enterprise)."
+    ],
+    "dependencies_to_flag": ["sharp", "bcrypt", "argon2", "ws (server)", "socket.io (server)", "express-session (memory store)", "multer (disk)"]
+  },
+  "fastify": {
+    "verdict": "partial",
+    "recommended_path": "Same as Express. Fastify's plugin model often makes the wrapper more mechanical. Bind `fastify.ready()` then call `fastify.server.emit('request', req, res)` from the function handler.",
+    "caveats": [
+      "fastify-multipart streaming uploads → @vercel/blob multipart upload."
+    ],
+    "dependencies_to_flag": ["sharp", "bcrypt", "@fastify/websocket", "fastify-static (large trees)"]
+  },
+  "nestjs": {
+    "verdict": "partial",
+    "recommended_path": "NestJS on Vercel via `@vendia/serverless-express`-style wrapper around `NestFactory.create`. Cold starts are heavier; consider Vercel Fluid Compute or move to a long-running host.",
+    "caveats": [
+      "Microservices via TCP/Redis transports won't run on Vercel.",
+      "TypeORM/Sequelize over TCP have slow cold starts on serverless — switch to Drizzle + Vercel Postgres pooled connection."
+    ],
+    "dependencies_to_flag": ["@nestjs/microservices", "typeorm", "sequelize"]
+  },
+  "api-only-monorepo": {
+    "verdict": "partial",
+    "recommended_path": "Treat `api/` as the function tree. Put a thin Hono router per file, or one omnibus handler. Avoid framework lock-in if cold-start matters.",
+    "caveats": [
+      "Per-file functions cap at the project's function count limit (varies by plan)."
+    ],
+    "dependencies_to_flag": []
+  },
+  "hugo": {
+    "verdict": "strong",
+    "recommended_path": "Vercel with the Hugo build preset. Build command: `hugo --minify`. Output: `public/`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "jekyll": {
+    "verdict": "strong",
+    "recommended_path": "Vercel with the Jekyll build preset. Output: `_site/`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "eleventy": {
+    "verdict": "strong",
+    "recommended_path": "Vercel — output `_site/` or `dist/` depending on config.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "gatsby": {
+    "verdict": "strong",
+    "recommended_path": "Vercel — Gatsby outputs `public/`. With Gatsby Cloud sunset this is a real migration off, not a lateral move.",
+    "caveats": [
+      "Gatsby Functions have to be ported to Vercel functions (similar shape)."
+    ],
+    "dependencies_to_flag": ["gatsby-cloud-specific-plugins"]
+  },
+  "wordpress": {
+    "verdict": "not-recommended",
+    "recommended_path": "Don't try to run WordPress on Vercel. Vercel doesn't run PHP. Keep WordPress on its existing host (or a managed WP host like WP Engine / Kinsta) and put a CDN in front. If the front-end can be headless: build a Next.js front-end on Vercel that talks to WP REST/GraphQL.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "laravel": {
+    "verdict": "not-recommended",
+    "recommended_path": "PHP doesn't run on Vercel. Stay on Forge / a Laravel-friendly host (DigitalOcean, Fly, Railway, AWS) and front it with a CDN. If you want headless: Next.js on Vercel + Laravel API.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "rails": {
+    "verdict": "not-recommended",
+    "recommended_path": "Ruby/Rails doesn't run on Vercel. Use Fly, Railway, Render, or Heroku — they all have first-class Rails. If you want a JS front-end on Vercel that talks to Rails, that's fine.",
+    "caveats": [
+      "ActionCable (WebSockets) is incompatible with Vercel even via API."
+    ],
+    "dependencies_to_flag": []
+  },
+  "django": {
+    "verdict": "not-recommended",
+    "recommended_path": "Python on Vercel works only as small per-file `api/` functions, not a full Django app. Keep Django on Fly/Railway/Render/AWS. Headless front-end on Vercel is fine.",
+    "caveats": [
+      "Channels / WebSockets won't migrate."
+    ],
+    "dependencies_to_flag": []
+  },
+  "flask": {
+    "verdict": "partial",
+    "recommended_path": "Tiny Flask APIs can ship to Vercel as a single Python serverless function (`api/index.py` exporting `app = Flask(__name__)`). Anything beyond a handful of routes — use Fly/Railway.",
+    "caveats": [
+      "Cold starts for Python are heavier than Node.",
+      "Background tasks / Celery don't run on Vercel."
+    ],
+    "dependencies_to_flag": ["celery", "flask-socketio"]
+  },
+  "fastapi": {
+    "verdict": "partial",
+    "recommended_path": "Same shape as Flask. `api/index.py` exports the FastAPI app. Keep it small.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "spring-boot": {
+    "verdict": "not-recommended",
+    "recommended_path": "JVM doesn't run on Vercel. Use AWS / Azure / GCP / Fly. Vercel front-end + Spring Boot API on a JVM-friendly host is fine.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "dotnet": {
+    "verdict": "not-recommended",
+    "recommended_path": "ASP.NET / .NET doesn't run on Vercel. Azure App Service / AWS / Fly. Vercel front-end calling a .NET API works.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "websocket-heavy": {
+    "verdict": "not-recommended",
+    "recommended_path": "Vercel functions are short-lived; long-lived WebSocket connections don't fit. Use Fly Machines, Railway, or a dedicated realtime service (Pusher, Ably, Liveblocks). Vercel front-end can call them.",
+    "caveats": [],
+    "dependencies_to_flag": ["socket.io", "ws", "hocuspocus"]
+  },
+  "long-running-compute": {
+    "verdict": "not-recommended",
+    "recommended_path": "Hobby caps at 10s, Pro 60s, Enterprise 15m max. Multi-minute / multi-hour compute → Fly / AWS / GCP / Modal / Inngest. Vercel can orchestrate but not host the compute.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "heavy-database-app": {
+    "verdict": "partial",
+    "recommended_path": "Vercel functions can talk to any DB but every cold start adds connection-pool warm-up time. Use Vercel Postgres (Neon under the hood) for native pooling, or external + a serverless-friendly pooler (PgBouncer transaction mode, Neon, Supabase pooled).",
+    "caveats": [
+      "Avoid TCP-only ORMs without a pooler — connection storms bring DBs down."
+    ],
+    "dependencies_to_flag": ["pg (use with pooler)", "@neondatabase/serverless"]
+  },
+  "media-processing-heavy": {
+    "verdict": "not-recommended",
+    "recommended_path": "FFmpeg / ImageMagick / headless Chrome at scale exceed function memory + timeout budgets. Use external workers (AWS Lambda + S3, Modal, Banana, Cloudflare R2 + Containers). Vercel's Image Optimization handles only image resize/format.",
+    "caveats": [],
+    "dependencies_to_flag": ["sharp (heavy)", "ffmpeg", "imagemagick", "puppeteer", "playwright"]
+  },
+  "s3-storage": {
+    "verdict": "partial",
+    "recommended_path": "Stay on S3 (Vercel functions can talk to S3 directly), OR migrate to @vercel/blob if you want the storage-and-compute on the same provider. Blob is positioned for app-tier assets, not S3-feature-parity (no lifecycle, no Glacier).",
+    "caveats": [
+      "S3 → Vercel Blob is one-way; plan a fallback path.",
+      "Compare egress: S3 has egress fees; Vercel Blob bandwidth is metered against the project."
+    ],
+    "dependencies_to_flag": ["@aws-sdk/client-s3 (works fine)", "@vercel/blob (alt)"]
+  }
+}

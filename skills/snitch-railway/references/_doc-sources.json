@@ -1,0 +1,22 @@
+[
+  "https://docs.railway.com/guides/cli",
+  "https://docs.railway.com/guides/variables",
+  "https://docs.railway.com/reference/variables",
+  "https://docs.railway.com/reference/healthchecks",
+  "https://docs.railway.com/reference/teams",
+  "https://docs.railway.com/reference/usage",
+  "https://docs.railway.com/reference/public-api",
+  "https://docs.railway.com/reference/volumes",
+  "https://docs.railway.com/reference/logging",
+  "https://docs.railway.com/guides/public-networking",
+  "https://docs.railway.com/guides/private-networking",
+  "https://docs.railway.com/guides/databases",
+  "https://docs.railway.com/guides/dockerfiles",
+  "https://docs.railway.com/guides/build-configuration",
+  "https://docs.railway.com/reference/environments",
+  "https://docs.railway.com/reference/scaling",
+  "https://docs.railway.com/reference/regions",
+  "https://docs.railway.com/reference/projects",
+  "https://docs.railway.com/guides/migrations",
+  "https://docs.railway.com/guides/tokens"
+]
