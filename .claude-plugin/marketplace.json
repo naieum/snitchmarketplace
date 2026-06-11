@@ -1,0 +1,79 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "snitch",
+  "owner": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "plugins": [
+    {
+      "name": "snitch",
+      "source": "./skills/snitch",
+      "description": "Security audit for AI-written code — evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).",
+      "version": "8.2.1",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-marketing",
+      "source": "./skills/snitch-marketing",
+      "description": "SEO + marketing audit with evidence-based findings — technical SEO, GEO/AI-search, schema, Core Web Vitals.",
+      "version": "1.4.0",
+      "license": "MIT",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-cloudflare",
+      "source": "./skills/snitch-cloudflare",
+      "description": "Cloudflare security + readiness — zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",
+      "version": "1.0.0",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-aws",
+      "source": "./skills/snitch-aws",
+      "description": "AWS security + readiness — IAM/S3/EC2/VPC/RDS/Lambda/CloudFront/CloudTrail/GuardDuty posture and hardening.",
+      "version": "1.0.0",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-azure",
+      "source": "./skills/snitch-azure",
+      "description": "Azure security + readiness — subscription/Entra/RBAC/Defender/Sentinel/storage/keyvault posture and hardening.",
+      "version": "1.0.0",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-digitalocean",
+      "source": "./skills/snitch-digitalocean",
+      "description": "DigitalOcean security + readiness — Droplet/Database/Spaces/App-Platform/DOKS/Firewall posture and hardening.",
+      "version": "1.0.0",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-flyio",
+      "source": "./skills/snitch-flyio",
+      "description": "Fly.io security + readiness — org/apps/machines/volumes/postgres/secrets/network/token posture and hardening.",
+      "version": "1.0.0",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-railway",
+      "source": "./skills/snitch-railway",
+      "description": "Railway security + readiness — workspace/project/services/env/volumes/databases/tokens/domains posture and hardening.",
+      "version": "1.0.0",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-vercel",
+      "source": "./skills/snitch-vercel",
+      "description": "Vercel security + readiness — account/team/project/env/domains/deployments/protection/functions posture and hardening.",
+      "version": "1.0.0",
+      "license": "BUSL-1.1",
+      "homepage": "https://snitchplugin.com"
+    }
+  ]
+}

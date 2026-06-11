@@ -1,0 +1,13 @@
+# scratch
+pr.md
+TODO.md
+
+# os / editor
+.DS_Store
+*.swp
+
+# node (in case any skill ships JS tooling)
+node_modules/
+
+# skill runtime state (never commit a user's audit state)
+**/.state/
