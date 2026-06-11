@@ -1,0 +1,33 @@
+Business Source License 1.1
+
+Parameters:
+
+Licensor:              Snitch Plugin
+Licensed Work:         snitch-cloudflare (Snitch Security Skill — Cloudflare)
+                       Copyright (c) 2026 Snitch Plugin
+Additional Use Grant:  You may use the Licensed Work for evaluation, for
+                       personal projects, and for security audits of
+                       infrastructure you own or operate. Use of the Licensed
+                       Work to operate a service that competes with Snitch, or
+                       to audit infrastructure on behalf of a separate
+                       organization for a fee, requires a current Snitch
+                       subscription from https://snitchplugin.com.
+Change Date:           2030-04-22
+Change License:        Apache License, Version 2.0
+
+The full Business Source License 1.1 text is available at:
+
+  https://mariadb.com/bsl11
+
+Notice:
+
+The Business Source License (this document, or the "License") is not an
+Open Source license. However, the Licensed Work will eventually be made
+available under an Open Source License, as stated in this License.
+
+For information about alternative licensing arrangements for the Licensed
+Work, please contact eric.waters@snitchplugin.com.
+
+Findings and changes produced by the Licensed Work are AI-generated and
+advisory. They do not constitute a guarantee of security or compliance.
+Human review remains the responsibility of the operator.

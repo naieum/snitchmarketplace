@@ -1,0 +1,79 @@
+{
+  "_comment": "Per-stack additions to the baseline CSP in _headers.example. Merged additively into the directive arrays in lib/headers.sh / lib/audit_project.sh. 'baseline' below is what every stack starts from; overlays add to it.",
+
+  "baseline": {
+    "directives": {
+      "default-src": ["'self'"],
+      "script-src": ["'self'"],
+      "style-src": ["'self'", "'unsafe-inline'"],
+      "img-src": ["'self'", "data:", "https:"],
+      "font-src": ["'self'", "data:"],
+      "connect-src": ["'self'"],
+      "frame-ancestors": ["'none'"],
+      "base-uri": ["'self'"],
+      "form-action": ["'self'"],
+      "object-src": ["'none'"]
+    }
+  },
+
+  "nextjs.dev": {
+    "_note": "Development only — `next dev` uses eval-based HMR. NEVER ship 'unsafe-eval' in prod.",
+    "directives": {
+      "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      "connect-src": ["'self'", "ws:", "wss:"]
+    }
+  },
+
+  "nextjs.prod": {
+    "_note": "Production. 'unsafe-inline' on script-src is required until you adopt nonce-based CSP via middleware. Replace with 'nonce-XXXX' as soon as feasible.",
+    "directives": {
+      "script-src": ["'self'", "'unsafe-inline'"],
+      "img-src": ["'self'", "data:", "blob:", "https:"],
+      "connect-src": ["'self'", "https://vitals.vercel-insights.com"]
+    }
+  },
+
+  "astro": {
+    "_note": "Astro's component-scoped CSS is inline; baseline already allows that on style-src. No script-src additions needed for static islands.",
+    "directives": {}
+  },
+
+  "sveltekit": {
+    "_note": "SvelteKit hydration injects inline scripts. Move to nonce-aware CSP via hooks.server.ts when feasible.",
+    "directives": {
+      "script-src": ["'self'", "'unsafe-inline'"]
+    }
+  },
+
+  "remix": {
+    "_note": "Remix's hydration emits inline scripts. Same nonce migration recommendation as SvelteKit.",
+    "directives": {
+      "script-src": ["'self'", "'unsafe-inline'"]
+    }
+  },
+
+  "nuxt": {
+    "_note": "Nuxt's Nitro runtime + hydration. Baseline + 'unsafe-inline' on script-src; tighten via Nitro nonce hook later.",
+    "directives": {
+      "script-src": ["'self'", "'unsafe-inline'"]
+    }
+  },
+
+  "stripe-elements": {
+    "_note": "Stripe Elements / Stripe.js. Required exact origins: js.stripe.com, hooks.stripe.com, api.stripe.com. Frame both js.stripe.com and hooks.stripe.com.",
+    "directives": {
+      "script-src": ["https://js.stripe.com"],
+      "frame-src": ["https://js.stripe.com", "https://hooks.stripe.com"],
+      "connect-src": ["https://api.stripe.com"]
+    }
+  },
+
+  "cloudflare-turnstile": {
+    "_note": "Cloudflare Turnstile loads scripts and frames from challenges.cloudflare.com.",
+    "directives": {
+      "script-src": ["https://challenges.cloudflare.com"],
+      "frame-src": ["https://challenges.cloudflare.com"],
+      "connect-src": ["https://challenges.cloudflare.com"]
+    }
+  }
+}

@@ -1,0 +1,132 @@
+# Email auth DNS records starter (SPF, DKIM, DMARC, MTA-STS, BIMI)
+# Replace example.com with your domain. Replace selectors and provider IDs as noted.
+# Add records via the Cloudflare DNS dashboard, or via `bash snitch-cloudflare.sh fix dns-email`.
+# Verify after creation: https://www.mail-tester.com/, https://mxtoolbox.com/dmarc.aspx,
+# https://dmarcian.com/dmarc-inspector/, https://www.checktls.com/
+
+# =============================================================================
+# SPF — declares which servers are allowed to send email for your domain.
+# =============================================================================
+# Rule: ONE TXT record per domain at the apex. Combine providers into one record.
+# `~all` = soft-fail (start here). Move to `-all` (hard-fail) once DMARC is at p=reject.
+# DO NOT exceed 10 DNS lookups in the SPF chain; flatten if necessary.
+
+# --- Amazon SES ---
+# Add the regional include for the SES region you actually use.
+example.com.  TXT  "v=spf1 include:amazonses.com ~all"
+
+# --- SendGrid ---
+example.com.  TXT  "v=spf1 include:sendgrid.net ~all"
+
+# --- Mailgun (US) ---
+example.com.  TXT  "v=spf1 include:mailgun.org ~all"
+# Mailgun (EU)
+# example.com.  TXT  "v=spf1 include:eu.mailgun.org ~all"
+
+# --- Postmark ---
+example.com.  TXT  "v=spf1 include:spf.mtasv.net ~all"
+
+# --- Google Workspace ---
+example.com.  TXT  "v=spf1 include:_spf.google.com ~all"
+
+# --- Microsoft 365 ---
+example.com.  TXT  "v=spf1 include:spf.protection.outlook.com ~all"
+
+# --- Combined: Google Workspace + SendGrid + Mailgun (one TXT, multiple includes) ---
+example.com.  TXT  "v=spf1 include:_spf.google.com include:sendgrid.net include:mailgun.org ~all"
+
+# =============================================================================
+# DKIM — cryptographic signing of outbound mail.
+# =============================================================================
+# Each provider gives you one or more selectors. Add the records they specify.
+# Selectors below are the current defaults — ALWAYS use the values from the
+# provider's setup wizard; they rotate keys and may differ.
+
+# --- Amazon SES (3 records, CNAME to ses.amazonses.com) ---
+# Get the actual values from the SES console after enabling Easy DKIM.
+<token1>._domainkey.example.com.  CNAME  <token1>.dkim.amazonses.com.
+<token2>._domainkey.example.com.  CNAME  <token2>.dkim.amazonses.com.
+<token3>._domainkey.example.com.  CNAME  <token3>.dkim.amazonses.com.
+
+# --- SendGrid (3 CNAMEs, automated DNS) ---
+em<id>.example.com.       CNAME  u<id>.wl.sendgrid.net.
+s1._domainkey.example.com. CNAME  s1.domainkey.u<id>.wl.sendgrid.net.
+s2._domainkey.example.com. CNAME  s2.domainkey.u<id>.wl.sendgrid.net.
+
+# --- Mailgun (selector "mg") ---
+mg._domainkey.example.com. TXT  "v=DKIM1; k=rsa; p=<long-public-key>"
+# Plus the MX records for receiving bounce reports — see Mailgun docs.
+
+# --- Postmark (selector "pm") ---
+pm._domainkey.example.com. TXT  "v=DKIM1; k=rsa; p=<long-public-key>"
+
+# --- Google Workspace (selector "google") ---
+google._domainkey.example.com. TXT  "v=DKIM1; k=rsa; p=<long-public-key>"
+
+# --- Microsoft 365 (selectors "selector1" and "selector2") ---
+selector1._domainkey.example.com. CNAME  selector1-example-com._domainkey.<tenant>.onmicrosoft.com.
+selector2._domainkey.example.com. CNAME  selector2-example-com._domainkey.<tenant>.onmicrosoft.com.
+
+# =============================================================================
+# DMARC — tells receivers what to do with mail that fails SPF or DKIM, and where
+# to send aggregate / forensic reports.
+# =============================================================================
+# RAMP THROUGH POLICIES, do not jump straight to p=reject:
+#   1. p=none for at least 2 weeks. Watch the rua reports — fix anything failing.
+#   2. p=quarantine for at least 2 weeks. Watch the spam folder.
+#   3. p=reject. Final state.
+# pct=N gradually ramps how much of the failing mail gets the policy applied.
+
+# --- Step 1: Monitor only. Reports flow but no enforcement. ---
+_dmarc.example.com.  TXT  "v=DMARC1; p=none; rua=mailto:dmarc-reports@example.com; ruf=mailto:dmarc-forensic@example.com; fo=1; adkim=r; aspf=r; pct=100"
+
+# --- Step 2: Quarantine. ---
+_dmarc.example.com.  TXT  "v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com; pct=25; adkim=s; aspf=s"
+
+# --- Step 3: Reject (final state). ---
+_dmarc.example.com.  TXT  "v=DMARC1; p=reject; rua=mailto:dmarc-reports@example.com; pct=100; adkim=s; aspf=s; sp=reject"
+# adkim=s aspf=s = strict alignment. sp=reject applies to subdomains.
+# Consider a free aggregator: dmarc.postmarkapp.com, dmarc.dmarcian.com, easydmarc.com.
+
+# =============================================================================
+# MTA-STS — opportunistic SMTP TLS enforcement.
+# =============================================================================
+# Two parts: a TXT record AND a policy file at https://mta-sts.<domain>/.well-known/mta-sts.txt
+
+_mta-sts.example.com.  TXT  "v=STSv1; id=20260507120000Z"
+
+# Then host this file at https://mta-sts.example.com/.well-known/mta-sts.txt
+# (`mta-sts` subdomain MUST be HTTPS; the cert must validate).
+# ----- begin policy file content -----
+# version: STSv1
+# mode: enforce
+# mx: *.mail.protection.outlook.com
+# mx: aspmx.l.google.com
+# mx: alt1.aspmx.l.google.com
+# max_age: 604800
+# ----- end policy file content -----
+
+# Companion: TLS-RPT to receive failure reports.
+_smtp._tls.example.com.  TXT  "v=TLSRPTv1; rua=mailto:tls-rpt@example.com"
+
+# =============================================================================
+# BIMI — show your logo next to authenticated mail in Gmail/Yahoo/Apple Mail.
+# =============================================================================
+# Requires DMARC at p=quarantine or p=reject (and pct=100). Logo must be SVG-PS
+# (a specific subset). Apple/Gmail also require a Verified Mark Certificate (VMC)
+# from Entrust or DigiCert.
+
+default._bimi.example.com.  TXT  "v=BIMI1; l=https://example.com/.well-known/bimi-logo.svg; a=https://example.com/.well-known/bimi-vmc.pem"
+
+# =============================================================================
+# CAA — declares which CAs are allowed to issue certificates for your domain.
+# =============================================================================
+# Cloudflare uses Let's Encrypt + Google Trust Services + Sectigo + DigiCert.
+# Lock to those. List "iodef=" for issuance-violation alerts.
+
+example.com.  CAA  0 issue "letsencrypt.org"
+example.com.  CAA  0 issue "pki.goog"
+example.com.  CAA  0 issue "sectigo.com"
+example.com.  CAA  0 issue "digicert.com"
+example.com.  CAA  0 issuewild ";"
+example.com.  CAA  0 iodef "mailto:security@example.com"

@@ -1,0 +1,14 @@
+# Codex-only sidecar for the snitch-cloudflare Agent Skill.
+# Claude Code / Claude Agent SDK ignore this file; OpenAI Codex reads it.
+# The portable core (name, description, body, references) stays in SKILL.md.
+interface:
+  display_name: Cloudflare Secure
+  short_description: Audit & harden Cloudflare zone/account/Workers/Zero-Trust posture (read-only audits + idempotent fixes).
+policy:
+  # Let Codex auto-trigger when a task matches SKILL.md's description.
+  allow_implicit_invocation: true
+requirements:
+  # The CLI calls the Cloudflare API; Codex blocks network egress by default.
+  network_access: true
+  env:
+    - CLOUDFLARE_API_TOKEN

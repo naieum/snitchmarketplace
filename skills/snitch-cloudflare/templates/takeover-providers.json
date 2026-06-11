@@ -1,0 +1,173 @@
+[
+  {
+    "name": "AWS S3",
+    "patterns": [
+      "*.s3.amazonaws.com",
+      "*.s3-website-*",
+      "*.s3.dualstack.*.amazonaws.com",
+      "*.s3-*.amazonaws.com",
+      "*.s3.*.amazonaws.com"
+    ],
+    "fingerprints": [
+      "NoSuchBucket",
+      "The specified bucket does not exist"
+    ]
+  },
+  {
+    "name": "GitHub Pages",
+    "patterns": ["*.github.io"],
+    "fingerprints": [
+      "There isn't a GitHub Pages site here.",
+      "For root URLs (like http://example.com/) you must provide an index.html file"
+    ]
+  },
+  {
+    "name": "Heroku",
+    "patterns": ["*.herokuapp.com", "*.herokudns.com"],
+    "fingerprints": [
+      "No such app",
+      "herokucdn.com/error-pages/no-such-app.html"
+    ]
+  },
+  {
+    "name": "Azure",
+    "patterns": [
+      "*.azurewebsites.net",
+      "*.cloudapp.net",
+      "*.cloudapp.azure.com",
+      "*.trafficmanager.net",
+      "*.blob.core.windows.net",
+      "*.azureedge.net",
+      "*.azure-api.net"
+    ],
+    "fingerprints": [
+      "404 Web Site not found",
+      "The resource you are looking for has been removed",
+      "Web App - Unavailable",
+      "is not a valid DNS name"
+    ]
+  },
+  {
+    "name": "AWS CloudFront",
+    "patterns": ["*.cloudfront.net"],
+    "fingerprints": [
+      "Bad request.",
+      "ERROR: The request could not be satisfied"
+    ]
+  },
+  {
+    "name": "Fastly",
+    "patterns": ["*.fastly.net", "*.global.ssl.fastly.net"],
+    "fingerprints": [
+      "Fastly error: unknown domain",
+      "Please check that this domain has been added to a service"
+    ]
+  },
+  {
+    "name": "Netlify",
+    "patterns": ["*.netlify.app", "*.netlify.com"],
+    "fingerprints": [
+      "Not Found - Request ID:",
+      "Not found - Request ID"
+    ]
+  },
+  {
+    "name": "Vercel",
+    "patterns": ["*.vercel.app", "*.now.sh"],
+    "fingerprints": [
+      "The deployment could not be found on Vercel.",
+      "DEPLOYMENT_NOT_FOUND"
+    ]
+  },
+  {
+    "name": "Surge",
+    "patterns": ["*.surge.sh"],
+    "fingerprints": [
+      "project not found"
+    ]
+  },
+  {
+    "name": "Firebase",
+    "patterns": ["*.firebaseapp.com", "*.web.app"],
+    "fingerprints": [
+      "Site Not Found",
+      "Firebase Hosting Setup Complete"
+    ]
+  },
+  {
+    "name": "Statuspage",
+    "patterns": ["*.statuspage.io"],
+    "fingerprints": [
+      "You are being redirected.",
+      "There is no such app."
+    ]
+  },
+  {
+    "name": "Help Scout",
+    "patterns": ["*.helpscoutdocs.com"],
+    "fingerprints": [
+      "No settings were found for this company"
+    ]
+  },
+  {
+    "name": "Tumblr",
+    "patterns": ["*.tumblr.com"],
+    "fingerprints": [
+      "Whatever you were looking for doesn't currently exist at this address.",
+      "There's nothing here."
+    ]
+  },
+  {
+    "name": "Zendesk",
+    "patterns": ["*.zendesk.com"],
+    "fingerprints": [
+      "Help Center Closed",
+      "this help center no longer exists"
+    ]
+  },
+  {
+    "name": "Shopify",
+    "patterns": ["*.myshopify.com"],
+    "fingerprints": [
+      "Sorry, this shop is currently unavailable.",
+      "Only one step left!"
+    ]
+  },
+  {
+    "name": "WordPress.com",
+    "patterns": ["*.wordpress.com"],
+    "fingerprints": [
+      "Do you want to register",
+      "doesn't exist"
+    ]
+  },
+  {
+    "name": "Wishpond",
+    "patterns": ["*.wishpond.com"],
+    "fingerprints": [
+      "https://www.wishpond.com/404?campaign=true"
+    ]
+  },
+  {
+    "name": "Bigcartel",
+    "patterns": ["*.bigcartel.com"],
+    "fingerprints": [
+      "<h1>Oops! We couldn&#8217;t find that page.</h1>"
+    ]
+  },
+  {
+    "name": "Pantheon",
+    "patterns": ["*.pantheonsite.io"],
+    "fingerprints": [
+      "The gods are wise",
+      "404 error unknown site!"
+    ]
+  },
+  {
+    "name": "Cargo",
+    "patterns": ["*.cargocollective.com"],
+    "fingerprints": [
+      "404 Not Found"
+    ]
+  }
+]

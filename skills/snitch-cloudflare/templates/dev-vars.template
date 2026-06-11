@@ -1,0 +1,22 @@
+# .dev.vars TEMPLATE — DO NOT put real secrets here.
+#
+# 1. Copy this file:    cp .dev.vars.template .dev.vars
+# 2. Fill in real values in .dev.vars (NEVER commit it).
+# 3. .dev.vars is in .gitignore — verify with `git check-ignore -v .dev.vars`.
+# 4. For production, push secrets via wrangler:
+#       wrangler secret put DATABASE_URL
+#       wrangler secret put OPENAI_API_KEY
+#       wrangler secret put STRIPE_SECRET_KEY
+#       wrangler secret put JWT_SECRET
+#    Wrangler stores them encrypted; they NEVER appear in wrangler.toml.
+#
+# WARNING: a single committed real secret is a breach. If you accidentally
+# commit a value, rotate it (revoke + re-issue) BEFORE removing it from git
+# history. Removing from history alone does not unrevoke a leaked secret.
+# Tools that scan public repos (TruffleHog, GitGuardian, GitHub secret scanning)
+# detect leaks within minutes — assume any pushed secret is compromised.
+
+# DATABASE_URL=
+# OPENAI_API_KEY=
+# STRIPE_SECRET_KEY=
+# JWT_SECRET=

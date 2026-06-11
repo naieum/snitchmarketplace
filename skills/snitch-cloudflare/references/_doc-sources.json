@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-07",
+  "comment": "Canonical Cloudflare doc URLs the skill consults. `refresh-docs` re-pulls these and updates per-section markdown.",
+  "sections": {
+    "auth-and-tokens": [
+      "https://developers.cloudflare.com/fundamentals/api/get-started/create-token/",
+      "https://developers.cloudflare.com/api/tokens/create/permissions/",
+      "https://developers.cloudflare.com/fundamentals/api/get-started/keys/",
+      "https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token",
+      "https://developers.cloudflare.com/api/operations/user-api-tokens-update-token"
+    ],
+    "dns-ssl-tls": [
+      "https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/minimum-tls/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/tls-13/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/http-strict-transport-security/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/universal-ssl/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/advanced-certificate-manager/",
+      "https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull/",
+      "https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull/set-up/",
+      "https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/certificate-transparency-monitoring/",
+      "https://developers.cloudflare.com/dns/dnssec/",
+      "https://developers.cloudflare.com/api/operations/dnssec-edit-dnssec-status",
+      "https://developers.cloudflare.com/dns/proxy-status/",
+      "https://developers.cloudflare.com/ssl/edge-certificates/caa-records/"
+    ],
+    "waf-and-rules": [
+      "https://developers.cloudflare.com/waf/",
+      "https://developers.cloudflare.com/waf/managed-rules/free-managed-ruleset/",
+      "https://developers.cloudflare.com/waf/managed-rules/reference/cloudflare-managed-ruleset/",
+      "https://developers.cloudflare.com/waf/managed-rules/reference/owasp-core-ruleset/",
+      "https://developers.cloudflare.com/waf/custom-rules/",
+      "https://developers.cloudflare.com/waf/custom-rules/create-dashboard/",
+      "https://developers.cloudflare.com/ruleset-engine/about/phases/",
+      "https://developers.cloudflare.com/ruleset-engine/rules-language/",
+      "https://developers.cloudflare.com/ruleset-engine/rules-language/fields/",
+      "https://developers.cloudflare.com/api/operations/updateZoneRuleset"
+    ],
+    "bots-ddos-rate-limit": [
+      "https://developers.cloudflare.com/bots/get-started/bot-fight-mode/",
+      "https://developers.cloudflare.com/bots/get-started/super-bot-fight-mode/",
+      "https://developers.cloudflare.com/bots/plans/bm-subscription/",
+      "https://developers.cloudflare.com/bots/",
+      "https://developers.cloudflare.com/ddos-protection/about/",
+      "https://developers.cloudflare.com/ddos-protection/managed-rulesets/http/",
+      "https://developers.cloudflare.com/waf/rate-limiting-rules/",
+      "https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/",
+      "https://developers.cloudflare.com/turnstile/",
+      "https://developers.cloudflare.com/notifications/notification-available/"
+    ],
+    "security-headers": [
+      "https://developers.cloudflare.com/rules/transform/response-header-modification/",
+      "https://developers.cloudflare.com/pages/configuration/headers/",
+      "https://developers.cloudflare.com/page-shield/policies/csp-monitoring/"
+    ],
+    "workers-pages": [
+      "https://developers.cloudflare.com/workers/configuration/environment-variables/",
+      "https://developers.cloudflare.com/workers/configuration/secrets/",
+      "https://developers.cloudflare.com/workers/configuration/compatibility-dates/",
+      "https://developers.cloudflare.com/workers/configuration/compatibility-flags/",
+      "https://developers.cloudflare.com/workers/runtime-apis/nodejs/",
+      "https://developers.cloudflare.com/workers/configuration/routing/",
+      "https://developers.cloudflare.com/workers/configuration/routing/workers-dev/",
+      "https://developers.cloudflare.com/workers/observability/logs/real-time-logs/",
+      "https://developers.cloudflare.com/workers/observability/logs/workers-logs/",
+      "https://developers.cloudflare.com/workers/wrangler/configuration/",
+      "https://developers.cloudflare.com/workers/wrangler/commands/",
+      "https://developers.cloudflare.com/pages/get-started/",
+      "https://developers.cloudflare.com/pages/configuration/redirects/",
+      "https://developers.cloudflare.com/pages/configuration/preview-deployments/",
+      "https://developers.cloudflare.com/pages/functions/",
+      "https://developers.cloudflare.com/cloudflare-one/applications/configure-apps/self-hosted-public-app/"
+    ],
+    "storage": [
+      "https://developers.cloudflare.com/r2/api/s3/tokens/",
+      "https://developers.cloudflare.com/r2/buckets/cors/",
+      "https://developers.cloudflare.com/r2/api/s3/presigned-urls/",
+      "https://developers.cloudflare.com/r2/buckets/public-buckets/",
+      "https://developers.cloudflare.com/r2/buckets/object-lifecycles/",
+      "https://developers.cloudflare.com/r2/data-migration/super-slurper/",
+      "https://developers.cloudflare.com/kv/api/",
+      "https://developers.cloudflare.com/kv/concepts/how-kv-works/",
+      "https://developers.cloudflare.com/d1/build-with-d1/d1-client-api/",
+      "https://developers.cloudflare.com/d1/configuration/data-location/",
+      "https://developers.cloudflare.com/d1/reference/time-travel/",
+      "https://developers.cloudflare.com/d1/reference/backups/",
+      "https://developers.cloudflare.com/hyperdrive/",
+      "https://developers.cloudflare.com/durable-objects/",
+      "https://developers.cloudflare.com/durable-objects/api/websockets/"
+    ],
+    "zero-trust": [
+      "https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/",
+      "https://developers.cloudflare.com/cloudflare-one/applications/",
+      "https://developers.cloudflare.com/cloudflare-one/policies/access/",
+      "https://developers.cloudflare.com/cloudflare-one/identity/service-tokens/",
+      "https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/",
+      "https://developers.cloudflare.com/cloudflare-one/policies/gateway/",
+      "https://developers.cloudflare.com/cloudflare-one/applications/non-http/ssh/"
+    ],
+    "account-hardening": [
+      "https://developers.cloudflare.com/fundamentals/account/account-security/",
+      "https://developers.cloudflare.com/fundamentals/account/account-security/2fa/",
+      "https://developers.cloudflare.com/fundamentals/account/account-security/2fa/configure-2fa/",
+      "https://developers.cloudflare.com/fundamentals/account/account-security/review-audit-logs/",
+      "https://developers.cloudflare.com/fundamentals/account/account-security/account-roles/",
+      "https://developers.cloudflare.com/cloudflare-one/applications/configure-apps/dash-sso-apps/",
+      "https://developers.cloudflare.com/notifications/",
+      "https://developers.cloudflare.com/waf/account/"
+    ],
+    "plans-pricing": [
+      "https://www.cloudflare.com/plans/",
+      "https://developers.cloudflare.com/workers/platform/pricing/",
+      "https://developers.cloudflare.com/workers/platform/limits/",
+      "https://developers.cloudflare.com/r2/pricing/",
+      "https://developers.cloudflare.com/kv/platform/pricing/",
+      "https://developers.cloudflare.com/d1/platform/pricing/",
+      "https://developers.cloudflare.com/durable-objects/platform/pricing/",
+      "https://developers.cloudflare.com/hyperdrive/platform/pricing/",
+      "https://developers.cloudflare.com/vectorize/platform/pricing/",
+      "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+      "https://developers.cloudflare.com/ai-gateway/reference/pricing/",
+      "https://developers.cloudflare.com/browser-rendering/platform/pricing/",
+      "https://developers.cloudflare.com/zaraz/reference/pricing/",
+      "https://developers.cloudflare.com/pages/platform/limits/",
+      "https://www.cloudflare.com/plans/zero-trust-services/"
+    ],
+    "incident": [
+      "https://developers.cloudflare.com/waf/tools/under-attack-mode/",
+      "https://developers.cloudflare.com/waf/tools/ip-access-rules/"
+    ],
+    "email-dmarc": [
+      "https://developers.cloudflare.com/dns/manage-dns-records/",
+      "https://developers.cloudflare.com/email-routing/",
+      "https://datatracker.ietf.org/doc/html/rfc7208",
+      "https://datatracker.ietf.org/doc/html/rfc6376",
+      "https://datatracker.ietf.org/doc/html/rfc7489",
+      "https://datatracker.ietf.org/doc/html/rfc8461",
+      "https://datatracker.ietf.org/doc/html/rfc8460",
+      "https://bimigroup.org/"
+    ],
+    "origin-posture": [
+      "https://developers.cloudflare.com/fundamentals/concepts/cloudflare-ip-addresses/",
+      "https://developers.cloudflare.com/aegis/",
+      "https://developers.cloudflare.com/fundamentals/reference/http-headers/"
+    ],
+    "page-shield": [
+      "https://developers.cloudflare.com/page-shield/",
+      "https://developers.cloudflare.com/page-shield/reference/availability/",
+      "https://developers.cloudflare.com/page-shield/policies/"
+    ],
+    "ai-security": [
+      "https://developers.cloudflare.com/learning-paths/secure-prompts/",
+      "https://developers.cloudflare.com/ai-gateway/configuration/",
+      "https://developers.cloudflare.com/ai-gateway/",
+      "https://developers.cloudflare.com/vectorize/best-practices/",
+      "https://developers.cloudflare.com/workers-ai/get-started/workers-binding/"
+    ],
+    "ai-offerings": [
+      "https://developers.cloudflare.com/workers-ai/models/",
+      "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+      "https://developers.cloudflare.com/ai-gateway/",
+      "https://developers.cloudflare.com/vectorize/",
+      "https://developers.cloudflare.com/autorag/",
+      "https://developers.cloudflare.com/browser-rendering/"
+    ],
+    "stack-nextjs": [
+      "https://developers.cloudflare.com/pages/framework-guides/nextjs/",
+      "https://nextjs.org/docs",
+      "https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy",
+      "https://opennext.js.org/cloudflare"
+    ],
+    "stack-astro": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/",
+      "https://docs.astro.build",
+      "https://docs.astro.build/en/guides/integrations-guide/cloudflare/",
+      "https://docs.astro.build/en/guides/security/"
+    ],
+    "stack-sveltekit": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-svelte-kit-site/",
+      "https://kit.svelte.dev/docs",
+      "https://kit.svelte.dev/docs/adapter-cloudflare",
+      "https://kit.svelte.dev/docs/configuration"
+    ],
+    "stack-remix": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-remix-site/",
+      "https://remix.run/docs",
+      "https://remix.run/docs/en/main/guides/csp"
+    ],
+    "stack-nuxt": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-nuxt-site/",
+      "https://nuxt.com/docs",
+      "https://nitro.unjs.io/deploy/providers/cloudflare",
+      "https://nuxt-security.vercel.app/"
+    ],
+    "stack-hono": [
+      "https://developers.cloudflare.com/workers/frameworks/framework-guides/hono/",
+      "https://hono.dev",
+      "https://hono.dev/docs/getting-started/cloudflare-workers",
+      "https://hono.dev/docs/middleware/builtin/secure-headers"
+    ],
+    "validators": [
+      "https://www.ssllabs.com/about/terms.html",
+      "https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md",
+      "https://developer.mozilla.org/en-US/observatory",
+      "https://hstspreload.org/",
+      "https://haveibeenpwned.com/API/v3"
+    ],
+    "saas-platforms": [
+      "https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/",
+      "https://developers.cloudflare.com/learning-paths/get-started-free/",
+      "https://developers.cloudflare.com/automatic-platform-optimization/",
+      "https://developers.cloudflare.com/images/polish/"
+    ],
+    "load-balancing-health": [
+      "https://developers.cloudflare.com/health-checks/",
+      "https://developers.cloudflare.com/load-balancing/about/",
+      "https://developers.cloudflare.com/load-balancing/understand-basics/traffic-steering/",
+      "https://developers.cloudflare.com/cache/how-to/configure-cache-status-code/"
+    ],
+    "rules-redirects": [
+      "https://developers.cloudflare.com/rules/url-forwarding/",
+      "https://developers.cloudflare.com/rules/page-rules/"
+    ],
+    "privacy-zaraz-analytics": [
+      "https://developers.cloudflare.com/web-analytics/",
+      "https://developers.cloudflare.com/zaraz/",
+      "https://developers.cloudflare.com/zaraz/consent-management/"
+    ],
+    "platform-misc": [
+      "https://developers.cloudflare.com/api/",
+      "https://developers.cloudflare.com/dns/zone-setups/full-setup/",
+      "https://developers.cloudflare.com/products/",
+      "https://developers.cloudflare.com/fundamentals/setup/manage-domains/move-domain/",
+      "https://developers.cloudflare.com/logs/logpush/"
+    ]
+  }
+}

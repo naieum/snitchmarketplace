@@ -1,0 +1,280 @@
+{
+  "static-spa": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages. No rewrite. Drop your build output (dist/, out/, build/) in via `wrangler pages deploy` or the GitHub integration.",
+    "caveats": [
+      "If you use service workers, verify that Pages serves them with the right Cache-Control.",
+      "_redirects and _headers control routing/headers — both are first-class on Pages."
+    ],
+    "dependencies_to_flag": []
+  },
+  "nextjs": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages or Workers via @cloudflare/next-on-pages or OpenNext for Cloudflare. Pick @cloudflare/next-on-pages for App Router projects on edge runtime; OpenNext for projects that need full Node compatibility.",
+    "caveats": [
+      "ISR / on-demand revalidation requires the right adapter — verify your data-fetching modes.",
+      "next/image needs the Cloudflare Images binding or an unoptimized loader.",
+      "Edge runtime vs Node runtime split: every route file must declare `export const runtime = 'edge'` to deploy to Workers.",
+      "Server Actions are supported but should sit behind a rate-limit rule."
+    ],
+    "dependencies_to_flag": ["sharp", "canvas", "node:fs", "node:net", "node:dgram", "puppeteer", "playwright"]
+  },
+  "astro": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages with @astrojs/cloudflare adapter. Static + hybrid + server modes all supported.",
+    "caveats": [
+      "If you use Astro DB, that's libSQL — separate path from D1; do not assume they're interchangeable."
+    ],
+    "dependencies_to_flag": ["sharp"]
+  },
+  "sveltekit": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages with @sveltejs/adapter-cloudflare. Workers deploy supported via @sveltejs/adapter-cloudflare-workers.",
+    "caveats": [
+      "form actions are POST-heavy — check rate-limit-rules.starter.json covers them."
+    ],
+    "dependencies_to_flag": []
+  },
+  "remix": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages or Workers with the Remix Cloudflare templates. Use the new Vite plugin path for greenfield projects.",
+    "caveats": [
+      "Loaders/actions run on the edge by default — long-running side effects need to move to a Worker queue or Durable Object."
+    ],
+    "dependencies_to_flag": ["@remix-run/node-specific-imports"]
+  },
+  "nuxt": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages or Workers with `nuxt build --preset=cloudflare-pages` or `cloudflare`.",
+    "caveats": [
+      "Nuxt's Nitro engine handles the abstraction; verify your Nitro modules are edge-compatible."
+    ],
+    "dependencies_to_flag": []
+  },
+  "solidstart": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages with the SolidStart Cloudflare preset. SSR + static both supported.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "vite-spa": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages — drop the dist/ output. Pure static, no SSR needed.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "hono": {
+    "verdict": "strong",
+    "recommended_path": "Workers, no rewrite. Hono's Cloudflare adapter is the canonical path; `wrangler deploy` is the only command needed.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "itty-router": {
+    "verdict": "strong",
+    "recommended_path": "Workers, no rewrite. itty-router is Cloudflare-native.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "workers-native": {
+    "verdict": "strong",
+    "recommended_path": "Already on Workers. Skill focuses on hardening (wrangler.hardened.toml + secrets migration).",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "express": {
+    "verdict": "partial",
+    "recommended_path": "Often rewritable to Workers via Hono or a thin compat shim, but only after auditing dependencies. If you depend on long-lived TCP, native modules, or Node-only APIs, plan for Containers (beta) or keep on origin behind Cloudflare proxy.",
+    "caveats": [
+      "express middleware that uses Buffer extensively or streams large files needs review.",
+      "Sessions in memory don't survive Workers — move to KV / Durable Objects / Hyperdrive-backed Postgres."
+    ],
+    "dependencies_to_flag": ["sharp", "bcrypt", "argon2", "node-canvas", "puppeteer", "playwright", "ws (server)", "socket.io (server)", "express-session (memory store)", "multer (disk)"]
+  },
+  "fastify": {
+    "verdict": "partial",
+    "recommended_path": "Same as Express. Fastify's plugin model often makes the rewrite to Hono/Workers more mechanical, but the dependency audit is identical.",
+    "caveats": [
+      "fastify-multipart streaming uploads → R2 multipart upload via Workers."
+    ],
+    "dependencies_to_flag": ["sharp", "bcrypt", "argon2", "@fastify/websocket", "fastify-static (for non-trivial trees)"]
+  },
+  "nestjs": {
+    "verdict": "partial",
+    "recommended_path": "Larger surface than Express/Fastify. NestJS's DI + decorators don't run on Workers without significant adapter work. Honest path: keep on origin behind Cloudflare proxy + Tunnel; or use Containers (beta).",
+    "caveats": [
+      "Microservices via TCP/Redis transports won't run on Workers.",
+      "TypeORM / Sequelize generally won't work on Workers — switch to Drizzle or a Worker-compatible client + Hyperdrive."
+    ],
+    "dependencies_to_flag": ["@nestjs/microservices", "typeorm", "sequelize", "bcrypt", "argon2"]
+  },
+  "static-html": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages. Drop the directory; done.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "hugo": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages with the Hugo build preset. Build command: `hugo --minify`. Output: `public/`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "jekyll": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages with the Jekyll build preset. Output: `_site/`.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "eleventy": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages. Output: `_site/` or `dist/` depending on config.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "gatsby": {
+    "verdict": "strong",
+    "recommended_path": "Cloudflare Pages. Gatsby outputs `public/`. Note Gatsby Cloud is sunset; this is a real migration off, not a lateral move.",
+    "caveats": [
+      "Gatsby Functions don't have a 1:1 mapping — port to Pages Functions or Workers."
+    ],
+    "dependencies_to_flag": ["gatsby-cloud-specific-plugins"]
+  },
+  "wordpress": {
+    "verdict": "proxy-only",
+    "recommended_path": "Don't try to run WordPress on Workers. Keep your origin where it is. Put Cloudflare in front: DNS → proxied → free WAF + DDoS + CDN + Tunnel to hide the origin's public IP. Consider headless WP + a JS frontend later if the static gain matters.",
+    "caveats": [
+      "wp-admin, xmlrpc.php, wp-cron.php should be IP-allowlisted or behind Access.",
+      "Authenticated Origin Pulls + a Tunnel removes the public origin entirely."
+    ],
+    "dependencies_to_flag": ["wp-cron (replace with system cron + ?doing_wp_cron disabled)"]
+  },
+  "laravel": {
+    "verdict": "proxy-only",
+    "recommended_path": "PHP doesn't run on Workers. Cloudflare in front of the origin gets you the security/perf wins for free. Containers (beta) may help if you're Docker-native and want to consolidate.",
+    "caveats": [
+      "Laravel queue workers stay on the origin host or move to Containers."
+    ],
+    "dependencies_to_flag": []
+  },
+  "symfony": {
+    "verdict": "proxy-only",
+    "recommended_path": "Same as Laravel. Proxy + Tunnel + WAF. Containers if you want to consolidate hosting.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "rails": {
+    "verdict": "not-recommended",
+    "recommended_path": "Don't replatform Rails to Workers. Put Cloudflare in front of the existing origin (proxy + Tunnel + WAF + CDN). If you want Cloudflare-native compute, Containers (beta) is the only realistic path.",
+    "caveats": [
+      "ActionCable WebSockets don't migrate to Workers — Durable Objects is a different model.",
+      "ActiveJob workers stay on the origin or Containers."
+    ],
+    "dependencies_to_flag": []
+  },
+  "django": {
+    "verdict": "not-recommended",
+    "recommended_path": "Same shape as Rails. Proxy + Tunnel + WAF; Containers if Docker-native.",
+    "caveats": [
+      "Channels (WebSockets) don't migrate cleanly."
+    ],
+    "dependencies_to_flag": []
+  },
+  "flask": {
+    "verdict": "not-recommended",
+    "recommended_path": "Same as Django.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "fastapi": {
+    "verdict": "not-recommended",
+    "recommended_path": "Same as Flask. Proxy + Tunnel + WAF. Honest assessment: Python doesn't run on Workers.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "spring-boot": {
+    "verdict": "not-recommended",
+    "recommended_path": "JVM doesn't run on Workers. Containers or stay on origin behind Cloudflare proxy.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "dotnet": {
+    "verdict": "not-recommended",
+    "recommended_path": "ASP.NET / .NET doesn't run on Workers. Containers or stay on origin behind Cloudflare proxy.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "go-monolith": {
+    "verdict": "partial",
+    "recommended_path": "Small Go services can sometimes be ported to Workers via WASM, but it's rarely worth the rewrite for a monolith. Prefer Containers (beta) or proxy-only.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "media-processing-heavy": {
+    "verdict": "not-recommended",
+    "recommended_path": "FFmpeg / headless browsers / ImageMagick at scale don't run on Workers. Orchestrate from Workers (queue + bindings) but keep the actual compute on R2 + Containers (beta) or external host.",
+    "caveats": [
+      "Browser Rendering API may cover the headless-Chrome use cases — check the catalog before discarding."
+    ],
+    "dependencies_to_flag": ["sharp (heavy use)", "ffmpeg", "imagemagick", "puppeteer (runtime)", "playwright (runtime)"]
+  },
+  "mysql-app": {
+    "verdict": "partial",
+    "recommended_path": "Workers + Hyperdrive in front of your existing MySQL is the lowest-risk path — origin DB stays where it is. D1 is SQLite, NOT MySQL — moving to D1 is a full rewrite.",
+    "caveats": [
+      "AUTO_INCREMENT vs AUTOINCREMENT, ENUM, TEXT vs CLOB, ON DUPLICATE KEY UPDATE, full-text search, stored procedures, triggers — all different in SQLite/D1.",
+      "Connection string belongs in `wrangler secret put`, never `[vars]`."
+    ],
+    "dependencies_to_flag": ["mysql2 (Workers-compatible via Hyperdrive)"]
+  },
+  "postgres-app": {
+    "verdict": "partial",
+    "recommended_path": "Hyperdrive in front of your existing Postgres (Supabase, Neon, RDS, self-hosted). D1 is SQLite, NOT Postgres — full rewrite if you want D1.",
+    "caveats": [
+      "pgBouncer transaction-pooling mode interacts with prepared statements — review the Hyperdrive docs.",
+      "Connection string belongs in `wrangler secret put`."
+    ],
+    "dependencies_to_flag": ["pg (Workers-compatible via Hyperdrive)", "@neondatabase/serverless"]
+  },
+  "mongodb-app": {
+    "verdict": "partial",
+    "recommended_path": "Cloudflare doesn't host MongoDB. Keep MongoDB Atlas (or your existing Mongo). Workers can talk to it via the Atlas Data API or a TCP-socket-compatible driver.",
+    "caveats": [
+      "Driver-over-TCP-sockets needs Workers TCP socket support and is heavier than the Data API.",
+      "Latency tradeoff: edge Worker → MongoDB Atlas region → back to user."
+    ],
+    "dependencies_to_flag": ["mongoose (TCP only)", "mongodb (TCP only)"]
+  },
+  "redis-app": {
+    "verdict": "partial",
+    "recommended_path": "Either keep external Redis (e.g., Upstash REST or Redis Cloud over TCP sockets) or replace with KV (eventually consistent) or Durable Objects (strong consistency, atomic counters).",
+    "caveats": [
+      "KV's ~60s propagation is fine for session stores, NOT fine for atomic counters.",
+      "Durable Objects = the right answer for per-key state machines, presence, rate limits."
+    ],
+    "dependencies_to_flag": ["ioredis (TCP only)", "redis (TCP only)"]
+  },
+  "websocket-heavy": {
+    "verdict": "partial",
+    "recommended_path": "Durable Objects host WebSocket sessions natively. Works well for chat, presence, collab. Plan flags duration limits and pricing model — long-lived connections bill on duration.",
+    "caveats": [
+      "32-MB DO memory ceiling per object.",
+      "Hibernation API reduces idle cost — check whether your protocol fits."
+    ],
+    "dependencies_to_flag": ["socket.io (server)", "ws (server)"]
+  },
+  "long-running-compute": {
+    "verdict": "not-recommended",
+    "recommended_path": "Workers max CPU is 30s per invocation (5min on Workers Unbound, but still bounded). For multi-minute compute, use Containers (beta) or keep on origin.",
+    "caveats": [],
+    "dependencies_to_flag": []
+  },
+  "s3-storage": {
+    "verdict": "strong",
+    "recommended_path": "R2 — same S3 API, zero egress fees. Migrate via `rclone sync s3:bucket r2:bucket` or `aws s3 sync ... --endpoint-url=https://<account>.r2.cloudflarestorage.com`. Cutover order: dual-write window → switch reads → stop writes to S3 → archive S3.",
+    "caveats": [
+      "S3-specific features that R2 doesn't have: lifecycle for storage classes (R2 has one class), some IAM granularity differences, S3 Select.",
+      "Public bucket access on R2 uses custom domains or `.r2.dev` — verify CORS for browser uploads."
+    ],
+    "dependencies_to_flag": ["@aws-sdk/client-s3 (works against R2 with endpoint override)"]
+  }
+}

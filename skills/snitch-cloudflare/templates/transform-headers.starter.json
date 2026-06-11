@@ -1,0 +1,51 @@
+{
+  "rules": [
+    {
+      "action": "rewrite",
+      "description": "cloudflare-secure:security-headers",
+      "expression": "(true)",
+      "action_parameters": {
+        "headers": {
+          "Strict-Transport-Security": {
+            "operation": "set",
+            "value": "max-age=31536000; includeSubDomains; preload"
+          },
+          "X-Content-Type-Options": {
+            "operation": "set",
+            "value": "nosniff"
+          },
+          "X-Frame-Options": {
+            "operation": "set",
+            "value": "DENY"
+          },
+          "Referrer-Policy": {
+            "operation": "set",
+            "value": "strict-origin-when-cross-origin"
+          },
+          "Permissions-Policy": {
+            "operation": "set",
+            "value": "geolocation=(), microphone=(), camera=(), payment=()"
+          },
+          "Cross-Origin-Opener-Policy": {
+            "operation": "set",
+            "value": "same-origin"
+          },
+          "Cross-Origin-Resource-Policy": {
+            "operation": "set",
+            "value": "same-site"
+          },
+          "Content-Security-Policy": {
+            "operation": "set",
+            "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+          },
+          "Server": {
+            "operation": "remove"
+          },
+          "X-Powered-By": {
+            "operation": "remove"
+          }
+        }
+      }
+    }
+  ]
+}

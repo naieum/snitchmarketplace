@@ -1,0 +1,250 @@
+{
+  "_comment": "Canonical doc URLs per stack. Used by lib/stacks.sh to emit URL lists for Claude to WebFetch + WebSearch. Refreshed by lib/refresh_docs.sh.",
+
+  "nextjs": {
+    "framework_docs": [
+      "https://nextjs.org/docs",
+      "https://nextjs.org/docs/app/building-your-application/deploying"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/framework-guides/nextjs/",
+      "https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs/"
+    ],
+    "security_advisories": [
+      "https://github.com/vercel/next.js/security/advisories",
+      "https://nextjs.org/blog"
+    ]
+  },
+
+  "astro": {
+    "framework_docs": [
+      "https://docs.astro.build/",
+      "https://docs.astro.build/en/guides/deploy/"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/",
+      "https://docs.astro.build/en/guides/integrations-guide/cloudflare/"
+    ],
+    "security_advisories": [
+      "https://github.com/withastro/astro/security/advisories"
+    ]
+  },
+
+  "sveltekit": {
+    "framework_docs": [
+      "https://kit.svelte.dev/docs",
+      "https://kit.svelte.dev/docs/adapter-cloudflare"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-svelte-kit-site/"
+    ],
+    "security_advisories": [
+      "https://github.com/sveltejs/kit/security/advisories"
+    ]
+  },
+
+  "remix": {
+    "framework_docs": [
+      "https://remix.run/docs/en/main",
+      "https://remix.run/docs/en/main/guides/templates"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-remix-site/"
+    ],
+    "security_advisories": [
+      "https://github.com/remix-run/remix/security/advisories"
+    ]
+  },
+
+  "nuxt": {
+    "framework_docs": [
+      "https://nuxt.com/docs",
+      "https://nuxt.com/docs/getting-started/deployment"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-nuxt-site/"
+    ],
+    "security_advisories": [
+      "https://github.com/nuxt/nuxt/security/advisories"
+    ]
+  },
+
+  "solidstart": {
+    "framework_docs": [
+      "https://docs.solidjs.com/solid-start"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-solid-start-site/"
+    ],
+    "security_advisories": [
+      "https://github.com/solidjs/solid-start/security/advisories"
+    ]
+  },
+
+  "vite-spa": {
+    "framework_docs": [
+      "https://vitejs.dev/guide/",
+      "https://vitejs.dev/guide/static-deploy.html"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-a-vite-3-project/"
+    ],
+    "security_advisories": [
+      "https://github.com/vitejs/vite/security/advisories"
+    ]
+  },
+
+  "workers-native": {
+    "framework_docs": [],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/workers/",
+      "https://developers.cloudflare.com/workers/configuration/secrets/",
+      "https://developers.cloudflare.com/workers/observability/"
+    ],
+    "security_advisories": [
+      "https://blog.cloudflare.com/tag/security/"
+    ]
+  },
+
+  "pages-static": {
+    "framework_docs": [],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/pages/",
+      "https://developers.cloudflare.com/pages/configuration/headers/",
+      "https://developers.cloudflare.com/pages/configuration/redirects/"
+    ],
+    "security_advisories": [
+      "https://blog.cloudflare.com/tag/security/"
+    ]
+  },
+
+  "hono": {
+    "framework_docs": [
+      "https://hono.dev/docs/",
+      "https://hono.dev/docs/getting-started/cloudflare-workers"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/workers/frameworks/framework-guides/hono/"
+    ],
+    "security_advisories": [
+      "https://github.com/honojs/hono/security/advisories"
+    ]
+  },
+
+  "express": {
+    "framework_docs": [
+      "https://expressjs.com/en/advanced/best-practice-security.html",
+      "https://expressjs.com/en/guide/behind-proxies.html"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/workers/runtime-apis/nodejs/"
+    ],
+    "security_advisories": [
+      "https://github.com/expressjs/express/security/advisories"
+    ]
+  },
+
+  "fastify": {
+    "framework_docs": [
+      "https://fastify.dev/docs/latest/Reference/Server/#trustproxy",
+      "https://fastify.dev/docs/latest/Guides/Recommendations/"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://github.com/fastify/fastify/security/advisories"
+    ]
+  },
+
+  "nestjs": {
+    "framework_docs": [
+      "https://docs.nestjs.com/security/helmet",
+      "https://docs.nestjs.com/security/cors"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://github.com/nestjs/nest/security/advisories"
+    ]
+  },
+
+  "wordpress": {
+    "framework_docs": [
+      "https://codex.wordpress.org/Hardening_WordPress",
+      "https://wordpress.org/documentation/article/hardening-wordpress/"
+    ],
+    "cloudflare_docs": [
+      "https://developers.cloudflare.com/learning-paths/wordpress/"
+    ],
+    "security_advisories": [
+      "https://wordpress.org/news/category/security/"
+    ]
+  },
+
+  "laravel": {
+    "framework_docs": [
+      "https://laravel.com/docs/master/security",
+      "https://laravel.com/docs/master/requests#configuring-trusted-proxies"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://github.com/laravel/laravel/security/advisories"
+    ]
+  },
+
+  "rails": {
+    "framework_docs": [
+      "https://guides.rubyonrails.org/security.html",
+      "https://guides.rubyonrails.org/configuring.html"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://github.com/rails/rails/security/advisories",
+      "https://discuss.rubyonrails.org/c/security-announcements/9"
+    ]
+  },
+
+  "django": {
+    "framework_docs": [
+      "https://docs.djangoproject.com/en/stable/topics/security/",
+      "https://docs.djangoproject.com/en/stable/ref/middleware/#django.middleware.security.SecurityMiddleware"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://docs.djangoproject.com/en/stable/releases/security/",
+      "https://github.com/django/django/security/advisories"
+    ]
+  },
+
+  "flask": {
+    "framework_docs": [
+      "https://flask.palletsprojects.com/en/latest/security/",
+      "https://flask.palletsprojects.com/en/latest/deploying/proxy_fix/"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://github.com/pallets/flask/security/advisories"
+    ]
+  },
+
+  "spring-boot": {
+    "framework_docs": [
+      "https://docs.spring.io/spring-boot/reference/features/spring-application.html",
+      "https://docs.spring.io/spring-security/reference/"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://spring.io/security",
+      "https://github.com/spring-projects/spring-boot/security/advisories"
+    ]
+  },
+
+  "dotnet": {
+    "framework_docs": [
+      "https://learn.microsoft.com/en-us/aspnet/core/security/",
+      "https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer"
+    ],
+    "cloudflare_docs": [],
+    "security_advisories": [
+      "https://github.com/dotnet/aspnetcore/security/advisories"
+    ]
+  }
+}

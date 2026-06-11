@@ -1,0 +1,140 @@
+{
+  "_comment": "Per-stack foreign-tech blocking profile. Used by lib/rules.sh to assemble the foreign-tech WAF rule. Stacks NOT listed here fall back to 'static-html'. block_prefixes match http.request.uri.path with 'contains'. block_extensions are joined into a single (?i).*\\.(ext1|ext2|...)$ regex. block_paths_exact use eq. always_block applies to every stack (SCM/secret leaks).",
+
+  "_shared": {
+    "always_block_prefixes": [
+      "/.git", "/.svn", "/.hg", "/.bzr", "/.vscode", "/.idea", "/.DS_Store",
+      "/.env", "/.env.local", "/.env.production", "/.env.development",
+      "/credentials.json", "/secrets.json", "/.aws/", "/.npmrc", "/.pypirc",
+      "/Dockerfile", "/docker-compose.yml"
+    ],
+    "always_block_paths_exact": [
+      "/server-status", "/server-info", "/.htaccess", "/.htpasswd"
+    ]
+  },
+
+  "nextjs": {
+    "block_prefixes": [
+      "/wp-admin", "/wp-login.php", "/wp-content", "/wp-includes", "/wp-config.php",
+      "/wp-json", "/xmlrpc.php", "/wp-cron.php",
+      "/phpmyadmin", "/pma", "/myadmin", "/dbadmin", "/adminer.php", "/mysql",
+      "/administrator", "/typo3", "/sites/default/files",
+      "/manager/html", "/host-manager", "/wls-wsat", "/struts", "/jolokia", "/jmx-console", "/invoker",
+      "/CFIDE", "/cfusion",
+      "/Telerik.Web.UI.WebResource.axd", "/elmah.axd", "/trace.axd",
+      "/owa", "/Autodiscover", "/ews", "/EWS", "/Microsoft-Server-ActiveSync",
+      "/+CSCOE+", "/dana-na", "/global-protect", "/remote/login",
+      "/shell.php", "/cmd.php", "/c99.php", "/r57.php", "/wso.php"
+    ],
+    "block_extensions": ["php", "php3", "php5", "phtml", "asp", "aspx", "jsp", "jspx", "cfm", "cgi"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+
+  "astro":        { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+  "sveltekit":    { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+  "remix":        { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+  "nuxt":         { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+  "vite-spa":     { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+  "workers-native": { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+  "pages-static": { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+  "hono":         { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"], "block_paths_exact": [], "always_block": true },
+
+  "express":      { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm"], "block_paths_exact": [], "always_block": true },
+  "fastify":      { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm"], "block_paths_exact": [], "always_block": true },
+  "nestjs":       { "block_prefixes": ["__inherit_from__:nextjs"], "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm"], "block_paths_exact": [], "always_block": true },
+
+  "wordpress": {
+    "_note": "WordPress: do NOT block /wp-* prefixes or .php. Block other CMS admin and non-PHP dynamic extensions.",
+    "block_prefixes": [
+      "/phpmyadmin", "/pma", "/myadmin", "/dbadmin", "/adminer.php", "/mysql",
+      "/administrator", "/typo3", "/sites/default/files",
+      "/manager/html", "/host-manager", "/wls-wsat", "/struts", "/jolokia", "/jmx-console", "/invoker",
+      "/CFIDE", "/cfusion",
+      "/Telerik.Web.UI.WebResource.axd", "/elmah.axd", "/trace.axd",
+      "/owa", "/Autodiscover", "/ews", "/EWS", "/Microsoft-Server-ActiveSync",
+      "/+CSCOE+", "/dana-na", "/global-protect", "/remote/login",
+      "/shell.php.bak", "/c99.php.txt", "/r57.php.txt", "/wso.php.txt"
+    ],
+    "block_extensions": ["asp", "aspx", "jsp", "jspx", "cfm"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+
+  "laravel": {
+    "_note": "PHP stack — do NOT block .php / .phtml. Block CMS admin paths and non-PHP dynamic extensions.",
+    "block_prefixes": [
+      "/wp-admin", "/wp-login.php", "/wp-content", "/wp-includes", "/wp-config.php", "/wp-json", "/xmlrpc.php", "/wp-cron.php",
+      "/phpmyadmin", "/pma", "/myadmin", "/dbadmin", "/adminer.php",
+      "/administrator", "/typo3", "/sites/default/files",
+      "/manager/html", "/host-manager", "/wls-wsat", "/struts", "/jolokia", "/jmx-console", "/invoker",
+      "/CFIDE", "/cfusion",
+      "/Telerik.Web.UI.WebResource.axd", "/elmah.axd", "/trace.axd",
+      "/owa", "/Autodiscover", "/ews", "/EWS", "/Microsoft-Server-ActiveSync",
+      "/+CSCOE+", "/dana-na", "/global-protect", "/remote/login"
+    ],
+    "block_extensions": ["asp", "aspx", "jsp", "jspx", "cfm"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+
+  "rails": {
+    "_note": "Ruby/Rails. Block .php/.asp/.aspx/.jsp/.cfm — Ruby doesn't serve any of them.",
+    "block_prefixes": ["__inherit_from__:nextjs"],
+    "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+  "django": {
+    "_note": "Python/Django. Same as Rails — block all dynamic-language extensions Python doesn't use.",
+    "block_prefixes": ["__inherit_from__:nextjs"],
+    "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+  "flask": {
+    "_note": "Python/Flask. Same as Django.",
+    "block_prefixes": ["__inherit_from__:nextjs"],
+    "block_extensions": ["php","php3","php5","phtml","asp","aspx","jsp","jspx","cfm","cgi"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+
+  "spring-boot": {
+    "_note": "Java/Spring. Block .php/.asp/.aspx/.cfm. Do NOT block .jsp because some Spring deployments still serve JSPs (rare but real).",
+    "block_prefixes": [
+      "/wp-admin", "/wp-login.php", "/wp-content", "/wp-includes", "/wp-config.php", "/wp-json", "/xmlrpc.php",
+      "/phpmyadmin", "/pma", "/myadmin", "/dbadmin", "/adminer.php",
+      "/administrator", "/typo3", "/sites/default/files",
+      "/CFIDE", "/cfusion",
+      "/Telerik.Web.UI.WebResource.axd", "/elmah.axd", "/trace.axd",
+      "/owa", "/Autodiscover", "/ews", "/EWS", "/Microsoft-Server-ActiveSync"
+    ],
+    "block_extensions": ["php", "php3", "php5", "phtml", "asp", "aspx", "cfm", "cgi"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+
+  "dotnet": {
+    "_note": ".NET stack — do NOT block .aspx. Block PHP/JSP/CFM and known leaky .NET diagnostics endpoints if you don't actually expose them.",
+    "block_prefixes": [
+      "/wp-admin", "/wp-login.php", "/wp-content", "/wp-includes", "/wp-config.php", "/wp-json", "/xmlrpc.php", "/wp-cron.php",
+      "/phpmyadmin", "/pma", "/myadmin", "/dbadmin", "/adminer.php",
+      "/administrator", "/typo3", "/sites/default/files",
+      "/manager/html", "/host-manager", "/wls-wsat", "/struts", "/jolokia", "/jmx-console", "/invoker",
+      "/CFIDE", "/cfusion",
+      "/+CSCOE+", "/dana-na", "/global-protect", "/remote/login"
+    ],
+    "block_extensions": ["php", "php3", "php5", "phtml", "jsp", "jspx", "cfm", "cgi"],
+    "block_paths_exact": [],
+    "always_block": true
+  },
+
+  "static-html": {
+    "_note": "Plain static HTML. Block every dynamic-language extension — none of them should ever match a real file on this site.",
+    "block_prefixes": ["__inherit_from__:nextjs"],
+    "block_extensions": ["php", "php3", "php5", "phtml", "asp", "aspx", "jsp", "jspx", "cfm", "cgi", "do", "action"],
+    "block_paths_exact": [],
+    "always_block": true
+  }
+}

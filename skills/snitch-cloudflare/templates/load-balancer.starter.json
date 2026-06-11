@@ -1,0 +1,101 @@
+{
+  "_comment": "Cloudflare Load Balancer starter. ⚠️  COST NOTICE: LB bills per DNS query (currently ~$0.50 per million DNS queries on the LB endpoint, plus a per-LB monthly fee). For a single-origin app, this is often overkill — a Health Check + a static maintenance Pages site as a Worker fallback may serve you cheaper. Verify pricing at https://www.cloudflare.com/plans/load-balancing/ before applying.",
+
+  "load_balancer": {
+    "name": "{{lb_hostname}}",
+    "_note": "FQDN that public traffic resolves to. Replace any existing A/AAAA/CNAME for this hostname with a 'Cloudflare Load Balancer' record.",
+    "fallback_pool": "{{static_fallback_pool_id}}",
+    "default_pools": ["{{primary_pool_id}}", "{{standby_pool_id}}"],
+    "proxied": true,
+    "ttl": 30,
+    "steering_policy": "proximity",
+    "_steering_options_note": "off (round-robin by weight) | geo (per-region pool list) | dynamic_latency (lowest live RTT) | proximity (closest to user, default for global apps) | random | least_outstanding_requests (Enterprise)",
+    "session_affinity": "none",
+    "_session_affinity_options_note": "none | cookie (sets __cflb cookie, sticks user to one origin) | ip_cookie (cookie + IP fallback). Cookie affinity adds a ~24h sticky window — required for stateful uploaded sessions, breaks per-region cache locality.",
+    "session_affinity_ttl": 0,
+    "session_affinity_attributes": {
+      "samesite": "Auto",
+      "secure": "Auto",
+      "drain_duration": 0
+    },
+    "rules": [],
+    "country_pools": {},
+    "region_pools": {},
+    "pop_pools": {}
+  },
+
+  "pools": [
+    {
+      "id_placeholder": "{{primary_pool_id}}",
+      "name": "primary",
+      "_note": "Primary pool. Healthy-traffic destination. Latitude/longitude help proximity steering.",
+      "minimum_origins": 1,
+      "monitor": "{{health_check_id_for_healthz}}",
+      "notification_email": "",
+      "origins": [
+        {
+          "name": "primary-1",
+          "address": "{{origin_primary_ip_or_host}}",
+          "weight": 1,
+          "enabled": true,
+          "header": {
+            "Host": ["{{origin_host_header}}"]
+          }
+        }
+      ],
+      "load_shedding": {
+        "default_percent": 0,
+        "default_policy": "random",
+        "session_percent": 0,
+        "session_policy": "hash"
+      },
+      "latitude": 0,
+      "longitude": 0,
+      "check_regions": ["WEU", "ENAM", "WNAM"]
+    },
+    {
+      "id_placeholder": "{{standby_pool_id}}",
+      "name": "standby",
+      "_note": "Warm standby. Take over if primary fails. Set weight=1 for active-active, weight=0 to keep cold until manually failed-over.",
+      "minimum_origins": 1,
+      "monitor": "{{health_check_id_for_healthz}}",
+      "notification_email": "",
+      "origins": [
+        {
+          "name": "standby-1",
+          "address": "{{origin_standby_ip_or_host}}",
+          "weight": 1,
+          "enabled": true,
+          "header": {
+            "Host": ["{{origin_host_header}}"]
+          }
+        }
+      ],
+      "load_shedding": {
+        "default_percent": 0,
+        "default_policy": "random",
+        "session_percent": 0,
+        "session_policy": "hash"
+      },
+      "latitude": 0,
+      "longitude": 0,
+      "check_regions": ["WEU", "ENAM", "WNAM"]
+    },
+    {
+      "id_placeholder": "{{static_fallback_pool_id}}",
+      "name": "static-fallback",
+      "_note": "Last-resort fallback. Point at a Cloudflare Pages 'maintenance' deployment — a single static HTML that says 'we're updating'. Costs nothing and keeps the brand looking professional during full outages.",
+      "minimum_origins": 1,
+      "origins": [
+        {
+          "name": "pages-maintenance",
+          "address": "{{maintenance_pages_hostname}}",
+          "weight": 1,
+          "enabled": true,
+          "header": {}
+        }
+      ],
+      "check_regions": ["WEU", "ENAM"]
+    }
+  ]
+}

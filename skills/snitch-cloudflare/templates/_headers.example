@@ -1,0 +1,39 @@
+# Cloudflare Pages _headers file (security-headers starter)
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+# Edit per-route blocks below. Most-specific match wins; "/*" applies to everything.
+
+/*
+  # Force HTTPS for one year and submit to the HSTS preload list.
+  # Only enable "preload" when you are sure every subdomain serves HTTPS.
+  # Removing this header DOES NOT remove your domain from the preload list.
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # Stop browsers sniffing MIME types (defends against type-confusion XSS).
+  X-Content-Type-Options: nosniff
+  # Refuse to be framed. CSP frame-ancestors below is the modern equivalent;
+  # this header keeps older browsers safe.
+  X-Frame-Options: DENY
+  # Send origin only when downgrading to HTTP; full URL only on same-origin.
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Disable powerful features unless this site explicitly opts back in.
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  # Isolate the browsing context group; required for SharedArrayBuffer / cross-origin isolation.
+  Cross-Origin-Opener-Policy: same-origin
+  # Resources from this origin can only be loaded by same-site documents.
+  Cross-Origin-Resource-Policy: same-site
+  # CSP starter. Tighten or relax per stack overlay (see csp-stack-overlays.json).
+  # 'unsafe-inline' on style-src is still common; remove once you adopt nonces or hashes.
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+/api/*
+  # Never cache API responses at the edge or in the browser.
+  Cache-Control: no-store
+  # Vary on Authorization to make sure caches never key on it.
+  Vary: Authorization, Origin
+  # Per-endpoint CORS — replace with your real origin(s). Do not use "*".
+  # Access-Control-Allow-Origin: https://example.com
+  # Access-Control-Allow-Methods: GET, POST, OPTIONS
+  # Access-Control-Allow-Headers: Content-Type, Authorization
+  # Access-Control-Allow-Credentials: true
+  # Access-Control-Max-Age: 600
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer

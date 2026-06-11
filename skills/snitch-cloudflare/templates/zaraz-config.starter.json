@@ -1,0 +1,128 @@
+{
+  "_comment": "Zaraz starter configuration. Maps detected third-party tags to server-side execution + consent gating. Import via Zaraz dashboard (Manage Zaraz → Settings → Import). Tools that don't require consent run on every pageview; consent-required tools wait for the user's opt-in.",
+
+  "consent": {
+    "enabled": true,
+    "categories": [
+      {
+        "id": "functional",
+        "name": "Functional",
+        "description": "Required for core site functionality (payments, security). Cannot be disabled.",
+        "required": true,
+        "default": true
+      },
+      {
+        "id": "analytics",
+        "name": "Analytics",
+        "description": "Helps us understand how visitors use the site. No personal data is shared with advertisers.",
+        "required": false,
+        "default": false
+      },
+      {
+        "id": "marketing",
+        "name": "Marketing",
+        "description": "Used to deliver personalized advertising and measure ad performance.",
+        "required": false,
+        "default": false
+      }
+    ]
+  },
+
+  "triggers": [
+    {
+      "id": "pageview",
+      "name": "Pageview",
+      "match_rules": [
+        { "match": "{{ system.page.url.pathname }}", "op": "MATCH_REGEX", "value": ".*" }
+      ]
+    },
+    {
+      "id": "scroll-50",
+      "name": "Scroll 50%",
+      "client_events": ["scroll"],
+      "match_rules": [
+        { "match": "{{ client.scroll.percentage }}", "op": "GREATER_OR_EQUAL", "value": "50" }
+      ]
+    },
+    {
+      "id": "form-submit",
+      "name": "Form submit",
+      "client_events": ["submit"],
+      "match_rules": [
+        { "match": "{{ client.event.target.tagName }}", "op": "EQUALS", "value": "FORM" }
+      ]
+    }
+  ],
+
+  "tools": [
+    {
+      "name": "Stripe",
+      "type": "stripe",
+      "consent_required": false,
+      "consent_category": "functional",
+      "_note": "Payment functional tool; loads stripe.js. Required for checkout.",
+      "settings": {
+        "publishable_key": "{{STRIPE_PUBLISHABLE_KEY}}"
+      },
+      "actions": [
+        { "trigger": "pageview", "action_type": "load" }
+      ]
+    },
+    {
+      "name": "GA4",
+      "type": "google-analytics-4",
+      "consent_required": true,
+      "consent_category": "analytics",
+      "_note": "Google Analytics 4. Will not fire until user grants 'analytics' consent.",
+      "settings": {
+        "measurement_id": "{{GA4_MEASUREMENT_ID}}",
+        "anonymize_ip": true,
+        "send_page_view": true
+      },
+      "actions": [
+        { "trigger": "pageview", "action_type": "page_view" },
+        { "trigger": "scroll-50", "action_type": "event", "event_name": "scroll_50" },
+        { "trigger": "form-submit", "action_type": "event", "event_name": "form_submit" }
+      ]
+    },
+    {
+      "name": "Hotjar",
+      "type": "hotjar",
+      "consent_required": true,
+      "consent_category": "analytics",
+      "_note": "Session recording — definitely needs consent. Verify your privacy policy lists Hotjar by name.",
+      "settings": {
+        "site_id": "{{HOTJAR_SITE_ID}}",
+        "snippet_version": 6
+      },
+      "actions": [
+        { "trigger": "pageview", "action_type": "load" }
+      ]
+    },
+    {
+      "name": "Hubspot",
+      "type": "hubspot",
+      "consent_required": true,
+      "consent_category": "marketing",
+      "settings": {
+        "portal_id": "{{HUBSPOT_PORTAL_ID}}"
+      },
+      "actions": [
+        { "trigger": "pageview", "action_type": "load" }
+      ]
+    },
+    {
+      "name": "GTM",
+      "type": "google-tag-manager",
+      "consent_required": true,
+      "consent_category": "marketing",
+      "_note": "Google Tag Manager fans out to many downstream tags — easier to bypass GTM and configure each tag in Zaraz directly. Listed here only because it's commonly detected.",
+      "settings": {
+        "container_id": "{{GTM_CONTAINER_ID}}"
+      },
+      "actions": [
+        { "trigger": "pageview", "action_type": "load" }
+      ]
+    }
+  ]
+}

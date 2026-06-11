@@ -1,0 +1,48 @@
+# Content-Security-Policy starters per stack.
+# Pick the block that matches your project, paste into the _headers file or a
+# Transform Rule (response_headers_transform). Tighten as your build allows.
+# Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+# Test in Report-Only mode first: Content-Security-Policy-Report-Only: ...
+
+# ---------------------------------------------------------------
+# 1) Vanilla static site (HTML + a tiny bit of JS, no framework)
+# ---------------------------------------------------------------
+# Strictest baseline. Inline styles only. No third parties.
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+# ---------------------------------------------------------------
+# 2) Next.js (production)
+# ---------------------------------------------------------------
+# 'unsafe-inline' on script-src is required by Next's runtime injection unless
+# you adopt nonce-based CSP via middleware. Replace 'unsafe-inline' with a
+# per-request nonce ('nonce-XXXX') as soon as you can.
+# Use 'unsafe-eval' ONLY in dev (next dev). Strip it in prod.
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://vitals.vercel-insights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+# ---------------------------------------------------------------
+# 3) Astro (server output via @astrojs/cloudflare)
+# ---------------------------------------------------------------
+# Astro emits inline styles for component-scoped CSS. Inline scripts are rare;
+# prefer client:load with separate files so script-src stays strict.
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+# ---------------------------------------------------------------
+# 4) SvelteKit (adapter-cloudflare)
+# ---------------------------------------------------------------
+# SvelteKit hydration injects inline <script> for client-side state. Until you
+# move to a nonce-aware CSP via hooks.server.ts, allow 'unsafe-inline'.
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+# ---------------------------------------------------------------
+# 5) Stripe Elements / Stripe.js
+# ---------------------------------------------------------------
+# Stripe loads js.stripe.com and frames hooks.stripe.com. Required exact origins.
+# Docs: https://docs.stripe.com/security/guide#content-security-policy
+Content-Security-Policy: default-src 'self'; script-src 'self' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+# ---------------------------------------------------------------
+# 6) Cloudflare Turnstile
+# ---------------------------------------------------------------
+# Turnstile loads from challenges.cloudflare.com and frames the same origin.
+# Docs: https://developers.cloudflare.com/turnstile/get-started/content-security-policy/
+Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests

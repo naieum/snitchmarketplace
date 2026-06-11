@@ -1,0 +1,165 @@
+name: snitch-cloudflare audit (PR)
+
+# What this audits: the user's Cloudflare ACCOUNT/ZONE posture (DNS, SSL, WAF,
+# rules, Workers/Pages settings). It does NOT audit the contents of this
+# repo — it audits the live Cloudflare configuration that this repo deploys to.
+#
+# Required repo secret: CLOUDFLARE_API_TOKEN (READ-ONLY scoped — see
+# templates/token-permissions.checklist.md, "Read-only token" section).
+#
+# Behavior:
+#   - Runs `snitch-cloudflare audit all` (read-only) and posts the JSON
+#     posture envelope as a PR comment for review.
+#   - Operational errors (auth/API failures) fail the workflow.
+#   - Posture findings are advisory — the agent/reviewer triages them from the
+#     posted envelope. (The old one-shot `check` verdict command was removed
+#     upstream; gate thresholds are left to each team to define from the JSON.)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write   # to comment results back on the PR
+
+concurrency:
+  group: snitch-cloudflare-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Cloudflare posture audit
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.draft == false }}
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Verify API token is present
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::Repo secret CLOUDFLARE_API_TOKEN is not set."
+            echo "Create one at https://dash.cloudflare.com/profile/api-tokens"
+            echo "with the read-only scopes from token-permissions.checklist.md."
+            exit 1
+          fi
+
+      - name: Install jq + curl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends jq curl
+          jq --version
+          curl --version | head -n 1
+
+      - name: Fetch snitch-cloudflare skill
+        run: |
+          SKILL_DIR="$HOME/.claude/skills/snitch-cloudflare"
+          mkdir -p "$HOME/.claude/skills"
+          # Prefer a vendored copy in this repo (./.snitch-cloudflare). Otherwise
+          # sparse-clone the skill from the Snitch marketplace monorepo.
+          if [ -d "./.snitch-cloudflare" ]; then
+            cp -R ./.snitch-cloudflare "$SKILL_DIR"
+          else
+            git clone --depth 1 --filter=blob:none --sparse \
+              https://github.com/naieum/snitchmarketplace.git /tmp/snitchmp 2>/dev/null \
+              && git -C /tmp/snitchmp sparse-checkout set skills/snitch-cloudflare \
+              && cp -R /tmp/snitchmp/skills/snitch-cloudflare "$SKILL_DIR" \
+              || { echo "::error::Could not obtain the snitch-cloudflare skill. Vendor it at ./.snitch-cloudflare or grant access to the marketplace repo."; exit 1; }
+          fi
+          chmod +x "$SKILL_DIR/snitch-cloudflare.sh"
+
+      - name: Run posture audit (read-only)
+        id: audit
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CFSEC_ZONE_ID: ${{ vars.CLOUDFLARE_ZONE_ID }}
+          CFSEC_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          SKILL="$HOME/.claude/skills/snitch-cloudflare/snitch-cloudflare.sh"
+          # `audit all` emits a JSON envelope: { lenses[], delegated[], compose_also[] }.
+          bash "$SKILL" audit all > /tmp/cf-audit.json 2> /tmp/cf-audit.err
+          rc=$?
+          # Count operational errors and locked (paid-tier) surfaces for the summary.
+          errors=$(jq '[.. | objects | select(has("error"))] | length' /tmp/cf-audit.json 2>/dev/null || echo 0)
+          locked=$(jq '[.. | objects | select(has("locked"))] | length' /tmp/cf-audit.json 2>/dev/null || echo 0)
+          {
+            echo "rc=$rc"
+            echo "errors=${errors:-0}"
+            echo "locked=${locked:-0}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Post PR comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let envelope = '';
+            try { envelope = fs.readFileSync('/tmp/cf-audit.json', 'utf8'); } catch (e) { envelope = ''; }
+            let pretty = envelope;
+            try { pretty = JSON.stringify(JSON.parse(envelope), null, 2); } catch (e) {}
+            const rc = parseInt('${{ steps.audit.outputs.rc }}', 10) || 0;
+            const errors = parseInt('${{ steps.audit.outputs.errors }}', 10) || 0;
+            const locked = parseInt('${{ steps.audit.outputs.locked }}', 10) || 0;
+            const verdict = (rc !== 0 || errors > 0) ? '⚠️ audit errors' : 'ℹ️ review posture';
+            const truncated = pretty.length > 60000
+              ? pretty.slice(0, 60000) + '\n\n... [truncated; full envelope in workflow logs] ...'
+              : (pretty || '(no audit output — see workflow logs)');
+            const body = [
+              '## snitch-cloudflare audit — ' + verdict,
+              '',
+              '| Operational errors | Locked (paid-tier) surfaces |',
+              '|---|---|',
+              '| ' + errors + ' | ' + locked + ' |',
+              '',
+              errors > 0 ? '> Operational errors above (auth/API). Fix the token or scopes, then re-run.' : '',
+              '> Posture findings are advisory — triage them from the envelope below.',
+              '',
+              '<details><summary>Audit envelope (JSON)</summary>',
+              '',
+              '```json',
+              truncated,
+              '```',
+              '</details>'
+            ].join('\n');
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            const existing = comments.find(c =>
+              c.user.type === 'Bot' && c.body && c.body.startsWith('## snitch-cloudflare audit')
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }
+
+      - name: Gate on operational errors
+        run: |
+          rc="${{ steps.audit.outputs.rc }}"
+          errors="${{ steps.audit.outputs.errors }}"
+          if [ "${rc:-0}" != "0" ] || [ "${errors:-0}" -gt 0 ]; then
+            echo "::error::snitch-cloudflare audit hit operational errors (rc=${rc:-?}, errors=${errors:-?}). See the PR comment / logs."
+            cat /tmp/cf-audit.err 2>/dev/null || true
+            exit 1
+          fi
+          echo "Audit completed. Posture findings are advisory — review the PR comment."

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "primary-origin-healthz",
+    "address": "{{origin_hostname}}",
+    "type": "https",
+    "method": "GET",
+    "path": "/healthz",
+    "expected_codes": ["2xx"],
+    "expected_body": "",
+    "follow_redirects": false,
+    "allow_insecure": false,
+    "interval": 60,
+    "timeout": 5,
+    "retries": 2,
+    "consecutive_fails": 1,
+    "consecutive_successes": 2,
+    "check_regions": ["WEU", "ENAM", "WNAM"],
+    "notification": {
+      "suspended": false,
+      "email_addresses": []
+    },
+    "_note": "Canonical health path. /healthz is unauthenticated, returns 200 with body 'ok'. consecutive_fails=1 + retries=2 means: a single full failure with both retries failed marks the origin unhealthy."
+  },
+  {
+    "name": "primary-origin-api-health",
+    "address": "{{origin_hostname}}",
+    "type": "https",
+    "method": "GET",
+    "path": "/api/health",
+    "expected_codes": ["2xx"],
+    "expected_body": "",
+    "follow_redirects": false,
+    "allow_insecure": false,
+    "interval": 60,
+    "timeout": 5,
+    "retries": 2,
+    "consecutive_fails": 1,
+    "consecutive_successes": 2,
+    "check_regions": ["WEU", "ENAM", "WNAM"],
+    "notification": {
+      "suspended": false,
+      "email_addresses": []
+    },
+    "_note": "Application-tier check. Hits the API stack so it catches DB / cache / queue connectivity issues that /healthz might not."
+  },
+  {
+    "name": "primary-origin-deep-health",
+    "address": "{{origin_hostname}}",
+    "type": "https",
+    "method": "GET",
+    "path": "/_health",
+    "expected_codes": ["2xx"],
+    "expected_body": "ok",
+    "follow_redirects": false,
+    "allow_insecure": false,
+    "interval": 60,
+    "timeout": 10,
+    "retries": 1,
+    "consecutive_fails": 2,
+    "consecutive_successes": 2,
+    "check_regions": ["WEU", "ENAM", "WNAM", "WAS"],
+    "notification": {
+      "suspended": false,
+      "email_addresses": []
+    },
+    "_note": "Deep health: heavier check that exercises DB read + cache + downstream APIs. consecutive_fails=2 prevents flap. Body match 'ok' guards against captive-portal / proxy intermediaries returning 200 with HTML."
+  }
+]

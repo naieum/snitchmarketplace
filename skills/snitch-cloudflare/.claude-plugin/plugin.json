@@ -1,0 +1,9 @@
+{
+  "name": "snitch-cloudflare",
+  "description": "Cloudflare security + readiness skill. Thin tools for the agent to compose. Audits zone/account/Workers/Pages/Tunnel/Access posture, applies free + plan-tier hardening, and produces honest migration / scaling guidance. Powered by Snitch.",
+  "version": "1.0.0",
+  "author": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "homepage": "https://snitchplugin.com",
+  "license": "BUSL-1.1",
+  "keywords": ["cloudflare", "security", "hardening", "waf", "dnssec", "hsts", "zero-trust", "readiness", "snitch"]
+}

@@ -1,0 +1,101 @@
+# Hardened wrangler.toml starter.
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/
+# Replace every {{placeholder}} before deploying. Idempotent — safe to re-import.
+
+# Worker name. Lowercase, hyphenated, ≤63 chars. Becomes the workers.dev subdomain unless disabled.
+name = "{{worker_name}}"
+# Entrypoint — keep src/ outside the deployable bundle to avoid leaking source maps.
+main = "src/index.ts"
+# Pin the runtime contract date. Bump deliberately, after testing — never blindly.
+compatibility_date = "{{today_yyyy_mm_dd}}"
+# Compatibility flags. DO NOT add "nodejs_compat" unless your code actually needs Node built-ins.
+# It enlarges the bundle, slows cold-start, and pulls in shims you may not have audited.
+compatibility_flags = []
+
+# Disable the public *.workers.dev preview for production. Set to true ONLY in non-prod.
+workers_dev = false
+
+# Smart Placement reduces RTT to your origin / external services.
+# Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/
+[placement]
+mode = "smart"
+
+# Tracing + sampled logs. head_sampling_rate=0.1 = 10% of requests; raise for incidents.
+# Docs: https://developers.cloudflare.com/workers/observability/
+[observability]
+enabled = true
+head_sampling_rate = 0.1
+
+# ----------------------------------------------------------------------------
+# [vars] — PLAINTEXT, NON-SECRET configuration only.
+# These ship inside the deployed bundle and are visible to anyone with read
+# access to the worker. NEVER put API keys, DB connection strings, JWT
+# secrets, or anything sensitive here. Use secrets instead:
+#   wrangler secret put DATABASE_URL
+#   wrangler secret put OPENAI_API_KEY
+# Local dev: copy templates/dev-vars.template -> .dev.vars (gitignored).
+# ----------------------------------------------------------------------------
+[vars]
+ENVIRONMENT = "production"
+LOG_LEVEL = "info"
+PUBLIC_APP_URL = "https://{{domain}}"
+
+# ----------------------------------------------------------------------------
+# Routes — production only. Stage routes belong in [env.staging].
+# Docs: https://developers.cloudflare.com/workers/configuration/routing/routes/
+# ----------------------------------------------------------------------------
+routes = [
+  { pattern = "{{domain}}/*", zone_name = "{{domain}}" },
+  { pattern = "www.{{domain}}/*", zone_name = "{{domain}}" }
+]
+
+# ----------------------------------------------------------------------------
+# Bindings. Each binding becomes env.<name> in the worker.
+# IDs must reference resources scoped to THIS account/zone — review on every
+# environment promotion.
+# ----------------------------------------------------------------------------
+
+# KV: never store secrets here. KV is eventually consistent (~60s).
+# Docs: https://developers.cloudflare.com/kv/
+[[kv_namespaces]]
+binding = "CACHE"
+id = "{{kv_namespace_id}}"
+preview_id = "{{kv_preview_id}}"
+
+# R2: prefer pre-signed URLs for browser downloads. Buckets default to private.
+# Docs: https://developers.cloudflare.com/r2/
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "{{r2_bucket_name}}"
+preview_bucket_name = "{{r2_bucket_name}}-preview"
+
+# D1: SQLite at the edge. Use prepared statements (env.DB.prepare) — never
+# string-concat user input into SQL.
+# Docs: https://developers.cloudflare.com/d1/
+[[d1_databases]]
+binding = "DB"
+database_name = "{{d1_database_name}}"
+database_id = "{{d1_database_id}}"
+
+# Build hook. Runs locally before publish and on Pages deploys.
+# Keep build output deterministic; pin Node version via .nvmrc / package.json.
+[build]
+command = "npm run build"
+cwd = "."
+watch_dir = "src"
+
+# ----------------------------------------------------------------------------
+# Per-environment overrides. Always run staging behind Cloudflare Access so
+# preview URLs aren't crawled or attacked.
+# ----------------------------------------------------------------------------
+[env.staging]
+name = "{{worker_name}}-staging"
+workers_dev = false
+routes = [
+  { pattern = "staging.{{domain}}/*", zone_name = "{{domain}}" }
+]
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+LOG_LEVEL = "debug"
+PUBLIC_APP_URL = "https://staging.{{domain}}"

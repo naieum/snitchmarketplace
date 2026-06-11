@@ -1,0 +1,26 @@
+[
+  {
+    "description": "cloudflare-secure:block-known-bad-UAs",
+    "expression": "(http.user_agent contains \"sqlmap\") or (http.user_agent contains \"nikto\") or (http.user_agent contains \"nmap\") or (http.user_agent contains \"masscan\") or (http.user_agent contains \"acunetix\") or (http.user_agent contains \"nessus\") or (http.user_agent contains \"openvas\") or (http.user_agent contains \"wpscan\") or (http.user_agent contains \"dirbuster\") or (http.user_agent contains \"gobuster\") or (http.user_agent contains \"feroxbuster\") or (http.user_agent contains \"ffuf\") or (http.user_agent contains \"hydra\") or (http.user_agent contains \"havij\") or (http.user_agent contains \"morfeus\") or (http.user_agent contains \"zgrab\") or (http.user_agent contains \"l9scan\") or (http.user_agent contains \"researchscan\") or (http.user_agent eq \"\") or (lower(http.user_agent) contains \"python-requests\" and not http.request.uri.path matches \"^/api/(public|webhooks)/\")",
+    "action": "block",
+    "notes": "Active-recon and pentest tooling fingerprints. The trailing python-requests guard avoids false-positives for legitimate webhook callers — adjust to match your real ingestion paths. Keep this rule above the Cloudflare Managed Ruleset so blocks count toward your firewall analytics with this description."
+  },
+  {
+    "description": "cloudflare-secure:block-OFAC-sanctioned-countries",
+    "expression": "(ip.geoip.country in {\"CU\" \"IR\" \"KP\" \"SY\" \"RU\" \"BY\"}) or (ip.geoip.subdivision_1_iso_code in {\"UA-43\" \"UA-09\" \"UA-14\"})",
+    "action": "block",
+    "notes": "OFAC-sanctioned regions plus Crimea and the LPR/DPR oblasts (UA-43 Crimea, UA-09 Luhansk, UA-14 Donetsk). Verify against your legal counsel — sanctions lists change. Switch action to 'managed_challenge' first if you have legitimate users in any of these regions and need a soft block."
+  },
+  {
+    "description": "cloudflare-secure:block-suspicious-methods-on-api",
+    "expression": "(starts_with(http.request.uri.path, \"/api/\")) and (http.request.method in {\"TRACE\" \"TRACK\" \"DEBUG\" \"CONNECT\" \"PROPFIND\" \"PROPPATCH\" \"MKCOL\" \"COPY\" \"MOVE\" \"LOCK\" \"UNLOCK\"})",
+    "action": "block",
+    "notes": "Most JSON APIs only need GET/POST/PUT/PATCH/DELETE/OPTIONS/HEAD. WebDAV verbs and TRACE are common probe vectors and almost never legitimate. Tighten the path prefix to your real API root if it isn't /api/."
+  },
+  {
+    "description": "cloudflare-secure:log-suspicious-paths-for-review",
+    "expression": "(http.request.uri.path contains \"/.well-known/security.txt\") or (http.request.uri.path contains \"/robots.txt\" and http.request.method ne \"GET\") or (http.request.uri.path matches \"(?i)/(admin|administrator|wp-admin|console|dashboard|manage|portal)\") or (http.request.uri.query contains \"=eval(\") or (http.request.uri.query contains \"=base64_\") or (http.request.uri.query contains \"<script\")",
+    "action": "log",
+    "notes": "Surface admin-path probes and obvious injection payloads in firewall events without blocking, so you can build a baseline before flipping the action to 'managed_challenge' or 'block'. The 'log' action requires Pro+; on Free, change to 'managed_challenge' or skip this rule."
+  }
+]

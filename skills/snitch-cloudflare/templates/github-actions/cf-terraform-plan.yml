@@ -1,0 +1,143 @@
+name: snitch-cloudflare terraform plan
+
+# Runs `terraform plan` against the Cloudflare resources defined in this repo
+# whenever a PR touches *.tf files. Comments the plan back on the PR so the
+# changes flow through normal review.
+#
+# Required repo secret: CLOUDFLARE_API_TOKEN (with edit scopes — plan needs
+# read access to compute drift; if you want a strict-read token, run plan with
+# -refresh=false and accept the loss of drift detection).
+
+on:
+  pull_request:
+    paths:
+      - "**/*.tf"
+      - "**/*.tfvars"
+      - ".github/workflows/cf-terraform-plan.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: cf-tf-plan-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    name: terraform plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Locate terraform directory
+        id: locate
+        run: |
+          # First *.tf change determines the working dir for plan.
+          first_tf=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*.tf' '*.tfvars' | head -n 1)
+          if [ -z "$first_tf" ]; then
+            echo "No .tf changes in the diff; nothing to plan."
+            echo "tf_dir=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          dir=$(dirname "$first_tf")
+          echo "tf_dir=$dir" >> "$GITHUB_OUTPUT"
+          echo "Detected terraform directory: $dir"
+
+      - name: Setup Terraform
+        if: steps.locate.outputs.tf_dir != ''
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.8.0"
+          terraform_wrapper: true
+
+      - name: terraform fmt check
+        if: steps.locate.outputs.tf_dir != ''
+        working-directory: ${{ steps.locate.outputs.tf_dir }}
+        run: terraform fmt -check -recursive
+
+      - name: terraform init
+        if: steps.locate.outputs.tf_dir != ''
+        working-directory: ${{ steps.locate.outputs.tf_dir }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: terraform init -input=false -no-color
+
+      - name: terraform validate
+        if: steps.locate.outputs.tf_dir != ''
+        working-directory: ${{ steps.locate.outputs.tf_dir }}
+        run: terraform validate -no-color
+
+      - name: terraform plan
+        if: steps.locate.outputs.tf_dir != ''
+        id: plan
+        working-directory: ${{ steps.locate.outputs.tf_dir }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_account_id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          TF_VAR_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
+        run: |
+          set -o pipefail
+          terraform plan -no-color -input=false -out=tfplan.bin 2>&1 | tee /tmp/tf-plan.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Post plan to PR
+        if: steps.locate.outputs.tf_dir != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('/tmp/tf-plan.txt', 'utf8');
+            const truncated = plan.length > 60000
+              ? plan.slice(0, 60000) + '\n\n... [truncated; full plan in workflow logs] ...'
+              : plan;
+            const body = [
+              '## terraform plan (Cloudflare)',
+              '',
+              'Working directory: `${{ steps.locate.outputs.tf_dir }}`',
+              '',
+              '<details><summary>Plan output</summary>',
+              '',
+              '```hcl',
+              truncated,
+              '```',
+              '</details>',
+              '',
+              'Review the plan above. Merging this PR DOES NOT apply it — apply runs in your separate `terraform apply` workflow or locally.'
+            ].join('\n');
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            const existing = comments.find(c =>
+              c.user.type === 'Bot' && c.body && c.body.startsWith('## terraform plan (Cloudflare)')
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }
+
+      - name: Fail on plan error
+        if: steps.locate.outputs.tf_dir != ''
+        run: |
+          rc=${{ steps.plan.outputs.exit_code }}
+          if [ "${rc:-0}" -ne 0 ] && [ "${rc:-0}" -ne 2 ]; then
+            echo "::error::terraform plan failed (exit code $rc)."
+            exit 1
+          fi
+          echo "terraform plan completed (rc=$rc; 0=no changes, 2=changes pending)."

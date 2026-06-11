@@ -1,0 +1,13 @@
+{
+  "description": "cloudflare-secure:rate-limit-auth",
+  "expression": "(http.request.method eq \"POST\") and ((http.request.uri.path eq \"/login\") or (http.request.uri.path eq \"/signup\") or (starts_with(http.request.uri.path, \"/api/auth/\")))",
+  "action": "managed_challenge",
+  "ratelimit": {
+    "characteristics": ["ip.src"],
+    "period": 60,
+    "requests_per_period": 5,
+    "mitigation_timeout": 600,
+    "counting_expression": ""
+  },
+  "notes": "Rate-limit auth endpoints to 5 POSTs per IP per 60s. After threshold, the source IP is challenged for 10 minutes. POST /login, POST /signup, and POST /api/auth/* are covered. Tune the path list to match your real auth surface (e.g., /sign-in, /forgot-password). Free plan supports 1 rate-limit rule. For multi-tenant SaaS, switch the characteristic to ip.src + http.request.uri.path or use the Workers Rate Limiting binding for per-user keys."
+}
