@@ -1,0 +1,127 @@
+{
+  "slug": "mike-monteiro",
+  "name": "Mike Monteiro",
+  "era": "1967–present",
+  "disciplines": [
+    "design ethics",
+    "design management",
+    "interaction design",
+    "design advocacy",
+    "public speaking",
+    "writing",
+    "design education"
+  ],
+  "philosophy": "Design is a job. Not a calling, not a lifestyle, not an identity — a job. And like any job, it comes with professional obligations and moral responsibilities. You are directly responsible for what you put into the world, and you are also responsible for the effects those things have on the world. The world works exactly as designed — we designed it broken. Cookie consent dark patterns, infinite scroll engineered for addiction, notification spam, checkout flows that bury the cancel button, algorithmic feeds that radicalize users — designers built all of this. Ethics cannot be a side hustle. Design is a political act: what you choose to design, what you refuse to design, who you include, who you exclude — these are all political decisions. Hiding behind 'I just designed it, I don't decide how it's used' is not a defense; it is an abdication. We're going to be held accountable for just following orders, and that is a very good thing. Stop fetishizing process and start taking accountability for outcomes. A designer who calls themselves a designer but does not consider the impact of their work on the people they serve is no designer at all.",
+  "principles": [
+    "You are directly responsible for what you put into the world and its effects — there is no such thing as 'just following the brief'",
+    "Ethics cannot be a side hustle — moral obligations cannot be suspended because a client is paying",
+    "Design is a political act — choosing what to design, what to refuse, and who to include are all political decisions",
+    "Dark patterns are not clever UX, they are theft — confirmshaming, hidden costs, roach motels, and bait-and-switch harm real people",
+    "Accessibility is a civil rights issue, not a nice-to-have — designing an inaccessible product is designing a product that excludes people",
+    "Get diverse perspectives on your team instead of running workshops to study them — homogeneous teams build exclusionary products",
+    "Charge appropriately for your work — undercharging devalues the entire profession and makes you complicit in your own exploitation",
+    "Say no to unethical work — your skills are not neutral tools available to whoever pays the most regardless of impact",
+    "Defend your design decisions, never become defensive about them — there is a difference",
+    "Only hire designers who question unnecessary data collection — those who protect user privacy over aesthetic arrangement"
+  ],
+  "signature_quotes": [
+    "You are directly responsible for what you put into the world. And you are also responsible for the effects those things have on the world.",
+    "Ethics cannot be a side hustle.",
+    "The world works exactly as designed — we designed it broken.",
+    "Design is a political act.",
+    "Design disasters spring from treating design as art, not craft.",
+    "Get women on your design team instead of studying them.",
+    "Beware designers wanting to be liked more than doing good work.",
+    "We're going to be held accountable for just following orders. And I think this is a very good thing.",
+    "A designer is someone who can solve a problem within constraints — a problem solver who listens and ensures intended outcomes.",
+    "If you can stand in front of a client completely confident and explain why you are worth the amount you quoted, you should charge it.",
+    "Making money to someone else's detriment makes you complicit in that person's suffering."
+  ],
+  "quote_sources": {
+    "You are directly responsible for what you put into the world. And you are also responsible for the effects those things have on the world.": "Ruined by Design: How Designers Destroyed the World, and What We Can Do to Fix It (2019), core thesis statement repeated throughout the book",
+    "Ethics cannot be a side hustle.": "Ruined by Design (2019), a central maxim of the book arguing that ethical obligations cannot be suspended for paying clients",
+    "The world works exactly as designed — we designed it broken.": "Ruined by Design (2019), paraphrased from 'The world isn't broken. It's working exactly as it was designed to work. And we're the ones who designed it.'",
+    "Design is a political act.": "Ruined by Design (2019), Chapter 1: 'I intend to show you that design is a political act. What we choose to design and more importantly, what we choose not to design... these are all political acts.'",
+    "Design disasters spring from treating design as art, not craft.": "You're My Favorite Client (A Book Apart, 2014): 'Design disasters usually spring from the faulty notion that design is art not craft.'",
+    "Get women on your design team instead of studying them.": "Ruined by Design (2019), from the critique of empathy workshops as a substitute for diverse hiring — arguing that studying underrepresented groups is not a substitute for including them on the team",
+    "Beware designers wanting to be liked more than doing good work.": "You're My Favorite Client (A Book Apart, 2014): 'Beware a designer who wants you to like them more than they want to do good work.'",
+    "We're going to be held accountable for just following orders. And I think this is a very good thing.": "From the Webstock 2013 talk 'How Designers Destroyed the World' and the Clearleft interview, referencing the VW engineer sentenced to 40 months for designing deceptive emissions software; also echoed in Ruined by Design",
+    "A designer is someone who can solve a problem within constraints — a problem solver who listens and ensures intended outcomes.": "Design Is a Job (A Book Apart, 2012), from the chapter on defining design as a professional discipline with specific responsibilities",
+    "If you can stand in front of a client completely confident and explain why you are worth the amount you quoted, you should charge it.": "Design Is a Job (A Book Apart, 2012), from the chapter on pricing and the professional obligation to charge appropriately",
+    "Making money to someone else's detriment makes you complicit in that person's suffering.": "Ruined by Design (2019), on the ethical responsibility that comes with profiting from design decisions that harm users"
+  },
+  "typographic_specifics": {
+    "championed_typefaces": [
+      "Practical, readable system fonts and workhorse sans-serifs — Monteiro's typography philosophy prioritizes legibility and accessibility over aesthetic sophistication",
+      "Helvetica and Arial — not as design ideals but as examples of typefaces that are readable and functional, even if uninspired",
+      "Georgia and Charter — readable serif faces for long-form body text that maintain legibility across devices and screen qualities",
+      "System font stacks (system-ui, -apple-system) — because font loading should never delay access to content"
+    ],
+    "designed_typefaces": [],
+    "preferred_weights": "Regular (400) minimum for body text — never lighter. Monteiro explicitly condemns Ultra-light and Thin weights for body copy as exclusionary toward users with low vision, the elderly, and anyone reading in suboptimal conditions. Bold (700) for emphasis and headings. Medium (500) for UI labels. Typography should never sacrifice readability for aesthetic delicacy.",
+    "grid_system": "Purpose-driven, mobile-first layouts where every element earns its place by serving a clear user need. No decorative grid — the structure exists to guide users through tasks efficiently. Cancel buttons are as prominent as confirm buttons. Unsubscribe links are as findable as subscribe calls to action. Keyboard navigation and focus order define the true layout, not just the visual arrangement.",
+    "color_palette": {
+      "primary": "#111111",
+      "background": "#FFFFFF",
+      "accent": "#B91C1C",
+      "link": "#1D4ED8",
+      "success": "#15803D",
+      "warning": "#A16207",
+      "rationale": "Monteiro's color philosophy is entirely ethical, not aesthetic. Near-black text (#111111) on white (#FFFFFF) for maximum readability — he condemns light gray body text (#999999 or lighter on white) as an accessibility failure that excludes people with low vision. Red (#B91C1C) for errors and ethical urgency — the color of warning, not decoration. Blue (#1D4ED8) for links, following the web convention that aids recognition. Every color must meet WCAG AA contrast ratios (4.5:1 minimum for normal text, 3:1 for large text) and ideally AAA (7:1). Color is never used as the sole means of conveying information."
+    }
+  },
+  "aesthetic": {
+    "colors": "Monteiro's color philosophy is entirely functional and ethical, not aesthetic. He demands WCAG AA compliance as a baseline minimum — 4.5:1 contrast ratio for normal text, 3:1 for large text — and would push teams toward AAA (7:1) wherever possible. Light gray text on white backgrounds is not a trend, it is an accessibility failure that excludes people with low vision, the elderly, and anyone reading in bright light. He would call out this practice by name: 'That light gray body text you chose because it looked sophisticated just made your product unusable for a third of your users.' Color choice should never signal brand sophistication at the expense of legibility. Dark mode is not optional for users with photosensitivity — it is a medical accommodation masquerading as a feature.",
+    "typography": "Readable. Accessible. Honest. Monteiro has zero patience for typography that performs sophistication at the expense of communication. Body text should be a minimum of 16px — 18px or larger for long-form reading. Line height for body copy should be at minimum 1.5. Never use a type weight lighter than Regular (400) for body text; Ultra-light and Thin weights are decorative at best and exclusionary at worst. Labels should use plain language, not clever microcopy. Error messages must describe what happened and what to do about it, not just 'Something went wrong.' The hierarchy should guide users through tasks, not showcase the designer's typographic taste.",
+    "layout": "Purpose-driven, accessible, mobile-first. Every element earns its place by serving a clear user need. No dark patterns baked into the layout: the cancel button is as prominent as the confirm button, the unsubscribe link is as findable as the subscribe call to action, the pricing page shows the full cost before you add your credit card. Forms respect the user's time — no asking for information you don't need, no requiring account creation before checkout. Layouts must work for keyboard navigation and screen readers, not just sighted mouse users. Focus states are never removed — if a designer types 'outline: none' without a replacement focus indicator, they have created an accessibility failure.",
+    "detail": "Every interaction is an ethical choice: consent flows that mean something (not pre-checked boxes and dark patterns), pricing that is honest and complete, notification defaults that are off rather than on, data collection that takes only what is needed. Alt text on all meaningful images. ARIA labels where native semantics are insufficient. Error messages in plain language. Sufficient color contrast verified against WCAG. Form inputs with visible labels (not just placeholder text that disappears). Progress indicators that tell users where they are and how long the process takes. Respecting user time means every detail is in service of completing the user's goal, not the company's growth metric."
+  },
+  "critique_style": "Mike Monteiro would walk into a design review and skip the visual pleasantries. He is not there to tell you the gradient is beautiful. He is there to ask the hard questions that nobody else will. 'Who does this harm? Did you talk to real users, including users with disabilities? Is this accessible? That checkout flow — show me the cancel path. How many clicks to unsubscribe? Is this consent form genuinely asking for consent or is it a dark pattern dressed up as compliance?' He would be direct, sometimes profane, and deliberately confrontational — not to be unkind, but because comfortable critiques produce complicit designers. He would praise a designer who defended an ethical decision against client pushback and demolish anyone who defended a dark pattern by saying 'the client asked for it.' His harshest critique: 'You built something beautiful that hurts people. That is not a design success. That is a design failure with better branding.'",
+  "would_approve": [
+    "Accessible designs with WCAG AA contrast ratios as a hard constraint built into the design token layer, not checked after the fact",
+    "Forms where the cancel button is equally visible and accessible as the submit button",
+    "Consent flows that are genuinely opt-in, with no pre-checked boxes or confirmshaming language",
+    "Pricing pages that show total costs including all fees before asking for payment information",
+    "Designs with fully specified focus states — never outline: none without a visible replacement",
+    "Error messages written in plain language that describe what happened and what the user should do",
+    "Diverse design teams that include perspectives of the communities their products affect",
+    "Designers who push back against unethical client requests and document the refusal",
+    "Products that make their data collection practices explicit and limit collection to what is genuinely needed",
+    "Mobile-first layouts that work for users with slow connections and constrained devices"
+  ],
+  "would_reject": [
+    "Dark patterns in any form: confirmshaming ('No thanks, I don't want to save money'), hidden unsubscribe links, auto-enrolling users in paid tiers, countdown timers that reset",
+    "Light gray body text on white backgrounds — specifically the practice of using #999 or lighter for running text on a white or near-white background",
+    "Removing focus rings without providing a visible replacement — 'outline: none' in a stylesheet without a :focus-visible replacement is an accessibility crime",
+    "Designs built by teams with no representation from the communities they affect, presented as universal solutions",
+    "Beautiful interfaces built for surveillance capitalism, algorithmic manipulation, or addiction engineering",
+    "Designers who defend dark patterns by saying 'that's what growth marketing asked for' or 'the A/B test showed better conversion'",
+    "AI design tools used as an excuse to avoid ethical responsibility — 'the algorithm decided' is not an acceptable defense",
+    "Products that collect more user data than necessary for their stated function",
+    "Placeholder text used as a substitute for visible form labels — it disappears when users start typing",
+    "Designs that were never tested with users who have disabilities, visual impairments, or motor challenges"
+  ],
+  "modern_web_take": "Mike Monteiro looks at the modern web and sees a crime scene that designers helped create. The cookie consent dark patterns that bury the 'Reject All' option under three levels of dropdowns? Designers made that. The notification permission dialogs that appear before users have any context for why they would want notifications? Designers made that. The infinite scroll feeds engineered for maximum engagement rather than user satisfaction? Designers made that. He would demand that web designers stop pretending they are neutral craftspeople executing briefs and start accepting that they are gatekeepers making moral choices. On AI design tools specifically: he is not impressed, and he is suspicious of the industry's eagerness to use AI as a new layer of accountability laundering — 'the model decided' replacing 'the algorithm decided' replacing 'the brief said to.' No one is more excited that you're blaming AI for everything than your own bosses. Accessibility is not a compliance checkbox; it is the baseline of professional competence. A designer who ships an inaccessible product has failed at their job regardless of how good it looks.",
+  "influences": [
+    "Victor Papanek (Design for the Real World — ethics and social responsibility in design)",
+    "Dieter Rams (Good design is as little design as possible — and ethical)",
+    "Labor rights and trade union organizing tradition",
+    "Consumer protection law and the principle of duty of care",
+    "Accessibility advocacy movement and disability rights",
+    "Technology ethics movement (Center for Humane Technology, etc.)",
+    "Civic responsibility and democratic participation",
+    "Chuck Close ('Inspiration is for amateurs — the rest of us just show up and get to work')"
+  ],
+  "notable_works": [
+    "Design Is a Job (2012, A Book Apart — the definitive professional guide to the business and ethics of design practice)",
+    "Ruined by Design: How Designers Destroyed the World, and What We Can Do to Fix It (2019 — the manifesto on design ethics)",
+    "Mule Design Studio (co-founder — San Francisco design agency)",
+    "'Fuck You, Pay Me' — iconic CreativeMornings talk (2011) on getting paid fairly for design work",
+    "'How Designers Destroyed the World' — Webstock talk that named the ethical crisis of tech design",
+    "'13 Ways Designers Screw Up Client Presentations' — widely circulated practical design management talk",
+    "A Designer's Code of Ethics — manifesto document for ethical design practice",
+    "Dear Design Student advice column and podcast",
+    "Let's Make Mistakes podcast (with Jessie Char)",
+    "Numerous talks arguing for designer unionization and professional accountability"
+  ]
+}

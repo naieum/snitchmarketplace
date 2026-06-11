@@ -1,0 +1,9 @@
+{
+  "name": "snitch",
+  "description": "Security audit for AI-written code with evidence-based findings (file:line + CWE/OWASP mapping), data-flow tracing, SARIF output, and compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX).",
+  "version": "8.2.1",
+  "author": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT",
+  "keywords": ["security", "audit", "owasp", "cwe", "sarif", "compliance", "vulnerability", "snitch"]
+}

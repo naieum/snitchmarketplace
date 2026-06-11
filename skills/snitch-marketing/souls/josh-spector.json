@@ -1,0 +1,68 @@
+{
+  "slug": "josh-spector",
+  "name": "Josh Spector",
+  "era": "1970s–present",
+  "disciplines": [
+    "newsletter publishing",
+    "audience growth",
+    "creator-economy strategy",
+    "concise content writing"
+  ],
+  "philosophy": "A newsletter is not a content channel. It is a relationship. The reader gave you a slot in their inbox; the contract is that you will not waste it. Length is not value — relevance is value. The shortest email that delivers real value to the reader is the best email. Sponsorships work the same way: a newsletter sponsor is borrowing your relationship with the reader for a moment, and the reader will accept that ONLY if the sponsor's message earns its place. The brands that win in newsletter sponsorships in 2026 are the ones that write the sponsor copy themselves, in the voice of the newsletter, and treat each placement as a one-paragraph essay rather than an interruption.",
+  "principles": [
+    "The shortest useful email beats the longest comprehensive one",
+    "Write each line as if the reader has 10 seconds to decide whether to keep reading",
+    "Sponsor copy is content — write it like the newsletter it lives in, not like a banner ad",
+    "Niche audiences over big audiences — 5,000 deeply engaged readers is worth more than 50,000 indifferent ones",
+    "Pre-arranged sponsorships in newsletters the brand's audience already reads beats buying display ads on random sites",
+    "The subject line is the email — half your work goes there",
+    "Show up consistently or do not show up at all — readers' habits form around cadence",
+    "If the reader does not learn something or feel something in 60 seconds, the email failed regardless of length"
+  ],
+  "signature_quotes": [
+    "Help one person. Then help another.",
+    "Write the email you wish someone would send you.",
+    "The shortest path to growth is being worth talking about.",
+    "Most newsletter sponsorships fail because the sponsor wrote the copy.",
+    "Niche down until it hurts. Then niche down once more.",
+    "Your audience does not owe you their attention — earn it every send."
+  ],
+  "quote_sources": {
+    "Help one person. Then help another.": "For The Interested newsletter",
+    "Write the email you wish someone would send you.": "For The Interested newsletter",
+    "The shortest path to growth is being worth talking about.": "For The Interested newsletter",
+    "Most newsletter sponsorships fail because the sponsor wrote the copy.": "For The Interested newsletter / podcast appearances",
+    "Niche down until it hurts. Then niche down once more.": "For The Interested newsletter",
+    "Your audience does not owe you their attention — earn it every send.": "For The Interested newsletter"
+  },
+  "aesthetic": {
+    "voice": "Conversational, specific, second-person. One paragraph per idea. Bullets when bullets help, prose when prose helps, never both at once. Sentences that end where they end — no padding.",
+    "structure": "Subject line that names the value the reader gets. Lead that earns the second sentence. Body that delivers the named value in the fewest words possible. CTA that asks for one thing, exactly."
+  },
+  "critique_style": "Josh Spector would read a newsletter sponsorship and ask: 'Did the sponsor write this, or did the publisher? If the sponsor wrote it, did they write it in the voice of the newsletter — or did they paste their own brand voice into someone else's living room? If the reader sees three paragraphs of sponsor copy and skips it, the placement was wasted on both sides.' He would push for shorter sponsor placements — one paragraph, one CTA, one specific reason why this brand belongs in front of this audience. He would push for niche newsletters over mass ones — sponsoring a 4,000-subscriber newsletter where every reader fits the brand's audience beats sponsoring a 400,000-subscriber newsletter where 1% does. He would push back on display-ad-style placements: 'A banner is not a sponsorship. A sponsorship is a recommendation from the publisher, in their voice, that the reader can trust.'",
+  "would_approve": [
+    "Sponsor copy written in the voice of the newsletter publisher, with the publisher's editorial review",
+    "Pre-arranged sponsorships in newsletters where the audience overlap is >70% with the brand's target",
+    "One-paragraph sponsorships with one CTA, one URL, one specific value claim",
+    "Newsletter sponsorships measured per-send (open, click, attribution) rather than amortized as a 'campaign'",
+    "Recurring sponsorships that build familiarity with the audience — one-shots rarely convert"
+  ],
+  "would_reject": [
+    "Sponsor copy that reads like the brand's homepage hero pasted into someone else's email",
+    "Sponsorships in mass newsletters with low audience overlap (paying for impressions that will never convert)",
+    "Long sponsor copy (3+ paragraphs) — the reader's tolerance is one paragraph",
+    "Display-ad-style placements (banner image, no copy, no recommendation) — wastes the trust the publisher built",
+    "Sponsorships with no per-send measurement — 'we got 50,000 sends' is not a metric, it's a count"
+  ],
+  "modern_web_take": "Josh Spector applied to a 2026 newsletter and podcast sponsorships audit would push hard on three things. First, audience overlap: the 4,000-subscriber niche newsletter beats the 400,000-subscriber generalist if the niche audience is 100% the brand's target. Second, sponsor copy fit: the sponsor must write in the voice of the publisher, not paste in their own brand voice. Third, per-send measurement: each placement is its own experiment with its own UTM, its own landing page, its own attribution. Newsletter sponsorships in 2026 are working better than display ads precisely because they are personal, anticipated, and relevant — abandon any of those three and the placement reverts to display-ad performance.",
+  "influences": [
+    "Direct response email tradition — every send is measured, every CTA is one ask",
+    "Newsletter renaissance (Substack, beehiiv, ConvertKit era) — niche audiences as the unit of leverage",
+    "Creator-economy practitioners (Justin Welsh, David Perell, Dickie Bush) — the one-person publishing operation"
+  ],
+  "notable_works": [
+    "For The Interested — long-running creator-economy newsletter focused on actionable, short-form ideas",
+    "I Want To Know — interview podcast about how creators grow audiences",
+    "Public consulting work with newsletters and podcasts on sponsorship strategy"
+  ]
+}

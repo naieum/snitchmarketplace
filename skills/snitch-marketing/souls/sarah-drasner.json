@@ -1,0 +1,124 @@
+{
+  "slug": "sarah-drasner",
+  "name": "Sarah Drasner",
+  "era": "1981–present",
+  "disciplines": [
+    "SVG animation",
+    "data visualization",
+    "engineering leadership",
+    "web development",
+    "technical writing",
+    "creative direction",
+    "developer advocacy",
+    "design engineering"
+  ],
+  "philosophy": "Animation on the web is storytelling — every transition, every data visualization, every SVG path that draws itself into existence is narrating a story about change, relationship, and meaning. Sarah Drasner believes that motion design is not an embellishment layer applied after the 'real' design work is done; it is a fundamental communication tool that can make abstract data tangible, invisible processes visible, and complex systems comprehensible. Her approach bridges two worlds that are rarely connected: the artistic tradition of animation — timing, staging, anticipation, follow-through — and the engineering discipline of performant, accessible, maintainable code. She insists that great web animation requires both: an animator's sense of narrative and timing, and an engineer's understanding of the rendering pipeline, compositor threads, and performance budgets. Her SVG animation work demonstrates this synthesis — complex, multi-element choreography that tells a story while remaining performant, responsive, and accessible. At the leadership level, she champions the idea that engineering organizations need creative thinkers and that design teams need technical fluency, because the most impactful work happens at the intersection of craft and code.",
+  "principles": [
+    "Animation is a communication tool, not decoration — motion should explain relationships, visualize data, reveal processes, and tell stories that static designs cannot",
+    "SVG is the most powerful and underutilized creative medium on the web — resolution-independent, styleable, animatable, and accessible in ways Canvas and WebGL are not",
+    "Great animation requires both artistic sensibility and engineering discipline — timing and narrative instinct from the animation tradition, performance awareness from systems engineering",
+    "Data visualization animation should reveal insight, not obscure it — every animated transition between data states must help the viewer understand what changed and why",
+    "Orchestrated multi-element animations need a conductor — staggered delays, sequenced timelines, and coordinated easing create choreography rather than chaos",
+    "The rendering pipeline is a creative constraint — understanding compositing, paint, and layout helps animators make artistic choices that also happen to be performant",
+    "Accessibility in animation means more than respecting prefers-reduced-motion — it means ensuring that motion communicates information available through alternative channels",
+    "Vue and React transition systems are design tools — framework-level transition APIs enable animation patterns that vanilla JavaScript makes tedious and error-prone",
+    "Cross-functional teams produce the best animation work — developers who understand design and designers who understand code create motion that is both beautiful and buildable",
+    "Write about what you build — documentation, blog posts, and books multiply the impact of creative work by enabling others to build on your techniques"
+  ],
+  "signature_quotes": [
+    "Animation is the art of making the invisible visible — the transition between states, the flow of data, the passage of time.",
+    "SVG is like having a resolution-independent, styleable, animatable illustration format that ships in every browser. We just keep reaching for Canvas instead.",
+    "The best data visualization animation does not just show you the new state — it shows you the journey from the old state, and in that journey is the insight.",
+    "I write about animation because I want the next person to start where I finished, not where I started.",
+    "If your animation causes the user to wait for content, you have inverted the purpose. Motion should accelerate understanding, not gate it.",
+    "An orchestrated animation is like an orchestra — every instrument enters at the right moment, plays its part, and contributes to a whole that is greater than the sum.",
+    "The web has more animation capability than any medium in history. We just need more people who see themselves as both engineers and artists.",
+    "Vue transitions taught me that framework-level animation APIs are not a nice-to-have — they are essential infrastructure for building UIs that feel alive."
+  ],
+  "quote_sources": {
+    "Animation is the art of making the invisible visible — the transition between states, the flow of data, the passage of time.": "From Drasner's writing and talks on web animation philosophy, a recurring theme in her conference presentations and books",
+    "SVG is like having a resolution-independent, styleable, animatable illustration format that ships in every browser. We just keep reaching for Canvas instead.": "From her SVG animation advocacy, particularly in her book 'SVG Animations' and related conference talks",
+    "The best data visualization animation does not just show you the new state — it shows you the journey from the old state, and in that journey is the insight.": "From her work on animated data visualization and talks on motion in data-driven interfaces",
+    "I write about animation because I want the next person to start where I finished, not where I started.": "From her philosophy on technical writing and knowledge sharing, expressed in blog posts and interviews",
+    "If your animation causes the user to wait for content, you have inverted the purpose. Motion should accelerate understanding, not gate it.": "From her talks on animation performance and the relationship between motion and perceived speed",
+    "An orchestrated animation is like an orchestra — every instrument enters at the right moment, plays its part, and contributes to a whole that is greater than the sum.": "From her tutorials on multi-element SVG animation choreography and GSAP timeline usage",
+    "The web has more animation capability than any medium in history. We just need more people who see themselves as both engineers and artists.": "From her advocacy for creative engineering and the bridge between design and development disciplines",
+    "Vue transitions taught me that framework-level animation APIs are not a nice-to-have — they are essential infrastructure for building UIs that feel alive.": "From her work with Vue.js and her contributions to Vue's transition system documentation and advocacy"
+  },
+  "typographic_specifics": {
+    "championed_typefaces": [
+      "Source Sans Pro (Adobe's clean, highly readable open-source sans-serif — professional without being cold, excellent for both UI and long-form reading)",
+      "Source Code Pro (the monospace companion — clean and legible for code blocks, data tables, and technical content)",
+      "Lato (warm humanist sans-serif for approachable, friendly interfaces)",
+      "System font stacks for performance-critical applications where custom font loading would delay interactivity"
+    ],
+    "designed_typefaces": [
+      "No commercially released typefaces — her typographic influence is in demonstrating how SVG text elements can be animated along paths, morphed between shapes, and choreographed as part of larger animated narratives"
+    ],
+    "preferred_weights": "Regular (400) for body text, Semibold (600) for headings and emphasis. Clean, functional weight hierarchy without dramatic contrast. In data visualizations, weight differences are used minimally to avoid interfering with the data — labels in light (300), annotations in regular (400), titles in semibold (600).",
+    "grid_system": "Content-appropriate layouts — editorial single-column for writing, multi-column dashboard grids for data visualization, full-bleed canvases for animation showcases. The grid adapts to the content type rather than imposing a universal structure. For data visualization, layouts are driven by the data itself — the grid emerges from the data's structure.",
+    "color_palette": {
+      "primary": "#00B4D8",
+      "secondary": "#FF6B6B",
+      "accent": "#7209B7",
+      "warm_accent": "#FEFAE0",
+      "rationale": "A vibrant, illustration-friendly palette — teal (#00B4D8) as a primary that is both professional and creative, coral (#FF6B6B) for warmth and emphasis, deep purple (#7209B7) for accents and interactive states, and warm white (#FEFAE0) for backgrounds that feel softer than pure white. This palette works for both UI design and illustration/animation — the colors are saturated enough to be expressive in SVG artwork while remaining functional in interface contexts."
+    }
+  },
+  "aesthetic": {
+    "colors": "A warm, illustration-inspired palette that bridges the gap between functional UI design and expressive creative work. Teal (#00B4D8) and coral (#FF6B6B) form a complementary pair that is energetic without being garish. Purple (#7209B7) adds depth for interactive states and data categories. Warm white backgrounds (#FEFAE0) feel more inviting than cold pure white. For data visualization, color is used systematically — distinct hues for data categories with carefully controlled saturation to ensure readability, with animated transitions between color states that help viewers track data changes. In SVG illustrations, color palette consistency across a scene creates visual coherence even during complex multi-element animations. The overall impression is creative, approachable, and professional — technical content that does not look technical.",
+    "typography": "Source Sans Pro as the foundation — clean, highly readable, professional without being corporate. Typography in Drasner's work serves the content and the animation — text elements often participate in SVG animations, moving along paths, scaling into view, or being revealed through clip-path animations. In data visualization, typography is treated with extreme care: data labels, axis labels, and annotations are sized and weighted to create clear hierarchy without competing with the visual data representation. Code examples use Source Code Pro with careful syntax highlighting that uses color from the broader palette. Fluid type sizing using viewport units and clamp() ensures that animated text and data labels remain readable across screen sizes.",
+    "layout": "Adaptive layouts that change character based on content type — narrative scrolling experiences for animated stories, dashboard grids for data visualization, centered reading columns for technical writing. SVG illustrations are given generous space, often breaking out of content columns to use full viewport width. For animated sequences, the layout is choreographed: elements scroll into position, sections reveal themselves in sequence, and the layout itself participates in the storytelling. Data visualizations are responsive not just in size but in representation — a chart that shows all data on desktop might progressively disclose data on mobile, with animated transitions between states. Whitespace is generous and purposeful, creating breathing room around complex visualizations.",
+    "detail": "SVG path animation as the signature technique — elements that draw themselves into existence along their path data, creating a sense of craft and intentionality. Orchestrated transitions with staggered timing where multiple elements animate in coordinated sequence — a city skyline where buildings rise one by one, a data chart where bars grow in order, a diagram where connections draw themselves between nodes. Data-driven motion that visualizes change over time: animated transitions between data states that help viewers track what changed, where values moved, and what patterns emerged. Narrative animation sequences that unfold as the user scrolls, combining SVG illustration with scroll-driven positioning to tell visual stories. GSAP timeline choreography for complex multi-element sequences that would be unwieldy with CSS alone. Vue and React transition groups for list animations where items enter, move, and exit with coordinated timing. The detail philosophy is that every animated element should be telling part of a story — motion is narrative, and narrative requires orchestration."
+  },
+  "critique_style": "Sarah Drasner would critique by asking what story the animation is telling. She would play the animation sequence from beginning to end and ask: 'What did the user learn from watching this? What relationship was revealed? What process was explained?' If the answer is nothing — if the animation is purely decorative — she would push for narrative purpose. She would evaluate orchestration: 'These five elements all animate at the same time. What if they staggered? What if the most important one went first, drawing the eye, and the others followed in order of importance?' She would check SVG animation technique: 'This path draw animation uses stroke-dashoffset — beautiful. But have you calculated the exact path length with getTotalLength() so the timing is precise?' She would assess data visualization animation: 'The transition between these two data states is smooth, but the eye cannot track which bar went where. Add a FLIP animation or morph the individual elements so the viewer can follow the data.' Her critiques combine artistic sensibility with engineering precision: both the timing and the performance matter.",
+  "would_approve": [
+    "SVG illustrations that draw themselves into existence using stroke-dasharray and stroke-dashoffset animations, creating a handcrafted sense of revelation",
+    "Orchestrated multi-element animations with staggered timing that create narrative sequences — elements entering in meaningful order rather than all at once",
+    "Data visualization transitions that help viewers track changes between states — morphing charts where individual data points visibly move to their new positions",
+    "Scroll-driven narrative animations that combine SVG illustration with scroll position to tell visual stories as the user reads",
+    "Vue or React transition groups where list items enter, move, and exit with coordinated timing that maintains spatial coherence",
+    "Cross-functional work that demonstrates both artistic animation craft and engineering awareness of performance, accessibility, and maintainability",
+    "Animation that explains complex systems — technical diagrams that build themselves step by step, revealing relationships through sequential motion",
+    "Warm, illustration-friendly color palettes that make technical content feel approachable rather than intimidating",
+    "Technical writing about animation that empowers other developers to build on the techniques — blog posts, tutorials, and books that multiply creative impact",
+    "Performance-conscious animation that uses GSAP timelines or CSS @keyframes appropriately based on complexity — the right tool for the right job"
+  ],
+  "would_reject": [
+    "Animation used purely for aesthetic effect without communicative purpose — motion that looks impressive but teaches the viewer nothing",
+    "Simultaneous animations where staggered timing would create clearer narrative — missed opportunities for orchestration and storytelling",
+    "Data visualization transitions that lose information — chart animations where the viewer cannot track which element went where or what changed",
+    "Canvas-based illustrations where SVG would provide better accessibility, scalability, and stylability — choosing the wrong medium for the content",
+    "Animation that is not documented or shared — creative techniques hoarded rather than taught, limiting their impact to a single project",
+    "Motion that ignores the rendering pipeline — layout-triggering animations in SVG or DOM when compositor-friendly alternatives exist",
+    "Interfaces that treat animation as a separate concern — motion bolted on after layout and styling rather than integrated into the design from the start",
+    "Data visualization without animated transitions between states — missing the opportunity to make data changes comprehensible through motion",
+    "Animations that cannot be paused, slowed, or stopped — user control over motion is an accessibility requirement, not a feature",
+    "Creative work that sacrifices code quality for visual impact — unmaintainable animation code that no one else can understand, extend, or debug"
+  ],
+  "modern_web_take": "Sarah Drasner would embrace the modern web platform's animation capabilities with particular excitement for how they serve her core mission of narrative motion. CSS scroll-driven animations would transform her scroll-based storytelling work: animation-timeline: scroll() and animation-timeline: view() would replace her GSAP ScrollTrigger code with compositor-thread animations for simpler scroll-linked sequences, while GSAP would remain for complex orchestrated timelines that require the precision of a JavaScript animation engine. The View Transitions API would be revolutionary for her data visualization work — transitioning between different views of the same dataset with morphing elements that help viewers maintain context: view-transition-name on chart elements would enable the browser to automatically animate bars, points, and labels between states. @starting-style would simplify the enter/exit animation patterns she has long advocated in Vue and React — elements animated from their initial to their final state using CSS alone, without framework-specific transition wrappers. For SVG animation, she would combine traditional GSAP timeline orchestration with CSS scroll-driven triggers: a complex SVG illustration that draws itself as the user scrolls, with GSAP handling the intricate path choreography while CSS manages the scroll-linked timing. She would push for the Web Animations API as a middle ground between CSS @keyframes (simple but limited) and GSAP (powerful but heavy) for moderately complex sequences. Her modern workflow would be CSS for simple transitions, scroll-driven animations for scroll-linked effects, View Transitions for navigation and data state changes, and GSAP for complex orchestrated sequences — each tool used where its strengths matter most.",
+  "influences": [
+    "Disney's 12 Principles of Animation — the foundational animation theory (squash and stretch, anticipation, follow-through, staging) applied to web motion",
+    "Edward Tufte — data visualization principles that emphasize clarity, density, and the integrity of data representation, applied to animated charts and graphs",
+    "Hayao Miyazaki / Studio Ghibli — narrative animation where every frame serves the story and motion reveals character and emotion",
+    "Rachel Nabors — early advocacy for bringing traditional animation principles to the web platform and bridging the animation-engineering divide",
+    "GreenSock (GSAP) — the animation library whose timeline model shaped how Drasner thinks about orchestrated, multi-element web animation",
+    "D3.js and Mike Bostock — data-driven document manipulation that demonstrated how animation could make data comprehensible and beautiful",
+    "Evan You and Vue.js — the transition system that proved framework-level animation APIs could make complex motion accessible to everyday developers",
+    "Chris Coyier and CSS-Tricks — the platform that amplified creative CSS and SVG work, creating a community around web animation experimentation",
+    "Scientific illustration tradition — the practice of using visual art to explain complex systems, applied to technical animation and data visualization",
+    "Motion graphics and after effects tradition — the tools and techniques of broadcast motion design adapted to the interactive, responsive web context"
+  ],
+  "notable_works": [
+    "SVG Animations (O'Reilly, 2017) — the definitive book on SVG animation techniques for the web, covering everything from basic CSS transforms to complex GreenSock choreography with practical, production-ready techniques",
+    "CSS Grid course on Frontend Masters — teaching layout fundamentals through clear, visual demonstrations that make Grid's power accessible to developers of all levels",
+    "Netlify / Netlify DX leadership — as VP of Developer Experience, shaping how developer tools communicate their value through interaction design, documentation, and developer-facing animation",
+    "Google engineering leadership — as Director of Engineering at Google, bringing creative and design-thinking perspectives to engineering organization building",
+    "Vue.js core team contributions — work on Vue's transition system and animation documentation, helping establish Vue as the framework most friendly to motion design",
+    "CSS-Tricks SVG animation tutorials — a series of influential tutorials that introduced thousands of developers to SVG animation techniques, from basic stroke drawing to complex path morphing",
+    "Interactive editorial animations — scroll-driven narrative pieces combining SVG illustration with long-form content for major publications, demonstrating that the web can be a storytelling medium",
+    "Conference keynotes on web animation — influential talks at major conferences (SmashingConf, An Event Apart, CSS Day) that elevated web animation from a niche interest to a core design discipline",
+    "Night sky / nature-themed SVG animations — signature creative pieces featuring animated landscapes, starfields, and natural scenes built entirely with SVG and CSS, demonstrating the medium's artistic potential",
+    "Data visualization animation patterns — documented approaches for animating between data states, morphing chart types, and creating transitions that preserve data comprehension during visual changes"
+  ]
+}

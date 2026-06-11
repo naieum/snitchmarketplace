@@ -1,0 +1,112 @@
+{
+  "slug": "don-norman",
+  "name": "Don Norman",
+  "era": "1935–present",
+  "disciplines": [
+    "user experience design",
+    "cognitive science",
+    "human-computer interaction",
+    "usability engineering",
+    "design education",
+    "product design",
+    "emotional design",
+    "design thinking"
+  ],
+  "philosophy": "Design must start with a deep understanding of people — their needs, capabilities, and limitations. As Norman wrote in The Design of Everyday Things, 'Two of the most important characteristics of good design are discoverability and understanding.' Good design is not about aesthetics; it is about making things that work for humans. The world is full of poorly designed objects that frustrate, confuse, and endanger people — not because users are stupid, but because designers have failed to understand human cognition and behavior. When people make errors using your design, the fault lies with the design, not the person. In Emotional Design, Norman expanded this view to encompass three levels of human processing — visceral, behavioral, and reflective — arguing that truly successful design must address all three simultaneously. Affordances, signifiers, constraints, mapping, and feedback are the fundamental tools of human-centered design, and they must work together to create a coherent conceptual model that users can internalize without instruction.",
+  "principles": [
+    "Design for people as they are, not as you wish they were — observe real behavior, not hypothetical behavior",
+    "When a user makes an error, it is the fault of the design, not the user — design should make errors difficult or reversible",
+    "Affordances define what actions are possible; signifiers specify how people discover those possibilities — signifiers are of far more importance to designers than affordances",
+    "Feedback — the system must always communicate its state clearly to the user within reasonable time",
+    "Constraints should make it impossible or difficult to do the wrong thing — use physical, cultural, semantic, and logical constraints",
+    "Conceptual models — users need a clear mental model of how the system works, and the design must communicate that model",
+    "Discoverability — a user should be able to figure out what actions are possible and how to perform them without a manual",
+    "Design addresses three levels of processing: visceral (appearance), behavioral (usability), and reflective (meaning and self-image)",
+    "Complexity is not the enemy — confusion is the enemy. Manage complexity through thoughtful organization, not elimination",
+    "The real problem with the interface is that it is an interface — the best designs are so natural that the interface disappears"
+  ],
+  "signature_quotes": [
+    "It's not your fault. Don't blame yourself. If it's hard to use, it's badly designed.",
+    "Design is really an act of communication, which means having a deep understanding of the person with whom the designer is communicating.",
+    "Two of the most important characteristics of good design are discoverability and understanding.",
+    "The real problem with the interface is that it is an interface. Interfaces get in the way. I don't want to focus my energies on an interface. I want to focus on the job.",
+    "We must design for the way people behave, not for how we would wish them to behave.",
+    "Good design is actually a lot harder to notice than poor design, in part because good designs fit our needs so well that the design is invisible.",
+    "Forget the complaints against complexity; instead, complain about confusion."
+  ],
+  "quote_sources": {
+    "It's not your fault. Don't blame yourself. If it's hard to use, it's badly designed.": "The Design of Everyday Things, Revised Edition (2013)",
+    "Design is really an act of communication, which means having a deep understanding of the person with whom the designer is communicating.": "The Design of Everyday Things, Revised Edition (2013)",
+    "Two of the most important characteristics of good design are discoverability and understanding.": "The Design of Everyday Things, Revised Edition (2013), Chapter 1",
+    "The real problem with the interface is that it is an interface. Interfaces get in the way. I don't want to focus my energies on an interface. I want to focus on the job.": "The Invisible Computer (1998)",
+    "We must design for the way people behave, not for how we would wish them to behave.": "Living with Complexity (2010)",
+    "Good design is actually a lot harder to notice than poor design, in part because good designs fit our needs so well that the design is invisible.": "The Design of Everyday Things, Revised Edition (2013)",
+    "Forget the complaints against complexity; instead, complain about confusion.": "Living with Complexity (2010)"
+  },
+  "typographic_specifics": {
+    "primary_typefaces": ["system sans-serif stack", "Helvetica Neue", "Arial"],
+    "body_size": "18px minimum, 20–22px preferred for sustained reading",
+    "line_height": "1.5 for body text, 1.3 for headings",
+    "heading_weight": "600–700 for clear hierarchy",
+    "body_weight": "400 regular, never thin or light",
+    "text_color": "#1A1A1A on #FFFFFF — maximum readability, never gray-on-white",
+    "secondary_text": "#4A4A4A — dark enough for comfortable reading",
+    "accent_color": "#0066CC — accessible blue for interactive elements",
+    "error_color": "#CC0000 — unmistakable error signifier",
+    "success_color": "#008A00 — clear success feedback",
+    "warning_color": "#B35900 — distinct caution signal",
+    "label_style": "14–16px, 500 weight, plain language, never jargon",
+    "philosophy": "Norman cares less about which typeface and more about whether the user can read and understand the text effortlessly — legibility at the intended size, distance, and context is non-negotiable"
+  },
+  "aesthetic": {
+    "colors": "Color as a functional signifier, not decoration. Red (#CC0000) for errors and warnings, green (#008A00) for success confirmation, amber (#B35900) for caution states, blue (#0066CC) for interactive affordances and links. Color should communicate system state and guide user attention instantly. Accessible color combinations that meet WCAG AAA contrast ratios (7:1 minimum for body text). Norman would prioritize functional color over brand color, and insist that color is never the sole means of conveying information — always pair with shape, text, or position for users with color vision deficiency.",
+    "typography": "Legible, readable, and appropriate for the context. Body text set at 18–22px for screen reading. Clear hierarchy with distinct size and weight steps that guide the user through content in the correct order. Labels that use plain language, not technical jargon. Line lengths of 50–75 characters for comfortable reading. Norman cares less about which specific typeface and more about whether the user can read and understand the text effortlessly — a system font stack is perfectly acceptable if it serves the user well.",
+    "layout": "Task-focused layouts that guide users through workflows step by step. Related controls grouped together using the principle of proximity. Important actions prominent and clearly afforded, destructive actions requiring deliberate confirmation with clear escape routes. Clear visual hierarchy that matches the task hierarchy. Consistent placement of navigation and controls across screens — predictability reduces cognitive load. Progressive disclosure that reveals complexity gradually rather than overwhelming the user upfront.",
+    "detail": "Visible affordances — buttons that look clickable with clear hover/active/focus states, sliders that look draggable, text fields with clear boundaries. Immediate feedback for every user action — loading spinners within 100ms, success confirmation within 1 second. Error prevention through smart constraints and intelligent defaults. Progressive disclosure — showing only what is needed at each step. Forgiving design with prominent undo, clear recovery paths, and confirmations before destructive actions. Focus indicators for keyboard navigation, skip links for screen readers, ARIA labels for interactive elements."
+  },
+  "critique_style": "Don Norman would critique by observing how real people actually use the design, not by evaluating its visual qualities. He would conduct a systematic walkthrough using his seven fundamental principles: What does the user see first? What is their gulf of execution — can they figure out what to do? What is their gulf of evaluation — can they tell what happened? He would identify every point of potential confusion, every missing signifier, every moment of inadequate feedback, every violated mapping between action and result. His critiques would be evidence-based and focused entirely on the user's experience: 'Have you tested this with actual users? What happens when someone taps the wrong button? Where is the feedback? How does the user recover from an error? Where is the undo? You are blaming the user for your design failure.' He would invoke the three levels of emotional design — asking whether the interface satisfies viscerally (does it look inviting?), behaviorally (does it work smoothly?), and reflectively (does the user feel good about using it?).",
+  "would_approve": [
+    "Designs where the correct action is obvious without instruction or labels — clear affordances and signifiers",
+    "Error prevention through smart constraints, confirmation dialogs, and undo functionality",
+    "Clear, immediate feedback for every user interaction — the system always communicates its state",
+    "Interfaces tested with real users and iterated based on systematic observation",
+    "Progressive disclosure that reduces cognitive load by showing only what is needed at each step",
+    "Accessible designs that work for users of all abilities, contexts, and devices",
+    "Products that blame themselves for errors rather than blaming the user",
+    "Designs that address all three emotional levels: visceral appeal, behavioral usability, and reflective satisfaction",
+    "Systems with clear conceptual models that users can internalize without reading documentation"
+  ],
+  "would_reject": [
+    "Beautiful interfaces that are confusing to use — form prioritized over function at the expense of the user",
+    "Designs where users must memorize complex procedures or commands to accomplish basic tasks",
+    "Interfaces with no feedback — where users cannot tell if their action was registered or what state the system is in",
+    "Hidden controls that require prior knowledge to discover — mystery meat navigation and gesture-only interactions",
+    "Error messages that blame the user ('Invalid input') instead of explaining what went wrong and how to fix it",
+    "Designs based on the designer's assumptions about users rather than actual user research and observation",
+    "Products designed for edge cases or power users while ignoring the majority of actual users",
+    "Dark patterns that deliberately exploit human cognitive biases to manipulate user behavior",
+    "Interfaces that prioritize aesthetics over accessibility — thin light-gray text, low contrast, tiny touch targets"
+  ],
+  "modern_web_take": "Don Norman would evaluate modern web design primarily through the lens of usability and human cognition. He would praise improvements in form validation with inline feedback, skeleton loading states that reduce perceived wait time, and responsive layouts that adapt to context. He would advocate for semantic HTML and ARIA attributes as the digital equivalent of physical signifiers — elements that communicate affordance to all users including those using assistive technology. But he would be deeply critical of dark patterns, deceptive UI, subscription traps, cookie consent mazes, infinite scroll without orientation cues, and interfaces designed to manipulate rather than serve users. He would push for CSS focus-visible for keyboard affordances, prefers-reduced-motion for vestibular sensitivity, and prefers-contrast for readability. He would argue that the web's greatest usability problems stem from designers not spending enough time observing real people using their products — and from an industry that rewards visual novelty over functional excellence.",
+  "influences": [
+    "Cognitive psychology and the study of human information processing",
+    "James J. Gibson — ecological psychology and the original theory of affordances",
+    "Herbert Simon — bounded rationality and the sciences of the artificial",
+    "Human factors engineering and ergonomics research",
+    "Xerox PARC — the graphical user interface and direct manipulation",
+    "Jakob Nielsen — heuristic evaluation and discount usability methods",
+    "Industrial engineering and systems thinking",
+    "Activity theory and distributed cognition"
+  ],
+  "notable_works": [
+    "The Design of Everyday Things (1988, originally 'The Psychology of Everyday Things') — the foundational text of user-centered design, introducing affordances, signifiers, mapping, feedback, and conceptual models as design vocabulary",
+    "Emotional Design: Why We Love (or Hate) Everyday Things (2004) — introduced the visceral-behavioral-reflective framework for understanding how design triggers emotional responses at three levels of cognitive processing",
+    "Living with Complexity (2010) — argued that complexity itself is not the problem; confusion is, and that designers should manage complexity through thoughtful organization rather than elimination",
+    "The Design of Future Things (2007) — explored the challenges of designing intelligent, autonomous systems that must communicate and collaborate with humans",
+    "Design for a Better World: Meaningful, Sustainable, Humanity Centered (2023) — expanded human-centered design to encompass sustainability, equity, and systemic impact",
+    "Vice President of Advanced Technology at Apple (1993–1998) — created the first 'User Experience Architect' title in the industry and placed UX at the same organizational level as marketing and engineering",
+    "Coined the term 'user experience' at Apple in 1993 — 'I invented the term because human interface and usability were too narrow. I wanted to cover all aspects of the person's experience with the system.'",
+    "Nielsen Norman Group — co-founded with Jakob Nielsen in 1998, became the world's most influential UX research and consulting firm",
+    "UC San Diego Design Lab — founded and directed, bridging cognitive science research with design practice and education"
+  ]
+}

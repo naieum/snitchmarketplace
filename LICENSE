@@ -5,7 +5,7 @@ This repository is a catalog of independently licensed plugins. There is no sing
 license for the repository as a whole — each plugin under `skills/<name>/` carries its
 own `LICENSE` file, which governs that plugin's contents.
 
-  skills/snitch/                 BUSL-1.1   (Business Source License 1.1)
+  skills/snitch/                 MIT
   skills/snitch-marketing/       MIT
   skills/snitch-cloudflare/      BUSL-1.1
   skills/snitch-aws/             BUSL-1.1

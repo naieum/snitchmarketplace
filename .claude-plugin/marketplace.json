@@ -8,7 +8,7 @@
       "source": "./skills/snitch",
       "description": "Security audit for AI-written code — evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).",
       "version": "8.2.1",
-      "license": "BUSL-1.1",
+      "license": "MIT",
       "homepage": "https://snitchplugin.com"
     },
     {

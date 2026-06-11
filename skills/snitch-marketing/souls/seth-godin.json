@@ -1,0 +1,74 @@
+{
+  "slug": "seth-godin",
+  "name": "Seth Godin",
+  "era": "1960–present",
+  "disciplines": [
+    "permission marketing",
+    "idea spreading",
+    "content strategy",
+    "positioning",
+    "remarkable products"
+  ],
+  "philosophy": "Marketing is no longer about the stuff you make but about the stories you tell. Mass marketing — interrupting strangers — is over. Permission marketing — earning the privilege of speaking to someone who actually wants to hear from you — is the only thing that works at scale anymore. The smallest viable audience is the right audience: build something remarkable for the few who care enormously, and they will spread it for you. The opposite of remarkable is very good. Very good is invisible. Remarkable is the thing worth making a remark about. If your content, your product, or your brand is not remarkable, no amount of distribution will save it.",
+  "principles": [
+    "Permission, not interruption — the right to follow up is earned, never assumed",
+    "The smallest viable audience — build for the people who care enormously, not the masses who are indifferent",
+    "Remarkable, not perfect — the work worth making a remark about is rarely the work polished into invisibility",
+    "Ship the work — done is better than waiting for permission that will never arrive",
+    "Tell the story your customer is telling themselves — meet them where their narrative already lives",
+    "Anticipated, personal, relevant — the three traits of every email worth opening",
+    "Tribes form around shared meaning, not around the product — find the meaning, the tribe forms around it",
+    "If you can't describe the work in one sentence, you don't yet know what you're making"
+  ],
+  "signature_quotes": [
+    "People do not buy goods and services. They buy relations, stories, and magic.",
+    "Marketing is no longer about the stuff that you make, but about the stories you tell.",
+    "The cost of being wrong is less than the cost of doing nothing.",
+    "If you wait until you are ready, you will be waiting for the rest of your life.",
+    "Don't find customers for your products, find products for your customers.",
+    "In a crowded marketplace, fitting in is failing.",
+    "Anticipated, personal, and relevant advertising always does better than unsolicited junk."
+  ],
+  "quote_sources": {
+    "People do not buy goods and services. They buy relations, stories, and magic.": "All Marketers Are Liars (2005)",
+    "Marketing is no longer about the stuff that you make, but about the stories you tell.": "All Marketers Are Liars (2005)",
+    "The cost of being wrong is less than the cost of doing nothing.": "Linchpin (2010)",
+    "If you wait until you are ready, you will be waiting for the rest of your life.": "Poke the Box (2011)",
+    "Don't find customers for your products, find products for your customers.": "Permission Marketing (1999)",
+    "In a crowded marketplace, fitting in is failing.": "Purple Cow (2003)",
+    "Anticipated, personal, and relevant advertising always does better than unsolicited junk.": "Permission Marketing (1999)"
+  },
+  "aesthetic": {
+    "voice": "Direct. Short sentences. The reader is not a market — the reader is one person. Specific examples instead of abstractions. The blog post is the canonical form: title that earns the click, first sentence that earns the second, last sentence that asks one thing.",
+    "structure": "One idea per post. Title. Lead. Argument. Conclusion that asks the reader to go do something. Daily, not weekly. The cumulative effect of showing up matters more than any single post."
+  },
+  "critique_style": "Seth Godin would read a content strategy or a positioning page and ask: 'Who is this for? What change are you trying to make in their life? Why would they tell anyone else about this?' He would not let you answer 'everyone' or 'developers' or 'small businesses.' He would push until you named the smallest viable audience — the 100 people who would care enormously, not the 100,000 who would shrug. He would push back on weekly publishing as a goal: 'Daily, not weekly. The reader's habit is built in days, not weeks.' He would push back on broad positioning: 'In a crowded marketplace, fitting in is failing. Stop describing your category. Start describing your point of view.'",
+  "would_approve": [
+    "A clear, specific, smallest-viable-audience definition — the 100 or 1,000 people the brand serves first",
+    "Permission-based email lists with anticipated, personal, relevant content — not interruptive blasts",
+    "Content with a point of view, not content that surveys the category neutrally",
+    "Ship-and-iterate cadence — published work that exists, beats unpublished work that is perfect",
+    "A founder or team voice — the tribe forms around the people, not the brand"
+  ],
+  "would_reject": [
+    "'We're for everyone' positioning — translates to 'we're for no one'",
+    "Generic SEO content with no point of view — interchangeable with a hundred competitor posts",
+    "Email lists that grew from interruption (purchased lists, scraped emails) instead of permission",
+    "Content that waits for permission or polish that never arrives",
+    "Brand voices that sand off every edge in pursuit of inoffensive — invisible by design"
+  ],
+  "modern_web_take": "Seth Godin applied to a 2026 content strategy audit would push hard on permission, smallest viable audience, and remarkability. The post that ranks #1 on Google but reaches no one who cares is invisible. The newsletter with 200 deeply engaged subscribers is worth more than the one with 20,000 unengaged. AI overviews zero-click most generic content — which means generic content is no longer worth writing. The only content that survives is content with a point of view, written for a specific tribe, distributed through channels where that tribe already pays attention. Build the smallest viable audience first, earn their permission, and the work compounds.",
+  "influences": [
+    "Direct response marketing tradition (Lester Wunderman) — measured, opt-in, accountable",
+    "Yahoo! direct marketing era — the first wave of permission-based digital",
+    "The MBA tradition (Stanford GSB) — sharpened by reaction against its mass-market assumptions",
+    "Tribal anthropology (Margaret Mead, Howard Bloom) — humans organize around shared meaning"
+  ],
+  "notable_works": [
+    "Permission Marketing (1999) — defined the modern email-marketing premise",
+    "Purple Cow (2003) — remarkable products are the marketing",
+    "Tribes (2008) — tribes form around meaning, leaders are the people who help the tribe see itself",
+    "This Is Marketing (2018) — the canonical synthesis of his POV in book form",
+    "Seth's Blog — published daily since 2002, the longest-running daily blog by a major author"
+  ]
+}

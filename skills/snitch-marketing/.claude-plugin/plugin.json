@@ -1,0 +1,9 @@
+{
+  "name": "snitch-marketing",
+  "description": "SEO + marketing audit with evidence-based findings — technical SEO, on-page, schema, GEO / AI-search citation, Open Graph, and Core Web Vitals contributors, with file:line or URL+selector evidence per finding.",
+  "version": "1.4.0",
+  "author": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT",
+  "keywords": ["seo", "marketing", "geo", "core-web-vitals", "schema", "audit", "snitch"]
+}

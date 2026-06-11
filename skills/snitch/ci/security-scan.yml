@@ -1,0 +1,34 @@
+# Snitch for GitHub. Drop into .github/workflows/snitch.yml in your repo.
+# Required secrets: SNITCH_LICENSE_KEY, plus one of ANTHROPIC_API_KEY,
+# OPENROUTER_API_KEY, OPENAI_API_KEY, GOOGLE_API_KEY, COPILOT_TOKEN.
+#
+# See snitchplugin.com for plans, billing, and the .snitch.yml schema.
+
+name: Snitch Security Scan
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  issue_comment:
+    types: [created]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pull-requests: write
+      contents: read
+      security-events: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: snitch-live/snitch-github@v1
+        with:
+          snitch-license-key: ${{ secrets.SNITCH_LICENSE_KEY }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Optional: override .snitch.yml at the workflow level.
+          # trigger-mode: smart
+          # fail-on: high

@@ -1,0 +1,48 @@
+## CATEGORY 65: Insecure Deserialization
+
+Category 49 covers XXE specifically. This category covers the broader family: binary/object deserialization of attacker-controlled data in Python, Java, Ruby, PHP, .NET, and Node.js.
+
+**Data flow tracing required (SKILL.md Rule 7).** For every `pickle.loads()`, `yaml.load()`, `ObjectInputStream.readObject()`, `Marshal.load`, `unserialize()`, `BinaryFormatter`, `node-serialize.unserialize()` call this category surfaces, trace the input back to its source. Data loaded from trusted local files written by the same application is generally a Pass (record the file source). Data flowing from `req.*` / `params.*` / message-broker payload / file uploads / cache-store reads of untrusted keys is a finding. Caches and brokers are easy to forget: a value put there by trusted code may be re-read after an attacker swapped it.
+
+### Detection
+- **Python:** `pickle`, `cPickle`, `dill`, `shelve`, `PyYAML` (unsafe loader), `jsonpickle`
+- **Java:** `ObjectInputStream`, `XMLDecoder`, Jackson polymorphic deserialization (`enableDefaultTyping`, `@JsonTypeInfo`), Kryo without registration, Hessian/Burlap, SnakeYAML (unsafe constructor), Apache Commons Collections on classpath
+- **Ruby:** `Marshal.load`, `YAML.load` (pre-Psych safe-load defaults), `Oj.load` with default options
+- **PHP:** `unserialize`, `phar://` stream wrapper attacks
+- **.NET:** `BinaryFormatter`, `SoapFormatter`, `NetDataContractSerializer`, `ObjectStateFormatter`, `JavaScriptSerializer` with type names, Json.NET with `TypeNameHandling` != `None`
+- **Node.js:** `node-serialize`, `serialize-to-js`, custom `eval`-based deserialization
+
+### What to Search For
+- Deserialization call whose input traces back to: HTTP body, query parameter, cookie, uploaded file, message-queue payload from an untrusted queue, database column that was originally user input, cache value in a shared cache
+- YAML loaders used without an explicit safe loader option
+- Jackson / Json.NET configured to emit and consume class-name type tags
+- Presence of known gadget-chain libraries (Apache Commons Collections, Spring, Groovy) on the classpath alongside Java deserialization
+
+### Actually Vulnerable
+- Python deserialization of session data, cache entries, or uploaded files
+- Java unsafe deserialization on any untrusted input (even internal queues if those queues accept external messages)
+- `YAML.load` (not `safe_load`) on config received from any external source
+- `.NET` binary formatter on any payload touching a trust boundary (Microsoft has deprecated this family — flag presence alone on modern .NET)
+
+### NOT Vulnerable
+- Deserialization of data that never crossed a trust boundary (internal, signed, and integrity-checked)
+- Safe formats used safely: `json.loads`, `yaml.safe_load`, Jackson with polymorphic typing disabled, Json.NET with `TypeNameHandling.None`
+- HMAC or signature verification before deserialization, with a secret not exposed to the attacker
+
+### Context Check
+1. Does the deserialized payload cross a trust boundary?
+2. Is there an integrity check (signature, HMAC) verified BEFORE the deserialize call?
+3. For Java/.NET, is type-allowlisting configured, or can the attacker pick the class?
+4. For YAML, is the loader explicitly the safe variant?
+5. For cached data, could an attacker write to the cache (e.g., Redis exposed, cache key collision)?
+
+### Files to Check
+- `**/session*.ts,py,java,rb`, `**/cache*.ts,py,java,rb`
+- Message-queue consumers, cron jobs processing persisted jobs
+- File upload handlers that parse binary formats
+- RPC / legacy SOAP / remoting endpoints
+
+### References
+- CWE-502: Deserialization of Untrusted Data
+- OWASP Top 10:2025 — A08 Software and Data Integrity Failures
+- CVSS 4.0: typically Critical (AV:N, AC:L, RCE)
