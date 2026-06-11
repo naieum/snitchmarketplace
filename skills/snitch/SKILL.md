@@ -1,7 +1,7 @@
 ---
 name: snitch
 description: Security audit for AI-written code with evidence-based findings (file:line + CWE/OWASP mapping) and false-positive prevention. Use when the user asks for a security audit, code review for vulnerabilities, OWASP scan, SARIF output, pre-deploy security check, post-LLM code review, or compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX). Do NOT use for general code review unrelated to security, license auditing, dependency-version bumps, or paid-ads / pixel readiness (use ads-ready) or SEO (use snitch-marketing).
-license: MIT
+license: BUSL-1.1
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude.ai, Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, Goose, and 25+ more — see agentskills.io). LLM-backed scans use the user's existing model; no separate server required. Optional Snitch CLI (https://snitchplugin.com) for SARIF export and CI integration.
 metadata:
   author: Snitch

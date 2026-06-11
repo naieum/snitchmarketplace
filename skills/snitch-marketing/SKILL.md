@@ -1,7 +1,7 @@
 ---
 name: snitch-marketing
 description: SEO + marketing audit with evidence-based findings. Reads site source or crawls a URL and reports issues a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS-prevention; true field CWV LCP/INP/CLS via optional free CrUX/PSI fetch when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads or pixel readiness (use ads-ready), security review (use snitch), or generic content writing.
-license: MIT
+license: BUSL-1.1
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude.ai, Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, Goose, and 25+ more — see agentskills.io). LLM-backed audits use the user's existing model; no separate server required. Optional Snitch CLI (https://snitchplugin.com) for SARIF/CSV/HTML export and CI integration. Optional Playwright MCP for screenshot evidence in crawl mode.
 metadata:
   author: Snitch

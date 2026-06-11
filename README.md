@@ -51,10 +51,8 @@ Add the marketplace once, then install any plugin:
 
 ## Licensing
 
-Plugins carry their own licenses — see each skill's `LICENSE`:
-
-- `snitch` and `snitch-marketing` — **MIT**.
-- All `snitch-<provider>` security skills — **BUSL-1.1** (source-available; converts to Apache-2.0 on the change date).
+Every plugin is licensed **BUSL-1.1** (Business Source License 1.1) — source-available, and
+converts to Apache-2.0 on the change date. See each skill's `LICENSE`.
 
 ---
 

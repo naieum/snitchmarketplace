@@ -1,12 +1,12 @@
 Snitch Security Skill Marketplace
 =================================
 
-This repository is a catalog of independently licensed plugins. There is no single
-license for the repository as a whole — each plugin under `skills/<name>/` carries its
-own `LICENSE` file, which governs that plugin's contents.
+This repository is a catalog of plugins, each carrying its own `LICENSE` file under
+`skills/<name>/`. Every plugin is licensed under the Business Source License 1.1
+(BUSL-1.1), which converts to Apache License 2.0 on the change date.
 
-  skills/snitch/                 MIT
-  skills/snitch-marketing/       MIT
+  skills/snitch/                 BUSL-1.1
+  skills/snitch-marketing/       BUSL-1.1
   skills/snitch-cloudflare/      BUSL-1.1
   skills/snitch-aws/             BUSL-1.1
   skills/snitch-azure/           BUSL-1.1
