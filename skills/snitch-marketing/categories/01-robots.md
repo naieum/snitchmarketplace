@@ -52,6 +52,7 @@ For each declaration, parse user-agent groups and the directives within them:
 
 - `User-agent: *`, global rules
 - `User-agent: Googlebot` / `Googlebot-Image` / `Bingbot` / etc., bot-specific overrides
+- **AI crawlers**, the 2026 GEO concern, not just Googlebot: check the full fleet (`GPTBot`, `OAI-SearchBot`, `ChatGPT-User`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, `CCBot`, and the rest) against `references/ai-crawler-registry.md`. The registry distinguishes training bots from live-retrieval bots — which one a rule blocks decides whether the consequence is "out of future model corpora" or "can't be cited in answers right now."
 - `Disallow:`, blocked paths
 - `Allow:`, explicit allows (override Disallow, narrower path wins on Google)
 - `Sitemap:`, declared sitemap URLs (one or more)

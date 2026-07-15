@@ -2,6 +2,8 @@
 
 Screen readers (NVDA on Windows, JAWS, VoiceOver on Mac/iOS, TalkBack on Android, Orca on Linux) are the highest-stakes a11y surface, used by blind users, low-vision users, users with cognitive processing differences, and an increasing share of multitasking sighted users (drivers, hands-busy contexts). The screen reader experience is determined by HTML semantics + ARIA roles + announcement order + dynamic update behavior. Cat 48 covers ARIA labels; Cat 17 covers semantic HTML; this category audits the actual screen-reader-perceived journey: heading hierarchy as navigation map, landmark structure, dynamic updates announced via live regions, form errors announced inline, table semantics for data, list semantics for groups.
 
+This is the Perceivable/Robust step (step 3) of `references/accessibility-audit-workflow.md`; when crawl mode can't render the post-hydration DOM, mark it Skip-with-reason rather than inferring screen-reader behavior from source alone.
+
 ### Pre-flight: relevance check
 
 Run on every site that has any informational or interactive content. Skip with reason `not applicable` only for very small static brand pages with no headings, lists, forms, or dynamic content.

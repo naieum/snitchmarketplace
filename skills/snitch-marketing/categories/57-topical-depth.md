@@ -2,6 +2,8 @@
 
 Content depth is whether a page actually covers its topic comprehensively or just touches it. Google's helpful-content systems reward depth; thin or hedged content gets demoted. This is the AI-judgment category, quantify what you can (word count, related-topic coverage), but the call requires reading the content in context.
 
+Add a readability check to the quantitative side: compute the Flesch-Kincaid score per `references/content-intelligence.md` and report it against the brand's actual audience (`references/context-file.md`). The finding is a mismatch — a consumer page reading at grade 16, or a technical reference dumbed below its audience — not a universal target grade.
+
 ### Evidence required (do not skip)
 
 **Source mode, required tool calls:**

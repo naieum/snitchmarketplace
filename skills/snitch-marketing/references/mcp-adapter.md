@@ -180,8 +180,8 @@ Maps to STEP 4.5.
 ```
 ./
 ├── SKILL.md                        — workflow logic
-├── categories/                     — 123 category files
-├── references/                     — 38 reference files
+├── categories/                     — 134 category files
+├── references/                     — 50 reference files
 ├── souls/                          — 23 soul JSON files
 └── snitch-marketing.config.md      — runtime config (min-confidence, brand redaction, etc.)
 ```
@@ -192,7 +192,7 @@ The server treats the bundle as **read-only data**. It does not write back to th
 
 The server should expose these resources for client-side inspection:
 
-- `snitch-marketing://categories` — list of all 123 categories with name + brief description
+- `snitch-marketing://categories` — list of all 134 categories with name + brief description
 - `snitch-marketing://souls` — list of vendored souls
 - `snitch-marketing://presets` — list of preset groups (Quick / Technical / B2B SaaS / etc.)
 
@@ -267,7 +267,7 @@ When implemented, the MCP server should be distributed as:
 
 ## Out of scope for the spec
 
-- Implementation of the server itself (separate workstream — TypeScript project under `~/Development/snitch/packages/marketing-mcp/` when ready)
+- Implementation of the server itself (a separate MCP server project, outside this repo)
 - Authentication / billing / quota enforcement (handled by Snitch product surface, not the MCP server)
 - Direct file writes to user repos from the server (host agent handles writes)
 

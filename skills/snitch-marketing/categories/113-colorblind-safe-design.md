@@ -2,6 +2,8 @@
 
 Roughly 1 in 12 men and 1 in 200 women have some form of color vision deficiency: the most common is red-green (deuteranopia / protanopia), then blue-yellow (tritanopia), then full achromatopsia. WCAG 1.4.1 (Use of Color) and ISO 9241-112 both prohibit using color as the **only** way to convey meaning — meaning every state, status, link, error, and category that's encoded by color alone is unreadable to those users.
 
+Run alongside Cat 49 in the contrast step of `references/accessibility-audit-workflow.md`: contrast is "is it legible," this is "does meaning survive without color" (require a redundant icon, label, or pattern). Use the same evidence discipline — quote the element + the color-only signal it relies on.
+
 This is **not** the same as a contrast failure. A 4.6:1-passing red-on-white error message that has no icon, no asterisk, and no text marker is a Cat 113 failure even though Cat 49 (Color contrast) marks it as passing. The site can be perfectly readable in luminance and still completely unreadable in semantics.
 
 **Cat 49 audits ratios; Cat 113 audits whether color carries meaning that isn't redundantly encoded somewhere else.** Both can fail independently.

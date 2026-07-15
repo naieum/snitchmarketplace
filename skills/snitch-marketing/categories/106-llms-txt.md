@@ -4,9 +4,13 @@
 
 This category is the standalone audit of `llms.txt`, its presence, format, content quality, and the relationship between `llms.txt` and `llms-full.txt`. Cat 82 (AI-search citation) cross-references this category for the discoverability layer.
 
+### Evidence-based posture
+
+`llms.txt` is worth publishing — it's a one-file, low-cost map — but be honest about what it does. No major AI assistant has published that it uses `llms.txt` to decide citations, and prominent search engineers have stated they don't consume it for ranking. Treat it as a courtesy map for crawlers that choose to read it, not a citation guarantee. The load-bearing AI-citation levers are crawler access (Cat 1 + `references/ai-crawler-registry.md`), extractable structure, and genuine authority (Cat 82 Layers 2-3). Calibrate findings accordingly: a missing file is Medium at most; a malformed-but-present file or one pointing at dead URLs is the more defensible finding, because it actively misleads the crawlers that do read it.
+
 ### Pre-flight: relevance check
 
-Skip with reason `not applicable` only if the brand has explicitly opted out of AI-crawler indexing (rare; would be visible as `User-agent: GPTBot Disallow: /` etc. in `robots.txt`). Otherwise: required for every site in 2026.
+Skip with reason `not applicable` only if the brand has explicitly opted out of AI-crawler indexing (rare; would be visible as `User-agent: GPTBot Disallow: /` etc. in `robots.txt`). Otherwise: in scope — but apply the evidence-based posture above before assigning severity. Never tag a missing `llms.txt` higher than Medium.
 
 ### Evidence required (do not skip)
 
@@ -20,7 +24,7 @@ Skip with reason `not applicable` only if the brand has explicitly opted out of 
    - Optional H2 sections grouping links (`## Docs`, `## Categories`, `## Blog`, etc.)
    - Each link in the form `- [Title](URL): one-line description`
 4. Cross-reference linked URLs in `/llms.txt`, do they resolve (200) and represent the canonical resources for those topics?
-5. Check `robots.txt` (Cat 1) for AI-crawler rules: `GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, `CCBot`. The `llms.txt` file is meaningless if the AI crawlers are blocked.
+5. Check `robots.txt` (Cat 1) for AI-crawler rules across the full fleet (see `references/ai-crawler-registry.md`), not just the well-known few. The `llms.txt` file is meaningless if the AI crawlers are blocked — and the training-bot vs live-retrieval-bot distinction in the registry determines which block actually matters here.
 
 **Source mode, required tool calls:**
 

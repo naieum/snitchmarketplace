@@ -2,6 +2,8 @@
 
 The signals that say "real people use this and like it." Reviews on third-party platforms (G2, Capterra, Product Hunt, Trustpilot, app stores), testimonials on the site, case studies, NPS / CSAT measurement.
 
+These signals feed the Authoritativeness and Trust layers of `references/eeat-assessment.md` — when a finding here maps to an E-E-A-T gap (no named testimonials, no third-party reviews assistants can read), name the layer so the fix ties back to citation authority (cross-reference Cat 82, `references/brand-authority-platforms.md`).
+
 ### Pre-flight: customer presence check
 
 If the brand has zero customers yet (pre-launch / pre-revenue), this category is premature. Mark **Skip** with reason `no customer base yet to gather feedback from; revisit after first paying customers`. If the brand has customers but no visible feedback program, that's the actual finding.
@@ -51,10 +53,38 @@ Off-site:
 - `trustpilot.com/review/<domain>`
 - `producthunt.com/products/<brand>`
 
+### Feedback as message research (not just proof)
+
+Reviews are double-duty assets: proof for the visitor, and the raw material for the copy
+itself. Two mining moves the audit checks for (StoryBrand-derived):
+
+- **Voice-of-customer language mining.** The customer's own vivid, emotional words about the
+  problem — from the brand's reviews, Reddit/forum threads, YouTube comments, support
+  tickets — should be the language of the headlines. The checkable mismatch: site copy
+  speaks in internal jargon while every review describes the problem differently. (Worked
+  case from the source: a soap brand's reviews revealed customers using the product for a
+  use the brand never advertised — the reviews contained the winning message.) Research
+  prompts worth handing the team: what's the most frustrating part in the customer's own
+  words; what did they try that felt like wasted money; what made them finally say "I can't
+  deal with this anymore."
+- **Competitors' 3-star reviews.** 5-star reviewers love anything; 1-star reviewers have a
+  grudge; 3-star reviewers *wanted to like it and didn't* — a list of legitimate, fixable
+  complaints. The offer and the comparison copy should be built as the explicit counter to
+  that list (James Clear mined the 3-star reviews of every habits book before writing
+  Atomic Habits). Audit: do the brand's differentiation claims answer complaints actually
+  found in the category's reviews, or founder-imagined ones?
+
+When soliciting UGC/testimonial video, spec it like a director or you get unusable rambles:
+exact length ("under 15 seconds"), exact shots ("only the last pass, then the cut"), and a
+visible reward ("if we like it, we'll tag you"). This belongs in the fix, not a finding.
+
 ### Actually Hurts the Marketing Surface
 
 - **No testimonials / social proof on commercial pages**.
   Evidence required: pricing / signup / homepage with no testimonial section.
+- **Site copy language doesn't match customer language** (headlines in internal jargon while
+  the brand's own reviews describe the problem in consistent, different words).
+  Evidence required: 3+ review quotes using one vocabulary + hero/headline copy quoted using another.
 - **Testimonials with no attribution** (anonymous "Great product!" quotes).
   Evidence required: quoted testimonial without name / company.
 - **Stock-photo customer photos** (suggests fake testimonials).
@@ -105,6 +135,7 @@ G2 review process: https://learn.g2.com/g2-reviews
 
 **Severity tagging:**
 - No social proof on commercial pages → High.
+- Site copy vocabulary contradicts the customers' own review vocabulary → Medium (the reviews are free message research going unused).
 - Anonymous / unattributed testimonials → High.
 - Stock-photo customer photos → Critical (trust violation) ONLY with a provable signal (stock-CDN URL/filename, EXIF/credit, or duplicate image); without one, route to human review, not Critical.
 - No third-party review presence (B2B brand) → High.

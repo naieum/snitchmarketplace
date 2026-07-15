@@ -364,9 +364,70 @@ CTA:     Try free, no card.
 
 When to use: Cat 81 high-severity narrative finding, in conjunction with Pattern 5 (three hero variants). Pattern 5 produces the hero candidate; Pattern 12 produces the structure for the rest of the scroll.
 
+## Pattern 13: "Shouldn't and won't" (injustice → relief line)
+
+```
+You shouldn't have to [pain/injustice], and with [product], you won't.
+```
+
+A universal sound-bite generator: "shouldn't" names the pain as an injustice (loss framing, which outpulls gain framing), "won't" promises the relief. Works on headers, ad copy, intake scripts, billboards. Repeat one canonical version verbatim.
+
+Worked examples:
+
+```
+Your sales team shouldn't waste hours on manual reports — with Atlas automations, they won't.
+You shouldn't get ripped off by insurance companies. If you hire us, you won't.
+Your legs shouldn't look like that — and after this procedure, they won't.
+```
+
+When to use: Cat 81 pain-led hero drafts (Pattern 5 Draft A), ad creative for Cat 67, anywhere the problem line exists but reads flat.
+
+## Pattern 14: Decision-trigger close (+ fence-sitter email)
+
+```
+If you're struggling with [problem], [buying X / signing today] is the right decision.
+```
+
+The fence-sitter's only real question is "is this the right decision?" — they'll say "let me think about it" hoping it gets affirmed at home, where you won't be. Answer it verbatim: tie the verdict to the named problem, never a bare "you should buy." Place on the pricing page, in proposals, at the end of sales conversations.
+
+Fence-sitter follow-up email skeleton:
+
+```
+[Warm open — reference the real conversation.]
+
+I want to be really clear:
+
+[Restate their problem in their own words, with its cost — one short paragraph.]
+
+If I've heard you correctly, signing today is the right move, because it solves
+exactly that problem. [One-line concrete next step.]
+```
+
+When to use: Cat 60 / Cat 99 conversion findings where the funnel has traffic and trust but weak asks; any recommendation replacing a "Learn more" CTA.
+
+## Pattern 15: Founder identity line (the Trojan-horse close)
+
+```
+By the way, I'm [name]. I'm a [role]. If you're [struggling with X], I can help you [outcome].
+```
+
+For founder channels: lead with content people actually want, close with this fixed line in roughly every 3rd-4th post. Followers won't infer what the founder sells; the line says it, identically, until it's memorized.
+
+When to use: Cat 84 findings "no recurring identity/offer line" or "topics scattered"; pairs with Pattern 1 (bio) and Pattern 4 (LinkedIn post).
+
+## Pattern 16: Customer-welfare mission line
+
+```
+We exist so that [person] no longer has to experience [pain].
+```
+
+Derived by asking "who is worse off without this product, and how?" Replaces inward-facing mission copy ("our mission is to build the best X") on about pages and in PR boilerplate. A bystander should hear it and think "the world needs that."
+
+When to use: Cat 81 "mission copy inward-facing" finding; Cat 77 press-kit boilerplate; about-page rewrites.
+
 ## How to use this reference
 
-The audit recommends specific templates from this bank when the strategic-recommendation surface calls for channel work. Don't dump all 12 templates on every recommendation; pick the ones that fit the actual move.
+The audit recommends specific templates from this bank when the strategic-recommendation surface calls for channel work. Don't dump all 16 templates on every recommendation; pick the ones that fit the actual move.
 
 Examples:
 
@@ -378,6 +439,10 @@ Examples:
 - Cat 35 (FAQ schema) + Cat 81 high-severity → Pattern 9 (FAQ entries).
 - Customer-discovery recommendation (from STEP 4.5) → Pattern 11 (cold customer-discovery email, with the variations for free-to-paid and long-tenured cohorts).
 - Cat 81 high-severity narrative finding → Pattern 12 (Sales narrative homepage scroll structure), in conjunction with Pattern 5 (three hero variants).
+- Flat problem line in hero or ad creative (Cat 81 / Cat 67) → Pattern 13 ("shouldn't and won't").
+- Weak or passive ask at the conversion moment (Cat 60 / Cat 99) → Pattern 14 (decision-trigger close + fence-sitter email).
+- Cat 84 "no identity line" / scattered-topics finding → Pattern 15 (founder identity line).
+- Cat 81 inward-facing mission finding → Pattern 16 (customer-welfare mission line).
 
 ## Cross-references
 

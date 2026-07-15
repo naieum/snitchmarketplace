@@ -61,6 +61,8 @@ Adds:
 - Cat 73, CRO signals (conditional: only if A/B test infra detected)
 - Cat 112, pricing strategic read (synthesizes the pricing mix into 3-bucket recommendation)
 - Cat 117, site copy lint (pricing page is the #1 surface for "starting at" with no number; already universal, listed here as a high-priority surface)
+- Cat 124, buying-committee / stakeholder coverage (conditional: only if the pricing path is sales-led — "Contact sales", demo-gated, or an enterprise/custom tier — signalling a multi-stakeholder purchase)
+- Cat 131, SXO page-type / SERP-intent alignment (conditional: only if the pricing page targets a ranking query)
 
 ### Surface: /blog, /posts, /articles, /writings
 
@@ -77,6 +79,10 @@ Adds:
 - Cat 97, content decay and refresh (conditional: only if 30+ posts and 12+ months publish history)
 - Cat 102, multi-LLM citation (content is the surface that gets cited)
 - Cat 121, information architecture (conditional: only if 25+ posts; hub-and-spoke clustering)
+- Cat 128, citation-gap audit (verifiable claims need nearby sources for E-E-A-T + AI-citability)
+- Cat 132, SERP-overlap topic clustering + cannibalization (conditional: only if 25+ posts/target queries)
+- Cat 125, parasite SEO / site-reputation-abuse risk (conditional: only if sponsored / guest / third-party bylines in the section)
+- Cat 130, IndexNow / indexing-submission readiness (conditional: only on high publish velocity where fast Bing/Yandex discovery matters)
 
 ### Surface: /docs
 
@@ -127,6 +133,9 @@ Adds:
 - Cat 99, conversion funnel deep
 - Cat 101, AI-agent commerce signals
 - Cat 121, information architecture (catalog taxonomy + faceted-nav crawl traps)
+- Cat 129, AI-image provenance metadata (conditional: only if product images are AI-generated)
+- Cat 131, SXO page-type / SERP-intent alignment (does the PDP match the SERP consensus for its query)
+- Cat 134, agent operability (can a shopping agent complete add-to-cart / the primary action)
 
 ### Surface: /cart, /checkout
 
@@ -134,6 +143,7 @@ Adds:
 - Cat 60, conversion and trust (deep)
 - Cat 99, conversion funnel deep
 - Cat 101, AI-agent commerce signals
+- Cat 134, agent operability (the checkout's primary actions must be machine-operable, not div-onclick)
 
 ### Surface: /courses, /cohort, /learn
 
@@ -168,6 +178,7 @@ Adds:
 - Cat 81, market positioning
 - Cat 96, brand SERP defense (already universal; reinforced)
 - Cat 122, comparison / alternatives page strategy (credibility, conversion, schema)
+- Cat 131, SXO page-type / SERP-intent alignment (does the page type match the SERP for "X vs Y" / "alternatives to X")
 
 ### Surface: /for/{audience}, /use-cases/{case} (programmatic)
 
@@ -190,6 +201,7 @@ Adds:
 - Cat 96, brand SERP defense (local-flavored)
 - Cat 118, Google Business Profile depth audit (conditional: only when GBP is claimed per Cat 79's pre-flight; the depth audit waits for the foundation)
 - Cat 119, Hyper-local landing page completeness (conditional: only when the brand has multi-city coverage detected — `/locations/[city]`, `/{city}-{service}` routes, or 5+ individual city pages)
+- Cat 127, GBP feature-deprecation audit (reliance on retired GBP features: chat, *.business.site, Q&A)
 
 ### Surface: /newsletter, /tools, /free, /templates, /resources, lead-capture forms
 
@@ -246,6 +258,7 @@ Organization signal. Adds:
 - Cat 37, Organization schema (already universal; reinforced)
 - Cat 93, Person/Author schema for each named team member
 - Cat 110, ICP wedge scoring (conditional: only if homepage names 3+ buyer types in one sentence; then wedge selection is needed)
+- Cat 124, buying-committee / stakeholder coverage (conditional: only on a B2B / sales-led / considered-purchase motion — demo-gated CTA, "contact sales", enterprise tier, or a security/compliance page detected; skip for single-buyer self-serve)
 
 ### Infrastructure: GA4, GTM, or any analytics installed
 
@@ -287,6 +300,7 @@ Adds:
 Adds:
 - Cat 50, hreflang correctness
 - Cat 51, locale-specific canonicals
+- Cat 133, machine-translation quality drift (is the localized content actually good, not just correctly targeted)
 
 ### Infrastructure: account-system / auth library
 
@@ -329,6 +343,12 @@ Adds:
 
 Adds:
 - Cat 79, Local SEO + GBP
+- Cat 127, GBP feature-deprecation audit (reliance on retired GBP features: chat, *.business.site, Q&A)
+
+### Entity shape: aged or recently-acquired domain
+
+Acquired-domain or aged-domain signal (a domain bought from a broker, a rebrand onto a previously-owned domain, or a registration that far predates the current brand). Adds:
+- Cat 126, domain heritage / expired-domain abuse risk (conditional: only when an acquisition or aged-domain signal is present; this is a proactive / pre-acquisition check, not a default scan)
 
 ## How the map is consumed by STEP 1.5
 

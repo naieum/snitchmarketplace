@@ -68,6 +68,26 @@ The audit doesn't dictate WHICH anchors the brand should pick; it surfaces wheth
 
 Cross-references `references/local-services-playbook.md` for the local-services anchor patterns; cross-references Cat 81 (positioning) when the brand has no anchors because positioning is fuzzy upstream.
 
+### Voice-definition audit (the system behind the anchors)
+
+Anchors are the *output* of a voice; this step audits whether the voice itself is *defined* and
+*consistently applied* by attribute, not just by locked phrase. Run it via
+`references/brand-voice-framework.md`:
+
+1. **Is the voice documented?** Look for a brand/voice/style guide (repo `BRAND.md`, a CMS voice
+   doc, or the `.snitch-marketing-context.md` brand-voice section). No documented voice → finding
+   "voice undefined; consistency can't be enforced" (Medium — it's the root cause of the drift the
+   anchor checks above detect).
+2. **Audit by attribute, not vibe.** If a guide exists, sample 3-5 pages across surfaces and judge
+   each quoted line against a "We are / We are not" table and a tone-by-context matrix
+   (formality / energy / technical depth / humor per surface). Distinguish a **voice-constant**
+   violation (always wrong) from a **tone-flex** mismatch (wrong for *this* surface).
+3. **Tier confidence + log open questions.** Voice is partly subjective: tag High (violates a
+   documented constant), Medium (inconsistent, no guide to arbitrate), Low (defensible choice), and
+   surface an Open Questions list where the guide is silent rather than inventing the brand's intent.
+
+The framework doc carries the table/matrix templates and the forbidden-claims rules.
+
 ### Actually Hurts the Marketing Surface
 
 - **Brand name spelled differently across surfaces** ("Snitch" vs "snitchplugin" vs "Snitch Security").
@@ -86,6 +106,18 @@ Cross-references `references/local-services-playbook.md` for the local-services 
 - **No editorial markers / section conventions** on a content-heavy marketing page (every section label is plain text, no typographic system).
   Evidence required: page with 5+ sections, no marker convention.
   Severity: Low.
+- **Humor register contradicts the price tier.** Humor and self-deprecation signal *discount*
+  ("you can be funny about IKEA; you can't be funny about Rolex"); a brand positioned premium
+  that jokes in its pricing or announcement copy — or, worse, jokes while *raising prices* —
+  undercuts its own tier. The inverse (a discount brand playing stiff and formal) is a milder
+  mismatch. This is a voice-constant violation in `references/brand-voice-framework.md` terms,
+  judged against price positioning rather than a written guide.
+  Evidence required: premium positioning quoted (pricing page / hero) + the joking copy quoted.
+- **Core-values list too long to function.** Values are internal sound bites and the same
+  memory limit applies: a team (and a public values page) can hold ~3, phrased as behaviors —
+  not 8-12 abstractions nobody can recite. A long values list is the values equivalent of a
+  scattered voice: it reads as "we never chose."
+  Evidence required: values page / about page quoted with 6+ listed values.
 
 ### NOT a Problem
 
@@ -110,6 +142,8 @@ Frontify on brand consistency: https://www.frontify.com/en/guide/brand-consisten
 - Logo variants without primary defined → Medium.
 - Different descriptions across surfaces → Medium.
 - Inconsistent social handles → Medium.
+- Humor register contradicts price tier (premium brand joking, especially around price changes) → Medium.
+- Core-values list with 6+ entries → Low (Medium if the values page is a primary trust surface for the audience, e.g. hiring-heavy brands).
 
 **Fix voice:** `tobias-van-schneider` (primary) | `paula-scher` (backup).
 

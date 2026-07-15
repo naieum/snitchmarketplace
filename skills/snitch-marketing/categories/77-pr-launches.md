@@ -42,10 +42,32 @@ Press surfaces:
 - `/press`, `/media`, `/news` routes on the brand site
 - `media-kit.zip`, brand assets download links
 
+### The attention jetstream (newsjacking) and angle-first pitching
+
+Two earned-media patterns worth recommending when the audit finds PR effort producing nothing
+(StoryBrand-derived):
+
+- **Ride attention; don't manufacture it.** Nobody is paying attention to the brand, but
+  they're always paying attention to *something* — and attention is a jetstream: temporary,
+  shifting, rideable. The operational form is a standing weekly meeting: "what is culture (or
+  our niche) paying attention to or angsty about right now, and where does our product touch
+  it?" The winning post is a wink the informed audience decodes, not a press release (Nike on
+  Scheffler's PGA win a year after his wrongful arrest: "The verdict is in." — one organic
+  post, national coverage). Expect a ~1-in-10 hit rate; pushback is attention.
+- **Pitch an angle, not the product.** Podcasts and journalists book *angles* — a
+  provocative, true claim adjacent to the product ("audio is almost the only technology that
+  got worse in 80 years") — never product pitches. For a small brand, a publicist retainer
+  pitching one sharp angle can out-earn the same dollars in paid social, especially paired
+  with a break-even mini-book or guide that converts listeners into educated buyers.
+
 ### Actually Hurts the Marketing Surface
 
 - **Press kit missing** (when product has been live >6 months and warrants it).
   Evidence required: site age + missing `/press` route.
+- **Outbound PR pitches the product, not an angle** (pitch materials / press releases that
+  describe features and funding instead of a claim an editor would cover).
+  Evidence required: press-release or pitch copy quoted, showing product description with no
+  angle a non-customer would care about.
 - **Product Hunt never launched** (when product fits PH audience).
   Evidence required: PH search returning empty.
 - **HN submissions never** (when product fits HN audience, dev tools, infra, productivity).
@@ -76,6 +98,7 @@ Justin Jackson on indie product launches: https://justinjackson.ca/launches
 - No Product Hunt launch (when fitting) → Medium.
 - No founder-published content → Medium.
 - Press coverage exists but not surfaced on site → High.
+- PR materials pitch the product instead of an angle → Medium.
 
 **Fix voice:** `sahil-lavingia` (primary) | `tobias-van-schneider` (backup).
 

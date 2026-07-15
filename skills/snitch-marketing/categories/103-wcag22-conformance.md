@@ -2,6 +2,8 @@
 
 Cats 45-49 cover the SEO-flavored a11y minimum (viewport, touch targets, readable text, ARIA labels, color contrast). For brands subject to legal accessibility obligations, public-sector, healthcare, education, large-enterprise B2B, EU-market e-commerce under the European Accessibility Act effective 2025-06-28, that minimum isn't enough. They need full WCAG 2.2 AA conformance, the legal threshold cited in the Americans with Disabilities Act (ADA), Section 508, and EAA.
 
+This is the umbrella a11y category — run the full pass in the sequence defined in `references/accessibility-audit-workflow.md` (automated → keyboard → screen-reader → contrast → reflow/zoom) and group findings under the four WCAG principles (Perceivable / Operable / Understandable / Robust) so coverage gaps are visible.
+
 This category audits the full WCAG 2.2 AA criteria set across the 13 guidelines, organized by the four POUR principles (Perceivable, Operable, Understandable, Robust). It's a depth audit, each criterion gets its own pass/fail with evidence.
 
 ### Pre-flight: relevance check

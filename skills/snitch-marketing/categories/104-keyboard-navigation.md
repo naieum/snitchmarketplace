@@ -2,6 +2,8 @@
 
 Keyboard navigation is one of the highest-leverage a11y surfaces because it's the entry point for users on assistive tech (screen readers route through keyboard navigation), users with motor impairments, power users on every platform, and any user when their mouse fails. It's also one of the most commonly broken because devs build with a mouse and rarely audit without one. Cat 48 (ARIA labels) covers labeling; this category covers the journey itself: focus order, focus visibility, focus management on dynamic UI, keyboard traps, and the common patterns (modals, menus, tabs, custom widgets) that consistently break.
 
+This is the Operable step (step 2) of `references/accessibility-audit-workflow.md`; run it as part of that sequence when a full a11y pass is in scope.
+
 ### Pre-flight: relevance check
 
 Run on every site that has more than a static landing page. Skip with reason `not applicable` only for single-page brand sites with no interactive elements beyond a single CTA link.

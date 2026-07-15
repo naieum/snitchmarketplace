@@ -102,6 +102,8 @@ The schema.org type hierarchy: https://schema.org/docs/full.html
 
 Google's Rich Results Test (manual validation): https://search.google.com/test/rich-results
 
+Before recommending any `@type` "to win a rich result," check `references/schema-deprecations.md` — some types (HowTo, narrowed FAQ, SpecialAnnouncement) no longer render a rich result even though the markup is still valid structured data.
+
 **Severity tagging:**
 - Page eligible for rich result, no JSON-LD at all → High.
 - Invalid JSON in JSON-LD block (silent drop) → High.

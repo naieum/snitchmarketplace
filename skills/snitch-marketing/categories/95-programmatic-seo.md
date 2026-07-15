@@ -2,6 +2,8 @@
 
 Programmatic SEO is the practice of generating thousands (or millions) of pages from a template, fed by a structured dataset, `[city] + [service]`, `[product] + [feature]`, `[language A] to [language B]`, `[tool] alternative`. Done well, it owns long-tail SERP at scale (Zapier integrations, Wise currency converters, Tripadvisor city pages, G2 software comparisons). Done poorly, it spawns thousands of near-duplicate, thin, low-value pages that trigger spam-update demotions and crawl-budget waste.
 
+Quantify the near-duplication rather than asserting it: compute Jaccard similarity across the templated set per `references/content-intelligence.md` (flag pairs above 0.80, shingling the main content region only), and quote the URL pair + similarity figure as the evidence.
+
 This category audits the discipline of templated page generation: uniqueness, content depth, sitemap shape, indexability gating, and AI-content-tell density.
 
 ### Pre-flight: relevance check

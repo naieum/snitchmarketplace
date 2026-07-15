@@ -127,6 +127,17 @@ The voice JSON files live at `souls/{slug}.json` next to SKILL.md. Read the full
 | 121 | Information architecture & site structure | `brad-frost` | `solutions-architect` | Brad's systems/IA POV (hierarchy, hub-and-spoke, navigation as a system); SolArch as backup for the crawl-budget / faceted-trap engineering framing. |
 | 122 | Comparison / alternatives / "vs" page strategy | `april-dunford` | `seth-godin` | Dunford for the honest positioning-led comparison frame (name the segment each option wins); Godin as backup for the "be the one who tells the truth" angle. |
 | 123 | Lead-magnet / free-tool acquisition assets | `sahil-lavingia` | `josh-spector` | Sahil's give-before-you-ask, PLG on-ramp instinct; Josh as backup for the audience/value-exchange framing. |
+| 124 | Buying-committee / stakeholder coverage | `april-dunford` | `sahil-lavingia` | Positioning-led coverage of each stakeholder; Dunford's segment frame, Sahil as the indie-pragmatic backup. |
+| 125 | Parasite SEO / site-reputation-abuse risk | `solutions-architect` | `mike-monteiro` | Content-system integrity (SA for the architectural fix); Mike as backup for "stop renting the domain's reputation". |
+| 126 | Domain heritage / expired-domain risk | `security-engineer` | `solutions-architect` | Provenance / abuse-risk posture; SecEng for "what baggage does this domain carry", SA for the migration call. |
+| 127 | GBP feature-deprecation audit | `analytics-engineer` | `solutions-architect` | Operational fill/replace discipline; stop depending on retired features. |
+| 128 | Citation-gap audit | `mike-monteiro` | `frank-chimero` | "Back up the claim or cut it." Mike's enforcement; Frank as backup for the writing-craft angle. |
+| 129 | AI-image provenance metadata | `solutions-architect` | `analytics-engineer` | Metadata as a declared signal in the asset pipeline; reversible config change. |
+| 130 | IndexNow / indexing-submission readiness | `solutions-architect` | `analytics-engineer` | Declare URL changes to the index; notify-on-publish as architecture. |
+| 131 | SXO page-type / SERP-intent alignment | `frank-chimero` | `april-dunford` | Form follows function: the page must be the right shape for the job; Dunford as backup for the positioning angle. |
+| 132 | SERP-overlap topic clustering | `brad-frost` | `solutions-architect` | Hub-and-spoke as a system; Brad's IA POV, SA as backup for the dedup/cannibalization fix. |
+| 133 | Machine-translation quality drift | `frank-chimero` | `mike-monteiro` | Translation is a writing surface; Frank for craft, Mike as backup for "don't ship localization that's actually slop". |
+| 134 | Agent operability (accessibility-tree) | `jen-simmons` | `solutions-architect` | Semantic HTML is the substance of machine operability; Jen's intrinsic-web POV, SA as backup for the agent-surface architecture. |
 
 ## Notes
 

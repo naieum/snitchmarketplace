@@ -61,6 +61,8 @@ Patterns indicating thin content:
   Evidence required: 2-3 page samples showing the templated similarity.
 - **Duplicate content across pages** (the same paragraph repeated on every product page in a category).
   Evidence required: the duplicated paragraph + at least 3 routes that contain it.
+- **Near-duplicate pages** (different URLs whose main content is substantially the same — common on templated location/feature pages). Quantify with the Jaccard near-duplicate metric in `references/content-intelligence.md` (flag pairs above 0.80, shingling the main content region only, not nav/footer chrome).
+  Evidence required: the two URLs + the computed similarity figure.
 
 ### NOT a Problem
 

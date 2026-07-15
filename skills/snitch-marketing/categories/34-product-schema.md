@@ -31,6 +31,9 @@ Looking for `"@type": "Product"` JSON-LD on commerce pages.
 - `price`, `priceCurrency`, `availability`
 - `aggregateRating` (Product field)
 - `review` (Product field)
+- `shippingDetails` (`OfferShippingDetails`, rate + delivery window) and `hasMerchantReturnPolicy` (`MerchantReturnPolicy`, return window + country), the two attributes Google's merchant-listing rich result now expects beyond price/availability
+- `hasEnergyConsumptionDetails` (EU energy-efficiency label, required for EU-sold electronics/appliances in the regulated categories)
+- `hasMemberProgram` / member-only price where the page shows loyalty or membership pricing
 
 ### Actually Hurts SEO
 
@@ -44,6 +47,10 @@ Looking for `"@type": "Product"` JSON-LD on commerce pages.
   Evidence required: quoted price field.
 - **`aggregateRating` declared with no actual reviews on the page**.
   Evidence required: rating + the page content showing no review section.
+- **Sellable product whose `Offer` has no `shippingDetails` and no `hasMerchantReturnPolicy`** (Google now expects both for the full merchant-listing experience; without them the listing is weaker and Merchant Center may surface a shipping/returns warning).
+  Evidence required: parsed `Offer` missing both fields + the page is a sellable product (add-to-cart / checkout signal quoted).
+- **EU-sold electronics/appliance in a regulated category with no `hasEnergyConsumptionDetails`** (EU energy-label rules apply; the attribute is expected for the affected products).
+  Evidence required: product category + an EU-sale signal (EUR price, EU shipping/locale) + absent energy details.
 
 ### NOT a Problem
 
@@ -57,6 +64,8 @@ Looking for `"@type": "Product"` JSON-LD on commerce pages.
 2. Does the e-commerce framework auto-emit (Shopify themes, WooCommerce + plugin)?
 3. Is the product out of stock with no replacement schema (`availability: OutOfStock`)? Should still have schema; OutOfStock is the correct value.
 4. Is the price dynamic (per-user, time-limited)? Schema must reflect what the page shows; if dynamic, server-render the schema with the actual price.
+5. Does the page show shipping/returns/energy info that the schema omits (or vice versa)? `shippingDetails`, `hasMerchantReturnPolicy`, and `hasEnergyConsumptionDetails` must match the visible policy, not contradict it. Only flag the energy attribute for EU-sold regulated categories.
+6. Are the product's images AI-generated? If so, their provenance metadata is Cat 129's concern, not this cat's, but the two pair on the same PDP.
 
 ### Reference
 
@@ -64,11 +73,18 @@ Google on Product structured data: https://developers.google.com/search/docs/app
 
 Schema.org Product: https://schema.org/Product
 
+Google merchant listing structured data (shipping + returns): https://developers.google.com/search/docs/appearance/structured-data/merchant-listing
+
+Cross-ref Cat 129 (AI-image provenance metadata on the product's images) and Cat 94 (Review / AggregateRating honesty).
+
 **Severity tagging:**
 - Product page with no Product schema → Critical (biggest CTR miss in e-commerce).
 - Missing `offers` field → Critical.
 - Invalid `availability` enum → High.
 - aggregateRating without reviews → Medium (Google may flag as inconsistent).
+- Sellable product missing both `shippingDetails` and `hasMerchantReturnPolicy` → Medium (weaker merchant listing, Merchant Center warning risk).
+- EU-sold regulated product missing `hasEnergyConsumptionDetails` → Medium (regulatory + listing completeness).
+- Schema shipping/returns/energy values contradicting the visible page → High (inconsistency can drop the rich result entirely).
 
 **Fix voice:** `sahil-lavingia` (primary) | `tobias-van-schneider` (backup).
 

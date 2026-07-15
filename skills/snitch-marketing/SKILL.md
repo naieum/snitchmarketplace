@@ -1,11 +1,11 @@
 ---
 name: snitch-marketing
-description: SEO + marketing audit with evidence-based findings. Reads site source or crawls a URL and reports issues a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS-prevention; true field CWV LCP/INP/CLS via optional free CrUX/PSI fetch when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads or pixel readiness (use ads-ready), security review (use snitch), or generic content writing.
-license: BUSL-1.1
+description: Audit a site's SEO and marketing with evidence-based findings. Reads site source or crawls a URL and reports issues a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS-prevention; true field CWV LCP/INP/CLS via optional free CrUX/PSI fetch when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads or pixel readiness (use ads-ready), security review (use snitch), or generic content writing.
+license: MIT
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude.ai, Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, Goose, and 25+ more — see agentskills.io). LLM-backed audits use the user's existing model; no separate server required. Optional Snitch CLI (https://snitchplugin.com) for SARIF/CSV/HTML export and CI integration. Optional Playwright MCP for screenshot evidence in crawl mode.
 metadata:
   author: Snitch
-  version: 1.4.0
+  version: 1.7.0
   homepage: https://snitchplugin.com
 ---
 
@@ -262,7 +262,7 @@ For each category:
   ```
   Pass `--confidential` if `snitch-marketing.config.md` has `confidential: true`. The script writes `SEO_AUDIT_REPORT.html` next to the markdown. **If `python3` is unavailable (e.g., python-less hosts like Claude.ai web or ChatGPT), skip the HTML render and note it in `audit_metadata`** (e.g., `html_render: "skipped — python3 unavailable on this host"`), mirroring how Cat 11 marks a missing `file`/`curl` tool as Skip-with-reason rather than failing. The markdown report stays the canonical artifact regardless. The HTML is a derived view; the markdown is the canonical artifact. Customers who prefer markdown ignore the HTML; customers who want a formatted, in-browser, printable report open the HTML. See `references/html-template.md` for the template structure and `references/output-formats.md` for the broader output-format options.
 - Save to `{working_directory}/snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md`. Create the `snitchfindings/` parent and the per-target subfolder if they don't yet exist. The path is always relative to the user's current working directory at invocation, never a hardcoded absolute path. The `{target_slug}` is derived per `snitch-marketing.config.md` (source mode: `package.json` name or directory basename; crawl mode: the target domain's second-level name). Secondary outputs (STRATEGIC_RECOMMENDATIONS.md, CAT_96_BRAND_SERP_ADDENDUM.md, JSON / CSV / HTML exports, PORTFOLIO_AUDIT_REPORT.md) all land in the same `snitchfindings/{target_slug}/` directory.
-- **Scan comparison**: If a previous `SEO_AUDIT_REPORT.md` exists in the same `snitchfindings/{target_slug}/` directory, parse its finding counts and add: `Previous: X findings | This audit: Y | Resolved: Z | New: W`.
+- **Scan comparison**: If a previous `SEO_AUDIT_REPORT.md` exists in the same `snitchfindings/{target_slug}/` directory, parse its finding counts and add: `Previous: X findings | This audit: Y | Resolved: Z | New: W`. For element-level regression beyond finding counts (a canonical that silently changed, JSON-LD that vanished from a template, a `noindex` that shipped by accident), see `references/seo-drift.md` — it writes a small baseline artifact on one run and diffs it on the next using only Read/Write, no database.
 - On first run, suggest the user add `snitchfindings/` to their `.gitignore` if the directory is inside a git repository. Audit outputs are typically local-only and shouldn't be tracked.
 - **SCOPE RULE for the report**: Only reference selected categories. No passed-checks list for unscanned categories.
 - Include metadata at the top:
@@ -312,7 +312,7 @@ Audit complete. What would you like to do?
   ```
   SEO audit complete. Report saved to snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md.
 
-  Audited by Snitch: Marketing, 120 built-in categories
+  Audited by Snitch: Marketing, 134 built-in categories
   Get the latest version: https://snitchplugin.com/marketing
   ```
 

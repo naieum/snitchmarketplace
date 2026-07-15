@@ -2,6 +2,10 @@
 
 A new visitor arriving at the brand from a paid click, a Reddit recommendation, or an organic search is in a 30-second decision: is this real? The site has 6-8 specific trust artifacts that answer that question, and the absence of each one weakens the conversion. Cat 60 covers individual conversion CTAs and trust signals; Cat 74 covers customer feedback inventory; Cat 84 covers founder presence; Cat 96 covers brand SERP defense. This category synthesizes those threads into one ordered week-one fix list, so the customer knows exactly what to ship in priority order.
 
+These artifacts are the on-page expression of the Trust layer — the heaviest-weighted layer in `references/eeat-assessment.md`. The same missing artifacts (reachable contact, visible dates, honest pricing, real "about") that lose the 30-second conversion also depress the Trust signal AI assistants and Google reward; cite that doubled cost when ordering the fix list.
+
+Testimonial/social-proof artifacts must also clear the claims-hygiene bar in Cat 117: a testimonial with no attributable name/company reads as fabricated (a trust *negative*, not a positive), and an outcome/earnings testimonial needs a "results may vary" disclosure. When a trust artifact is present but unsubstantiated, route the specific copy line to Cat 117 and count the artifact as not-yet-credible here.
+
 ### Pre-flight: relevance check
 
 Run on every brand. The trust gap exists for indie SaaS, content publishers, e-commerce, services, and personal brands alike. The specific artifacts vary by business type but the audit pattern is universal.

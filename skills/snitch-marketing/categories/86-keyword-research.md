@@ -2,6 +2,8 @@
 
 The queries the audience actually types, classified by what they want when they type them, clustered by SERP overlap, prioritized by leverage. Most teams skip this and write content for what they wish people searched for; the result is content that ranks for nothing.
 
+Include a cannibalization pass: detect multiple pages targeting one query/intent (they split rankings and confuse which page an engine should cite) using the method in `references/content-intelligence.md`. Name the competing URLs, the shared target intent, and which page should be the canonical authority.
+
 ### Pre-flight: relevance check
 
 Skip if the brand is in a niche too narrow for query-volume measurement (highly specialized B2B, novel category with no established search behavior). Otherwise this category is universally applicable, every brand has queries it should rank for, even if it doesn't yet.

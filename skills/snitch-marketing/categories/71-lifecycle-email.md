@@ -58,6 +58,12 @@ Drip patterns:
   Evidence required: sample of recent campaigns.
 - **No re-engagement / win-back sequence** for inactive subscribers.
   Evidence required: segmentation table without an inactive-trigger sequence.
+- **No post-purchase value narration** (the customer pays and the emails stop; nothing recaps
+  what they received). Customers don't register value they aren't told about, in an organized
+  way, at pay time — a delivery/receipt email that itemizes what was accomplished (including
+  the emotional deliverables: "saved you a flooded bathroom at midnight") is marketing's last
+  and cheapest touchpoint, and it feeds renewal and referral.
+  Evidence required: purchase/delivery flow traced + no recap email or itemized value in receipts.
 
 ### NOT a Problem
 
@@ -81,6 +87,7 @@ Justin Welsh's solopreneur newsletter playbook (case study): https://www.justinw
 - Cadence inconsistent / abandoned → High.
 - No segmentation on a list >1000 → Medium.
 - All-promotional content → Medium.
+- No post-purchase value narration → Low.
 
 **Fix voice:** `sahil-lavingia` (primary) | `mike-monteiro` (backup).
 

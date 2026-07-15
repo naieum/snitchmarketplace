@@ -94,7 +94,9 @@ Single biggest source of self-inflicted traffic drops. Check the deploy log firs
 
 #### 3b. A Google algorithm update
 
-Cross-reference the drop date with confirmed update history:
+Cross-reference the drop date with confirmed update history. Start with the curated lookup
+in `references/google-updates.md` (which window contains the onset, and what that update
+type re-weights), then confirm the exact dates against the primary sources:
 - Google Search Status Dashboard: https://status.search.google.com/
 - Sistrix Visibility Index updates: https://www.sistrix.com/google-updates/
 - Semrush Sensor: https://www.semrush.com/sensor/

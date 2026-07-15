@@ -2,6 +2,8 @@
 
 Pages written by AI without editing have characteristic patterns: over-hedging, generic transitions, made-up statistics, em dashes everywhere, "delve into", "in today's fast-paced world", "it's important to note that". Google's helpful-content system is increasingly tuned to demote slop. The fix isn't "remove AI", it's "edit so the page sounds like a person who knows what they're talking about."
 
+This is an E-E-A-T problem when the slop erases the author's first-hand Experience — name that linkage per `references/eeat-assessment.md` (the page reads as no one in particular having done the thing), not just the surface tells.
+
 ### Evidence required (do not skip)
 
 **Source mode, required tool calls:**

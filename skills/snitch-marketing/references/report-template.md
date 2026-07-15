@@ -61,6 +61,23 @@ When a previous audit exists, the section looks like:
 | Resolved since previous | {N} | | |
 | New since previous | {N} | | |
 
+## GEO readiness score
+
+**INCLUSION RULE:** Only include this entire `## GEO readiness score` section if Cat 82 (AI-search citation), Cat 102 (multi-LLM), or Cat 106 (llms.txt) were in scope for this scan. If none ran, OMIT THIS SECTION ENTIRELY (no heading, no placeholder). Mirrors the gating of `## Comparison to previous audit` and the field-CWV block. Methodology + the deduction model live in `references/geo-score.md`.
+
+When in scope, the section shows the score with its full derivation (the reader must be able to add the deductions and reach the total):
+
+GEO readiness: **{score}/100**
+
+| Finding | Severity | Deduction |
+|---|---|---|
+| (start) | | 100 |
+| {GEO finding title} | {Critical/High/Medium/Low} | {-20/-10/-5/-2} |
+| ... | | ... |
+| **Total** | | **{score}** |
+
+Only GEO-surface findings feed the score (crawler access, llms.txt, citability/answer-fitness, extractability+schema, brand authority, multi-LLM). Never show the number without this itemized derivation — an unexplained score is the vanity metric this skill avoids.
+
 ## What needs work
 
 {Group findings by SEO Impact: Critical first, then High, then Medium, then Low. Within each impact level, group by category number. Use the Finding Format from SKILL.md. Each finding has its own evidence block with file:line or URL+selector. No editorializing.}

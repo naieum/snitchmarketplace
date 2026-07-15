@@ -1,0 +1,72 @@
+# UI Copywriting & CTA Patterns
+
+Words are UX. The same screen converts or stalls on copy alone. Rules of thumb, then a
+swap table. This file is the *line-level* pass; for the *brand-level* message these lines
+serve — hero headline, tagline, value prop, onboarding narrative — see
+`brand-messaging.md` first (problem-first story, five sound bites, controlling idea).
+
+## Principles
+
+- **Omit needless words.** Cut the words on the page in half, then cut what's left in half
+  again. Fewer words = less noise, the useful copy stands out, the page looks less daunting.
+  Two things to cut ruthlessly:
+  - **Happy talk must die.** Self-congratulatory intro fluff ("Welcome! We're thrilled to
+    offer world-class solutions…") that a reader's brain just tunes out as noise. It carries
+    no information — get straight to the point.
+  - **Instructions must die.** Nobody reads them; they're an admission the UI isn't
+    self-evident. First try to make the thing obvious enough to need none, then cut what's
+    left to the bare minimum.
+- **Make the message stick.** For anything the user must remember or be moved by — a
+  headline, value prop, onboarding beat — run it against six traits: **simple** (one core
+  idea, not five), **unexpected** (break a pattern so it catches — curiosity from a small
+  gap in what they know), **concrete** (sensory, picturable — "steps from the sand," not
+  "great location"), **credible** (a specific detail or number they can check), **emotional**
+  (make them *feel*, don't just inform — people care about one person, not a statistic), and
+  a **story** (a tiny narrative outlasts a spec). You rarely need all six; two or three turn
+  a forgettable line into one that lands.
+- **Specificity = trust.** Exact numbers kill the doubt vague adjectives create.
+  "Start in 2 taps," "ready in 23 minutes," "4.9 ★ (221)" beat "quick," "fast," "loved."
+  **Doubt is the most expensive thing in your interface.** Round numbers (100, 500) read as
+  fake — use the real, odd number.
+- **Possessive "my" over "your."** "Start my free trial" creates ownership before the tap.
+- **Verb choice sets the stakes.** "Start" is light (a beginning). "Subscribe" signals
+  lock-in. "Continue" implies you're mid-journey. Pick the lowest-commitment true verb.
+- **Name the outcome, not the mechanism.** CTA states what the user gets / the full total:
+  "Reserve — €445 total" (no hidden-fee anxiety) beats a bare "Reserve." "Add to cart —
+  start my routine" reframes a purchase as a positive step.
+- **Ask the easy question.** Rewrite high-commitment framing into low-stakes framing
+  ("Can I try this free?" not "Is this worth $19/mo?").
+- **Conversational & plain.** Write like a person ("How long did you sleep?"), not a form
+  label ("Sleep duration input"). Reduces processing friction.
+- **Preempt the top objection next to the CTA.** "Free cancellation before Mar 26,"
+  "cancel anytime," "no card required" — answer the fear before it's asked.
+- **Sensory/emotional language** where you're selling an experience: "beachside escape,
+  steps from the sand" activates imagination before price does.
+- **One-word categorization labels** do the deciding: a small "cheaper" / "best value" /
+  "most popular" tag tells the brain which option to pick.
+- **Loss framing in the copy** (only when true): "Don't lose your 5-day streak" >
+  "Keep your streak"; a dismiss that owns the cost ("I'll risk it") > "Maybe later."
+
+## Swap table
+
+| Weaker | Stronger | Why |
+|---|---|---|
+| Sign up | Continue / Start my plan | endowment, low commitment |
+| Subscribe | Start free | "start" is light; question becomes easy |
+| Your free trial | My free trial | ownership |
+| Search | Show 12 results | previews the payoff (default + specificity) |
+| Quick setup | Set up in 2 taps | specificity = trust |
+| Fast delivery | Delivery in 23 min | specificity |
+| Loved by thousands | 4.9 ★ · 221 reviews | specific, non-round = real |
+| Reserve | Reserve — €445 total | names the outcome, kills fee anxiety |
+| Add to cart | Add to cart — start my routine | reframes cost → step |
+| Maybe later | I'll risk it | dismiss owns the loss |
+| You have no projects | Create your first project → | empty state as CTA |
+| Upgrade now | Keep your 3 files — they're deleted in 7 days | loss > gain (only if true) |
+
+## Anti-patterns (don't)
+
+- Vague adjectives where a number exists.
+- Round/fabricated stats or fake reviews.
+- Buried cost, surprise fees on the next screen, hidden cancellation.
+- Urgency/scarcity that isn't real.

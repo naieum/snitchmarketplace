@@ -46,7 +46,7 @@ Move through in order. A page with great extractability but zero discoverability
 
 **Layer 1 (Discoverability):**
 - `llms.txt` / `llms-full.txt` files at site root
-- `robots.txt` rules for `GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, `CCBot`
+- `robots.txt` rules for the AI crawler fleet — check the full set, not just the well-known few (see `references/ai-crawler-registry.md` for the ~16 current user-agents and the training-bot vs live-retrieval-bot distinction that decides the citation consequence)
 - Server-rendered key pages (vs JS-only)
 
 **Layer 2 (Extractability):**
@@ -54,9 +54,12 @@ Move through in order. A page with great extractability but zero discoverability
 - Q+A heading patterns (`<h2>What is X?</h2><p>X is...</p>`)
 - Tables with explicit `<th>` headers
 - Schema.org JSON-LD presence (cross-reference Cat 31)
+- Passage citability + answer-length fitness — score 3-5 sampled passages per `references/citability-scoring.md` (134-167 word citation blocks; 40-60 word snippet/PAA answers; under ~29 word voice answers), reporting each scored passage with its quoted text
 
 **Layer 3 (Authority):**
 - Citations in Wikipedia, .edu, .gov, top-tier industry publications
+- Off-site presence across the platforms assistants weight — run the sweep in `references/brand-authority-platforms.md` (Wikipedia, Reddit, YouTube, G2, etc.)
+- E-E-A-T signals, Trust-first — map authority findings to the layer they strengthen per `references/eeat-assessment.md`
 - Original research / data the brand owns and others cite
 - Founder / team author bylines with credentials (cross-reference Cat 84)
 
@@ -122,6 +125,20 @@ Audit application:
 1. For the brand's most-cited or most-strategic informational pages (top 5-10 candidates), capture the publish date and (if present) the last-updated date.
 2. Findings: pages with publish dates <90 days old that target queries with mature AI-citation patterns are flagged as "too fresh; allow 6-12 months of corpus accumulation before judging citation absence." Pages with publish dates >2 years old AND no visible last-updated date are flagged as "stale; add a last-updated date OR refresh the content without changing the URL."
 3. Pages targeting time-sensitive informational queries ("Postgres 17 features") have different rules — freshness wins; cite-staleness is the cost of permanence on a topic that moved.
+
+### AI-search myths vs evidence
+
+Three widely-repeated GEO tactics don't hold up to primary-source evidence. Don't manufacture findings around them:
+
+- **"Add llms.txt to get cited."** `llms.txt` is low-cost and worth shipping, but it is not a confirmed citation lever — no major assistant has published that it uses the file to decide citations. Treat its absence as Medium-at-most (see Cat 106's recalibrated posture), never Critical.
+- **"Chunk your content for the AI."** Manual content-chunking is not required; retrieval systems segment pages themselves. The real lever is extractable structure (Layer 2), not a special chunk format.
+- **"Rewrite keywords for AI."** AI-specific keyword rewriting is redundant; assistants resolve synonyms. Write for the reader's actual language (Cat 86), not an "AI dialect."
+
+When a competitor tool's report recommends one of these, reframe to the underlying real lever (crawler access, extractable structure, genuine authority) instead of repeating the myth.
+
+### Feeds the GEO readiness score
+
+When the optional GEO score renders (`references/geo-score.md`), this category's findings are its largest input: crawler access (Layer 1), citability + answer fitness (Layer 2), and brand authority (Layer 3) each contribute deductions. Keep severities calibrated — the score is a literal sum of these findings, so an over-tiered finding inflates the score loss.
 
 ### NOT a Problem
 

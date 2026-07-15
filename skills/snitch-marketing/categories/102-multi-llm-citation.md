@@ -47,6 +47,10 @@ For each major LLM the brand wants to be cited by, audit:
 - **Trust hierarchy**: weights real-time social signal + technical depth
 - **Best signals**: founder + brand presence on X (Cat 84), technical content depth, recent posting cadence
 
+### Shared substrate: passage citability
+
+All five lenses sit on one substrate: a passage the LLM can lift cleanly. Before per-LLM tactics, score the brand's key passages for citability + answer-length fitness per `references/citability-scoring.md`. A passage that fails extractability fails in every LLM, so fix it once rather than per-lens; the per-LLM differentiation below only matters once the underlying passages are extractable.
+
 ### Evidence required (do not skip)
 
 **Crawl mode, required tool calls (most of this is off-site):**

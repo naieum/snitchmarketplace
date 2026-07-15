@@ -2,6 +2,8 @@
 
 `Person` schema is the structured signal for individual humans on a site, author bylines, founder bios, expert contributors, instructor profiles. It feeds the knowledge panel for personal brands, attaches authorship to articles (cross-reference Cat 32), drives E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) signals that Google ranks heavily on YMYL queries, and helps AI assistants cite individual humans when answering category questions (cross-reference Cat 82).
 
+`Person` schema is the structured-data half of the Expertise + Trust layers in `references/eeat-assessment.md`; missing or unverifiable authorship is an E-E-A-T finding, not just a missing-schema finding.
+
 ### Pre-flight: relevance check
 
 Skip this category with reason `not applicable` ONLY if the site has no named humans associated with it (no author bylines, no founder bio, no team page, no testimonials). Most sites have at least one Person to model.

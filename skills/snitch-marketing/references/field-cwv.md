@@ -55,6 +55,25 @@ Lab fallback when field is missing: PSI `runPagespeed?url=...&strategy=mobile`.
 - **Don't invent causation.** Field CWV is an *outcome*; the source contributors are the
   *hypotheses*. Report "likely contributors" + "confirm with the field trend after the fix" — not "this script causes your 4.3s LCP."
 
+## LCP decomposition (which subpart to fix)
+
+A slow LCP is one number hiding four subparts. Decomposing it points the fix at the right
+contributor cat instead of guessing. The four subparts and where each comes from:
+
+| Subpart | What it is | Source | Routes to |
+|---|---|---|---|
+| **TTFB** | Time to first byte (server + network) | CrUX field (experimental `experimental_time_to_first_byte`) **and** PSI lab | hosting / CDN / SSR cost — outside the contributor cats; note it |
+| **Resource load delay** | Gap between TTFB and the LCP resource starting to load | PSI / Lighthouse lab | Cat 40 render-blocking, Cat 41 critical CSS, late-discovered LCP image (preload) |
+| **Resource load duration** | How long the LCP resource takes to download | PSI / Lighthouse lab | Cat 43 image weight, Cat 27 image format, Cat 44 bundle weight |
+| **Element render delay** | Gap between resource loaded and pixel painted | PSI / Lighthouse lab | Cat 40 render-blocking JS, hydration cost (Cat 44) |
+
+The subpart breakdown is a **lab** signal (PSI / Lighthouse) — CrUX field supplies the p75
+outcome plus a field TTFB to corroborate the TTFB subpart, but it does NOT itself return the
+four-way split. Say "lab decomposition" when you cite the split, and pair it with the field p75
+as the outcome. The payoff: a finding can say *which* subpart dominates ("LCP 4.3s, ~2.8s of it
+is render delay → the fix is the render-blocking bundle, Cat 40, not the image") instead of
+listing every CWV contributor at once.
+
 ## Graceful degradation (no key / no field data)
 
 1. No `CRUX_API_KEY` → run contributor cats only; note "field CWV not fetched (set `CRUX_API_KEY` to corroborate)."

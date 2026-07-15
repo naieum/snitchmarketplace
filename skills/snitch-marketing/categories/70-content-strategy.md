@@ -60,6 +60,20 @@ Distribution patterns:
   Evidence required: post analysis + missing distribution signals.
 - **Posts have no email-capture CTA** (every post should at minimum offer the newsletter).
   Evidence required: post template content + missing signup form.
+- **Content CTAs scatter across many different assets** (each post points at a different
+  download / signup / offer). Repetition is the mechanism: people act on the sixth-to-eighth
+  exposure to the *same* asset, and one funnel's follow-up can be tuned where ten can't.
+  Evidence required: post CTA inventory showing 4+ distinct destination assets with no primary.
+- **All attention content, no conversion content** (broad, viral-shaped topics with no deep
+  tactical content serving the actual buyer) — reach without buyers. Or the inverse: all
+  niche conversion content with nothing that opens the top of the funnel. A working engine
+  runs both layers on purpose.
+  Evidence required: topic clusters mapped to funnel role, showing one layer entirely absent.
+- **Every title opens a new intellectual loop; none closes a loop the audience already
+  carries.** Content that explodes closes an emotionally charged question readers already
+  have ("how do I deal with X" beats "three interesting facts about X"). Same rule for lead
+  magnets: if the team can't answer "what problem does this asset solve?", it won't convert.
+  Evidence required: title inventory + absence of problem-shaped/loop-closing titles.
 - **Single-author content** when team has multiple subject-matter experts.
   Evidence required: author distribution.
 
@@ -79,9 +93,14 @@ Distribution patterns:
 
 Animalz on content frameworks: https://www.animalz.co/blog/
 
+Donald Miller (StoryBrand) on attention-vs-conversion layers and one-lead-generator discipline: https://storybrand.ai
+
 **Severity tagging:**
 - Cadence dropped >50% in last 90 days → High.
 - Missing newsletter capture on blog → High.
+- Content CTAs scattered across 4+ assets with no primary lead generator → Medium.
+- Attention/conversion layer entirely missing (either direction) → Medium.
+- No loop-closing / problem-shaped titles anywhere in the content set → Medium.
 - No distribution beyond own site → Medium.
 - Topic concentration too narrow → Medium.
 
@@ -98,3 +117,5 @@ Worked fix example:
 > Distribution: every post gets cross-posted somewhere. LinkedIn, X thread, newsletter at minimum. The post that lives only on your blog reaches your existing readership; the post that exists across three surfaces compounds.
 >
 > Capture: every post has a newsletter signup mid-page or at the bottom. The casual reader who liked the post becomes a recurring reader.
+>
+> Run two layers on purpose: broad attention content that keeps opening the top of the funnel, and deep tactical content that serves the person who will actually pay. And point everything at one lead generator — the reader who has seen the same asset offered six times downloads it; the reader offered six different assets downloads none.

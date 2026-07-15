@@ -4,7 +4,7 @@ The primary recommendation mechanism is component-based detection (STEP 0.8 + `r
 
 When the user picks "B2B SaaS preset" or "E-commerce preset", the audit uses these curated cat lists directly. When the user picks "run the recommended scan" or doesn't name a preset, the audit uses the component-driven recommendation in STEP 1.5 (which may produce a similar list, but is justified per detected component, not per claimed business model).
 
-The full 123-category catalog is enumerated at the bottom of this file.
+The full 134-category catalog is enumerated at the bottom of this file.
 
 ## Token cost heuristic
 
@@ -19,7 +19,7 @@ Use these heuristics to compute the per-preset token estimate displayed in the s
 
 ## Group 2: Technical SEO
 
-Categories: 1, 2, 3, 4, 5, 6, 9, 10, 13, 39, 40, 42, 45, 121
+Categories: 1, 2, 3, 4, 5, 6, 9, 10, 13, 39, 40, 42, 45, 121, 130
 
 **Token cost: ~20-30K tokens (small/medium site).** 13 cats × ~1.5K + ~5K overhead.
 
@@ -27,11 +27,11 @@ The crawl + indexing surface plus the load-bearing technical bits a search engin
 
 ## Group 3: Content & Structure
 
-Categories: 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 57, 58, 86, 121, 122
+Categories: 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 57, 58, 86, 121, 122, 128, 131, 132
 
 **Token cost: ~20-30K tokens.** 13 cats × ~1.5K + ~5K overhead.
 
-Heading hierarchy, semantic HTML, content depth, internal link graph, broken links, anchor quality, breadcrumbs, footer spam, external link rels, topical depth, keyword/intent match, keyword research + intent mapping.
+Heading hierarchy, semantic HTML, content depth, internal link graph, broken links, anchor quality, breadcrumbs, footer spam, external link rels, topical depth, keyword/intent match, keyword research + intent mapping. The content cats also draw on the deterministic content-intelligence metrics (Flesch-Kincaid readability, cross-page near-duplicate via Jaccard, keyword cannibalization) in `references/content-intelligence.md` to back judgment calls with quotable figures.
 
 ## Group 4: Schema & Structured Data
 
@@ -51,9 +51,9 @@ Image quality + a11y as conversion signals + analytics setup + CTAs / forms / tr
 
 ## Group 6: International
 
-Categories: 50, 51, 52
+Categories: 50, 51, 52, 133
 
-**Token cost: ~5-8K tokens.** 3 cats. Skips quickly on single-locale sites.
+**Token cost: ~6-10K tokens.** 4 cats. Skips quickly on single-locale sites.
 
 Hreflang correctness, locale canonicals, html lang attribute. Small group; only useful when site has multiple locales.
 
@@ -79,33 +79,35 @@ Most of this preset depends on the brand-maturity check (STEP 0.6) — categorie
 
 ## Group 9: 2026 Modern Marketing
 
-Categories: 82, 83, 84, 85, 106
+Categories: 82, 83, 84, 85, 106, 134
 
 **Token cost: ~10-18K tokens.** 5 cats × ~1.5K + ~5K overhead. Cat 82 (AI-search citation) adds 2-4K for ChatGPT / Claude / Perplexity test queries.
 
 The 2026-and-forward channel set. Different from Group 8 because these reflect what's actually working post-AI-overview, post-creator-economy: AI-search citation (the new TOFU), mid-tier creator partnerships (replacing macro-influencer), founder-led brand channel (replacing brand-account posting for early/indie brands), niche newsletter + podcast sponsorships (replacing display ads).
 
+The GEO surface here is backed by several cross-cutting references: `references/citability-scoring.md` (passage citability + answer-length fitness), `references/ai-crawler-registry.md` (the full AI-crawler fleet), `references/brand-authority-platforms.md` (off-site authority sweep), and `references/schema-deprecations.md` (so the schema cats don't recommend dead rich results). When Cat 82 / 102 / 106 are in scope, the report can render an optional GEO readiness score (`references/geo-score.md`) — a transparent deduction rollup, not a vanity number.
+
 ## Group 10: Full Audit
 
-All 123 categories.
+All 134 categories.
 
-**Token cost: ~168-240K tokens.** 123 cats × ~1.5K + ~10K full-discovery overhead. Crawl-mode adds 2-4K per fetched URL on top.
+**Token cost: ~185-260K tokens.** 134 cats × ~1.5K + ~10K full-discovery overhead. Crawl-mode adds 2-4K per fetched URL on top.
 
 **REQUIRE explicit user confirmation** before launching. The 5-step pre-flight (STEP 0/0.5/0.6/0.7) typically runs as part of the budget. Suggest STEP 1.7's "skip N,N" affordance to cut cats that obviously don't apply (e.g., Cat 87 Recipe schema on a SaaS).
 
 ## Group 11: B2B SaaS preset
 
-Categories: 9, 10, 11, 12, 31, 37, 60, 73, 74, 75, 81, 91, 96, 99, 102, 110, 111, 112, 114, 115, 116, 121, 122, 123
+Categories: 9, 10, 11, 12, 31, 37, 60, 73, 74, 75, 81, 91, 96, 99, 102, 110, 111, 112, 114, 115, 116, 121, 122, 123, 124
 
-**Token cost: ~30-45K tokens.** 18 cats × ~1.5K + ~5K overhead.
+**Token cost: ~38-53K tokens.** 25 cats × ~1.5K + ~5K overhead.
 
-The B2B SaaS audit surface: title/meta + Open Graph for share-worthy content; Organization + WebSite + SoftwareApplication schema; conversion + trust signals; CRO measurement; customer feedback / case studies; brand consistency; positioning; brand SERP defense; conversion funnel deep-audit; multi-LLM citation differentiation. Skip channels (Group 8) unless brand maturity is `established` per STEP 0.6.
+The B2B SaaS audit surface: title/meta + Open Graph for share-worthy content; Organization + WebSite + SoftwareApplication schema; conversion + trust signals; CRO measurement; customer feedback / case studies; brand consistency; positioning; brand SERP defense; conversion funnel deep-audit; multi-LLM citation differentiation; buying-committee / stakeholder coverage (does the surface equip the user, the economic buyer, the champion, and the security/procurement skeptic, not just one persona). Skip channels (Group 8) unless brand maturity is `established` per STEP 0.6.
 
 The preset reflects what a top-1% B2B SaaS team checks before each major launch: does the marketing surface match the positioning, does the funnel convert, does AI search cite us, can a buyer answer "is this credible" in <30 seconds.
 
 ## Group 12: E-commerce preset
 
-Categories: 7, 9, 10, 11, 12, 22, 25, 27, 28, 29, 31, 33, 34, 73, 74, 87, 91, 94, 99, 101, 121, 122
+Categories: 7, 9, 10, 11, 12, 22, 25, 27, 28, 29, 31, 33, 34, 73, 74, 87, 91, 94, 99, 101, 121, 122, 129, 134
 
 **Token cost: ~32-53K tokens.** 20 cats × ~1.5K + ~5K overhead. Image-heavy cats (25, 27, 28, 29) cost more on PDP-heavy stores.
 
@@ -117,7 +119,7 @@ Run with the brand-maturity check (STEP 0.6) gating off-site channels. Add Group
 
 ## Group 13: Local business preset
 
-Categories: 1, 2, 3, 9, 10, 22, 23, 25, 31, 33, 37, 49, 50, 53, 60, 75, 79, 92, 96, 118, 119
+Categories: 1, 2, 3, 9, 10, 22, 23, 25, 31, 33, 37, 49, 50, 53, 60, 75, 79, 92, 96, 118, 119, 127
 
 **Token cost: ~33-55K tokens.** 21 cats × ~1.5K + ~5K overhead. Cat 79 (GBP) + Cat 96 (brand SERP) + Cat 118 (GBP depth) require crawl-mode SERP / Maps fetches; add 2-4K each.
 
@@ -127,7 +129,7 @@ NAP integrity is the load-bearing concern. Cross-reference Cat 79 GBP listing ag
 
 ## Group 14: Publisher / media preset
 
-Categories: 2, 3, 9, 10, 16, 17, 18, 22, 30, 32, 33, 38, 42, 43, 53, 56, 57, 59, 70, 82, 93, 97
+Categories: 2, 3, 9, 10, 16, 17, 18, 22, 30, 32, 33, 38, 42, 43, 53, 56, 57, 59, 70, 82, 93, 97, 125, 128, 132
 
 **Token cost: ~35-60K tokens.** 22 cats × ~1.5K + ~5K overhead. Content-volume cats (18 thin content, 57 topical depth, 97 content decay) cost more on high-volume sites.
 
@@ -156,7 +158,7 @@ Then adds 2-3 more based on stack detection (`references/smart-detection.md`):
 - Shopify / Webflow / Wix detected: add 34 (Product schema if PDP), 32 (Article schema if blog), 60 (conversion/CTA)
 - E-commerce signal (`/cart`, `/checkout`, `/products` routes): force-add 34 (Product schema)
 
-## Full 123-category catalog (locked numbering)
+## Full 134-category catalog (locked numbering)
 
 ### Crawl & indexing (1-8)
 1. Robots.txt
@@ -336,3 +338,24 @@ Then adds 2-3 more based on stack detection (`references/smart-detection.md`):
 121. Information architecture & site structure (click-depth to money pages, hub-and-spoke clustering, faceted-nav crawl traps, URL taxonomy, nav breadth)
 122. Comparison / alternatives / "vs" page strategy (decision-stage capture, honest comparison tables, conversion path, comparison/Product schema)
 123. Lead-magnet / free-tool acquisition assets (on-ramp presence, value exchange, capture hygiene, nurture tie-in, ICP relevance)
+
+### B2B buying committee (124)
+124. Buying-committee / stakeholder coverage (does the marketing surface equip the user, economic buyer, champion, and security/procurement skeptic, not just one persona; B2B / sales-led / considered-purchase only)
+
+### Risk & policy exposure (125-127)
+125. Parasite SEO / site-reputation-abuse risk (own-site sections that match Google's site-reputation-abuse pattern)
+126. Domain heritage / expired-domain abuse risk (registration age + topical drift; pre-acquisition due diligence)
+127. Google Business Profile feature-deprecation audit (reliance on retired GBP features; local only)
+
+### Content trust, media & indexing (128-130)
+128. Citation-gap audit (verifiable claims with no nearby source; E-E-A-T + AI-citability trust gate)
+129. AI-image provenance & licensing metadata (IPTC/XMP DigitalSourceType + creator/credit/license)
+130. IndexNow / indexing-submission readiness (Bing / Yandex / Seznam / Naver; Google not supported)
+
+### Search-fit, clustering & localization (131-133)
+131. SXO, page-type / SERP-intent alignment (is the page even the type of result the SERP rewards)
+132. SERP-overlap topic clustering + cannibalization (cluster by shared SERP, catch self-competition)
+133. Machine-translation quality drift (localized content quality, distinct from hreflang syntax)
+
+### Agent-era operability (134)
+134. Agent operability (accessibility-tree / machine-actionability; can an AI agent complete the primary action)

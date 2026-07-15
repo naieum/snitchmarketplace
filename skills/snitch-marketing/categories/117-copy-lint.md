@@ -10,7 +10,7 @@ Universal. Every brand has copy; every copy line either substantiates its claim 
 
 ### What this category audits
 
-Six failure modes in the live or source copy. Each is a finding with quoted evidence (the exact line + its location).
+Seven failure modes in the live or source copy. Each is a finding with quoted evidence (the exact line + its location).
 
 | Failure mode | What it looks like | Why it fails |
 |---|---|---|
@@ -20,6 +20,7 @@ Six failure modes in the live or source copy. Each is a finding with quoted evid
 | **Hidden price** | "Starting at" with no number, "Contact us for pricing" on a self-serve product, pricing page that requires a sales call when the product is clearly self-serve, "Affordable" / "competitive pricing" without a figure | Hidden price is the #1 conversion blocker on B2B SaaS landing pages. The buyer reads "starting at" with no number as "you can't afford it" and bounces. |
 | **Weak social proof** | "trusted by thousands", "trusted by industry leaders", "join 1000s of happy customers" with no count, no logos, no named customers, no review platform link | Anonymous social proof reads as fabricated. Either name customers (with their permission) and link the review/case study, or drop the line. |
 | **Buzzword density** | Three or more vague-adjective hits in one hero block, one subhead, or one bullet list. The whole paragraph is unfalsifiable. | One vague adjective is a tic. Three in a row signals the copywriter had nothing concrete to say and reached for filler. |
+| **Unsubstantiated / undisclosed claims** | Comparative claim vs a named competitor with no methodology ("3x faster than [X]"); regulated claim (earnings/income, health/medical efficacy, financial returns, "guaranteed", "clinically proven", "FDA-approved") with no disclaimer or evidence; testimonial with no attributable name/company, or an outcome testimonial ("I made $40k") with no "results may vary" disclosure; "patented" / "certified" without a registration number or issuing body | These create regulatory + ad-platform-policy exposure (FTC endorsement & substantiation rules, Google/Meta claim policies) on top of the credibility hit. The fix is proof, a disclaimer, or dropping the claim. Flag for the brand's legal review — this is a claims-hygiene flag, not legal advice. |
 
 ### Evidence required (do not skip)
 
@@ -72,6 +73,13 @@ Findings without all four components are Rule 1 violations (see `references/anti
 - Within any hero block (H1 + immediate subhead + CTA label), flag if 3+ vague-adjective hits.
 - Within any single bullet list of 3-5 items, flag if every bullet contains a vague adjective.
 
+**Unsubstantiated / undisclosed-claim patterns:**
+
+- Comparative: `\b(faster|cheaper|better|more \w+|\d+x \w+) than\b` naming a competitor, or `the only [noun] that` — flag if no test, methodology, or named source within 50 words.
+- Regulated claims: `\b(guaranteed|risk.?free|clinically proven|doctor.?recommended|FDA.?approved|lose \d+ (lbs|pounds|kg)|earn(ings)? \$?\d|[\d.]+% returns?|double your \w+|passive income)\b` — flag if no disclaimer or substantiation on the page.
+- Testimonials: a quoted testimonial with no attributable name/company; OR an outcome/earnings testimonial with no "results may vary / not typical" disclosure nearby (FTC endorsement guidance).
+- IP / certification: `\b(patented|patent.?pending|trademarked|certified|accredited|ISO ?\d|SOC ?2)\b` used as a marketing claim without a registration number, issuing body, or report link.
+
 ### Actually hurts the marketing surface
 
 - **Hero copy is all vague-adjectives.** The buyer can't determine what the product does in 5 seconds. Critical.
@@ -118,6 +126,9 @@ Findings without all four components are Rule 1 violations (see `references/anti
 - Hero copy is entirely vague adjectives / hidden price on self-serve product → Critical.
 - Unsupported superlatives in hero / dark-pattern urgency without real deadline / weak social proof in hero → High.
 - Buzzword density in hero or subhead / logo wall without context / vague adjectives in body copy → Medium.
+- Regulated/efficacy/earnings claim with no disclaimer or proof / comparative claim vs a named competitor with no methodology → High (regulatory + ad-platform-policy exposure).
+- Outcome testimonial without "results may vary" disclosure / testimonial without attribution → Medium.
+- IP or certification claim without a registration number or issuing body → Low.
 - One isolated vague adjective in a concrete-otherwise paragraph → Low (often Skip).
 
 ### Fix voice

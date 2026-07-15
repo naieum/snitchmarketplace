@@ -2,6 +2,8 @@
 
 `FAQPage` schema with question/answer pairs makes the FAQ accordion appear directly in SERP. Google reduced this rich-result surface in 2023 (now mostly limited to .gov / .edu / authoritative sites), but the schema still helps with content understanding and may resurface for select queries.
 
+For sites outside the eligible categories, recommend FAQ schema for AI-extractability and entity clarity, not for a SERP accordion that won't appear — see `references/schema-deprecations.md` for the eligibility narrowing. The Q&A answers themselves should hit the snippet/voice answer-length bands (40-60 words for a featured snippet / PAA, under ~29 words for voice); score them per `references/citability-scoring.md`.
+
 ### Evidence required (do not skip)
 
 **Source mode, required tool calls:**

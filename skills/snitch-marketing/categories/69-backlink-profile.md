@@ -12,12 +12,13 @@ Confirm STEP 0.6 classified backlink presence as `minimal` or `established`. If 
 
 **Crawl mode, required tool calls:**
 
-1. Without paid SEO tools (Ahrefs / Semrush / Moz API), backlink data is incomplete. Acceptable partial sources:
-   - `Bash curl -s "https://www.google.com/search?q=link:<domain>"`, limited but free signal of indexed mentions
-   - Search for `"<brand-name>"` in quotes; identify which domains mention the brand
-   - Check Wayback Machine (https://web.archive.org/) for inbound-link archive (slow, partial)
-2. If Ahrefs / Semrush API is available (BYO-key per Plugin Pro tier, out of scope for v1 unless user provides), pull top 20 referring domains.
-3. Mark category outcome as **Skip** with reason `backlink data requires Ahrefs/Semrush/Moz API access; partial signals only available without it` UNLESS the user explicitly provides API access.
+1. Without paid SEO tools (Ahrefs / Semrush / Moz API), the full referring-domain profile is incomplete. Acceptable partial sources:
+   - **Common Crawl coverage proxy (free, no key):** `python3 {skill_dir}/scripts/commoncrawl_backlinks.py <domain> --competitor <competitor-domain>` returns a crawl-coverage size/authority proxy (NOT a referring-domain list). Read `references/backlink-commoncrawl.md` for how to report it honestly and the heavier web-graph authority path.
+   - `Bash curl -s "https://www.google.com/search?q=%22<brand-name>%22"`, free signal of which domains mention the brand (the modern replacement for the dead `link:` operator)
+   - A Google Search Console **Links** export, if the user has GSC for the property: free, and the only first-party view of links Google attributes to the site
+   - Check Wayback Machine (https://web.archive.org/) for an inbound-link archive (slow, partial)
+2. If Ahrefs / Semrush / Moz API is available (BYO-key, only when the user provides it), pull top 20 referring domains.
+3. Outcome: if the Common Crawl coverage proxy or a GSC Links export returns data, report it (the coverage proxy labeled as a coverage proxy per `references/backlink-commoncrawl.md`) alongside any branded-mention signal. Mark the **referring-domain / anchor-text / toxic-link** portion as **Skip** with reason `requires Ahrefs/Semrush/Moz API access or a GSC Links export` unless the user provides that data. Never claim profile shape from a coverage proxy alone.
 
 **Source mode, required tool calls:**
 
@@ -30,7 +31,7 @@ Confirm STEP 0.6 classified backlink presence as `minimal` or `established`. If 
 
 ### Detection
 
-External tool dependent; without API access, this category is mostly Skip + recommendation to get the data.
+A free Common Crawl coverage proxy plus branded-mention search give a partial signal on every applicable run (see `references/backlink-commoncrawl.md`); the full referring-domain profile (who links in, anchor distribution, toxic links, lost links) still needs a paid index or a GSC Links export.
 
 ### What to Search For
 
@@ -72,6 +73,8 @@ When data is available:
 Ahrefs Backlinks 101: https://ahrefs.com/blog/what-are-backlinks/
 
 Google's quality guidelines on links: https://developers.google.com/search/docs/essentials/spam-policies#link-spam
+
+Free Common Crawl coverage + authority method (no key): `references/backlink-commoncrawl.md`
 
 **Severity tagging:**
 - Toxic link clusters → High (disavow recommended).

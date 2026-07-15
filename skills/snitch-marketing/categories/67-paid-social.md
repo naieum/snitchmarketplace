@@ -52,6 +52,16 @@ Public ad libraries + source-side pixel detection.
   Evidence required: pixel in source not gated by consent state.
 - **Creative messaging conflicts with site messaging**.
   Evidence required: ad copy + site H1 / value prop showing mismatch.
+- **Ad creative opens with the brand or features instead of the customer's problem.** On
+  discovery platforms the words are the targeting — the algorithm finds the audience for the
+  message, so an ad that opens with the company name, a feature list, or mission copy targets
+  no one. The working shape is a survival sound bite: a specific, quantified problem/outcome
+  line a scroller instantly self-selects on ("Lose 30 pounds in 3 months"; "Losing baristas
+  faster than you can hire?" — that rewrite took the same ad from 18 to 125 clicks in 48
+  hours). Note the brand isn't in an auction against its category competitors but against the
+  best advertisers on the platform, period.
+  Evidence required: ad creative copy quoted (via ad library, subject to the tooling caveat),
+  showing brand-first or feature-first opening with no problem/outcome line.
 - **Brand on platforms with mismatched audience** (B2B SaaS running TikTok ads to a developer audience that lives on X / GitHub).
   Evidence required: business model + platform fit assessment.
 
@@ -89,6 +99,7 @@ Cat 109 (Message match audit), per-ad LP scoring across paid-social creatives
 - Ads running without conversion tracking → High.
 - Platform / audience mismatch → Medium.
 - Creative / site message mismatch → Medium.
+- Ad creative brand-first / feature-first with no problem line → Medium.
 
 **Fix voice:** `analytics-engineer` (primary) | `tobias-van-schneider` (backup, when fix is creative / brand-shaped).
 

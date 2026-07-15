@@ -57,6 +57,8 @@ Google's HowTo removal announcement (Sept 2023 — the rich result no longer sur
 
 Schema.org HowTo: https://schema.org/HowTo
 
+Cross-reference `references/schema-deprecations.md` for the full registry of retired rich-result types — never recommend HowTo (or any deprecated type) "for a rich result"; frame it as still-valid structured data with no SERP feature.
+
 **Severity tagging:**
 - HowTo page with no schema → Low / informational (rich result removed Sept 2023).
 - Schema steps not matching visible → Medium (the schema misrepresents the page; downgraded from High since no rich result is at stake).

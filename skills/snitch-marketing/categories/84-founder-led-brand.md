@@ -35,10 +35,42 @@ Founder identification + cross-channel personal-brand activity audit.
 - Personal social handle links from site
 - Founder name + "Substack", "Medium", "podcast" searches
 
+### Message discipline on founder channels
+
+A founder channel that posts is necessary but not sufficient; the channel also needs message
+discipline. Four checkable patterns (StoryBrand-derived):
+
+1. **3-4 repeated themes.** A working founder channel repeats a small set of named themes
+   until followers can recite them; a channel about ten things is about nothing. Audit: pull
+   the founder's last ~20 posts (subject to the tooling caveat above), cluster by topic. More
+   than ~5 clusters with no dominant theme = scattered. This is also an algorithm problem:
+   interest-based feeds match the account's content cloud to users' interest clouds; a
+   scattered cloud gets plugged in nowhere. Bio keywords and post keywords should match.
+2. **The identity line (Trojan-horse pattern).** Lead with content people want; close with a
+   fixed, repeatable line — "By the way, I'm [name]. I'm a [role]. If you [struggle with X],
+   I can help you [Y]" — in roughly every 3rd-4th post. Followers won't infer the founder is
+   for hire, or even what the brand sells; the line has to say it. Audit: in the sampled
+   posts, does any fixed identity/offer line recur? Never opening with the pitch is correct;
+   never *including* it is the finding.
+3. **Stay in category.** Adjacent topics are fine; off-category ones (politics on a business
+   channel) confuse the audience the channel built. One founder confession from the source
+   material: "my narcissism clips go viral but they don't build the messaging brand."
+4. **Pivot by sprinkling, never by announcement.** When the founder/brand repositions, the
+   working pattern is gradual message shifts over months while staying present for the
+   existing audience — not "we no longer do X." And the pre-pivot gates: "am I just bored?"
+   (repetition fatigue is the owner's problem, not the audience's) and "have I earned this?"
+   (never claim a position you haven't done).
+
 ### Actually Hurts the Marketing Surface
 
 - **Founder has no public personal brand** when brand stage benefits from one (early-stage, indie, B2B-with-thought-leadership-need).
   Evidence required: founder identified + zero / minimal personal presence on relevant platforms.
+- **Founder posts but the topics scatter** (no 3-4 recognizable themes across recent posts).
+  Evidence required: ~20 recent posts clustered, showing >5 clusters and no dominant theme.
+- **Founder posts on-topic but no recurring identity/offer line** (followers can't tell what the founder sells or that they can hire them).
+  Evidence required: sampled posts + absence of any repeated identity line; bio quoted if it also omits the offer.
+- **Founder bio keywords don't match post keywords** (the channel can't be categorized by the feed or by a human).
+  Evidence required: bio quoted + dominant post-topic clusters.
 - **Founder posts on personal channels but doesn't link to / mention the brand** (wasted distribution).
   Evidence required: personal posts quoted + missing brand connection.
 - **Founder personal voice contradicts brand voice** (informal personal posts when brand voice is formal corporate, or vice versa).
@@ -65,11 +97,16 @@ Founder identification + cross-channel personal-brand activity audit.
 
 Justin Welsh on founder-led personal brand: https://www.justinwelsh.me
 
+Donald Miller (StoryBrand) on repeated themes, the identity line, and pivot discipline: https://storybrand.ai
+
 **Severity tagging:**
 - Founder invisible when stage warrants visibility → High.
 - Founder posts but never links brand → High.
 - Voice mismatch personal vs brand → Medium.
 - Founder name missing from site entirely → High.
+- Founder topics scattered (no 3-4 themes) → Medium.
+- No recurring identity/offer line in founder posts → Medium.
+- Bio/post keyword mismatch → Low.
 
 **Fix voice:** `tobias-van-schneider` (primary) | `sahil-lavingia` (backup).
 

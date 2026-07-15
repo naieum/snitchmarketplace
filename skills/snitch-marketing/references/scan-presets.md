@@ -20,12 +20,12 @@ What would you like to scan?
 [7]  Email & Transactional, 5 cats (inventory, content, deliverability, design, compliance). ~10-18K tokens. ~15-30 min
 [8]  Off-site & Channels, 17 cats. ~30-50K tokens. ~50-95 min
 [9]  2026 Modern Marketing, 5 cats (AI-search citation, creator partnerships, founder-led brand, newsletter/podcast sponsorships, llms.txt). ~10-18K tokens. ~20-35 min
-[10] Full Audit, all 123 categories. ~165-235K tokens. ~150-280 min. **CONFIRM BUDGET FIRST**
+[10] Full Audit, all 134 categories. ~170-240K tokens. ~150-280 min. **CONFIRM BUDGET FIRST**
 [11] Custom Selection, pick categories by name or number
 [12] Diff Mode, audit changes since previous run (source mode: changed files since last commit; crawl mode: delta vs previous snitchfindings/{slug}/ report). Cost scales with diff size
 
 Vertical presets (curated subsets per business type):
-[13] B2B SaaS preset, 15 cats. ~25-40K tokens. ~30-60 min
+[13] B2B SaaS preset, 25 cats. ~38-53K tokens. ~30-60 min
 [14] E-commerce preset, 19 cats. ~30-50K tokens. ~30-60 min
 [15] Local business preset, 19 cats. ~30-50K tokens. ~30-50 min
 [16] Publisher / media preset, 22 cats. ~35-60K tokens. ~45-75 min
@@ -48,7 +48,7 @@ Enter your choice (0-17, c, r, v):
 - **0 (Exit):** Display "SEO audit cancelled. No changes made." and exit.
 - **1 (Quick Audit):** Run stack detection (`references/smart-detection.md`), pick 8-12 categories that map to the detected stack. Always include: 01 (title & meta), 02 (canonical & indexing), 06 (single H1 / heading hierarchy), 14 (image alt presence), 21 (schema.org JSON-LD presence).
 - **2-9 (Presets):** Scan the predefined category group. Read `references/category-groups.md` for group → category mappings.
-- **10 (Full):** All 123 categories. Warn user about token cost. **Require explicit confirmation** ("yes, I confirm the ~160-230K token budget") before launching.
+- **10 (Full):** All 134 categories. Warn user about token cost. **Require explicit confirmation** ("yes, I confirm the ~170-240K token budget") before launching.
 - **11 (Custom):** Present the category picker. Read `references/custom-selection.md` for the menu.
 - **12 (Diff):** Two paths depending on mode:
   - **Source mode**: run `git diff HEAD --name-only`, scan only changed files plus their declared route layouts / heads.

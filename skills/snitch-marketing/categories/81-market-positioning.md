@@ -34,6 +34,37 @@ The audit checks whether the homepage hero names a constraint shift or merely pr
 
 Models in play: Loss Aversion (the new constraint becomes a future loss to avoid), JTBD (the constraint shift names the new job that arrives once the old job is solved), Second-Order Thinking (the brand has reasoned past the immediate outcome).
 
+### Cost-of-inaction / value-of-action balance (messaging symmetry)
+
+Strong positioning copy holds two frames at once: the **value of acting** (what improves when the buyer adopts) and the **cost of not acting** (what quietly degrades while they wait). Most homepages carry only one. Pure value-of-action reads as a feature pitch the buyer can defer indefinitely ("sounds nice, not now"). Pure cost-of-inaction reads as fear with no exit. The pages that move a decision name both: here's what you gain, and here's what staying put costs you, both grounded in the buyer's real situation rather than manufactured.
+
+This is distinct from constraint-shift (which names the NEW problem success creates). CoI/VoA balance is about whether the page gives the buyer both a reason to move and an honest cost to standing still. The audit checks the hero, the section directly above the primary CTA, and the pricing page for both frames.
+
+A finding fires when one frame is entirely absent. A separate, more serious finding fires when the cost-of-inaction frame is **manufactured** (fake countdown, invented scarcity, "prices rise Friday" with no real reason) rather than a true consequence; that crosses into dark-pattern territory and is owned by Cat 117 (copy lint) and the Cat 114 ethics overlay. Honest CoI names a real cost the buyer is already paying; manufactured CoI invents urgency to pressure them.
+
+Models in play: Loss Aversion (the cost-of-inaction frame is a loss to avoid), Status-Quo Bias (the buyer's default is to do nothing; the cost frame is what dislodges it), Temporal discounting (a vague future gain loses to a concrete present cost, so the value frame needs a near-term proof point).
+
+### The say-it-first sweep (differentiation lives in what is said)
+
+Differentiation is claimed, not just built: if every competitor *does* something but none
+*says* it clearly, the first brand to say it owns it in the buyer's mind ("Women make the
+first move" was Bumble's whole differentiator — a sentence, enforced; Porsche had
+build-to-order for years, but Slate *worded* customization — "We built it. You make it." —
+and owns it). The sweep, run with the STEP 0.7 competitor set:
+
+1. List what the brand and its competitors all actually do (guarantees, response times,
+   processes, human support, data handling).
+2. For each, check whether *anyone's* homepage says it plainly.
+3. Anything true of the brand, valuable to the buyer, and unsaid by everyone is a free
+   differentiation claim — a strength finding with a ready fix.
+
+Two adjacent moves feed the same sweep: the **contrarian stock phrase** (find the word or
+claim everyone in the category parrots that customers don't actually want — "unlimited"
+washes when customers want *freedom* — and publicly push against it), and the **mission
+formula** for brands whose about/mission copy is inward-facing: a mission is connected to the
+customer's welfare or it rallies no one — "We exist so that [person] no longer has to
+experience [pain]," derived by asking "who is worse off without this product, and how?"
+
 ### Evidence required (do not skip)
 
 **Source mode + crawl mode required:**
@@ -62,6 +93,8 @@ Homepage analysis + competitor benchmarking.
 - "vs Competitor" comparison pages
 - Counter-intuitive hook patterns ("the new problem success creates", "what happens after you win")
 - Constraint-shift framing ("you'll run out of X before you run out of Y")
+- Cost-of-inaction framing ("every month without X costs...", "while you wait, Y keeps...") paired with value-of-action framing (what improves on adoption)
+- Manufactured urgency that masquerades as cost-of-inaction (fake countdowns, invented scarcity) — flag and route to Cat 117 / Cat 114
 
 ### Actually Hurts the Marketing Surface
 
@@ -77,6 +110,17 @@ Homepage analysis + competitor benchmarking.
   Evidence required: each surface's positioning quoted.
 - **Positioning names current pain but not the constraint shift** (the brand promises improvement but doesn't articulate the new constraint success creates). This is a strength gap, not a critical break, but it's the difference between "good positioning" and "memorable positioning".
   Evidence required: hero copy + absence of post-success narrative.
+- **Only one of cost-of-inaction / value-of-action is present** (pure upside reads as deferrable; pure downside reads as fear with no exit). This is a strength gap.
+  Evidence required: hero + pre-CTA copy quoted, showing which frame is missing.
+- **Cost-of-inaction is manufactured** (fake countdown / invented scarcity rather than a real consequence the buyer is already paying). This is a dark-pattern crossover, not a positioning strength.
+  Evidence required: the urgency copy quoted + the absence of a real underlying reason. Route the fix to Cat 117 / Cat 114.
+- **Brand does something differentiating but never says it** (the say-it-first sweep finds a
+  true, buyer-valuable claim absent from every surface — the brand's *and* competitors').
+  This is a strength gap with a free fix: word the claim and lead with it.
+  Evidence required: the practice verified (site/docs/policy quoted) + homepage/pricing scan showing it unstated + competitor homepages also silent.
+- **Mission/about copy is inward-facing** ("our mission is to build the best X" / shareholder
+  or founder-centric framing) with no customer-welfare version anywhere.
+  Evidence required: mission copy quoted, showing no customer outcome named.
 
 ### NOT a Problem
 
@@ -91,7 +135,8 @@ Homepage analysis + competitor benchmarking.
 3. Does the positioning hold up at 5-second test? (Show homepage to someone unfamiliar; can they explain what it is?)
 4. Is there a "category" the brand can own (vs fight for share in an existing category)?
 5. Does the positioning articulate a constraint shift (what NEW problem the brand creates) or only promise improvement?
-6. Are the relevant mental models from `references/mental-models.md` applied (JTBD, First Principles, Mimetic Desire, Status-Quo Bias, Loss Aversion)?
+6. Does the page give the buyer both a reason to act (value of action) and an honest cost to waiting (cost of inaction), or only one? Is any urgency real or manufactured?
+7. Are the relevant mental models from `references/mental-models.md` applied (JTBD, First Principles, Mimetic Desire, Status-Quo Bias, Loss Aversion)?
 
 ### Reference
 
@@ -104,6 +149,10 @@ April Dunford on positioning: https://www.aprildunford.com/
 - Feature-list instead of outcome → Medium.
 - Conflicting positioning across surfaces → High.
 - Positioning names current pain only, no constraint-shift articulation → Medium (strength gap, not a break).
+- Only one of cost-of-inaction / value-of-action present → Medium (strength gap).
+- Manufactured cost-of-inaction (fake scarcity / urgency) → High, and cross-ref Cat 117 / Cat 114 dark-pattern.
+- True differentiator unstated by brand and competitors alike (say-it-first opportunity) → Medium (strength gap with an unusually cheap fix).
+- Mission copy inward-facing, no customer-welfare framing → Low.
 
 ### The 10-step positioning workshop
 

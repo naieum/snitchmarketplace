@@ -32,10 +32,34 @@ URL patterns:
 - `github.com/<org>/discussions`
 - Custom Discourse / Forum URLs
 
+### Identity mechanics (what makes a community a tribe)
+
+A channel full of support questions is a help desk, not a community. Communities that compound
+have four identity mechanics (StoryBrand-derived; the canonical case is "Don't Mess with
+Texas," which cut a state's litter problem by selling membership in an identity rather than
+asking for a behavior):
+
+1. **A core belief** statable as "we are people who believe/do X" — not the product's feature
+   list.
+2. **A badge of honor** — a phrase, symbol, or behavior members use to signal "I'm one of us"
+   (a repeated slogan, swag that carries the line, a shared ritual).
+3. **A named villain** — a behavior or root cause, never a person or competitor: "What
+   [villain] is doing to our customers isn't right."
+4. **Members celebrated publicly** — featured stories, member spotlights, amplifying what
+   members make. When customers remix the brand's campaign, feed it rather than policing it;
+   the member is the hero, the brand is the guide (Charity Water's donate-your-birthday
+   campaign compounded because the 7-year-old with the lemonade stand was the story).
+
+These are mostly fix-guidance, but the celebration mechanic is auditable where activity is
+visible (GitHub Discussions, public subreddits, or pasted samples).
+
 ### Actually Hurts the Marketing Surface
 
 - **Brand promotes "join our Discord" with a dead invite link**.
   Evidence required: footer/nav link + fetch returning expired invite.
+- **All brand-to-member broadcast, zero member celebration** (visible community history shows
+  announcements and support threads, but no member work featured, no spotlights, no amplification).
+  Evidence required: sampled visible activity (subject to the tooling caveat) showing broadcast-only posting from the brand.
 - **Community exists but no recent activity** (>30 days silent).
   Evidence required: server/channel last-post date.
 - **Multiple disconnected communities** (Discord + Slack + Discourse with overlapping audiences).
@@ -66,6 +90,7 @@ CMX on community building: https://cmxhub.com/
 - Community abandoned by mods (visible spam) → High.
 - Multiple fragmented communities → Medium.
 - No community where audience expects one → Medium.
+- Broadcast-only community (no member celebration mechanics) → Low.
 
 **Fix voice:** `sahil-lavingia` (primary) | `mike-monteiro` (backup).
 

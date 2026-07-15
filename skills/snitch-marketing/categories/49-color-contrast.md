@@ -2,6 +2,8 @@
 
 Body text needs 4.5:1 contrast ratio against background; large text (18pt+ or 14pt+ bold) needs 3:1. Below those thresholds = WCAG AA fail = Lighthouse a11y demerit. SEO value is indirect (accessibility/UX); Google's Mobile Usability report was retired Dec 1 2023, so there's no live mobile-usability test that flags contrast.
 
+Report contrast findings in the verification-table format from `references/accessibility-audit-workflow.md` (element URL+selector | foreground | background | ratio | required | pass) — never assert a ratio without the two hex values it was computed from.
+
 **Scope:** this category audits **contrast ratios only** (WCAG 1.4.3, 1.4.6, 1.4.11). It does not audit color-blindness — color used as the only signifier of meaning is a separate failure mode covered by **Cat 113 (Color-blind safe design)**. A site can pass every ratio threshold here and still fail Cat 113, and vice versa. Don't conflate them.
 
 ### Evidence required (do not skip)
