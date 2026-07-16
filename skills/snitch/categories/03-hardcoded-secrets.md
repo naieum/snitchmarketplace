@@ -1,4 +1,5 @@
 ## CATEGORY 3: Hardcoded Secrets
+> Type: posture · Groups: secrets-auth, quick-core · CWE: CWE-798
 
 ### Detection
 - Any project with source code (universally applicable)
@@ -32,6 +33,18 @@
 2. Is it in a test/example file?
 3. Is it documentation or actual code?
 4. Is the secret in a file listed in .gitignore (lower severity — not committed to git) vs. committed to source control (higher severity — already in history)?
+
+### Evidence Chain
+- The secret assignment quoted at file:line with the value redacted (show prefix/format only, e.g. `sk_live_…`, `AKIA…`)
+- Why it is judged real, not a placeholder (recognized provider prefix, realistic entropy/length, no `example`/`changeme`/`xxx` markers)
+- The secret's type classification (AWS key, Stripe key, private key, password, etc.) matching a rotation playbook row
+- Git exposure status: whether the file is committed to source control vs listed in `.gitignore` — this drives the severity link
+- Where the file sits (production config, CI/CD workflow, test fixture, docs) as the impact context
+
+### Confidence Scoring
+- **High** — value matches a known provider format (AKIA…, sk_live_…, `-----BEGIN … PRIVATE KEY-----`) in a committed source or CI/CD file with no placeholder markers
+- **Medium** — high-entropy literal assigned to a secret-named variable but no recognizable provider prefix, or a real-looking secret in a gitignored env file
+- **Low** — secret-named variable with a value that could plausibly be a placeholder or test fixture, and file context doesn't settle it → tag `needs human verification`
 
 ### Files to Check
 - `.env*`, `**/*.config.*`, `**/config/**`

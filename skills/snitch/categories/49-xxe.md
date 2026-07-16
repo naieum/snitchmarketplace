@@ -1,4 +1,5 @@
 ## CATEGORY 49: XXE & XML Attacks
+> Type: posture · Groups: — · CWE: CWE-611
 
 ### Detection
 - XML parser imports and usage without external entity restrictions
@@ -83,20 +84,6 @@
 5. Is XSLT processing performed with user-supplied stylesheets?
 6. Is the application a SOAP service or does it accept XML content types?
 
-### Files to Check
-- `**/xml*.ts`, `**/xml*.js`, `**/xml*.py`, `**/xml*.java`, `**/xml*.go`
-- `**/parser*`, `**/deserializ*`, `**/unmarshal*`
-- `**/soap*`, `**/wsdl*`, `**/xslt*`
-- `**/config*.xml`, `**/web.xml`
-- `requirements.txt`, `pom.xml`, `package.json` (check for XML/YAML parser libraries)
-- `**/*.yaml`, `**/*.yml` processing code
-
-### Confidence Scoring
-- **HIGH**: XML parser processes user-supplied input with external entity expansion enabled (e.g., Java `DocumentBuilderFactory` without `disallow-doctype-decl`, Python `lxml.etree.parse()` with `resolve_entities=True`, Node.js `libxmljs` with `noent: true`). Or `yaml.load()` used without `SafeLoader`.
-- **MEDIUM**: XML parser is used on external input but entity expansion settings are ambiguous (default settings that vary by library version). Or YAML parsing uses unsafe loader but the input source is partially trusted.
-- **LOW**: XML parser is used but only on hardcoded or internally-generated XML (no user input vector). Or the parser's default settings are safe but the code does not explicitly disable entities.
-- **SKIP**: Application does not parse XML or YAML from external sources. JSON-only APIs. Or `defusedxml` is used in Python. Or Go `encoding/xml` standard library is used (safe by default).
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed the XML/YAML parser receives user-supplied or external input (not hardcoded/internal data)
@@ -105,3 +92,17 @@ Before reporting, verify ALL of these:
 4. [ ] For Java, confirmed no `setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)` call
 5. [ ] Verified the application accepts XML content type (not JSON-only)
 6. [ ] For XSLT, confirmed user-supplied stylesheets are processed (not internal-only templates)
+
+### Confidence Scoring
+- **HIGH**: XML parser processes user-supplied input with external entity expansion enabled (e.g., Java `DocumentBuilderFactory` without `disallow-doctype-decl`, Python `lxml.etree.parse()` with `resolve_entities=True`, Node.js `libxmljs` with `noent: true`). Or `yaml.load()` used without `SafeLoader`.
+- **MEDIUM**: XML parser is used on external input but entity expansion settings are ambiguous (default settings that vary by library version). Or YAML parsing uses unsafe loader but the input source is partially trusted.
+- **LOW**: XML parser is used but only on hardcoded or internally-generated XML (no user input vector). Or the parser's default settings are safe but the code does not explicitly disable entities.
+- **SKIP**: Application does not parse XML or YAML from external sources. JSON-only APIs. Or `defusedxml` is used in Python. Or Go `encoding/xml` standard library is used (safe by default).
+
+### Files to Check
+- `**/xml*.ts`, `**/xml*.js`, `**/xml*.py`, `**/xml*.java`, `**/xml*.go`
+- `**/parser*`, `**/deserializ*`, `**/unmarshal*`
+- `**/soap*`, `**/wsdl*`, `**/xslt*`
+- `**/config*.xml`, `**/web.xml`
+- `requirements.txt`, `pom.xml`, `package.json` (check for XML/YAML parser libraries)
+- `**/*.yaml`, `**/*.yml` processing code

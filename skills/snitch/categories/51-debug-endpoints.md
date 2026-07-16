@@ -1,4 +1,5 @@
 ## CATEGORY 51: Debug Endpoints in Production
+> Type: posture · Groups: — · CWE: CWE-489
 
 ### Detection
 - Debug, profiling, or introspection routes exposed without authentication
@@ -95,6 +96,22 @@
 6. Are Spring Boot Actuator endpoints properly secured?
 7. Does the `/health` endpoint expose sensitive internal information?
 
+### Evidence Chain
+Before reporting, verify ALL of these:
+1. [ ] Confirmed the debug endpoint or feature is registered without an environment check (not gated to `NODE_ENV === 'development'` or equivalent)
+2. [ ] Verified the endpoint is not behind authentication, VPN, or internal network restriction
+3. [ ] Checked that error responses include stack traces or internal details (not just generic error messages)
+4. [ ] For source maps, confirmed `.map` files are served publicly (not just generated for error tracking upload)
+5. [ ] For GraphQL introspection, verified it is enabled in the production configuration (not just dev)
+6. [ ] For Spring Actuator, confirmed which endpoints are exposed and whether they are secured
+7. [ ] Distinguished between intentionally public endpoints (`/health`, public API docs) and accidentally exposed debug features
+
+### Confidence Scoring
+- **HIGH**: Debug endpoint (pprof, actuator/env, actuator/heapdump) is registered unconditionally with no environment check or authentication. Or `DEBUG = True` / `debug=True` is set in what appears to be a production configuration file.
+- **MEDIUM**: Debug features are present but gated by an environment variable check that may or may not be correctly set in production (e.g., `if (!process.env.PROD)` which defaults to debug if the var is missing).
+- **LOW**: Debug endpoint or tool exists but is likely only used in development (e.g., in a dev-only config file, or behind a VPN that is not visible in application code).
+- **SKIP**: All debug routes are explicitly gated to non-production environments. `/health` returns only status with no sensitive data. Source maps are uploaded to Sentry but not served publicly. GraphQL introspection disabled in production by default (Apollo v4+).
+
 ### Files to Check
 - `**/app.ts`, `**/app.js`, `**/server.ts`, `**/server.js`, `**/main.go`
 - `**/routes/**`, `**/router*`
@@ -122,19 +139,3 @@
 - `/health` returns only `{ status: "ok" }` — no internal details
 - Admin routes behind VPN or IP allowlist
 - 404 handler for undefined routes: `app.use((req, res) => res.status(404).json({ error: "Not found" }))`
-
-### Confidence Scoring
-- **HIGH**: Debug endpoint (pprof, actuator/env, actuator/heapdump) is registered unconditionally with no environment check or authentication. Or `DEBUG = True` / `debug=True` is set in what appears to be a production configuration file.
-- **MEDIUM**: Debug features are present but gated by an environment variable check that may or may not be correctly set in production (e.g., `if (!process.env.PROD)` which defaults to debug if the var is missing).
-- **LOW**: Debug endpoint or tool exists but is likely only used in development (e.g., in a dev-only config file, or behind a VPN that is not visible in application code).
-- **SKIP**: All debug routes are explicitly gated to non-production environments. `/health` returns only status with no sensitive data. Source maps are uploaded to Sentry but not served publicly. GraphQL introspection disabled in production by default (Apollo v4+).
-
-### Evidence Chain
-Before reporting, verify ALL of these:
-1. [ ] Confirmed the debug endpoint or feature is registered without an environment check (not gated to `NODE_ENV === 'development'` or equivalent)
-2. [ ] Verified the endpoint is not behind authentication, VPN, or internal network restriction
-3. [ ] Checked that error responses include stack traces or internal details (not just generic error messages)
-4. [ ] For source maps, confirmed `.map` files are served publicly (not just generated for error tracking upload)
-5. [ ] For GraphQL introspection, verified it is enabled in the production configuration (not just dev)
-6. [ ] For Spring Actuator, confirmed which endpoints are exposed and whether they are secured
-7. [ ] Distinguished between intentionally public endpoints (`/health`, public API docs) and accidentally exposed debug features

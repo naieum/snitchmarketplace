@@ -3,7 +3,7 @@
 These are the preset category groups used by scan menu options 2-9.
 
 ## Group 2: Web Security
-Categories: 1, 2, 5, 8, 10, 12, 61, 62, 64, 65, 67
+Categories: 1, 2, 5, 8, 10, 12, 61, 62, 64, 65, 67, 72
 - SQL Injection (1)
 - Cross-Site Scripting (2)
 - SSRF (5)
@@ -15,6 +15,7 @@ Categories: 1, 2, 5, 8, 10, 12, 61, 62, 64, 65, 67
 - Cloud Metadata Exploitation (64)
 - Insecure Deserialization (65)
 - Type Coercion Bypasses (67)
+- HTTP/Protocol Header Injection (72)
 
 ## Group 3: Secrets & Authentication
 Categories: 3, 4, 7, 39, 63
@@ -66,8 +67,8 @@ Categories: 27, 28, 29, 30, 31, 32, 33, 40, 41, 66
 - License Compliance (41)
 - Typosquatting & Malicious Install Scripts (66)
 
-## Group 8: Full System Scan (68 categories)
-Categories: 1-68
+## Group 8: Full System Scan
+Categories: every row with Status `active` in `categories/_index.md` (69 categories — IDs 69-71 are merged into 27/33/43)
 
 ## Group 9: Governance & Compliance (Extended)
 Categories: 34, 35, 36, 37, 38

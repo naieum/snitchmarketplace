@@ -1,4 +1,5 @@
 ## CATEGORY 44: API Security
+> Type: sink-pattern · Groups: — · CWE: CWE-862
 
 **Data flow tracing required (SKILL.md Rule 7).** For mass-assignment findings, trace the request body to the database operation: `req.body` (or `...req.body`) passed to `.update()` / `.create()` without a DTO, explicit field-picking, or schema validation is a finding; explicit field selection or a schema that strips unknown keys is a Pass. Apply the same trace to third-party API responses written to the database without validation. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
@@ -49,6 +50,21 @@
 4. Are list endpoints paginated with a maximum page size?
 5. Are admin operations protected by role/permission checks?
 6. Is GraphQL introspection disabled in production?
+
+### Evidence Chain
+Before reporting, verify ALL of these:
+1. [ ] Confirmed the unauthenticated endpoint performs state-changing operations (not just read-only or intentionally public)
+2. [ ] Checked if authentication middleware is applied globally or per-route (and if there is an explicit public route allowlist)
+3. [ ] Verified database objects are not transformed before being returned (no DTO/projection pattern)
+4. [ ] Confirmed list endpoints lack a `limit` parameter or maximum page size
+5. [ ] Checked if role/permission middleware protects admin-level operations
+6. [ ] Verified error handlers do not return stack traces or internal details to clients
+
+### Confidence Scoring
+- **HIGH**: API endpoint performs database writes with no authentication middleware, or route handler spreads `req.body` directly into database update. Or list endpoint returns all records with no pagination limit.
+- **MEDIUM**: Authentication middleware exists globally but some endpoints may be intentionally public. Or request validation is partial (some fields validated, others not).
+- **LOW**: Missing authentication might be intentional (public API endpoint). Or OpenAPI spec missing `security` field but auth is enforced at gateway level.
+- **SKIP**: All routes have authentication middleware, request validation, pagination, and role-based access control. Or the API is internal-only behind a service mesh with mTLS.
 
 ### Files to Check
 - `openapi.yaml`, `openapi.json`, `swagger.yaml`, `swagger.json`
@@ -101,18 +117,3 @@ Trusting third-party API responses without validation creates injection and avai
 - Circuit breaker pattern (opossum, cockatiel) with fallback behavior
 - Timeout + retry with backoff configured on all external HTTP clients
 - Third-party credentials managed via secrets manager with rotation
-
-### Confidence Scoring
-- **HIGH**: API endpoint performs database writes with no authentication middleware, or route handler spreads `req.body` directly into database update. Or list endpoint returns all records with no pagination limit.
-- **MEDIUM**: Authentication middleware exists globally but some endpoints may be intentionally public. Or request validation is partial (some fields validated, others not).
-- **LOW**: Missing authentication might be intentional (public API endpoint). Or OpenAPI spec missing `security` field but auth is enforced at gateway level.
-- **SKIP**: All routes have authentication middleware, request validation, pagination, and role-based access control. Or the API is internal-only behind a service mesh with mTLS.
-
-### Evidence Chain
-Before reporting, verify ALL of these:
-1. [ ] Confirmed the unauthenticated endpoint performs state-changing operations (not just read-only or intentionally public)
-2. [ ] Checked if authentication middleware is applied globally or per-route (and if there is an explicit public route allowlist)
-3. [ ] Verified database objects are not transformed before being returned (no DTO/projection pattern)
-4. [ ] Confirmed list endpoints lack a `limit` parameter or maximum page size
-5. [ ] Checked if role/permission middleware protects admin-level operations
-6. [ ] Verified error handlers do not return stack traces or internal details to clients

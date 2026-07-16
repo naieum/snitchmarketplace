@@ -1,4 +1,5 @@
 ## CATEGORY 60: Audit Log Integrity
+> Type: posture · Groups: — · CWE: CWE-778
 
 ### Detection
 - Logging library imports: `winston`, `pino`, `bunyan`, `morgan`, `log4js` (Node.js), `logging` (Python), `loguru`, `structlog`, `zap`, `zerolog`, `slog` (Go), `log4j`, `slf4j`, `logback` (Java), `Rails.logger`, `ActiveSupport::Logger` (Ruby)
@@ -94,6 +95,22 @@
 7. Are sensitive fields (passwords, tokens, PII) masked or excluded from audit entries?
 8. Are the logs application-level audit logs or just debug/operational logs?
 
+### Evidence Chain
+Before reporting, verify ALL of these:
+1. [ ] Confirmed audit logs are stored in the same database accessible to the application (not separate append-only storage)
+2. [ ] Verified the application database user has DELETE or UPDATE permissions on audit tables
+3. [ ] Checked for log shipping configuration (Fluentd, Filebeat, Logstash, CloudWatch agent)
+4. [ ] Verified audit entries include timestamp (UTC), user ID, action type, and source IP
+5. [ ] Confirmed admin and security-sensitive actions have audit logging middleware
+6. [ ] Checked if log deletion/purging endpoints exist and whether they require admin authorization
+7. [ ] Verified sensitive fields (passwords, tokens, PII) are masked or excluded from audit entries
+
+### Confidence Scoring
+- **HIGH**: Audit logs stored in the same database with application having DELETE/UPDATE privileges on audit tables. Or audit log deletion endpoint with no authorization. Or admin actions (role changes, data deletion) with no audit logging whatsoever.
+- **MEDIUM**: Audit logging exists but entries lack timestamps, user attribution, or correlation IDs. Or logs are written to local filesystem only with no remote shipping. Or sensitive data (passwords, tokens) is included in log entries.
+- **LOW**: Application-level audit logging is minimal but a managed platform (Vercel, AWS) provides infrastructure-level logging. Or the logging gaps are in non-security-sensitive operations.
+- **SKIP**: Audit logs in separate append-only storage with immutable retention. Log shipping to CloudWatch/Datadog/Splunk with S3 archival. Structured entries with UTC timestamps, user IDs, actions, and source IPs. PII masked. Admin actions fully covered.
+
 ### Files to Check
 - `**/audit/**`, `**/audit-log/**`, `**/activity-log/**`, `**/event-log/**`
 - `**/middleware/audit*`, `**/middleware/logging*`
@@ -105,19 +122,3 @@
 - Fluentd, Filebeat, Logstash, Vector configuration files
 - `logrotate.d/` configuration, `log4j2.xml`, `logback.xml`
 - CloudFormation/Terraform defining CloudWatch Log Groups, S3 log buckets
-
-### Confidence Scoring
-- **HIGH**: Audit logs stored in the same database with application having DELETE/UPDATE privileges on audit tables. Or audit log deletion endpoint with no authorization. Or admin actions (role changes, data deletion) with no audit logging whatsoever.
-- **MEDIUM**: Audit logging exists but entries lack timestamps, user attribution, or correlation IDs. Or logs are written to local filesystem only with no remote shipping. Or sensitive data (passwords, tokens) is included in log entries.
-- **LOW**: Application-level audit logging is minimal but a managed platform (Vercel, AWS) provides infrastructure-level logging. Or the logging gaps are in non-security-sensitive operations.
-- **SKIP**: Audit logs in separate append-only storage with immutable retention. Log shipping to CloudWatch/Datadog/Splunk with S3 archival. Structured entries with UTC timestamps, user IDs, actions, and source IPs. PII masked. Admin actions fully covered.
-
-### Evidence Chain
-Before reporting, verify ALL of these:
-1. [ ] Confirmed audit logs are stored in the same database accessible to the application (not separate append-only storage)
-2. [ ] Verified the application database user has DELETE or UPDATE permissions on audit tables
-3. [ ] Checked for log shipping configuration (Fluentd, Filebeat, Logstash, CloudWatch agent)
-4. [ ] Verified audit entries include timestamp (UTC), user ID, action type, and source IP
-5. [ ] Confirmed admin and security-sensitive actions have audit logging middleware
-6. [ ] Checked if log deletion/purging endpoints exist and whether they require admin authorization
-7. [ ] Verified sensitive fields (passwords, tokens, PII) are masked or excluded from audit entries

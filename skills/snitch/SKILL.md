@@ -1,11 +1,11 @@
 ---
-name: snitch
-description: Security audit for AI-written code with evidence-based findings (file:line + CWE/OWASP mapping) and false-positive prevention. Use when the user asks for a security audit, code review for vulnerabilities, OWASP scan, SARIF output, pre-deploy security check, post-LLM code review, or compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX). Do NOT use for general code review unrelated to security, license auditing, dependency-version bumps, or paid-ads / pixel readiness (use ads-ready) or SEO (use snitch-marketing).
-license: BUSL-1.1
+name: snitch-security
+description: Audit AI-written code for security vulnerabilities, with evidence-based findings (file:line + CWE/OWASP mapping) and false-positive prevention. Use when the user asks for a security audit, code review for vulnerabilities, OWASP scan, SARIF output, pre-deploy security check, post-LLM code review, or compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX). Do NOT use for general code review unrelated to security, license auditing, dependency-version bumps, or paid-ads / pixel readiness (use ads-ready) or SEO (use snitch-marketing).
+license: MIT
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude.ai, Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, Goose, and 25+ more — see agentskills.io). LLM-backed scans use the user's existing model; no separate server required. Optional Snitch CLI (https://snitchplugin.com) for SARIF export and CI integration.
 metadata:
   author: Snitch
-  version: 8.2.1
+  version: 9.1.0
   homepage: https://snitchplugin.com
 ---
 
@@ -86,6 +86,8 @@ Classify each input source into one of four buckets. The classification IS the f
 
 **What this rule replaces:** the local-mitigation check (read the enclosing file) catches sanitizers in the same file. Real codebases also sanitize at middleware or in shared utilities across files. Rule 7 requires the trace to cross those boundaries.
 
+**Feeds prioritization.** The same trace that classifies a source also establishes *reachability* — whether the tainted input is reachable, behind auth, internet-facing, or gated by preconditions. That reachability is the evidence for the optional severity × likelihood fix-ordering overlay in `references/risk-prioritization.md` (offered post-scan when there are many findings). Likelihood is read off the trace, never guessed, and a partial / Low-confidence trace caps it at the lowest tier.
+
 **Evidence-block format for traced findings (and traced Passes):**
 
 ```
@@ -115,43 +117,54 @@ If the variable comes from an imported function the scan can't open, OR from a f
 
 **Passes get the same rigor as findings.** A category that scanned and produced zero findings still needs Pass evidence per scanned surface — the file:line of each sink that was reached AND its trace classification. A bare "Passed: 0 findings" with no traces fails Rule 1. Confirming a codebase is well-defended is as valuable as finding bugs, and the Pass evidence is what makes that confirmation credible.
 
-**Per-category guidance:** sink-pattern categories (01 SQL injection, 02 XSS, 05 SSRF, 10 dangerous patterns, 15 AI APIs, 16 email, 17 database, 19 SMS, 29 file uploads, 30 input validation, 44 API security, 46 AI/LLM app security, 61 ReDoS, 62 prototype pollution, 64 cloud metadata, 65 insecure deserialization, 68 agent prompt injection, 72 header injection) apply Rule 7 universally. Some category files already make tracing explicit (e.g., Cat 12 line 69's "trace the variable" instruction); Rule 7 is the universal version.
+**Per-category guidance:** Rule 7 applies universally to every category with `Type: sink-pattern` in `categories/_index.md`; those category files carry a tracing banner. Category files may add their own category-specific tracing instructions; Rule 7 is the universal version.
 
 ### False Positive Prevention
 
 These rules reduce false positives. Apply them during every scan.
 
 - **Local-mitigation check (read the whole file)**: After a pattern match, read the entire enclosing file (and the caller file when the input crosses a function or file boundary) rather than a fixed line window. Check for validation, sanitization, middleware, framework protections, try/catch, type guards. A confirmed mitigation does not delete the finding: record it as a **Pass with trace evidence** per Rule 7, naming the sanitizer's file:line. This is the local case of Rule 7's data-flow trace.
-- **Auto-exclude paths**: Skip findings from `test/**, tests/**, __tests__/**, *.test.*, *.spec.*, *.mock.*, fixtures/**, mocks/**, __mocks__/**, stories/**, *.stories.*, node_modules/**, .git/**, dist/**, build/**, coverage/**`. Exception: real secrets (matching key format patterns like `sk_live_`, `AKIA`, `ghp_`) in test files still get reported with note: "Found in test file -- verify this is not a real credential."
+- **Auto-exclude paths**: Skip findings from `test/**, tests/**, __tests__/**, *.test.*, *.spec.*, *.mock.*, fixtures/**, mocks/**, __mocks__/**, stories/**, *.stories.*, node_modules/**, .git/**, dist/**, build/**, coverage/**`. Exclude globs resolve relative to the scan root, and a path the user explicitly asked to scan is always in scope — even when a parent directory name matches an exclude pattern. Exception: real secrets (matching key format patterns like `sk_live_`, `AKIA`, `ghp_`) in test files still get reported with note: "Found in test file -- verify this is not a real credential."
 - **Framework-aware context**: Before reporting, check: Is this a server component/action? (server-only secrets often safe). Is the value from `process.env`/`import.meta.env`? (not hardcoded). Is this `.env.example` or `.env.template`? (placeholder). Is this a TypeScript type/interface? (not executable). Is this in a comment/JSDoc? (not vulnerable). Is `API_KEY` a config key name, not a value?
-- **Confidence threshold**: Assign High/Medium/Low confidence to each finding. If `snitch.config.md` has `min-confidence: high`, only include high-confidence findings in main report. Low-confidence findings go to a separate "Needs Review" section.
+- **Confidence threshold**: Assign High/Medium/Low confidence to each finding. If `snitch-security.config.md` has `min-confidence: high`, only include high-confidence findings in main report. Low-confidence findings go to a separate "Needs Review" section.
 - **Inline ignores**: Recognize `// snitch-ignore-next-line CWE-XXX` and `/* snitch-ignore-file */` annotations in source code. Suppressed findings listed in a "Suppressed" section of the report.
 - **.snitch-ignore**: At scan start, read `.snitch-ignore` from project root. Skip matching file:line+CWE entries. Show suppressed count in report.
 - **Scan memory**: At scan start, if `.snitch/memory.md` exists at the project root, read it. It records confirmed false-positive patterns, where this repo's sanitizers and middleware live (so Rule 7 traces can start from known-good code), and stack quirks. After the report, offer to append new durable lessons (one per entry, with the reason it mattered). Never store secrets or PII there. See `references/scan-memory.md`.
 
 ---
 
-## MCP DETECTION (Pre-Scan)
+## CONFIGURATION
 
-Before beginning the scan, detect whether the Snitch MCP server is connected.
+Optional configuration lives in `snitch-security.config.md` — read it from the project root first (for scoped scans, the enclosing repository root), falling back to the copy shipped next to this SKILL.md (the defaults). A `snitch.config.md` at the project root is honored as a legacy fallback when the canonical file is absent. Keys: branding (`tool-name` — when set, read `references/white-label.md` and apply it to all output), `min-confidence`, ticketing, and the `grader` block.
 
-**Detection method:** Attempt to call the `get-subscription-status` tool.
-- If the tool exists and returns a response, MCP is **connected**. Store the returned `tier`, `rulesAvailable`, and `categoriesAvailable` for use during the scan and report.
-- If the tool does not exist or returns an error, MCP is **not connected**. Proceed with embedded category files only (the default behavior).
+**Companion assets** (used outside the interactive scan flow): `ci/security-scan.yml` is a GitHub Action template for PR scanning — its per-repo `.snitch.yml` override schema is documented in `references/snitch-yml-schema.md`; `hooks/pre-commit.sh` is a pre-commit diff-scan hook.
 
-**When MCP is connected:**
-- For each selected category, also call `search-rules` with the category name to fetch dynamic rules from the MCP server.
-- Use `check-pattern` to validate code snippets against the dynamic rule set for richer findings.
-- Use `triage-finding` after scan to mark findings as false positive/accepted/confirmed.
-- Use `get-triage-suggestions` before reporting to check for similar past triages.
-- Use `verify-fixes` after fixes applied to re-scan and verify resolution.
-- Use `compare-scans` to compare current scan to a previous scan for delta report.
-- Use `verify-mcp-manifest` when auditing MCP servers to hash tool definitions first.
-- These dynamic rules supplement (not replace) the embedded category guidance files.
+---
 
-**When MCP is not connected:**
-- Use only the embedded `categories/*.md` guidance files (current behavior).
-- The core audit methodology is identical either way — MCP enriches but does not change the process.
+## SCAN MODES
+
+Every scan runs as exactly one named mode. Menu numbers are presentation only — configuration
+(`snitch-security.config.md`), the grader policy, and the references identify scans by mode name.
+Groups and Types resolve against `categories/_index.md`.
+
+| Mode | Selected by | Categories | Execution | Grader policy |
+|------|-------------|------------|-----------|---------------|
+| `quick` | menu [1]; "quick scan"; default | `quick-core` group + smart-detection picks (5-10 total) | parallel batching on subagent hosts | skipped by default (`auto_skip_scan_modes`) |
+| `preset:web` | menu [2] | group `web` | parallel batching if 4+ categories | per `grader.enabled` |
+| `preset:secrets-auth` | menu [3] | group `secrets-auth` | same | per `grader.enabled` |
+| `preset:modern-stack` | menu [4] | group `modern-stack` | same | per `grader.enabled` |
+| `compliance` | menu [5]; compliance evidence requests | group `compliance` (+ other `Type: compliance` categories on request) | same | REQUIRED (`compliance_pass_threshold` for `Type: compliance` findings) |
+| `preset:performance` | menu [6] | group `performance` | same | per `grader.enabled` |
+| `preset:infra` | menu [7] | group `infra-supply-chain` | same | per `grader.enabled` |
+| `full` | menu [8]; "full audit" | every manifest row with Status `active` | parallel batching; threat model offered | REQUIRED |
+| `preset:governance` | menu [9] | group `governance` | same | per `grader.enabled` |
+| `custom` | menu [10]; explicit category arguments | user-picked (merged IDs remap per manifest) | parallel batching if 4+ | per `grader.enabled` |
+| `diff` | menu [11]; `--diff`; pre-commit | categories relevant to changed files | sequential | skipped by default |
+| `ultra` | menu [12]; `--ultra`; "verified" / "multi-agent" requests | any selected set, explicitly upgraded | parallel batching + adversarial verifiers — the only mode that reads `references/ultra-scan.md` | REQUIRED |
+
+**Parallelism is an execution optimization; verification is a mode.** Any mode may batch categories
+across subagents when the host supports it (`references/parallel-scanning.md`). The Ultra verifier
+pass is never automatic — it runs only when the user explicitly selects mode `ultra`.
 
 ---
 
@@ -172,7 +185,7 @@ What would you like to scan?
 [5]  Compliance — HIPAA, SOC 2, PCI-DSS, GDPR
 [6]  Performance — memory leaks, N+1 queries, perf problems
 [7]  Infrastructure & Supply Chain — dependencies/CVE, authz/IDOR, uploads, CI/CD, headers, bloat
-[8]  Full System Scan — all 72 categories (high token cost)
+[8]  Full System Scan — all 69 categories (high token cost)
 [9]  Governance & Compliance (Extended) — FIPS, governance, BC/DR, monitoring, data lifecycle
 [10] Custom Selection — pick categories by name or number
 [11] Scan Changed Files Only (--diff) — git diff, pre-commit mode
@@ -185,25 +198,25 @@ Enter your choice (0-12):
 ### Menu Behavior
 
 - **0 (Exit):** Display "Security audit cancelled. No changes made." and exit.
-- **1 (Quick Scan):** Detect tech stack, select 5-10 relevant categories (always includes 1, 2, 3, 4). Read `references/smart-detection.md` for full detection logic.
-- **2-9 (Presets):** Scan the predefined category group. Read `references/category-groups.md` for group-to-category mappings.
-- **10 (Custom):** Present the category picker. Read `references/custom-selection.md` for the menu and name-to-number mapping.
-- **11 (Diff):** Run `git diff HEAD --name-only`, scan only changed files + their dependencies.
-- **12 (Ultra Scan):** Read `references/ultra-scan.md`. Capability-gate on subagent support; if unavailable, tell the user and run the selected categories sequentially instead.
+- **1 → mode `quick`:** Detect tech stack, select 5-10 relevant categories (always includes the `quick-core` group). Read `references/smart-detection.md` for full detection logic.
+- **2-9 → preset modes:** Scan the predefined category group. Read `references/category-groups.md` for group-to-category mappings.
+- **10 → mode `custom`:** Present the category picker. Read `references/custom-selection.md` for the menu and name-to-number mapping.
+- **11 → mode `diff`:** Run `git diff HEAD --name-only`, scan changed files + expand to the sibling instances the change reaches (a changed shared helper/guard/template pulls its call sites into scope) — see `references/scan-planning.md` "Diff scans". Unchanged-but-still-safe siblings are context, not findings.
+- **12 → mode `ultra`:** Read `references/ultra-scan.md`. Capability-gate on subagent support; if unavailable, tell the user and run the selected categories sequentially instead.
 - **Invalid input:** Display "Invalid choice. Please enter 0-12." and re-display menu.
-- **Arguments provided:** Skip menu entirely, parse arguments, proceed to scan.
+- **Arguments provided:** Skip menu entirely, parse arguments into a mode + category set, proceed to scan.
 
 ---
 
 ## EXECUTION FLOW
 
 **STEP 0: Check for Arguments**
-- If the user (or host) passed explicit category arguments — for example a list like `categories 1,2,3`, named category IDs in the request, or a preset name — the contract is "categories were specified up front":
-  - Skip interactive menu
-  - Parse arguments to determine categories
-  - Proceed to Step 2
+- If the user (or host) passed explicit arguments, resolve them to a mode + category set (see SCAN MODES) and skip the menu:
+  - An explicit category list (`categories 1,2,3`, named category IDs) → mode `custom` with those categories (merged IDs remap per `categories/_index.md`)
+  - A preset/group name → the matching `preset:` mode
+  - `--diff` / pre-commit context → mode `diff`; "full audit" → mode `full`; compliance evidence requests → mode `compliance`
+  - `--ultra` or an ultra / multi-agent / thorough verified scan request → mode `ultra` over the chosen or auto-detected categories, subject to the subagent capability gate
 - Host-specific invocation grammars vary (Claude Code uses `@skills:snitch categories 1,2,3`; other hosts pass arguments differently). The skill responds to the intent, not the syntax.
-- If the request includes `--ultra` or asks for an ultra / multi-agent / thorough verified scan, select the Ultra flow (`references/ultra-scan.md`) for the chosen or auto-detected categories, subject to the same subagent capability gate.
 
 **STEP 1: Show Scan Menu**
 - If no arguments provided:
@@ -211,20 +224,21 @@ Enter your choice (0-12):
   - Wait for user to choose a scan mode
   - Determine which categories to scan from the user's selection
 
+**STEP 1.5 (optional): Threat model.** For a Full System Scan, an Ultra scan, or any "thorough / audit" request, offer a short repository-scoped threat model first (`references/threat-model.md`): assets, trust boundaries, entry points, attacker scope. It grounds discovery + severity — a sink reachable from an in-model attacker across a boundary protecting a real asset is high; one needing an out-of-model actor is downgraded (pairs with `references/risk-prioritization.md`). Opt-in; it never gates the scan. Skip for quick/scoped scans and say so.
+
 **STEP 2: Perform Scan**
-- **Execution mode**: If the host supports spawning parallel subagents (for example Claude Code's Task tool) and the scan covers 4 or more categories or is a Full System Scan, prefer the Ultra multi-agent flow: read `references/ultra-scan.md`. Otherwise scan sequentially as below. The methodology (Rules 1-7, evidence format, scope rule) is identical either way; Ultra changes only the orchestration.
+- **Execution**: If the host supports spawning parallel subagents (for example Claude Code's Task tool) and the scan covers 4 or more categories, batch categories across parallel scanner subagents — read `references/parallel-scanning.md`. Batching is a speed optimization only; the adversarial verifier pass belongs exclusively to mode `ultra` (`references/ultra-scan.md`) and never runs implicitly. Otherwise scan sequentially as below. The methodology (Rules 1-7, evidence format, scope rule) is identical either way; orchestration is the only difference.
+- **Per-stack guidance**: if a stack was detected, read the matching `references/stacks/<stack>.md` before scanning (mapping in `references/smart-detection.md`) — it names that stack's real sink patterns AND the framework auto-protections to **not** flag, keeping findings precise.
+- **Ledger (optional; long or Ultra scans)**: record per-surface and per-finding receipts per `references/scan-ledger.md` so the scan is resumable and coverage is auditable.
 - **Progress**: Before each category display `[N/total] Scanning: Category Name (Cat N)...` After completion: `[N/total] Category Name -- X findings | Y passed`
 - **Early alerts**: When a Critical or High finding is discovered during scanning, immediately display: `!! CRITICAL: [title] -- file:line` before continuing. Full details appear in the final report.
 - **Skip**: If the user types "skip" during a category scan, move to the next category. Mark skipped categories as "Skipped" (not "Passed") in the report.
 - For EACH selected security category:
   1. **Load guidance** - Read `categories/{NN}-{name}.md` for this category
-  2. **Enrich (MCP only)** - If MCP is connected, call `search-rules` with the category name to fetch additional dynamic rules. Merge these with the embedded guidance.
-  3. **Search** - Use Grep/Glob to find relevant patterns from the guidance (and dynamic rules if available)
-  4. **Read** - Use Read to see the actual code in context
-  5. **Validate (MCP only)** - If MCP is connected, call `check-pattern` on suspicious code snippets for additional signal
-  6. **Triage check (MCP only)** - If MCP connected and Pro+, call `get-triage-suggestions` with findings to filter out known false positives before reporting
-  7. **Analyze** - Apply the context rules from the guidance to determine if it is real
-  8. **Report** - Only report with quoted evidence
+  2. **Search** - Use Grep/Glob to find relevant patterns from the guidance
+  3. **Read** - Use Read to see the actual code in context
+  4. **Analyze** - Apply the context rules from the guidance to determine if it is real
+  5. **Report** - Only report with quoted evidence
 - **SCOPE RULE:** ONLY scan, report on, and mention the selected categories. Do NOT include findings, passed checks, bright spots, or commentary about categories outside the selected scope. If you observe something outside scope while scanning, ignore it entirely.
 - If Quick Scan selected, run applicable Validation Signals (`VS-001`..`VS-006`) and record:
   - `check_id`, `status`, `impact`, `recommended_action`, `confidence`
@@ -234,13 +248,17 @@ Enter your choice (0-12):
 **STEP 3: Generate Report**
 - Generate findings report
 - Display summary in console
-- Save to file (SECURITY_AUDIT_REPORT.md)
 - **Scan comparison**: If a previous `SECURITY_AUDIT_REPORT.md` exists, parse its finding counts and add a comparison section: `Previous: X findings | This scan: Y | Resolved: Z | New: W`
 - **SCOPE RULE:** The report (including Passed Checks and any summary sections) must ONLY reference the selected categories. Do not list passed checks for categories that were not scanned.
 - Include metadata:
   - `scan_mode_detected_features` (tech/features that triggered categories/signals)
   - `recheck_candidates` (finding IDs or file/line tuples to verify after fixes)
 - Include `Validation Signals` section after findings and before passed checks.
+- **Coverage section (required):** include a Coverage section per `references/coverage-accounting.md` — every in-scope surface ends with a disposition (scanned-pass / scanned-finding / deferred-with-reason); completeness = complete / partial / unknown. **No silent sampling**: a sampled or time-boxed scan is `partial`, never `complete`, and each deferred surface is listed with its reason. (This is the denominator behind Pass-with-evidence.)
+- **Stable finding identity:** each finding carries `ruleId` + a semantic `anchor` (+ `instance` for siblings) per `references/finding-identity.md`. Match by fingerprint for the scan-comparison delta (new / unchanged / resolved) and for diff-mode sibling addressing; carry `.snitch-ignore` triage state forward by fingerprint.
+- **Redaction hard-fail gate (always on):** before saving — or, when no file will be written, before presenting the final report — Read `references/grader.md` and run its redaction gate over the full drafted report. Any live secret value or literal dangerous-pattern name anywhere in the draft blocks the save — apply the narrow redaction-only rewrite and re-scan until clean. Enforces Rule 5; runs regardless of `grader.enabled`.
+- **LLM-as-grader pass:** once the redaction gate is clean and Coverage + finding identity are attached, run the grader per `references/grader.md` (5 quality criteria + confidence-trace calibration; failing findings auto-rewritten and re-graded; pass-rate recorded in `audit_metadata.grader`). Policy comes from the SCAN MODES table + `snitch-security.config.md`: required for modes `compliance` / `full` / `ultra` and any customer-facing or evidence-package audit; skipped by default for `quick` / `diff`.
+- Save to file (SECURITY_AUDIT_REPORT.md) — only once the redaction gate is clean and, if the grader ran, its rewrite loop has completed.
 
 **STEP 3b: Generate SBOM (Optional)**
 If a lockfile is present (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`), generate a CycloneDX 1.5 SBOM:
@@ -272,19 +290,18 @@ Scan complete. What would you like to do?
 - **Option 1:** Return to STEP 1. Previous findings remain saved.
 - **Option 2:** For each finding (by severity), display and ask "Apply this fix? [Yes / Skip / Stop]". Apply on Yes, skip on Skip, return to menu on Stop.
 - **Option 3:** Show summary of all fixes, confirm "Apply all X fixes? [Yes / No]". Apply on Yes, return to menu on No.
-- **Option 4:** For each finding, mark as false positive / accepted risk / confirmed. Call `triage-finding` (MCP) to persist.
+- **Option 4:** For each finding, mark as false positive / accepted risk / confirmed (flow in `references/fp-handling.md`). Persist suppressions to `.snitch-ignore` keyed by fingerprint, and offer to record durable FP patterns in `.snitch/memory.md`.
 - **Option 5:** Read `references/ticketing.md` and generate tickets from findings.
-- **Option 6:** Call `verify-fixes` (MCP) to re-scan fixed findings. Show resolved vs remaining.
-- **Option 7:** Call `compare-scans` (MCP) for delta report of new, resolved, unchanged findings.
+- **Option 6:** Re-scan only the fixed findings: for each entry in `recheck_candidates`, re-run the category's search + Rule 7 trace at that surface and match by fingerprint (`references/finding-identity.md`). Show resolved vs remaining.
+- **Option 7:** Fingerprint-match this scan's findings against the previous `SECURITY_AUDIT_REPORT.md` for a delta report of new, resolved, unchanged findings.
 - **Option 8:** Read `references/sarif-output.md` and export findings in SARIF format.
 - **Option 9:** Read `references/csv-export.md` and export findings in CSV format.
 - **Option 10:** Display this exit message:
 ```
 Security audit complete. Report saved to SECURITY_AUDIT_REPORT.md.
 
-Scanned by Snitch — 72 built-in categories
+Scanned by Snitch — 69 built-in categories
 Get the latest version: https://snitchplugin.com
-Free account for MCP server, custom rules, and automatic updates: https://snitchplugin.com
 ```
 
 ---
@@ -314,23 +331,44 @@ under `categories/` in the same directory as this skill file.
 
 **Custom rules:** If `custom-rules/` exists next to this SKILL.md, also read all `.md` files in it after loading built-in category guidance. See `references/custom-rules-format.md` for the expected file structure.
 
-**Additional references (loaded on demand):**
-- Attack chain correlation: `references/attack-chains.md`
-- Scan planning: `references/scan-planning.md`
-- CVE live lookup: `references/cve-lookup.md`
-- Interactive findings walkthrough: `references/interactive-findings.md`
-- Monorepo scanning: `references/monorepo.md`
-- Parallel scanning: `references/parallel-scanning.md`
-- VEX document generation: `references/vex-generation.md`
-- License compliance scan: `references/license-scan.md`
-- Dependency risk scoring: `references/dependency-risk.md`
-- Compliance report generation: `references/compliance-report.md`
+### Reference Loading Map
 
-**Compliance templates:** If scanning compliance categories (20-23, 34-35, 53), read `references/compliance-report.md` for instructions on generating evidence packages from `compliance-templates/`.
+Each STEP names the references it needs inline; this table is the index. Read a reference only
+when its condition is true — never pre-load the list.
+
+| Phase | Condition | Read |
+|---|---|---|
+| Select | menu shown / mode `quick` | `references/smart-detection.md` |
+| Select | preset mode chosen | `references/category-groups.md` |
+| Select | mode `custom` via the interactive picker (skip when categories are passed as arguments) | `references/custom-selection.md` |
+| Plan | every scan with repo context (skip for bare scoped paths with no manifest) | `references/scan-planning.md` |
+| Plan | mode `full` / `ultra` / thorough-audit request (opt-in) | `references/threat-model.md` |
+| Plan | monorepo detected | `references/monorepo.md` |
+| Scan | 4+ categories on a subagent host | `references/parallel-scanning.md` |
+| Scan | mode `ultra` only | `references/ultra-scan.md` |
+| Scan | stack detected | `references/stacks/<stack>.md` (mapping in smart-detection) |
+| Scan | long / resumable scan (optional) | `references/scan-ledger.md` |
+| Scan | `.snitch/memory.md` exists | `references/scan-memory.md` |
+| Scan | `custom-rules/` exists | `references/custom-rules-format.md` |
+| Scan | Category 27 selected, live CVE data wanted | `references/cve-lookup.md`, `references/dependency-risk.md` |
+| Scan | Category 41 selected | `references/license-scan.md` |
+| Report | every report | `references/report-template.md`, `references/coverage-accounting.md`, `references/finding-identity.md`, `references/standards-table.md` |
+| Report | before saving (redaction gate + grader) | `references/grader.md` |
+| Report | 3+ findings share an attack path | `references/attack-chains.md` |
+| Report | many findings / fix-ordering requested | `references/risk-prioritization.md` |
+| Report | `Type: compliance` categories scanned | `references/compliance-report.md` + `compliance-templates/` |
+| Report | config sets `tool-name` | `references/white-label.md` |
+| Post-scan | findings walkthrough requested | `references/interactive-findings.md` |
+| Post-scan | triage (option 4) | `references/fp-handling.md` |
+| Post-scan | tickets (option 5) | `references/ticketing.md` |
+| Post-scan | SARIF export (option 8) | `references/sarif-output.md` |
+| Post-scan | CSV export (option 9) | `references/csv-export.md` |
+| Post-scan | VEX document requested | `references/vex-generation.md` |
+| Companion | CI / GitHub Action configuration questions | `references/snitch-yml-schema.md` |
 
 ---
 
-**Standards tagging:** Read `references/standards-table.md` for OWASP Top 10:2025 + CWE mapping and CVSS 4.0 severity alignment tables. Tag each finding with the applicable CWE, OWASP category, and approximate CVSS score. Omit tags for non-security categories (24-26).
+**Standards tagging:** The per-category OWASP Top 10:2025 + CWE mapping lives in `categories/_index.md`; read `references/standards-table.md` for CVSS 4.0 severity alignment. Tag each finding with the applicable CWE, OWASP category, and approximate CVSS score. Omit tags for `Type: performance` categories.
 
 ### Finding Format
 
@@ -373,7 +411,8 @@ Example (with secret redaction):
 9. **Stay in scope.** Only report on selected categories. No findings, passed checks, or bright spots for unselected categories.
 10. **Never auto-fix.** Scan phase is strictly read-only. Generate the complete report first. Only touch files after the report is displayed and the user explicitly chooses a fix option and confirms it.
 11. **Run npm audit.** For Category 27, always run the package manager's audit command to get authoritative CVE data -- don't guess from version numbers alone.
-12. **Tag findings.** Include CWE, OWASP, and approximate CVSS from the Standards Reference table. Omit for non-security categories (performance 24-26).
+12. **Tag findings.** Include CWE and OWASP from `categories/_index.md` and approximate CVSS from the Standards Reference table. Omit for `Type: performance` categories.
 13. **Validation signals need evidence.** No file path + line number means no signal.
+14. **Grade before you save.** The redaction hard-fail gate always runs. The 5-criteria grader pass runs when required (compliance/customer-facing/Full System/Ultra) or enabled — auto-rewrite failing findings and re-grade before the report is saved.
 
 ---

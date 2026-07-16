@@ -1,4 +1,5 @@
 ## CATEGORY 29: File Upload Security
+> Type: sink-pattern · Groups: infra-supply-chain · CWE: CWE-434
 
 **Data flow tracing required (SKILL.md Rule 7).** Trace the user-supplied filename and file content to where they are used: a filename concatenated into a write path (traversal) or uploaded content served same-origin (stored XSS / polyglot) is the sink. UUID/hash-replaced names, validated/allow-listed types, and private storage are Passes. Trace both the path and the served Content-Type. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
@@ -22,6 +23,14 @@
 - No `limits` configuration on multer/formidable (unlimited file size)
 - Extension-only validation (`.jpg`) without checking actual file content
 
+#### Advanced attack patterns (see Advanced File Upload Attacks below)
+- `app.use('/uploads', express.static('uploads'))` — serves any uploaded file type with MIME sniffing
+- SVG uploaded and rendered in `<img>` tag from same origin with no sanitization
+- `const ext = filename.split('.').pop()` — only checks last extension, vulnerable to double extension
+- `sharp(req.file.buffer).resize(...)` with no file type validation before processing
+- ZIP extraction: `archive.extractAllTo(destPath)` without checking total decompressed size
+- File download endpoint returns `Content-Type` from user upload without `nosniff` header
+
 ### NOT Vulnerable
 - File type validation checking both extension and MIME type
 - Filenames replaced with generated UUIDs/hashes
@@ -29,11 +38,36 @@
 - File size limits configured on upload middleware
 - Upload middleware with proper `fileFilter` configuration
 
+#### Advanced attack patterns (see Advanced File Upload Attacks below)
+- Files served from a different domain/CDN (e.g., S3 with separate domain, not same-origin)
+- SVG files sanitized with DOMPurify or svg-sanitize before storage
+- `X-Content-Type-Options: nosniff` and `Content-Disposition: attachment` on all file serving endpoints
+- Image processing with Sharp configured to reject non-image inputs (`sharp(buffer, { failOnError: true })`)
+- ZIP extraction with decompressed size limit checked before extraction
+- Double extension prevention: reject filenames containing multiple dots or known executable extensions anywhere
+
 ### Context Check
 1. Is the filename sanitized or replaced before storage?
 2. Is there file type validation beyond just extension?
 3. Are uploaded files stored in a private or public location?
 4. Are file size limits configured?
+
+### Evidence Chain
+Before reporting, verify ALL of these:
+1. [ ] Upload handler is in production code (not test or admin-only upload)
+2. [ ] No file type validation exists (check multer fileFilter, formidable options, busboy handlers)
+3. [ ] Filename is used directly without sanitization or UUID replacement
+4. [ ] Uploaded files are accessible via a public URL (check storage destination)
+5. [ ] File size limits are not configured at any level (middleware, reverse proxy, CDN)
+6. [ ] Uploaded files are served with proper headers (X-Content-Type-Options: nosniff, Content-Disposition)
+7. [ ] No archive extraction without decompressed size validation
+8. [ ] No image processing on unvalidated file types
+
+### Confidence Scoring
+- **HIGH**: Upload handler with no fileFilter or file type restriction (accepts any file). User-supplied filename used directly in file path (path traversal). Files saved to public directory accessible via direct URL. No file size limit configured on upload middleware. SVG with embedded scripts served from same origin. ZIP/archive extraction without decompressed size limit. Image processing (Sharp/ImageMagick) on unvalidated uploads.
+- **MEDIUM**: Upload handler has some validation but only checks extension (not MIME type or magic bytes). File size limit exists but is very high (> 100MB). Files stored in a directory that may or may not be publicly accessible. Files served from same origin without Content-Disposition: attachment. Extension validation only checks last dot.
+- **LOW**: Upload handler exists with a file filter but the filter logic is complex and needs manual review. Storage location appears private but needs verification.
+- **SKIP**: File type validation checking both extension and MIME type. Filenames replaced with UUIDs/hashes. Files stored in private storage (S3 with signed URLs). File size limits configured. Upload middleware with proper fileFilter.
 
 ### Files to Check
 - `**/upload/**/*.ts`, `**/file/**/*.ts`
@@ -79,36 +113,3 @@
 - HTML, SVG, or XML files uploaded and served from the same origin
 - Even non-executable extensions (`.txt`) can be sniffed as HTML by browsers
 - Search for: file serving from same domain without Content-Type enforcement
-
-### Actually Vulnerable (Additional)
-- `app.use('/uploads', express.static('uploads'))` — serves any uploaded file type with MIME sniffing
-- SVG uploaded and rendered in `<img>` tag from same origin with no sanitization
-- `const ext = filename.split('.').pop()` — only checks last extension, vulnerable to double extension
-- `sharp(req.file.buffer).resize(...)` with no file type validation before processing
-- ZIP extraction: `archive.extractAllTo(destPath)` without checking total decompressed size
-- File download endpoint returns `Content-Type` from user upload without `nosniff` header
-
-### NOT Vulnerable (Additional)
-- Files served from a different domain/CDN (e.g., S3 with separate domain, not same-origin)
-- SVG files sanitized with DOMPurify or svg-sanitize before storage
-- `X-Content-Type-Options: nosniff` and `Content-Disposition: attachment` on all file serving endpoints
-- Image processing with Sharp configured to reject non-image inputs (`sharp(buffer, { failOnError: true })`)
-- ZIP extraction with decompressed size limit checked before extraction
-- Double extension prevention: reject filenames containing multiple dots or known executable extensions anywhere
-
-### Confidence Scoring
-- **HIGH**: Upload handler with no fileFilter or file type restriction (accepts any file). User-supplied filename used directly in file path (path traversal). Files saved to public directory accessible via direct URL. No file size limit configured on upload middleware. SVG with embedded scripts served from same origin. ZIP/archive extraction without decompressed size limit. Image processing (Sharp/ImageMagick) on unvalidated uploads.
-- **MEDIUM**: Upload handler has some validation but only checks extension (not MIME type or magic bytes). File size limit exists but is very high (> 100MB). Files stored in a directory that may or may not be publicly accessible. Files served from same origin without Content-Disposition: attachment. Extension validation only checks last dot.
-- **LOW**: Upload handler exists with a file filter but the filter logic is complex and needs manual review. Storage location appears private but needs verification.
-- **SKIP**: File type validation checking both extension and MIME type. Filenames replaced with UUIDs/hashes. Files stored in private storage (S3 with signed URLs). File size limits configured. Upload middleware with proper fileFilter.
-
-### Evidence Chain
-Before reporting, verify ALL of these:
-1. [ ] Upload handler is in production code (not test or admin-only upload)
-2. [ ] No file type validation exists (check multer fileFilter, formidable options, busboy handlers)
-3. [ ] Filename is used directly without sanitization or UUID replacement
-4. [ ] Uploaded files are accessible via a public URL (check storage destination)
-5. [ ] File size limits are not configured at any level (middleware, reverse proxy, CDN)
-6. [ ] Uploaded files are served with proper headers (X-Content-Type-Options: nosniff, Content-Disposition)
-7. [ ] No archive extraction without decompressed size validation
-8. [ ] No image processing on unvalidated file types

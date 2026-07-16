@@ -1,4 +1,5 @@
 ## CATEGORY 53: CCPA & SOX Compliance
+> Type: compliance · Groups: — · CWE: CWE-359
 
 ### Detection
 - Applications collecting personal information from California residents
@@ -95,21 +96,6 @@
 6. Are there change management controls for financial system code changes?
 7. Is user data shared with third parties, and is there an opt-out mechanism?
 
-### Files to Check
-- `**/privacy*`, `**/consent*`, `**/opt-out*`, `**/data-request*`
-- `**/models/**` (financial entities: invoices, payments, transactions, ledger)
-- `**/admin/**`, `**/finance/**`, `**/billing/**`, `**/accounting/**`
-- `**/audit*`, `**/changelog*`, `**/history*`
-- `**/middleware/**` (audit logging, authorization)
-- Privacy policy pages: `**/privacy*.tsx`, `**/privacy*.html`, `**/legal/**`
-- Database migrations (check for audit trail columns on financial tables)
-
-### Confidence Scoring
-- **HIGH**: Consumer-facing application collecting personal data from California residents with no "Do Not Sell" mechanism and no data deletion endpoint. Or financial application with no audit trail on transactions and no segregation of duties.
-- **MEDIUM**: Privacy mechanisms exist partially (privacy policy page present but no opt-out endpoint). Or financial audit trail exists but audit records are mutable (can be updated or deleted).
-- **LOW**: Application may not serve California residents or may not handle financial data subject to SOX. Or compliance may be handled by external tools (consent management platform, separate audit system).
-- **SKIP**: Application does not collect personal information from California residents (CCPA not applicable). Application does not handle financial data (SOX not applicable). Or consent management platform (OneTrust, TrustArc) handles CCPA compliance externally.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed the application collects personal information from California residents (CCPA applicability)
@@ -119,3 +105,18 @@ Before reporting, verify ALL of these:
 5. [ ] For SOX: checked for audit trail columns on financial database tables
 6. [ ] Verified segregation of duties (different roles for creation, approval, processing of financial transactions)
 7. [ ] Checked if a consent management platform handles CCPA compliance externally
+
+### Confidence Scoring
+- **HIGH**: Consumer-facing application collecting personal data from California residents with no "Do Not Sell" mechanism and no data deletion endpoint. Or financial application with no audit trail on transactions and no segregation of duties.
+- **MEDIUM**: Privacy mechanisms exist partially (privacy policy page present but no opt-out endpoint). Or financial audit trail exists but audit records are mutable (can be updated or deleted).
+- **LOW**: Application may not serve California residents or may not handle financial data subject to SOX. Or compliance may be handled by external tools (consent management platform, separate audit system).
+- **SKIP**: Application does not collect personal information from California residents (CCPA not applicable). Application does not handle financial data (SOX not applicable). Or consent management platform (OneTrust, TrustArc) handles CCPA compliance externally.
+
+### Files to Check
+- `**/privacy*`, `**/consent*`, `**/opt-out*`, `**/data-request*`
+- `**/models/**` (financial entities: invoices, payments, transactions, ledger)
+- `**/admin/**`, `**/finance/**`, `**/billing/**`, `**/accounting/**`
+- `**/audit*`, `**/changelog*`, `**/history*`
+- `**/middleware/**` (audit logging, authorization)
+- Privacy policy pages: `**/privacy*.tsx`, `**/privacy*.html`, `**/legal/**`
+- Database migrations (check for audit trail columns on financial tables)

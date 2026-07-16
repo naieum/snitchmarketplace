@@ -51,7 +51,7 @@ CATEGORIES_DIR="$SCRIPT_DIR/categories"
 REFS_DIR="$SCRIPT_DIR/references"
 COMPLIANCE_DIR="$SCRIPT_DIR/compliance-templates"
 CUSTOM_RULES_DIR="$SCRIPT_DIR/custom-rules"
-CONFIG_FILE="$SCRIPT_DIR/snitch.config.md"
+CONFIG_FILE="$SCRIPT_DIR/snitch-security.config.md"
 
 [ -f "$SKILL_FILE" ] || {
   printf '\n%serror:%s SKILL.md not found in %s\n\n' "$RED" "$RESET" "$SCRIPT_DIR" >&2
@@ -150,7 +150,7 @@ copy_extras() {
     cp -r "$CUSTOM_RULES_DIR" "$dest/custom-rules"
   fi
   if [ -f "$CONFIG_FILE" ]; then
-    cp "$CONFIG_FILE" "$dest/snitch.config.md"
+    cp "$CONFIG_FILE" "$dest/snitch-security.config.md"
   fi
 }
 

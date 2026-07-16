@@ -1,4 +1,5 @@
 ## CATEGORY 52: Secrets Rotation & Lifecycle
+> Type: posture · Groups: — · CWE: CWE-324
 
 ### Detection
 - API keys and secrets with no expiration mechanism
@@ -79,20 +80,6 @@
 6. Is there a grace period or dual-key strategy during rotation to avoid downtime?
 7. Is this a development/test key where rotation is less critical?
 
-### Files to Check
-- `.env`, `.env.production`, `*.env`, `docker-compose*.yml`
-- `**/config.*`, `**/settings.*`, `**/secrets.*`
-- `**/.aws/credentials`, `**/service-account*.json`
-- CI/CD configs: `.github/workflows/*.yml`, `.gitlab-ci.yml`, `Jenkinsfile`
-- Infrastructure-as-code: `**/terraform/**/*.tf`, `**/pulumi/**`, `**/cdk/**`
-- `**/jwt*`, `**/auth*`, `**/token*`
-
-### Confidence Scoring
-- **HIGH**: Production secret (AWS access key, database password, JWT signing key, Stripe live key) with no rotation mechanism, no secrets manager integration, and no key versioning. Secret has been static across git history.
-- **MEDIUM**: Secrets are loaded from environment variables (not hardcoded) but there is no evidence of a secrets manager or rotation automation. Or JWT signing lacks `kid` header for rotation support.
-- **LOW**: Secrets appear static but may be managed by an external system (Vault, AWS Secrets Manager) that is configured outside the application code. Or the secret is a development/test key where rotation is less critical.
-- **SKIP**: Secrets managed by Vault, AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault with automatic rotation. IAM roles used instead of access keys. Short-lived tokens with automatic renewal. Development-only secrets.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed the secret is used in production (not a development/test key)
@@ -102,3 +89,17 @@ Before reporting, verify ALL of these:
 5. [ ] Verified API keys and tokens do not have built-in expiration dates
 6. [ ] Confirmed there is no rotation automation in CI/CD pipelines or IaC
 7. [ ] Checked for key versioning or dual-key strategy that would support rotation
+
+### Confidence Scoring
+- **HIGH**: Production secret (AWS access key, database password, JWT signing key, Stripe live key) with no rotation mechanism, no secrets manager integration, and no key versioning. Secret has been static across git history.
+- **MEDIUM**: Secrets are loaded from environment variables (not hardcoded) but there is no evidence of a secrets manager or rotation automation. Or JWT signing lacks `kid` header for rotation support.
+- **LOW**: Secrets appear static but may be managed by an external system (Vault, AWS Secrets Manager) that is configured outside the application code. Or the secret is a development/test key where rotation is less critical.
+- **SKIP**: Secrets managed by Vault, AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault with automatic rotation. IAM roles used instead of access keys. Short-lived tokens with automatic renewal. Development-only secrets.
+
+### Files to Check
+- `.env`, `.env.production`, `*.env`, `docker-compose*.yml`
+- `**/config.*`, `**/settings.*`, `**/secrets.*`
+- `**/.aws/credentials`, `**/service-account*.json`
+- CI/CD configs: `.github/workflows/*.yml`, `.gitlab-ci.yml`, `Jenkinsfile`
+- Infrastructure-as-code: `**/terraform/**/*.tf`, `**/pulumi/**`, `**/cdk/**`
+- `**/jwt*`, `**/auth*`, `**/token*`

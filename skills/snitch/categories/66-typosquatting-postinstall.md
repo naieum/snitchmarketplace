@@ -1,4 +1,5 @@
-## CATEGORY 66: Typosquatting and Malicious Install Scripts
+## CATEGORY 66: Typosquatting & Malicious Install Scripts
+> Type: posture · Groups: infra-supply-chain · CWE: CWE-1357
 
 Category 27 (Dependencies) handles known-CVE audit against the package database. This category catches supply-chain risk BEFORE a CVE is published: typosquatted names, dependency confusion, and lifecycle scripts that run on install.
 
@@ -35,6 +36,18 @@ Category 27 (Dependencies) handles known-CVE audit against the package database.
 4. For scoped packages: does your org actually own that scope on the registry?
 5. Is there a private registry / scope-pinning / `.npmrc` config preventing dependency confusion?
 
+### Evidence Chain
+- The suspicious package entry quoted from the manifest/lockfile at file:line (name, version, and resolved registry URL where the lockfile records it)
+- Why the name is suspect, stated explicitly: the popular package it shadows, the edit distance or homoglyph, or the unclaimed scope
+- For install scripts: the lifecycle script quoted verbatim from `package.json` / `setup.py` at file:line, with what it executes (network fetch, shell pipeline, decoded payload)
+- Reachability/impact link: whether the package actually installs (direct vs dev vs transitive dependency; lockfile presence) and which host executes the script (developer machine, CI runner)
+- Registry configuration checked and quoted or shown absent: `.npmrc` / `.yarnrc` scope pinning, private-registry default, integrity hashes in the lockfile
+
+### Confidence Scoring
+- **High**: exact typosquat of a top package, an unclaimed scope your code depends on, or an install script quoted verbatim doing network fetch / credential access / obfuscated-payload execution
+- **Medium**: near-miss name or unverifiable git-URL dependency, or an install script that does more than build but has a plausible legitimate purpose (native compile, codegen) that could not be confirmed
+- **Low**: heuristic naming signal only (trailing digits, unusual scope, recent add) with no corroborating registry or script evidence — tag `needs human verification`
+
 ### Files to Check
 - `package.json` (all — root and in every workspace)
 - `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `bun.lockb`
@@ -42,7 +55,7 @@ Category 27 (Dependencies) handles known-CVE audit against the package database.
 - `setup.py`, `pyproject.toml` (for Python install-time code)
 - `Gemfile`, `composer.json`, `go.mod`, `Cargo.toml`
 
-### References
+### Reference
 - CWE-1357: Reliance on Insufficiently Trustworthy Component
 - CWE-1395: Dependency on Vulnerable Third-Party Component
 - OWASP Top 10:2025 — A03 Software Supply Chain Failures

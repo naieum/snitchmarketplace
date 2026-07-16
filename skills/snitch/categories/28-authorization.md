@@ -1,4 +1,5 @@
 ## CATEGORY 28: Authorization & Access Control (IDOR)
+> Type: posture · Groups: infra-supply-chain · CWE: CWE-639
 
 ### Detection
 - API routes accepting resource IDs as parameters
@@ -62,6 +63,20 @@
 6. **Frontend routes:** Does the layout/page component for privileged areas verify the user's role BEFORE rendering any UI? A loading/redirect pattern is required — not just hoping the API returns 403.
 7. **Shared layouts:** Does the root layout or navbar conditionally show admin links only to verified admin users, or are they visible to all authenticated users?
 
+### Evidence Chain
+Before reporting, verify ALL of these:
+1. [ ] Route handles sensitive data or privileged operations (not intentionally public resources)
+2. [ ] No ownership/tenant filter in the database query (check for userId, orgId, tenantId in where clause)
+3. [ ] No authorization middleware at route, router, or framework level
+4. [ ] For mass assignment: req.body is passed directly to ORM without field picking or schema validation
+5. [ ] For frontend routes: no server-side role verification before rendering privileged UI (client-side checks alone are insufficient)
+
+### Confidence Scoring
+- **HIGH**: API route accepts resource ID parameter and queries database without ownership filter (no userId/orgId in where clause). Admin route with no role-checking middleware. ORM update/create with req.body directly (mass assignment). Admin layout renders without role verification.
+- **MEDIUM**: Route uses resource IDs but ownership check may be at middleware or service layer. Admin route exists but role checking could be at router level. Frontend route may check role after initial render.
+- **LOW**: Authorization pattern is unclear. Ownership check may exist in a shared utility or middleware not directly visible in the route handler.
+- **SKIP**: Routes with ownership verification (where: { id, userId }). Admin routes with role-checking middleware. Explicit field destructuring before ORM calls. Zod/Yup schema stripping unknown fields. Admin layout verifying role server-side before rendering. Public resources intentionally accessible to all.
+
 ### Files to Check
 - `**/api/**/*.ts`, `**/routes/**/*.ts`
 - `**/middleware/**/*.ts`
@@ -95,17 +110,3 @@ Unrestricted access to sensitive business flows allows automated abuse of critic
 - Server-side price lookup from database, ignoring client-sent values
 - State machine library enforcing valid transitions (xstate, robot)
 - Rate limiting on all mutation endpoints, not just auth
-
-### Confidence Scoring
-- **HIGH**: API route accepts resource ID parameter and queries database without ownership filter (no userId/orgId in where clause). Admin route with no role-checking middleware. ORM update/create with req.body directly (mass assignment). Admin layout renders without role verification.
-- **MEDIUM**: Route uses resource IDs but ownership check may be at middleware or service layer. Admin route exists but role checking could be at router level. Frontend route may check role after initial render.
-- **LOW**: Authorization pattern is unclear. Ownership check may exist in a shared utility or middleware not directly visible in the route handler.
-- **SKIP**: Routes with ownership verification (where: { id, userId }). Admin routes with role-checking middleware. Explicit field destructuring before ORM calls. Zod/Yup schema stripping unknown fields. Admin layout verifying role server-side before rendering. Public resources intentionally accessible to all.
-
-### Evidence Chain
-Before reporting, verify ALL of these:
-1. [ ] Route handles sensitive data or privileged operations (not intentionally public resources)
-2. [ ] No ownership/tenant filter in the database query (check for userId, orgId, tenantId in where clause)
-3. [ ] No authorization middleware at route, router, or framework level
-4. [ ] For mass assignment: req.body is passed directly to ORM without field picking or schema validation
-5. [ ] For frontend routes: no server-side role verification before rendering privileged UI (client-side checks alone are insufficient)

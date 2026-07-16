@@ -1,4 +1,5 @@
 ## CATEGORY 41: License Compliance
+> Type: posture · Groups: infra-supply-chain · CWE: CWE-1395
 
 > **Cross-reference:** Category 33 covers unused dependencies and package bloat. This category focuses on the legal compliance of dependency licenses in your project, identifying copyleft contamination, incompatible licenses, and missing license declarations.
 
@@ -48,7 +49,7 @@
 | CC-BY-SA-4.0 | Copyleft | High |
 | (none) | Unknown | Medium |
 
-### Actually Vulnerable (Flag These)
+### Actually Vulnerable
 
 **Critical:**
 - AGPL-3.0 dependency in a proprietary/commercial project — AGPL requires source disclosure for network use
@@ -70,18 +71,31 @@
 - Apache-2.0 dependency without proper NOTICE file attribution
 - Large number of distinct license types (>10) — compliance tracking burden
 
-### NOT Vulnerable (Skip These)
+### NOT Vulnerable
 - MIT, ISC, BSD, 0BSD, Unlicense, CC0 dependencies in any project type
 - GPL dependencies in a GPL-licensed project (compatible)
 - Dev-only dependencies (`devDependencies`) — not distributed, no license obligation
 - Packages with dual licensing where one option is permissive
 
-### Context Checks
+### Context Check
 - Is the project proprietary/commercial or open-source? (check LICENSE file)
 - Is the dependency in `dependencies` (distributed) or `devDependencies` (not distributed)?
 - For LGPL: is the dependency dynamically linked (separate module) or statically bundled?
 - For BSL: what is the "Change Date" and "Additional Use Grant"?
 - Are there any `NOTICE` or `ATTRIBUTION` files that need updating?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The dependency name + version and where it is declared, with file:line (`package.json` `dependencies` entry or lockfile record)
+- The dependency's declared license, quoted from its own metadata (`node_modules/<pkg>/package.json` `license` field, lockfile metadata, or SPDX identifier)
+- The project's own license posture, quoted (root `LICENSE` file and/or `package.json` `license` field) — this establishes why the dependency's license conflicts
+- Confirmation the dependency is in `dependencies` (distributed), not `devDependencies` — the distribution link that creates the obligation
+- For LGPL/MPL findings: the linking/bundling context (statically bundled via webpack/esbuild vs. dynamically linked) that triggers the copyleft obligation
+
+### Confidence Scoring
+- **HIGH**: Strong or network copyleft license (AGPL-3.0, SSPL-1.0, GPL-2.0/3.0) verified in the dependency's own package metadata, in production `dependencies` of a project whose LICENSE/`license` field confirms a proprietary/commercial posture. Or the project's own `package.json` has no `license` field at all.
+- **MEDIUM**: Copyleft license inferred only from lockfile/registry metadata (not confirmed against the package's own declaration), or a copyleft dependency is present but the distribution mode is unclear (LGPL where linking vs. bundling is undetermined; BSL where the Change Date / Additional Use Grant has not been read).
+- **LOW**: License field missing, non-SPDX, or ambiguous (dual licensing where the elected option is unknown), or the project's own commercial posture cannot be determined from the repo — tag `needs human verification`.
 
 ### Files to Check
 - `package.json` — project license + all dependency licenses

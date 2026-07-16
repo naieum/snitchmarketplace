@@ -1,4 +1,5 @@
-## CATEGORY 63: JWT Algorithm and Key Attacks
+## CATEGORY 63: JWT Algorithm & Key Attacks
+> Type: posture · Groups: secrets-auth · CWE: CWE-347
 
 ### Detection
 - JWT libraries: `jsonwebtoken`, `jose`, `jwt-decode`, `pyjwt`, `python-jose`, `jjwt`, `golang-jwt/jwt`, `@fastify/jwt`
@@ -33,12 +34,24 @@
 4. How is `kid` resolved — allowlist, or string-concatenated lookup?
 5. Are `jku` / `x5u` headers ignored or allowlisted?
 
+### Evidence Chain
+- The `verify` call at file:line and the state of its `algorithms` option (absent, unpinned, or including `none`)
+- The reachability-to-impact link: where the verified token is trusted for an authentication or authorization decision
+- For HS/RS confusion: the key-material at file:line showing an asymmetric public key handed to a symmetric (HS256) verifier
+- For `kid` / `jku` / `x5u` attacks: the key-selection code at file:line showing the header value used without an allowlist or strict format check
+- Whether `decode` is used at file:line where `verify` is required (a signature that is never actually checked)
+
+### Confidence Scoring
+- **High**: `verify` call with `algorithms` unpinned or including `none`, or a public key used for HS256 verification, on a code path that authenticates requests.
+- **Medium**: the algorithm is pinned but `kid` / `jku` handling or secret strength is questionable, or the authentication impact is only partially established.
+- **Low**: verification configuration is not fully visible, or the behavior depends on library version (older `jsonwebtoken` respecting `header.alg`) — tag `needs human verification`.
+
 ### Files to Check
 - `**/auth*.ts`, `**/middleware/auth*`, `**/jwt*.ts`, `**/verify*.ts`
 - Session / token issuance handlers
 - OIDC callback handlers
 
-### References
+### Reference
 - CWE-347: Improper Verification of Cryptographic Signature
 - CWE-327: Use of a Broken or Risky Cryptographic Algorithm
 - OWASP Top 10:2025 — A07 Identification and Authentication Failures

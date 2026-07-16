@@ -1,4 +1,5 @@
 ## CATEGORY 32: Security Headers
+> Type: posture · Groups: infra-supply-chain · CWE: CWE-693
 
 ### Detection
 - Web frameworks: Next.js, Express, Fastify, Koa
@@ -33,6 +34,19 @@
 2. Is HSTS handled by the hosting platform (Vercel, Cloudflare)?
 3. Are `unsafe-inline`/`unsafe-eval` required for the framework (some need it with nonces)?
 4. Is this an API-only service (some headers less relevant)?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The config file:line where headers are (or should be) set — `next.config.js` `headers()`, `helmet()` call, middleware, `_headers`/`vercel.json`/`netlify.toml` — with the header absent or the weak value quoted
+- The specific missing or weak header, quoting the offending directive (`unsafe-inline`, `unsafe-eval`, wildcard `*` sources)
+- That the app serves HTML/browser responses (not API-only), so the missing header has real impact
+- That no other layer sets it: framework config, middleware, helmet, and platform config files all checked
+- For infrastructure-level claims: the hosting platform that would (or would not) inject the header
+
+### Confidence Scoring
+- **High**: every header-setting location checked (framework config, middleware, helmet, platform files) and the header is absent or explicitly weak (`unsafe-inline` + `unsafe-eval`, wildcard sources) on a browser-served app
+- **Medium**: header absent in code but the hosting platform (Vercel, Cloudflare, load balancer) may inject it, or `unsafe-inline` may be framework-required alongside nonces
+- **Low**: infrastructure configuration is not visible from the repo, so the deployed header posture cannot be confirmed — tag `needs human verification`
 
 ### Files to Check
 - `next.config.js`, `next.config.ts` (check `headers()` function)

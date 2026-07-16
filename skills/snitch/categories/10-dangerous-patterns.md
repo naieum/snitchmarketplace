@@ -1,4 +1,5 @@
 ## CATEGORY 10: Dangerous Code Patterns
+> Type: sink-pattern · Groups: web · CWE: CWE-94
 
 **Data flow tracing required (SKILL.md Rule 7).** For every dynamic-code-execution sink this category surfaces (eval-family functions, `new Function(string)`, `vm.runInContext`, `child_process.exec` with shell string, dynamic `import()` of user-controlled paths), trace the argument back to its source. Literal strings and known-safe values are Passes. Arguments built from `req.*` / `params.*` / file content / message payloads / agent output are findings. Sinks reachable only through trusted internal code paths (config loaders, build scripts) get downgraded confidence, never auto-Passed without trace evidence.
 
@@ -36,6 +37,18 @@
 1. Does user input flow into the evaluated code or shell command?
 2. Is this a build-time script or production runtime code?
 3. Is the deserialized data from a trusted internal source?
+
+### Evidence Chain
+- Sink call site file:line (eval-family, `new Function`, `vm.runInContext`, `child_process.exec`, unsafe deserializer/YAML load, or dynamic `import()`)
+- The traced variable path from source to sink, naming each hop (assignment, function argument, template concatenation)
+- Source classification: user-controlled (`req.*` / `params.*` / file content / message payload / agent output) vs internal/trusted (config loader, build script)
+- Sanitizers or validators checked along the path and found absent (allowlist, escaping, safe loader, `execFile` with args array instead of a shell string)
+- For GraphQL findings: the server config file:line showing `introspection: true` or the absent depth/complexity plugin, plus evidence the config runs in production
+
+### Confidence Scoring
+- **High**: Complete trace from a user-controlled source (`req.*`, `params.*`, uploaded file content, message payload) to the eval/exec/deserialization sink with no sanitizer on the path; or production GraphQL config with unconditional `introspection: true`.
+- **Medium**: Sink takes a dynamic argument but the trace is partial — the value originates in internal code (config loader, job queue) whose upstream callers were not all verified, or a validator exists but its coverage is unclear.
+- **Low**: Sink present but the argument's source is un-traceable within the audited files (dynamic dispatch, external module) — tag `needs human verification`.
 
 ### Files to Check
 - `**/exec*.ts`, `**/shell*.ts`, `**/worker*.ts`

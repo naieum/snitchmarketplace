@@ -1,4 +1,5 @@
-## CATEGORY 68: Agent and Indirect Prompt Injection
+## CATEGORY 68: Agent & Indirect Prompt Injection
+> Type: sink-pattern · Groups: modern-stack · CWE: CWE-1427
 
 Category 46 (AI/LLM App Security) covers the LLM-API boundary (keys, output handling, direct prompt injection at the chat input). This category targets the *agent / tool-use* layer, where untrusted data reaches the model through retrieval, tool output, or upstream side-channels — the attacker never types into the prompt, but still steers the model.
 
@@ -41,6 +42,18 @@ Category 46 (AI/LLM App Security) covers the LLM-API boundary (keys, output hand
 5. Is there a cap on tool-call count / recursion depth?
 6. Is tool output sanitized before being fed back into the next turn?
 
+### Evidence Chain
+- The prompt-assembly sink quoted at file:line where untrusted content is interpolated (prompt template substitution, system-string concatenation, tool-output feedback into the next turn)
+- The traced path from content source to the prompt, hop by hop with file:line (vector-DB read, URL fetch, uploaded document, email body, another agent's tool output, shared memory/thread)
+- Source classification — who can write to that source (public upload, web crawl, third-party API, index poisoning, another agent) — stated as the trust-boundary claim
+- Mitigations checked and found absent: fencing/labeling of untrusted content, per-turn tool allowlist, human confirmation on destructive tools, max tool-calls / max-turns cap
+- The tool surface the steered model can invoke: which destructive or exfiltration-capable tools (send email, HTTP post, write file, execute code) are reachable from the injected context
+
+### Confidence Scoring
+- **High**: complete trace from attacker-reachable content (user uploads, public web, open index) into the prompt, AND the agent holds a destructive or exfiltration-capable tool with no confirmation step or allowlist
+- **Medium**: untrusted content demonstrably reaches the prompt but the tool surface is read-only, or fencing/labeling exists but is advisory-only (no enforced allowlist or confirmation)
+- **Low**: retrieval sources appear internal/trusted-only, or the ingestion path could not be traced back to an attacker-writable surface — tag `needs human verification`
+
 ### Files to Check
 - `**/agents/**`, `**/tools/**`, `**/rag/**`, `**/retrieval/**`
 - Agent loop / executor code (anywhere that iterates `while more_tool_calls`)
@@ -48,7 +61,7 @@ Category 46 (AI/LLM App Security) covers the LLM-API boundary (keys, output hand
 - Vector DB query + prompt-assembly code
 - Workflow / scheduled agent runners (where the human is not in the loop by default)
 
-### References
+### Reference
 - CWE-77: Improper Neutralization of Special Elements used in a Command
 - CWE-1427: Improper Neutralization of Input Used for LLM Prompting
 - OWASP LLM Top 10 (2025): LLM01 Prompt Injection, LLM06 Excessive Agency

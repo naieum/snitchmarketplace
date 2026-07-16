@@ -1,4 +1,5 @@
 ## CATEGORY 47: CSRF Protection
+> Type: posture · Groups: — · CWE: CWE-352
 
 ### Detection
 - Forms without CSRF tokens in HTML templates
@@ -75,21 +76,6 @@
 6. Is this an API-only backend with token-based auth (no CSRF risk)?
 7. Are `@csrf_exempt` or `skip_before_action` decorators justified (e.g., webhook endpoints with signature verification)?
 
-### Files to Check
-- `**/middleware*.ts`, `**/middleware*.js`, `**/middleware*.py`
-- `**/app.ts`, `**/app.js`, `**/server.ts`, `**/server.js`
-- `**/settings.py`, `**/config.py`
-- `**/SecurityConfig.java`, `**/WebSecurityConfig.java`
-- `**/application_controller.rb`, `**/config/application.rb`
-- `**/templates/**/*.html`, `**/views/**/*.erb`, `**/templates/**/*.jinja2`
-- `**/*.go` (HTTP handler files)
-
-### Confidence Scoring
-- **HIGH**: Web application with cookie-based session auth, HTML forms performing state-changing operations, and no CSRF middleware or token validation anywhere.
-- **MEDIUM**: CSRF middleware exists but `@csrf_exempt` or `skip_before_action` is used on state-changing endpoints without alternative protection (e.g., HMAC signature verification).
-- **LOW**: Application uses `SameSite=Lax` cookies which provides partial CSRF protection, but no explicit CSRF tokens. Or CSRF protection might be handled at the API gateway level.
-- **SKIP**: API-only backend using Bearer token authentication with no cookies. Or SPA using `Authorization: Bearer` headers (not cookie-based auth). Stateless JWT in Authorization header eliminates CSRF risk.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed the application uses cookie-based authentication or sessions (not token-based auth via headers)
@@ -98,3 +84,18 @@ Before reporting, verify ALL of these:
 4. [ ] Verified HTML forms include CSRF tokens (hidden input fields)
 5. [ ] Checked session cookie `SameSite` attribute setting
 6. [ ] For `@csrf_exempt` endpoints, verified alternative protection exists (HMAC signature, webhook secret verification)
+
+### Confidence Scoring
+- **HIGH**: Web application with cookie-based session auth, HTML forms performing state-changing operations, and no CSRF middleware or token validation anywhere.
+- **MEDIUM**: CSRF middleware exists but `@csrf_exempt` or `skip_before_action` is used on state-changing endpoints without alternative protection (e.g., HMAC signature verification).
+- **LOW**: Application uses `SameSite=Lax` cookies which provides partial CSRF protection, but no explicit CSRF tokens. Or CSRF protection might be handled at the API gateway level.
+- **SKIP**: API-only backend using Bearer token authentication with no cookies. Or SPA using `Authorization: Bearer` headers (not cookie-based auth). Stateless JWT in Authorization header eliminates CSRF risk.
+
+### Files to Check
+- `**/middleware*.ts`, `**/middleware*.js`, `**/middleware*.py`
+- `**/app.ts`, `**/app.js`, `**/server.ts`, `**/server.js`
+- `**/settings.py`, `**/config.py`
+- `**/SecurityConfig.java`, `**/WebSecurityConfig.java`
+- `**/application_controller.rb`, `**/config/application.rb`
+- `**/templates/**/*.html`, `**/views/**/*.erb`, `**/templates/**/*.jinja2`
+- `**/*.go` (HTTP handler files)

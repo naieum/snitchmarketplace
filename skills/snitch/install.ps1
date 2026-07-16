@@ -37,7 +37,7 @@ $CategoriesDir = Join-Path $ScriptDir "categories"
 $ReferencesDir = Join-Path $ScriptDir "references"
 $ComplianceDir = Join-Path $ScriptDir "compliance-templates"
 $CustomRulesDir = Join-Path $ScriptDir "custom-rules"
-$ConfigFile = Join-Path $ScriptDir "snitch.config.md"
+$ConfigFile = Join-Path $ScriptDir "snitch-security.config.md"
 
 if (-not (Test-Path $SkillFile)) {
     Write-Host ""
@@ -131,7 +131,7 @@ function Copy-Extras {
     }
 
     if (Test-Path $ConfigFile) {
-        Copy-Item $ConfigFile -Destination (Join-Path $Dest "snitch.config.md") -Force
+        Copy-Item $ConfigFile -Destination (Join-Path $Dest "snitch-security.config.md") -Force
     }
 }
 

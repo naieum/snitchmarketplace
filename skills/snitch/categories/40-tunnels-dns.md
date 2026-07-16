@@ -1,4 +1,7 @@
-## CATEGORY 40: Infrastructure Tunneling & DNS Security (ngrok / Cloudflare / Resolvers)
+## CATEGORY 40: Infrastructure Tunneling & DNS Security
+> Type: posture · Groups: infra-supply-chain · CWE: CWE-200
+
+Covers ngrok, Cloudflare (cloudflared / Workers / Wrangler), and DNS resolvers.
 
 > **Cross-reference:** Category 3 covers general hardcoded secrets. Category 11 covers broad cloud misconfiguration. Category 31 covers CI/CD pipeline secrets. This category focuses specifically on tunnel credential exposure, Cloudflare Workers secret management, and DNS resolver security.
 
@@ -53,14 +56,16 @@
 - `resolv.conf` modifications in Dockerfiles or scripts
 - `--dns` flag in Docker with hardcoded IPs
 
-### Critical
+### Actually Vulnerable
+
+#### Critical
 - ngrok authtoken in any tracked file (credential leak — attacker can hijack your tunnels)
 - cloudflared tunnel token or credentials JSON committed to git
 - Cloudflare API token (`CF_API_TOKEN`, `CLOUDFLARE_API_TOKEN`) hardcoded in source
 - Plaintext secrets in `wrangler.toml` `[vars]` section (API keys, passwords, connection strings)
 - `.dev.vars` or `.wrangler/` directory tracked in git
 
-### High
+#### High
 - Hardcoded ngrok/cloudflared tunnel URLs in production code or config
 - `trycloudflare.com` URLs in non-dev context (common C2 indicator)
 - `--no-tls-verify` or `noTLSVerify: true` in tunnel config (disables TLS validation)
@@ -69,21 +74,13 @@
 - Hardcoded DNS resolver IPs without configurable override
 - DNS rebinding protection explicitly disabled
 
-### Medium
+#### Medium
 - ngrok or cloudflared invocation in production scripts or Dockerfiles (dev tool shipped to prod)
 - `compatibility_date` in wrangler config older than 12 months
 - Plaintext DNS resolution (port 53) without DoH/DoT fallback
 - Non-configurable resolver (hardcoded with no env var fallback)
 - DNSSEC explicitly disabled in configuration
 - Secrets passed via miniflare command-line flags
-
-### Context Check
-1. Is this a dev-only context (test file, local script, `.dev.` prefix) or production code?
-2. Is the ngrok/cloudflared usage in a Dockerfile or deploy script (production risk) vs a local dev script?
-3. Are tunnel credentials referenced by path (safe if file not committed) or embedded inline (dangerous)?
-4. For wrangler vars — is the value a real secret or a non-sensitive config value like `APP_NAME`?
-5. For DNS resolvers — is the IP configurable via env var, or truly hardcoded?
-6. Is `.dev.vars` / `.ngrok2/` / `.cloudflared/` / `.wrangler/` in .gitignore?
 
 ### NOT Vulnerable
 - ngrok in development-only scripts with proper .gitignore for `.ngrok2/`
@@ -95,6 +92,26 @@
 - DNS resolver configurable via environment variable with sensible default
 - System default resolver usage (inherits OS configuration)
 - DNS-over-HTTPS or DNS-over-TLS configured
+
+### Context Check
+1. Is this a dev-only context (test file, local script, `.dev.` prefix) or production code?
+2. Is the ngrok/cloudflared usage in a Dockerfile or deploy script (production risk) vs a local dev script?
+3. Are tunnel credentials referenced by path (safe if file not committed) or embedded inline (dangerous)?
+4. For wrangler vars — is the value a real secret or a non-sensitive config value like `APP_NAME`?
+5. For DNS resolvers — is the IP configurable via env var, or truly hardcoded?
+6. Is `.dev.vars` / `.ngrok2/` / `.cloudflared/` / `.wrangler/` in .gitignore?
+
+### Evidence Chain
+- The credential, URL, or flag quoted at file:line (authtoken value, inline `TUNNEL_TOKEN=`, `[vars]` secret, `noTLSVerify: true`, hardcoded resolver IP)
+- The git-tracking status of the file — quote the .gitignore check for `.dev.vars` / `.ngrok2/` / `.cloudflared/` / `.wrangler/` (tracked vs ignored)
+- The context classification: production script/Dockerfile/compose vs dev-only path, with the file location and naming evidence that supports it
+- For secrets in `[vars]` or configs: why the value is a real secret (key name/shape) rather than benign config like `APP_NAME`
+- The impact link: what the exposure enables (tunnel hijack, Cloudflare account/API access, DNS manipulation or rebinding)
+
+### Confidence Scoring
+- **High**: a literal credential value committed in a tracked file at file:line, or TLS verification / DNS rebinding protection explicitly disabled in production config.
+- **Medium**: tunnel tooling or a hardcoded resolver is present but the prod-vs-dev context is uncertain, or a `[vars]` entry that may or may not be sensitive.
+- **Low**: reference-by-path patterns where the credential file's tracking status can't be verified, or dev tooling whose deployment usage is unknown — tag `needs human verification`.
 
 ### Files to Check
 - `**/.ngrok2/**`, `**/.ngrok/**`, `**/ngrok.yml`, `**/ngrok.conf`

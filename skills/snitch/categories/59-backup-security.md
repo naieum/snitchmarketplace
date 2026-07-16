@@ -1,4 +1,5 @@
 ## CATEGORY 59: Backup & Recovery Security
+> Type: posture · Groups: — · CWE: CWE-530
 
 ### Detection
 - Database backup utilities: `pg_dump`, `pg_dumpall`, `mysqldump`, `mongodump`, `pg_basebackup`, `xtrabackup`
@@ -97,22 +98,6 @@
 6. Are backups stored in multiple geographic regions?
 7. Are S3 or cloud storage buckets for backups configured with restrictive access policies?
 
-### Files to Check
-- `**/backup/**`, `**/backups/**`, `**/scripts/backup*`, `**/cron/**`
-- `**/Makefile` (backup targets), `**/docker-compose.yml` (backup volumes)
-- `crontab`, `**/cron.d/**`, scheduled task definitions
-- `*.sh` scripts containing `pg_dump`, `mysqldump`, `mongodump`
-- Terraform/CloudFormation defining S3 buckets, RDS snapshots, backup vaults
-- `.pgpass`, `.my.cnf` (database credential files)
-- Web server configuration (nginx.conf, apache .htaccess) for file extension blocking
-- `public/`, `static/`, `www/`, `dist/` directories for stray backup files
-
-### Confidence Scoring
-- **HIGH**: Database backup written to web-accessible directory without encryption. Backup script with hardcoded credentials visible in process listing. S3 backup bucket with public access enabled. Or backup script with no exit code checking (silent failures).
-- **MEDIUM**: Backups are encrypted but stored only in a single region with no geo-redundancy. Or backup retention exists but no automated restore testing to verify backup integrity.
-- **LOW**: Backups are managed by a cloud provider (RDS automated backups, managed database snapshots) which handles encryption, retention, and redundancy at infrastructure level.
-- **SKIP**: Backup script encrypts with GPG before uploading to encrypted S3 bucket with BlockPublicAccess, lifecycle rules, and cross-region replication. Credentials from secrets manager. Automated restore tests in CI.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed backup files are not stored in web-accessible directories (public/, static/, www/)
@@ -122,3 +107,19 @@ Before reporting, verify ALL of these:
 5. [ ] Confirmed S3 backup buckets have `BlockPublicAccess` enabled and restrictive bucket policies
 6. [ ] Checked for backup retention and rotation policy (lifecycle rules, pruning logic)
 7. [ ] Verified this is not a development-only backup process with no real sensitive data
+
+### Confidence Scoring
+- **HIGH**: Database backup written to web-accessible directory without encryption. Backup script with hardcoded credentials visible in process listing. S3 backup bucket with public access enabled. Or backup script with no exit code checking (silent failures).
+- **MEDIUM**: Backups are encrypted but stored only in a single region with no geo-redundancy. Or backup retention exists but no automated restore testing to verify backup integrity.
+- **LOW**: Backups are managed by a cloud provider (RDS automated backups, managed database snapshots) which handles encryption, retention, and redundancy at infrastructure level.
+- **SKIP**: Backup script encrypts with GPG before uploading to encrypted S3 bucket with BlockPublicAccess, lifecycle rules, and cross-region replication. Credentials from secrets manager. Automated restore tests in CI.
+
+### Files to Check
+- `**/backup/**`, `**/backups/**`, `**/scripts/backup*`, `**/cron/**`
+- `**/Makefile` (backup targets), `**/docker-compose.yml` (backup volumes)
+- `crontab`, `**/cron.d/**`, scheduled task definitions
+- `*.sh` scripts containing `pg_dump`, `mysqldump`, `mongodump`
+- Terraform/CloudFormation defining S3 buckets, RDS snapshots, backup vaults
+- `.pgpass`, `.my.cnf` (database credential files)
+- Web server configuration (nginx.conf, apache .htaccess) for file extension blocking
+- `public/`, `static/`, `www/`, `dist/` directories for stray backup files

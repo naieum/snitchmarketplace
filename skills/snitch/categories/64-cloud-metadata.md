@@ -1,4 +1,5 @@
 ## CATEGORY 64: Cloud Metadata Endpoint Exploitation
+> Type: sink-pattern · Groups: web, modern-stack · CWE: CWE-918
 
 This is the cloud-specific SSRF variant where the attacker pivots a server-side request to a cloud provider's instance-metadata endpoint to exfiltrate IAM credentials or secrets. Category 5 (SSRF) covers the generic shape; this category checks that metadata endpoints in particular are protected.
 
@@ -37,6 +38,18 @@ This is the cloud-specific SSRF variant where the attacker pivots a server-side 
 4. Is IMDSv2 enforced (AWS) or is the metadata endpoint blocked at the network layer?
 5. Does the code run in a context with an attached service-account / instance-profile token worth stealing?
 
+### Evidence Chain
+- The outbound HTTP sink (`fetch` / `axios` / `requests` / `httpx` / `http.Client`) at file:line that is reachable from user input
+- The traced path from the URL / host source (`req.*`) to that sink
+- The absence of a resolved-IP denylist blocking `169.254.169.254` / `metadata.google.internal` / `fd00:ec2::254`, re-checked on every redirect hop
+- Source classification: user-influenced destination (finding) vs. hardcoded URL or hardened SSRF client (Pass)
+- The workload's exposure: IMDSv2 enforcement / egress NetworkPolicy status, and whether a stealable instance-profile / service-account token is attached (escalates severity)
+
+### Confidence Scoring
+- **High**: complete trace of a user-controlled destination into an outbound fetch with no resolved-IP denylist, on a workload where a metadata-reachable token is stealable (IMDSv1 allowed / no egress policy).
+- **Medium**: the sink is reachable but a partial guard is present (hostname substring check, denylist not re-checked on redirect), or the source is only partially traced, or IMDSv2 / network status is unknown.
+- **Low**: destination un-traceable or the metadata-protection status cannot be verified — tag `needs human verification`.
+
 ### Files to Check
 - `**/webhook*.ts`, `**/fetch*.ts`, `**/proxy*.ts`, `**/unfurl*.ts`, `**/preview*.ts`
 - Image / PDF / screenshot / SSR renderer code
@@ -44,7 +57,7 @@ This is the cloud-specific SSRF variant where the attacker pivots a server-side 
 - Terraform/CloudFormation for `metadata_options` / `HttpTokens` settings (AWS)
 - `NetworkPolicy` YAML in Kubernetes manifests
 
-### References
+### Reference
 - CWE-918: Server-Side Request Forgery (cloud metadata is the canonical high-impact SSRF target)
 - OWASP Top 10:2025 — A10 Server-Side Request Forgery
 - CVSS 4.0: typically Critical on cloud workloads (AV:N, AC:L, credential theft → lateral movement)

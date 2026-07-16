@@ -1,4 +1,5 @@
 ## CATEGORY 38: Data Classification & Lifecycle
+> Type: posture · Groups: governance · CWE: CWE-200
 
 > **Maps to Upstash Trust Center controls:** "Data classification policy established", "Data retention procedures established", "Customer data deleted upon leaving", "Data encryption utilized"
 >
@@ -19,26 +20,22 @@
 - Sensitive data segregation (separate tables/collections for PII)
 - Data anonymization/pseudonymization functions
 
-### Critical
+### Actually Vulnerable
+
+#### Critical
 - User/customer data with no deletion mechanism — account deletion leaves orphan records in related tables
 - PII stored alongside non-sensitive data with no field-level encryption or access segregation
 
-### High
+#### High
 - No data retention policy — no TTL, `expiresAt`, or cleanup job for any user-generated data
 - No data classification markers on schemas containing PII fields (email, phone, address, SSN, DOB)
 - Account deletion endpoint exists but does not cascade to all related tables (partial deletion)
 - Sensitive data (tokens, keys, PII) stored in same table/collection as public data with no access differentiation
 
-### Medium
+#### Medium
 - No anonymization or pseudonymization functions for analytics data derived from PII
 - Data retention TTLs defined but no automated cleanup job to enforce them
 - No customer data export/portability endpoint (beyond GDPR scope — general best practice)
-
-### Context Check
-1. Does the application store PII (email, phone, address, financial data)?
-2. Is there a data retention policy defined (even informally in docs)?
-3. Does account deletion cascade to all related tables and external services?
-4. Are PII fields identifiable in schemas (labeled, commented, or in separate models)?
 
 ### NOT Vulnerable
 - Schemas with explicit PII markers or comments identifying sensitive fields
@@ -47,6 +44,24 @@
 - Separate encrypted tables/collections for PII with restricted access
 - Data anonymization applied before analytics processing
 - Data export endpoint returning user's data in portable format
+
+### Context Check
+1. Does the application store PII (email, phone, address, financial data)?
+2. Is there a data retention policy defined (even informally in docs)?
+3. Does account deletion cascade to all related tables and external services?
+4. Are PII fields identifiable in schemas (labeled, commented, or in separate models)?
+
+### Evidence Chain
+- The schema/model snippet at file:line showing the PII fields and the missing marker, segregation, or encryption
+- For deletion gaps: the deletion endpoint at file:line plus the related tables/records it does NOT cascade to (name them)
+- For retention gaps: evidence that no TTL or cleanup job exists — the schema fields plus the jobs/cron directories that were searched
+- The impact link: which user data persists or remains accessible beyond its intended lifecycle
+- A cross-reference note when the finding is really GDPR (Category 23) or HIPAA (Category 20) territory
+
+### Confidence Scoring
+- **High**: schema shows PII fields at file:line and the deletion cascade, TTL, or classification marker is definitively absent after checking schemas, jobs/cron directories, and deletion endpoints.
+- **Medium**: PII presence is clear but lifecycle enforcement may live outside the repo (database-level TTL, warehouse retention policy, managed-service setting).
+- **Low**: field sensitivity is ambiguous (e.g., `name` may not be personal data in context), or cleanup could exist in infrastructure not visible in the codebase — tag `needs human verification`.
 
 ### Files to Check
 - `prisma/schema.prisma`, `**/schema*.{ts,js}`, `**/models/**/*.{ts,js}`

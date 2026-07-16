@@ -1,4 +1,5 @@
 ## CATEGORY 56: WebSocket Security
+> Type: posture · Groups: — · CWE: CWE-1385
 
 ### Detection
 - WebSocket server imports: `ws`, `socket.io`, `@socket.io/redis-adapter`, `uWebSockets.js`, `actioncable`, `channels` (Django), `gorilla/websocket` (Go), `spring-websocket` (Java)
@@ -84,21 +85,6 @@
 6. Does the broadcast logic filter data based on the recipient's authorization level?
 7. Is TLS terminated at the WebSocket server or at a proxy in front of it?
 
-### Files to Check
-- `**/ws/**`, `**/websocket/**`, `**/socket/**`, `**/realtime/**`
-- `**/gateway*.ts`, `**/gateway*.py`, `**/hub*.cs`
-- Socket.io configuration files, ActionCable connection/channel files
-- `**/consumers.py` (Django Channels), `**/routing.py`
-- `**/channels/**`, `**/cable/**` (Rails ActionCable)
-- WebSocket upgrade handlers in HTTP server configuration
-- Nginx/reverse proxy configuration for WebSocket proxying
-
-### Confidence Scoring
-- **HIGH**: WebSocket server has no origin validation (or `CheckOrigin` returns `true` unconditionally), no authentication on connection upgrade, and no message validation. Or sensitive data (passwords, tokens) included in broadcast payloads.
-- **MEDIUM**: Authentication exists at connection level but incoming messages are not validated against a schema. Or origin validation is partial (allows broad wildcard origins). Or no rate limiting on messages.
-- **LOW**: WebSocket endpoint is internal-only (not exposed to external clients). Or the WebSocket is behind an authenticated API gateway or reverse proxy that handles auth and origin checking.
-- **SKIP**: Socket.io with strict CORS origin allowlist, authentication middleware in `io.use()`, message schema validation, and per-client rate limiting. Or internal-only WebSocket service not exposed to external networks.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed the WebSocket endpoint is exposed to external clients (not internal-only)
@@ -108,3 +94,18 @@ Before reporting, verify ALL of these:
 5. [ ] Verified broadcast logic filters data based on recipient authorization level
 6. [ ] Confirmed WebSocket connections use `wss://` (TLS) in production configuration
 7. [ ] Checked for rate limiting or message size limits on the WebSocket server
+
+### Confidence Scoring
+- **HIGH**: WebSocket server has no origin validation (or `CheckOrigin` returns `true` unconditionally), no authentication on connection upgrade, and no message validation. Or sensitive data (passwords, tokens) included in broadcast payloads.
+- **MEDIUM**: Authentication exists at connection level but incoming messages are not validated against a schema. Or origin validation is partial (allows broad wildcard origins). Or no rate limiting on messages.
+- **LOW**: WebSocket endpoint is internal-only (not exposed to external clients). Or the WebSocket is behind an authenticated API gateway or reverse proxy that handles auth and origin checking.
+- **SKIP**: Socket.io with strict CORS origin allowlist, authentication middleware in `io.use()`, message schema validation, and per-client rate limiting. Or internal-only WebSocket service not exposed to external networks.
+
+### Files to Check
+- `**/ws/**`, `**/websocket/**`, `**/socket/**`, `**/realtime/**`
+- `**/gateway*.ts`, `**/gateway*.py`, `**/hub*.cs`
+- Socket.io configuration files, ActionCable connection/channel files
+- `**/consumers.py` (Django Channels), `**/routing.py`
+- `**/channels/**`, `**/cable/**` (Rails ActionCable)
+- WebSocket upgrade handlers in HTTP server configuration
+- Nginx/reverse proxy configuration for WebSocket proxying

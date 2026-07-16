@@ -1,4 +1,5 @@
 ## CATEGORY 54: OAuth/OIDC Deep Security
+> Type: posture · Groups: — · CWE: CWE-287
 
 ### Detection
 - OAuth 2.0 or OpenID Connect implementation in the application
@@ -119,22 +120,6 @@
 8. Is the client secret kept server-side only (not in frontend code or mobile apps)?
 9. Is implicit flow disabled in favor of authorization code flow with PKCE?
 
-### Files to Check
-- `**/auth*`, `**/oauth*`, `**/oidc*`, `**/login*`, `**/callback*`
-- `**/providers/**`, `**/strategies/**`
-- `**/*next-auth*`, `**/*authOptions*`, `**/[...nextauth]*`
-- `**/passport*`, `**/omniauth*`, `**/doorkeeper*`
-- `**/SecurityConfig.java`, `**/application.properties`, `**/application.yml`
-- `**/settings.py` (Django OAuth Toolkit config)
-- `**/token*`, `**/session*`, `**/cookie*`
-- Frontend code: `**/store/**`, `**/context/**`, `**/hooks/useAuth*`
-
-### Confidence Scoring
-- **HIGH**: Authorization code flow without PKCE for a public client (SPA, mobile app). Or access tokens stored in `localStorage`. Or redirect URI validation uses prefix matching instead of exact match. Or client secret exposed in frontend code.
-- **MEDIUM**: State parameter is generated but not validated on callback. Or refresh token rotation is not enforced. Or implicit flow is used but the application is being migrated.
-- **LOW**: PKCE is not used but the client is confidential (server-side) where PKCE is optional per OAuth 2.1. Or tokens are stored in cookies that are missing one of the three attributes (`HttpOnly`, `Secure`, `SameSite`).
-- **SKIP**: Authorization code flow with PKCE, state validation, nonce verification. Tokens in HttpOnly/Secure/SameSite cookies. Redirect URIs with exact string match. Client secrets server-side only. Auth managed by a provider (Clerk, Auth0) with secure defaults.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Determined if the OAuth client is public (SPA, mobile, CLI) or confidential (server-side)
@@ -144,3 +129,19 @@ Before reporting, verify ALL of these:
 5. [ ] Verified redirect URI validation uses exact string match against a registered allowlist
 6. [ ] Confirmed client secret is not exposed in frontend code or client-side configuration
 7. [ ] Checked if refresh token rotation is enabled with reuse detection
+
+### Confidence Scoring
+- **HIGH**: Authorization code flow without PKCE for a public client (SPA, mobile app). Or access tokens stored in `localStorage`. Or redirect URI validation uses prefix matching instead of exact match. Or client secret exposed in frontend code.
+- **MEDIUM**: State parameter is generated but not validated on callback. Or refresh token rotation is not enforced. Or implicit flow is used but the application is being migrated.
+- **LOW**: PKCE is not used but the client is confidential (server-side) where PKCE is optional per OAuth 2.1. Or tokens are stored in cookies that are missing one of the three attributes (`HttpOnly`, `Secure`, `SameSite`).
+- **SKIP**: Authorization code flow with PKCE, state validation, nonce verification. Tokens in HttpOnly/Secure/SameSite cookies. Redirect URIs with exact string match. Client secrets server-side only. Auth managed by a provider (Clerk, Auth0) with secure defaults.
+
+### Files to Check
+- `**/auth*`, `**/oauth*`, `**/oidc*`, `**/login*`, `**/callback*`
+- `**/providers/**`, `**/strategies/**`
+- `**/*next-auth*`, `**/*authOptions*`, `**/[...nextauth]*`
+- `**/passport*`, `**/omniauth*`, `**/doorkeeper*`
+- `**/SecurityConfig.java`, `**/application.properties`, `**/application.yml`
+- `**/settings.py` (Django OAuth Toolkit config)
+- `**/token*`, `**/session*`, `**/cookie*`
+- Frontend code: `**/store/**`, `**/context/**`, `**/hooks/useAuth*`

@@ -1,4 +1,5 @@
 ## CATEGORY 42: Container & Docker Security
+> Type: posture · Groups: — · CWE: CWE-250
 
 ### Detection
 - Projects with `Dockerfile`, `docker-compose.yml`, or `.dockerignore`
@@ -44,6 +45,19 @@
 4. Are secrets passed via build args or baked into `ENV` directives?
 5. Is this a multi-stage build? Does the production stage include only necessary files?
 6. Are health checks defined for production containers?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The offending directive quoted with file:line (e.g., the `ENV API_KEY=...` line, the `FROM node:latest` line, `privileged: true` in the compose file — or, for omissions, the final stage shown with no `USER` directive present)
+- Which image/stage the directive lands in — for multi-stage builds, confirm it is the final/production stage (a root builder stage is not a finding)
+- The reachability/impact link: this Dockerfile or compose file is actually built and deployed (referenced in CI workflows, compose services, or deployment configs), not an abandoned variant
+- The absent mitigation checked for (no `USER` in final stage, no `.dockerignore` entry excluding `.env`/`.git`, no secret-mount alternative such as BuildKit `--mount=type=secret`)
+- For secret-in-layer findings: why the value is sensitive (credential pattern such as `sk_live_...`, password, token) rather than a benign build arg
+
+### Confidence Scoring
+- **HIGH**: Unambiguous directive in a production-built image — a real secret baked into `ARG`/`ENV`, `privileged: true` on a deployed service, no `USER` directive anywhere in the final stage, or `COPY . .` with no `.dockerignore` in a repo containing `.env`/`.git`.
+- **MEDIUM**: Pattern present but production context is partial — e.g., `:latest` tag or missing `HEALTHCHECK` in a Dockerfile whose deployment target is unclear, a `Dockerfile.dev` variant, or a multi-stage build where the final runtime stage is ambiguous.
+- **LOW**: Heuristic only — base image "outdated" without version evidence, `EXPOSE` of a sensitive port with no proof the service listens on it, or a build arg that might carry a secret injected at build time from CI. Tag `needs human verification`.
 
 ### Files to Check
 - `Dockerfile*`, `docker-compose*.yml`, `docker-compose*.yaml`

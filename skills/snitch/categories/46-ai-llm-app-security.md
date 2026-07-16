@@ -1,4 +1,5 @@
 ## CATEGORY 46: AI/LLM Application Security
+> Type: sink-pattern · Groups: — · CWE: CWE-77
 
 **Data flow tracing required (SKILL.md Rule 7).** Trace in two directions. (1) Into the prompt: user or RAG content reaching the `system` role or concatenated into instructions is a finding; confined to a `user`-role message it is a Pass. (2) Out of the model: treat LLM output as tainted and trace it to its sink — reaching SQL, shell, `eval` / `Function`, raw HTML (`dangerouslySetInnerHTML` / `v-html`), a file path, or `res.redirect` without validation is a finding; escaped display-only output is a Pass. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
@@ -91,6 +92,19 @@
 5. Is the system prompt accessible from client-side code or API responses?
 6. Are AI tool calls validated and authorized before execution?
 7. Is PII handled appropriately in AI prompt/response pipelines?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The sink file:line — the prompt-construction site (template literal / concatenation building the `system` message) or the LLM-output sink (`db.query`, shell exec, `eval`/`Function`, `dangerouslySetInnerHTML`/`v-html`, file path, `res.redirect`)
+- The traced variable path source→sink: for injection-in, the user or RAG content variable followed through each assignment into the system role or instruction string; for injection-out, the model response variable followed from the API call to the executable/HTML sink
+- The sanitizers checked and found absent on that path (DOMPurify or equivalent for HTML, query parameterization for SQL, shell escaping, URL/path allowlist validation, tool-argument schema validation)
+- The source classification: user input, user-uploaded/RAG document, or LLM output — all treated as tainted
+- If any hop in the path could not be traced (framework abstraction, config-driven prompts), the finding is downgraded per the Rule 7 banner and tagged `needs human verification`
+
+### Confidence Scoring
+- **HIGH**: Complete trace in evidence — user or RAG content demonstrably reaches the `system` role or instruction concatenation, or LLM output demonstrably reaches SQL/shell/`eval`/raw-HTML/redirect/file-path sinks, with no sanitizer found anywhere on the traced path.
+- **MEDIUM**: The sink pattern is present but the trace is partial — the prompt is built from a variable whose origin crosses module boundaries, message roles are assembled by a framework helper, or sanitization may occur upstream of the sink but could not be confirmed at a specific line.
+- **LOW**: The source cannot be traced (config-driven or externally loaded prompts, deep framework abstraction hiding role assignment, LLM output passing through untraceable middleware), or the guardrail gap (missing token limits, timeouts, moderation) is inferred from absence alone — tag `needs human verification`.
 
 ### Files to Check
 - `**/ai/**`, `**/llm/**`, `**/chat/**`, `**/agent/**`

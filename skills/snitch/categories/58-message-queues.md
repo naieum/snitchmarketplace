@@ -1,4 +1,5 @@
 ## CATEGORY 58: Message Queue Security
+> Type: posture · Groups: — · CWE: CWE-284
 
 ### Detection
 - Message broker client imports: `kafkajs`, `kafka-node`, `amqplib`, `amqp-connection-manager`, `bullmq`, `bull`, `bee-queue`, `nats`, `@aws-sdk/client-sqs`, `@aws-sdk/client-sns`, `boto3` (SQS/SNS), `pika` (Python RabbitMQ), `confluent-kafka`, `sarama` (Go Kafka), `go-amqp`, `spring-kafka`, `spring-amqp`, `ioredis` (Pub/Sub)
@@ -98,21 +99,6 @@
 6. Are topic/queue ACLs following least-privilege principles?
 7. Is message TTL and retention configured appropriately for the data sensitivity?
 
-### Files to Check
-- `**/queue/**`, `**/jobs/**`, `**/workers/**`, `**/consumers/**`, `**/producers/**`
-- `**/kafka/**`, `**/rabbitmq/**`, `**/sqs/**`, `**/sns/**`, `**/nats/**`
-- `**/bull*.ts`, `**/bull*.js`, `**/processor*.ts`
-- `docker-compose.yml`, `docker-compose.yaml` (broker service definitions)
-- `**/config/queue*`, `**/config/broker*`, `**/config/messaging*`
-- Terraform/CloudFormation files defining SQS, SNS, or MSK resources
-- `application.yml`, `application.properties` (Spring Kafka/AMQP configuration)
-
-### Confidence Scoring
-- **HIGH**: Broker connection uses plaintext protocol with default credentials (`guest:guest`, no SASL). Or consumer processes message content directly in shell commands or SQL queries. Or no dead letter queue and no error handling on message processing.
-- **MEDIUM**: Broker uses TLS but credentials are hardcoded in source. Or DLQ exists but there is no alerting or monitoring on it. Or consumers lack schema validation but the message payloads are simple and from trusted producers.
-- **LOW**: Broker connection lacks TLS but runs within the same VPC with network-level isolation. Or message broker is local development only (docker-compose). Or ACLs are broad but the cluster is internal.
-- **SKIP**: Broker with TLS, SASL authentication from secrets manager, DLQ configured, consumers validating messages against Avro/Protobuf schemas, per-topic ACLs, and appropriate message TTLs.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed broker connection uses plaintext protocol (not TLS/SSL) in production
@@ -122,3 +108,18 @@ Before reporting, verify ALL of these:
 5. [ ] Checked for backpressure/concurrency control (prefetch count, concurrency limits)
 6. [ ] Confirmed sensitive data in message payloads is encrypted at rest
 7. [ ] Verified this is a production broker (not a local development docker-compose service)
+
+### Confidence Scoring
+- **HIGH**: Broker connection uses plaintext protocol with default credentials (`guest:guest`, no SASL). Or consumer processes message content directly in shell commands or SQL queries. Or no dead letter queue and no error handling on message processing.
+- **MEDIUM**: Broker uses TLS but credentials are hardcoded in source. Or DLQ exists but there is no alerting or monitoring on it. Or consumers lack schema validation but the message payloads are simple and from trusted producers.
+- **LOW**: Broker connection lacks TLS but runs within the same VPC with network-level isolation. Or message broker is local development only (docker-compose). Or ACLs are broad but the cluster is internal.
+- **SKIP**: Broker with TLS, SASL authentication from secrets manager, DLQ configured, consumers validating messages against Avro/Protobuf schemas, per-topic ACLs, and appropriate message TTLs.
+
+### Files to Check
+- `**/queue/**`, `**/jobs/**`, `**/workers/**`, `**/consumers/**`, `**/producers/**`
+- `**/kafka/**`, `**/rabbitmq/**`, `**/sqs/**`, `**/sns/**`, `**/nats/**`
+- `**/bull*.ts`, `**/bull*.js`, `**/processor*.ts`
+- `docker-compose.yml`, `docker-compose.yaml` (broker service definitions)
+- `**/config/queue*`, `**/config/broker*`, `**/config/messaging*`
+- Terraform/CloudFormation files defining SQS, SNS, or MSK resources
+- `application.yml`, `application.properties` (Spring Kafka/AMQP configuration)

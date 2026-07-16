@@ -1,4 +1,5 @@
 ## CATEGORY 24: Memory Leaks
+> Type: performance · Groups: performance · CWE: —
 
 ### Detection
 - Frontend frameworks: React, Vue, Angular, Svelte with lifecycle hooks
@@ -33,6 +34,17 @@
 2. Is this a module-level singleton (acceptable) or per-request allocation?
 3. Does the cache have eviction or size limits?
 4. Is the connection pooled or per-request?
+
+### Evidence Chain
+- The allocation site at file:line (listener registration, `setInterval`, cache insert, connection open)
+- The missing counterpart verified absent (no `removeEventListener`/`clearInterval`/cleanup return/`close()` in the same scope or unmount path)
+- Why it compounds: the trigger frequency (per-render, per-request, per-message) that makes growth unbounded
+- Lifetime classification: module-level singleton (one-time) vs per-instance/per-request allocation that repeats
+
+### Confidence Scoring
+- High: allocation sits in a repeated path (component effect, request handler, message callback) with the cleanup verifiably absent
+- Medium: cleanup is not co-located but may happen elsewhere (parent unmount, framework disposal, external teardown), or growth appears bounded in practice
+- Low: cannot determine the invocation frequency or the object's lifecycle → tag `needs human verification`
 
 ### Files to Check
 - `**/components/**/*.tsx`, `**/hooks/**/*.ts`

@@ -1,4 +1,5 @@
 ## CATEGORY 55: Microservices & Service Mesh Security
+> Type: posture · Groups: — · CWE: CWE-284
 
 ### Detection
 - Multi-service architectures with inter-service communication
@@ -118,6 +119,22 @@
 7. Is the service registry protected with access control?
 8. Is this a development/local environment where these controls are not expected?
 
+### Evidence Chain
+Before reporting, verify ALL of these:
+1. [ ] Confirmed service-to-service calls use plaintext HTTP (not HTTPS or mTLS)
+2. [ ] Verified no authentication headers, tokens, or client certificates on inter-service requests
+3. [ ] Checked Kubernetes manifests for `NetworkPolicy` resources with default-deny posture
+4. [ ] For Istio, verified `PeerAuthentication` mode is not `STRICT` and `AuthorizationPolicy` is missing or permissive
+5. [ ] Confirmed gRPC connections use TLS credentials (not `insecure` or `WithInsecure`)
+6. [ ] Verified credentials are per-service (not a single shared key across all services)
+7. [ ] Checked if this is a production environment (not local docker-compose development)
+
+### Confidence Scoring
+- **HIGH**: Microservices communicate over plaintext HTTP with no authentication. Kubernetes namespace has no `NetworkPolicy`. Istio mTLS set to `PERMISSIVE`. gRPC server started without TLS in production. Same JWT secret shared across all services.
+- **MEDIUM**: Service-to-service auth exists but uses a shared static API key instead of per-service credentials. Or network policies exist but are overly permissive. Or circuit breakers are missing on some external calls.
+- **LOW**: Inter-service communication lacks explicit auth in code but runs within a VPC with security groups providing network-level isolation. Or this is a docker-compose local development setup.
+- **SKIP**: Services use mTLS via Istio STRICT mode with AuthorizationPolicy. Kubernetes has default-deny NetworkPolicy. Per-service credentials from secrets manager. Circuit breakers on all external calls. Or application is monolithic (not microservices).
+
 ### Files to Check
 - `**/k8s/**`, `**/kubernetes/**`, `**/deploy/**`, `**/manifests/**`
 - `**/networkpolicy*.yaml`, `**/networkpolicy*.yml`
@@ -128,19 +145,3 @@
 - `**/docker-compose*.yml` (multi-service local setup)
 - `**/consul*`, `**/eureka*`, `**/etcd*`
 - `**/circuit*`, `**/resilience*`, `**/retry*`
-
-### Confidence Scoring
-- **HIGH**: Microservices communicate over plaintext HTTP with no authentication. Kubernetes namespace has no `NetworkPolicy`. Istio mTLS set to `PERMISSIVE`. gRPC server started without TLS in production. Same JWT secret shared across all services.
-- **MEDIUM**: Service-to-service auth exists but uses a shared static API key instead of per-service credentials. Or network policies exist but are overly permissive. Or circuit breakers are missing on some external calls.
-- **LOW**: Inter-service communication lacks explicit auth in code but runs within a VPC with security groups providing network-level isolation. Or this is a docker-compose local development setup.
-- **SKIP**: Services use mTLS via Istio STRICT mode with AuthorizationPolicy. Kubernetes has default-deny NetworkPolicy. Per-service credentials from secrets manager. Circuit breakers on all external calls. Or application is monolithic (not microservices).
-
-### Evidence Chain
-Before reporting, verify ALL of these:
-1. [ ] Confirmed service-to-service calls use plaintext HTTP (not HTTPS or mTLS)
-2. [ ] Verified no authentication headers, tokens, or client certificates on inter-service requests
-3. [ ] Checked Kubernetes manifests for `NetworkPolicy` resources with default-deny posture
-4. [ ] For Istio, verified `PeerAuthentication` mode is not `STRICT` and `AuthorizationPolicy` is missing or permissive
-5. [ ] Confirmed gRPC connections use TLS credentials (not `insecure` or `WithInsecure`)
-6. [ ] Verified credentials are per-service (not a single shared key across all services)
-7. [ ] Checked if this is a production environment (not local docker-compose development)

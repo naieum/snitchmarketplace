@@ -1,4 +1,5 @@
 ## CATEGORY 30: Input Validation & ReDoS
+> Type: sink-pattern · Groups: infra-supply-chain · CWE: CWE-20
 
 **Data flow tracing required (SKILL.md Rule 7).** Trace each user-supplied value to its sink before reporting: a path joined from `req.*` (traversal), an object merge whose source is `req.body` / user config (prototype pollution), or a backtracking regex applied to user input (ReDoS). Literals, `path.resolve` + allow-list checks, explicit field-picking, and upstream schema validation are Passes — a flagged regex or merge with a hardcoded / internal source is not a finding. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
@@ -36,6 +37,19 @@
 2. Is object merging done with explicit property selection or raw input?
 3. Does the regex have nested quantifiers that could cause backtracking?
 4. Is there a body size limit configured on the HTTP framework?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The sink file:line — the file system operation, object merge/assign, regex application, or template literal receiving the value
+- The traced variable path from source to sink, hop by hop (e.g., `req.query.file` → `path.join` → `fs.readFile`)
+- Sanitizers checked along the path and shown absent: `path.resolve` + base-dir/allow-list check, explicit property picking, schema validation (Zod/Joi/Yup), body size limits
+- Source classification: user-controlled (`req.*`, params, user config) vs. hardcoded/internal — an internal source is not a finding
+- For ReDoS: the regex pattern quoted with its nested quantifier, plus the file:line where user input reaches it
+
+### Confidence Scoring
+- **High**: complete source→sink trace from user input with no sanitizer on the path (e.g., `req.query.file` into `path.join` into `fs.readFile`; `Object.assign(config, req.body)`; backtracking regex validating request input)
+- **Medium**: sink and pattern present but one hop of the trace is indirect (helper function, middleware), or validation may occur upstream but is not confirmed at the call site
+- **Low**: the source cannot be classified (dynamic dispatch, external caller) or the regex's input origin is un-traceable — tag `needs human verification`
 
 ### Files to Check
 - `**/api/**/*.ts`, `**/routes/**/*.ts`

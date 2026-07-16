@@ -1,6 +1,6 @@
 # Scan memory (`.snitch/memory.md`)
 
-An optional, server-free record of what Snitch learned about THIS repo across scans. Read it at scan start; offer to append to it after the report. It complements `.snitch-ignore` (hard suppressions) and MCP triage (when connected) with durable, human-readable context.
+An optional, server-free record of what Snitch learned about THIS repo across scans. Read it at scan start; offer to append to it after the report. It complements `.snitch-ignore` (hard suppressions) with durable, human-readable context.
 
 ## When to read it
 

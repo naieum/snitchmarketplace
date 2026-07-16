@@ -1,4 +1,5 @@
 ## CATEGORY 36: Business Continuity & Disaster Recovery
+> Type: posture · Groups: governance · CWE: CWE-636
 
 > **Maps to Upstash Trust Center controls:** "Continuity and Disaster Recovery plans established", "Continuity and disaster recovery plans tested", "Backup processes established", "Infrastructure performance monitored"
 
@@ -20,27 +21,23 @@
 - Queue dead-letter configs (DLQ)
 - Error recovery / fallback patterns
 
-### Critical
+### Actually Vulnerable
+
+#### Critical
 - No health check endpoint found in any server entry point (no `/health`, `/ready`, or equivalent)
 - No graceful shutdown handler — server does not listen for `SIGTERM` or `SIGINT`
 - Database connections with no reconnect logic and no connection pool (single connection, crash on disconnect)
 
-### High
+#### High
 - No circuit breaker or retry pattern for external service calls (API, database, cache)
 - No dead-letter queue configuration for async message processing
 - No backup configuration in IaC for production databases
 - Missing connection pool failover (single-host connection string with no fallback)
 
-### Medium
+#### Medium
 - Health endpoint returns 200 without actually checking downstream dependencies
 - Retry logic without exponential backoff (fixed delay or no delay)
 - No multi-AZ or multi-region configuration in IaC
-
-### Context Check
-1. Does the application have a health check endpoint that verifies actual service health?
-2. Does the server handle `SIGTERM` gracefully (drain connections, close pools)?
-3. Are external service calls wrapped in circuit breakers or retry logic?
-4. Is there backup configuration for production data stores?
 
 ### NOT Vulnerable
 - Health endpoints that check database and cache connectivity before returning 200
@@ -49,6 +46,24 @@
 - Retry with exponential backoff and jitter
 - IaC with automated backup and point-in-time recovery configured
 - Kubernetes liveness/readiness probes defined in deployment manifests
+
+### Context Check
+1. Does the application have a health check endpoint that verifies actual service health?
+2. Does the server handle `SIGTERM` gracefully (drain connections, close pools)?
+3. Are external service calls wrapped in circuit breakers or retry logic?
+4. Is there backup configuration for production data stores?
+
+### Evidence Chain
+- For absences: the server entry point(s) at file:line that were read, with a statement of what was searched for (health routes, `SIGTERM`/`SIGINT` handlers, reconnect logic) and not found
+- For weak patterns: the code snippet at file:line (health endpoint returning 200 unconditionally, fixed-delay retry, single-connection DB client)
+- For IaC gaps: the resource block at file:line missing `backup_retention_period`, DLQ, or multi-AZ configuration
+- The impact link: which production service, queue, or data store loses availability or recoverability because of the gap
+- A note that platform-level resilience (Kubernetes probes, managed-DB automated backups) was checked and ruled in or out
+
+### Confidence Scoring
+- **High**: the entry point or IaC file was read end-to-end and the control is definitively absent (no health route, no signal handler, production DB resource visibly lacking backup config), or the weak pattern is quoted directly.
+- **Medium**: the pattern is absent from the scanned files but resilience could live in platform configuration not in the repo (Kubernetes manifests elsewhere, managed-service defaults, external load balancer health checks).
+- **Low**: cannot determine whether the deployment target provides probes/backups/failover externally, or whether the app is actually production-deployed — tag `needs human verification`.
 
 ### Files to Check
 - `**/server*.{ts,js}`, `**/app*.{ts,js}`, `**/index*.{ts,js}` (entry points)

@@ -10,12 +10,24 @@
 - **scan_mode_detected_features:** [comma-separated detected tech/features]
 - **recheck_candidates:** [finding IDs or file:line entries requiring post-fix verification]
 
+## Coverage
+- **Mode:** [repository | scoped-path | diff | commit | working-tree]
+- **Inventory strategy:** [how the surface list was built — route map / entrypoint enum / sink grep / changed-files]
+- **Completeness:** [complete | partial | unknown]
+- **Surfaces:** scanned-pass [N] / scanned-finding [N] / deferred [N] — list each deferred surface + reason
+- **Exclusions:** [paths excluded by rule — tests / vendored / generated / .snitch-ignore — and the rule]
+
+<!-- Render per references/coverage-accounting.md. Hard rule: every in-scope surface ends with a
+disposition (scanned-pass / scanned-finding / deferred-with-reason) — no silent sampling. A
+"complete" label requires zero deferrals; if any surface was sampled or time-boxed, it is "partial". -->
+
 ## Critical Findings
 
 ### 1. [Title]
 - **Severity:** [Critical/High/Medium/Low] | CVSS 4.0: ~[score]
 - **CWE:** CWE-[id] ([name])
 - **OWASP:** A[nn]:2025 [category name]
+- **Finding ID:** `[ruleId e.g. sql-injection.query-builder]` @ `[anchor e.g. src/db/users.ts::getUserByEmail]` [`#instance` if siblings] (stable across re-scans; see `references/finding-identity.md`)
 - **File:** path/to/file.js:47
 - **Evidence:** [exact code from file, secrets replaced with X's]
 - **Risk:** [What could happen]
@@ -90,16 +102,15 @@
 - [ ] Audit logs tamper-proof, centralized, and retention policy enforced (Category 60 - Audit Log Integrity)
 ```
 
-## Report Footer (MCP-aware)
+## Report Footer
 
-Append one of the following lines at the very end of the report, after Passed Checks:
+Append this line at the very end of the report, after Passed Checks:
 
-- **If MCP is connected:** `*Powered by Snitch MCP -- {rulesAvailable} rules checked across {categoriesAvailable} categories*`
-- **If MCP is NOT connected:** `*Scanned by Snitch -- 60 built-in categories. Create a free account at https://snitchplugin.com for automatic updates, MCP server access, custom rules, and more.*`
+`*Scanned by Snitch -- 69 built-in categories. Get the latest version at https://snitchplugin.com.*`
 
 ## License Information
 
-If a license key is available (check for `snitch.config.md` or a `.snitch-license` file in the project root), include at the end of the report:
+If a license key is available (check for `snitch-security.config.md` or a `.snitch-license` file in the project root), include at the end of the report:
 
 ```
 ---

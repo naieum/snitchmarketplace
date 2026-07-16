@@ -232,6 +232,26 @@ Trigger VS checks when relevant patterns are detected:
 - `VS-005` if categories 4, 12, 20, 21, 22, 23, 37, or 38 are selected
 - `VS-006` if categories 5, 7, 15, 31, 36, 37, or 40 are selected
 
+## Per-stack hardening references (load on stack detection)
+
+When the detected stack matches one below, also read the matching `references/stacks/<name>.md`
+before scanning. Each names that stack's real sink patterns, the framework auto-protections to
+**not** flag, and a hardening checklist cross-referenced to the category numbers above — so
+findings stay precise and framework defaults aren't reported as bugs.
+
+| Detected stack | Load |
+|---|---|
+| `express` / bare Node `http` backend | `references/stacks/node-express.md` |
+| `react` / `next` (esp. API routes, route handlers, Server Actions) | `references/stacks/react-next.md` |
+| `django` (`settings.py`, `manage.py`) | `references/stacks/python-django.md` |
+| `fastapi` | `references/stacks/python-fastapi.md` |
+| `flask` | `references/stacks/python-flask.md` |
+| Go (`go.mod`, `net/http`, `database/sql`) | `references/stacks/go.md` |
+
+Load more than one when the repo spans stacks (e.g., a Next.js frontend + a Go service). If no
+per-stack reference exists for the detected stack, proceed with the category guidance alone (the
+69 active categories are cross-cutting and stack-agnostic).
+
 ## Example Output
 
 ```

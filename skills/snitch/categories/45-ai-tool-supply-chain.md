@@ -1,4 +1,5 @@
 ## CATEGORY 45: AI Tool Supply Chain Security
+> Type: posture · Groups: — · CWE: CWE-506
 
 ### Detection
 - MCP server source code (packages with `@modelcontextprotocol/sdk`)
@@ -6,6 +7,7 @@
 - AI plugin manifests and configurations
 - Cursor, Copilot, Windsurf, or other AI tool extensions
 - `package.json` with `postinstall` scripts in AI tool packages
+- Executables and workspace configs committed to the repository that run when a tool or IDE opens the project
 
 ### What to Search For
 
@@ -38,6 +40,13 @@
 - Claims of being a "security tool" while requesting broad system access
 - Instructions that bypass user confirmation for destructive operations
 
+**Workspace-Triggered Execution (the repo runs when you open it):**
+- Executables committed to the repository that shadow developer-tool names (`git.exe`, `git.cmd`, `node.exe`, `python.exe`, `sh.exe`), especially at the workspace root — IDE path-resolution logic can execute these on project open (the July 2026 Cursor 0-day shape)
+- `.vscode/tasks.json` with `"runOn": "folderOpen"` auto-run tasks, or launch/workspace configs that execute repo scripts on open
+- Committed git hooks (a `.githooks/` or `hooks/` directory paired with config or scripts setting `core.hooksPath`), or setup scripts that install hooks silently
+- `.envrc` (direnv) or other enter-the-directory execution files containing network fetches, encoded payloads, or credential reads
+- Workspace or editor settings that override a tool's binary path to a repo-relative path
+
 **MCP-Specific Attack Vectors (Promptfoo Taxonomy):**
 - Tool poisoning: hidden instructions embedded in tool descriptions that override legitimate behavior when processed by the AI model
 - Parameter injection: malicious inputs in MCP tool parameters designed to exploit the AI's instruction-following behavior
@@ -63,6 +72,8 @@
 - MCP server that registers a tool named `read_file` that shadows the legitimate file-reading tool
 - MCP tool that changes behavior after being used 10+ times (rug pull — benign initially, then exfiltrates data)
 - MCP server in a multi-server environment that reads tool results from other servers and sends them to an external endpoint
+- A Windows executable named after a developer tool (`git.exe`) committed at the root of a repository whose project type gives it no reason to contain binaries
+- `.vscode/tasks.json` task with `"runOn": "folderOpen"` executing a script or binary from inside the repository
 
 ### NOT Vulnerable
 - MCP server that reads only project-scoped files within the working directory
@@ -76,6 +87,7 @@
 - MCP servers with unique tool names that don't conflict with other servers
 - MCP tools with consistent behavior regardless of usage count
 - Multi-server environments with proper isolation between server contexts
+- Committed binaries that are clearly labeled test fixtures or build outputs in fixture/vendor directories and do not shadow developer-tool names
 
 ### Context Check
 1. Does the MCP server or plugin access files outside the project directory?
@@ -88,6 +100,20 @@
 8. Are tool names unique and unlikely to shadow legitimate tools?
 9. In multi-server environments, can one server access another server's data?
 10. Has the MCP server's behavior been verified over multiple interactions?
+11. Does a committed file shadow the name of a developer tool an IDE or shell would resolve (git, node, python), and does it sit in a directory a tool searches on open?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The suspicious code, manifest entry, or instruction text quoted with file:line (the network call, credential-file read, `postinstall` script, encoded payload, or hidden instruction in a tool description)
+- What sensitive data or capability is reached (SSH keys, wallet directories, `process.env`, browser credential stores, shell execution, git config) — the concrete asset, not just "broad access"
+- The exfiltration or execution path, where one exists: the external endpoint the data is sent to, or the mechanism that executes the payload (decoded base64 → shell, downloaded binary run by `postinstall`)
+- The mismatch between the tool's stated purpose and its actual behavior (e.g., "code formatter" with filesystem + network + shell access)
+- The installation/reachability link: the package, skill, or MCP server is actually registered/installed (present in `package.json`, `.mcp.json`, skill directories, or AI tool configs), not merely vendored dead code
+
+### Confidence Scoring
+- **HIGH**: The malicious path is fully evidenced in the source — a credential/wallet read paired with a POST to an external endpoint, a base64 payload that decodes to shell commands, a `postinstall` downloading and executing a remote binary, or a hidden instruction quoted verbatim from a tool description.
+- **MEDIUM**: Permissions or behavior clearly exceed the stated purpose (filesystem + network + shell combined, files read outside the project directory, silent git-hook installation) but no complete exfiltration/execution path is confirmed, or obfuscated code could not be fully decoded.
+- **LOW**: Heuristic signals only — suspicious wording, shell execution with dynamic arguments, network calls to endpoints that cannot be classified as documented or unknown, or possible rug-pull/cross-server behavior that static review cannot confirm. Tag `needs human verification`.
 
 ### Files to Check
 - MCP server source: `**/src/**`, `**/index.ts`, `**/index.js`
@@ -95,3 +121,4 @@
 - Plugin manifests: `package.json`, `plugin.json`, `manifest.json`
 - AI tool configs: `.cursor/**`, `.copilot/**`, `.continue/**`
 - Post-install scripts: check `scripts.postinstall` in `package.json` of dependencies
+- Workspace-triggered execution: tool-named executables (`git.exe`, `node.exe`, …) at the repo root, `.vscode/tasks.json`, committed hook directories, `.envrc`

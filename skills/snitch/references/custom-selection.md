@@ -60,6 +60,12 @@ Operations & Compliance
   [58] Message Queues (58)             [59] Backup Security (59)
   [60] Audit Log Integrity (60)
 
+Modern Attack Classes
+  [61] ReDoS (61)                      [62] Prototype Pollution (62)
+  [63] JWT Algorithm Attacks (63)      [64] Cloud Metadata (64)
+  [65] Insecure Deserialization (65)   [66] Typosquatting/Postinstall (66)
+  [67] Type Coercion Bypasses (67)     [68] Agent Prompt Injection (68)
+  [72] Header Injection (72)
 
 ======================================================================
 
@@ -80,7 +86,7 @@ Your selection:
 - For each item, check if it's a number or name
 - Map names to category numbers (case-insensitive, partial match)
 - Remove duplicates
-- Validate all categories are in range 1-60
+- Validate all categories are in range 1-72; IDs 69-71 are merged aliases — silently remap 69→27, 70→33, 71→43 (per `categories/_index.md` Status column)
 
 **Examples:**
 
@@ -101,7 +107,7 @@ Input: `"1 1 3 3"`
 
 Input: `"99 xyz"`
 -> Invalid categories detected
--> Display: "Invalid categories: 99, xyz. Please enter 1-60 or valid names."
+-> Display: "Invalid categories: 99, xyz. Please enter 1-72 or valid names."
 -> Re-display menu
 
 ## Name to Category Mapping
@@ -169,4 +175,16 @@ Support flexible matching:
 "message queue" or "message queues" or "rabbitmq" or "kafka" or "sqs" or "nats" -> 58
 "backup" or "backup security" or "snapshots" or "disaster backup" -> 59
 "audit log" or "audit log integrity" or "log tampering" or "immutable logs" -> 60
+"redos" or "regex dos" or "catastrophic backtracking" -> 61
+"prototype pollution" or "proto pollution" or "proto" -> 62
+"jwt" or "jwt algorithm" or "alg none" or "jwt attacks" or "algorithm confusion" -> 63
+"cloud metadata" or "imds" or "metadata endpoint" or "instance metadata" -> 64
+"deserialization" or "insecure deserialization" or "pickle" or "unserialize" -> 65
+"typosquatting" or "postinstall" or "install scripts" or "malicious packages" -> 66
+"type coercion" or "type juggling" or "loose comparison" -> 67
+"agent injection" or "agent prompt injection" or "indirect prompt injection" -> 68
+"header injection" or "crlf" or "response splitting" or "header smuggling" -> 72
+"vulnerable dependencies" or "sca" or "osv" -> 27  (alias of merged 69)
+"dead code" -> 33  (alias of merged 70)
+"iac misconfiguration" -> 43  (alias of merged 71)
 ```

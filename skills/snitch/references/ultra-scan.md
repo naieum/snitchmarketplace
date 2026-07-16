@@ -1,6 +1,8 @@
-# Ultra Scan — multi-agent audit
+# Ultra Scan — multi-agent audit (mode `ultra` only)
 
 A higher-rigor execution mode for the same audit: parallel scanner subagents find candidates, fresh-context verifier subagents independently confirm the serious ones, then results are merged into the standard report. The methodology is unchanged (Rules 1-7, the evidence format, the scope rule); only the orchestration differs.
+
+Ultra runs only when the user explicitly selects mode `ultra` (its menu entry, `--ultra`, or a "verified" / "multi-agent" request). It is never an automatic upgrade — plain parallel batching (`references/parallel-scanning.md`) is what large scans get by default.
 
 ## Capability gate
 
@@ -8,9 +10,7 @@ Use Ultra only when the host can spawn subagents (for example Claude Code's Task
 
 ## Phase 1 — Fan-out scanners
 
-1. Group the selected categories into batches (see `references/parallel-scanning.md` for batch sizing).
-2. Spawn one scanner subagent per batch. Give each: the category guidance file(s) for its batch, Rules 1-7, the finding format, and the scope rule.
-3. Each scanner returns DATA for the orchestrator, not a user-facing report: a list of candidate findings — each with file:line, quoted evidence, its Rule 7 source-to-sink trace, proposed severity + CWE, and self-assessed confidence — plus evidenced Passes.
+Run the standard subagent fan-out per `references/parallel-scanning.md` (batch sizing, scanner prompt contents, structured candidate output). Ultra adds nothing here — the difference is Phase 2.
 
 ## Phase 2 — Adversarial verification (the core value)
 

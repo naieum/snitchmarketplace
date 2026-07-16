@@ -1,4 +1,5 @@
-## CATEGORY 67: Type Coercion and Juggling Bypasses
+## CATEGORY 67: Type Coercion & Juggling Bypasses
+> Type: posture · Groups: web · CWE: CWE-697
 
 Category 30 (Input Validation) is about whether input is validated at all. This category is about comparisons that *look* like they're validating but are defeated by type coercion — a classic auth-bypass class.
 
@@ -36,13 +37,24 @@ Category 30 (Input Validation) is about whether input is validated at all. This 
 4. If comparing secrets, is the comparator constant-time?
 5. For SQL, does the column type match the bound parameter type?
 
+### Evidence Chain
+- The comparison quoted at file:line, showing the loose operator or unsafe pattern (`==`, `in_array` without strict, truthy check on a user string)
+- What the comparison guards: the auth/identity/privilege decision it feeds (role check, token validation, password verification), with file:line
+- The attacker-controllable side: where the compared value enters (`req.body`, `$_POST`, params) and whether its type can be shaped by the attacker (array vs string vs number, Symbol vs String)
+- Mitigations checked and shown absent: no strict equality, no schema/type validation before the comparison, no constant-time comparator, no library verifier (`bcrypt.compare`, `argon2.verify`)
+
+### Confidence Scoring
+- **High**: loose comparison on a security decision where the compared value traces to request input with no type pinning (e.g., PHP `==` on a token, JS `==` role check on `req.body`), or a secret compared with plain `==` on a reachable auth path
+- **Medium**: loose comparison on a security-relevant value but attacker type control unconfirmed (value passes through a framework layer that may coerce), or a non-constant-time secret comparison whose reachability is unclear
+- **Low**: loose equality on values that appear internally generated or already type-validated upstream, where the coercion path could not be traced — tag `needs human verification`
+
 ### Files to Check
 - `**/auth*.{js,ts,php,py,rb,go}`
 - `**/middleware/**`, `**/guard*.{ts,py}`, `**/verify*.{ts,py,php}`
 - Password reset, session, and token validation endpoints
 - Admin / role-check helpers
 
-### References
+### Reference
 - CWE-697: Incorrect Comparison
 - CWE-1024: Comparison of Incompatible Types
 - CWE-208: Observable Timing Discrepancy (for secret comparison without constant-time)

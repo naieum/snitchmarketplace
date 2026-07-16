@@ -1,4 +1,5 @@
 ## CATEGORY 15: AI API Security
+> Type: sink-pattern · Groups: modern-stack · CWE: CWE-798
 
 > **OWASP references:** LLM01 (Prompt Injection), LLM02 (Sensitive Information Disclosure), LLM05 (Improper Output Handling), LLM06 (Excessive Agency), LLM07 (System Prompt Leakage), LLM10 (Unbounded Consumption). Also covers ASI01–ASI06 from the OWASP Top 10 for Agentic Applications (2026).
 >
@@ -78,14 +79,16 @@
 - Tool descriptions containing hidden instruction-like text (tool poisoning)
 - Multiple MCP servers connected to the same agent without isolation
 
-### Critical
+### Actually Vulnerable
+
+#### Critical
 - AI API key (`sk-*`, `sk-ant-*`) in client-side code, `NEXT_PUBLIC_*` variables, or frontend bundles
 - LLM output passed directly to `eval()`, `exec()`, `Function()`, shell execution, or raw SQL execution without parameterization
 - Agent with shell/command execution tool + network access + no human approval gate
 - No expiration or budget cap on API key — a leaked key has unlimited spend
 - User input concatenated directly into system prompt that contains API keys, database URLs, or authorization rules
 
-### High
+#### High
 - Direct prompt injection: user input interpolated into prompts with no structural boundary or content filtering
 - Full conversation history sent to model with no per-turn safety re-evaluation (vulnerable to Crescendo, Many-Shot, Skeleton Key jailbreaks)
 - No pre-model input gate on public chat endpoints — scope enforcement relies entirely on system-prompt prose, which persona-override jailbreaks (DAN, ENI-class) are specifically designed to bypass
@@ -100,7 +103,7 @@
 - RAG pipeline with no per-user isolation — any user can retrieve any document
 - User uploads automatically indexed into shared vector store without review
 
-### Medium
+#### Medium
 - Prompt/completion pairs logged to console, files, or third-party observability tools (Langfuse, LangSmith, Helicone) without PII redaction
 - No input length validation before API calls (context window stuffing)
 - Raw API error messages exposed to users (may leak model config, internal URLs, or prompt fragments)
@@ -110,20 +113,6 @@
 - No relevance score threshold on RAG retrieval (low-quality matches included in context)
 - AI API keys in `.env` files that are not in `.gitignore` (may end up in git history)
 - No abuse log on AI chat endpoints: blocked requests, jailbreak-gate hits, and rate-limit trips are not recorded — when an incident occurs there is no forensic trail to reconstruct what happened or how many times it was attempted
-
-### Context Check
-1. Is the AI endpoint server-only or reachable from client code?
-2. Is user input structurally separated from system instructions (separate message roles), or concatenated into a single string?
-3. Does the app filter or validate LLM output before using it in downstream operations (SQL, HTML, shell, file paths)?
-4. For chat apps: is conversation history re-evaluated for safety on each turn, or passed through blindly?
-5. Does the app render LLM output as markdown/HTML? If so, are external images blocked?
-6. For agents: what tools are registered, and do they follow least-privilege? Is there a human approval step for destructive actions?
-7. Is user PII included in prompts? Are prompts/completions logged?
-8. Are there cost controls: `max_tokens`, rate limits, per-user budgets, agent loop limits?
-9. For RAG apps: is the vector store per-user, or shared? Can users contribute content to the knowledge base?
-10. Is there a pre-model input gate (synchronous regex or cheap classifier) that checks topic/intent before invoking the primary LLM, or is scope enforcement delegated entirely to the system prompt?
-11. Does the application scan incoming user messages for persona-override or jailbreak-pattern signals before the LLM call?
-12. Are blocked or suspicious requests logged (IP, user ID, timestamp, matched pattern) for incident response?
 
 ### NOT Vulnerable
 - API keys in server-only code loaded from environment variables, never exposed to the client
@@ -142,6 +131,32 @@
 - System prompt contains no secrets — authorization enforced at the application layer
 - Strict CSP blocking external image sources in chat UI (prevents markdown exfiltration)
 - MCP server versions pinned with integrity hashes; tool descriptions reviewed
+
+### Context Check
+1. Is the AI endpoint server-only or reachable from client code?
+2. Is user input structurally separated from system instructions (separate message roles), or concatenated into a single string?
+3. Does the app filter or validate LLM output before using it in downstream operations (SQL, HTML, shell, file paths)?
+4. For chat apps: is conversation history re-evaluated for safety on each turn, or passed through blindly?
+5. Does the app render LLM output as markdown/HTML? If so, are external images blocked?
+6. For agents: what tools are registered, and do they follow least-privilege? Is there a human approval step for destructive actions?
+7. Is user PII included in prompts? Are prompts/completions logged?
+8. Are there cost controls: `max_tokens`, rate limits, per-user budgets, agent loop limits?
+9. For RAG apps: is the vector store per-user, or shared? Can users contribute content to the knowledge base?
+10. Is there a pre-model input gate (synchronous regex or cheap classifier) that checks topic/intent before invoking the primary LLM, or is scope enforcement delegated entirely to the system prompt?
+11. Does the application scan incoming user messages for persona-override or jailbreak-pattern signals before the LLM call?
+12. Are blocked or suspicious requests logged (IP, user ID, timestamp, matched pattern) for incident response?
+
+### Evidence Chain
+- Sink or exposure file:line (the prompt-assembly call, the LLM-output consumer — SQL/shell/eval/HTML render — the key reference, or the missing-control config)
+- For prompt injection: the traced path from the user/external/retrieved source into the prompt, showing which message role or string position it lands in
+- For improper output handling: the traced path from the model response forward to the downstream sink, hop by hop
+- Sanitizers/gates checked and found absent (structural role separation, output escaping/parameterization, pre-model input gate, `max_tokens`/rate limits)
+- Source classification: direct user input, external/retrieved content (RAG, scraped, uploaded), or model output treated as tainted
+
+### Confidence Scoring
+- **High**: Complete trace — user or retrieved content concatenated into system-role instructions, or model output reaching eval/exec/raw SQL/unsanitized HTML with no intervening control; or an `sk-*` / `sk-ant-*` key in demonstrably client-shipped code.
+- **Medium**: Pattern present but trace partial — prompt built from variables whose upstream source wasn't fully resolved, output sanitization may occur in a rendering layer not audited, or cost/rate controls may exist at the infrastructure level.
+- **Low**: AI SDK usage detected but prompt sources or output consumers are un-traceable within the audited files — tag `needs human verification`.
 
 ### Files to Check
 - `**/ai/**`, `**/chat/**`, `**/llm/**`, `**/agent/**`, `**/rag/**`

@@ -1,4 +1,5 @@
-## CATEGORY 72: HTTP / Protocol Header Injection
+## CATEGORY 72: HTTP/Protocol Header Injection
+> Type: sink-pattern · Groups: web · CWE: CWE-113
 
 User input concatenated into HTTP request headers, response headers, or any line-based protocol field, without stripping CR / LF / control characters. The attacker injects a delimiter (typically `\r\n`) and smuggles an extra header, an extra protocol field, or a fake response. Old class (CWE-93, CWE-113, CWE-74), still landing high-severity CVEs in 2026 because protocol parsers are everywhere AI-generated code reaches: webhook dispatchers, request-forwarding proxies, custom auth middleware, internal service callers. CVE-2026-3854 (GitHub Enterprise Server RCE, April 2026) was exactly this pattern: a push option value with a delimiter char escalated to RCE on the appliance.
 
@@ -53,11 +54,30 @@ User input concatenated into HTTP request headers, response headers, or any line
 4. Is there a sanitizer between the input and the header? `value.replace(/[\r\n]/g, '')`, `sanitizeHeader()`, or a regex-validated schema are all valid mitigations. If the sanitizer runs, the pattern is fine.
 5. Is the code path even reachable in production? Header-building code in dev-only debug routes (gated behind `if (env.DEV)`) is not a production exposure.
 
+### Evidence Chain
+- The header write sink quoted at file:line (`res.setHeader`, `headers.set`, `fetch({ headers })`, `writeHead`, custom protocol writer)
+- The traced variable path from source to the write call, including helper hops (`setCors(req, res)`-style indirection), with file:line for each hop
+- Source classification stated explicitly: request header / body / query / cookie / webhook config / CI variable / push option / agent output
+- Sanitizers checked and found absent: CR/LF stripping (`replace(/[\r\n]/g, '')`, `sanitizeHeader()`), a typed schema rejecting control chars, or a runtime guard (undici / Workers / Deno throwing on invalid header chars)
+- The receiver-side impact link: which downstream service or client trusts the injectable header (e.g., `X-Internal-Auth`), or why response splitting / protocol-field smuggling is exploitable in this path
+
+### Confidence Scoring
+- **High**: complete trace from user-controlled input to a header write on a runtime that does not reject CR/LF, with no sanitizer in the path, and a receiver that trusts the injectable field
+- **Medium**: trace complete but the runtime likely rejects invalid header chars (turning the exploit into a 500), or the sink is confirmed while the receiver's trust in the header is unconfirmed
+- **Low**: header value derives from input whose format is constrained upstream (server-generated token, validated enum) or the path appears dev-only/unreachable and could not be fully traced — tag `needs human verification`
+
+### Files to Check
+- `**/proxy*.{ts,js}`, `**/forward*.{ts,js}`, `**/gateway*.{ts,js}` (request-forwarding code)
+- `**/webhook*.{ts,js}`, `**/dispatch*.{ts,js}` (outbound webhook dispatchers with custom header maps)
+- `**/middleware/**` (custom auth / CORS helpers that write headers)
+- API routes and handlers that call `res.setHeader` / `res.writeHead` / `headers.set` / `fetch` with constructed headers
+- Logging shims and access-log formatters (CRLF log forging)
+
 ### Reference
 
 The CVE-2026-3854 disclosure (April 2026) is the canonical recent example. A push-option value the user supplied via `git push --push-option=...` was concatenated into an internal HTTP header that GHES used to drive a service call; a delimiter character in the value smuggled an extra metadata field that escalated to RCE. The fix shape is universal: sanitize CR/LF/control chars at the point you build the header value, not at the wire.
 
-Snitch's reference sanitizer is `packages/app/src/emails/sendEmail.ts`'s `sanitizeHeader()`:
+A safe reference sanitizer:
 
 ```js
 function sanitizeHeader(value) {
@@ -70,4 +90,4 @@ function sanitizeHeader(value) {
 
 Strips CR / LF / tab / control chars, replaces with a space, trims, clamps to RFC-allowed line length (998 chars). Safe to apply at the boundary even when the runtime would also reject; defense in depth is appropriate for header construction.
 
-OWASP: A03:2025 Injection. CWE-93 (Improper Neutralization of CRLF Sequences), CWE-113 (HTTP Response Splitting), CWE-74 (Injection family).
+OWASP: A05:2025 Injection. CWE selection by finding shape: request-side / outbound header injection (CRLF or header smuggling into outbound requests) → CWE-93 (Improper Neutralization of CRLF Sequences); response-side splitting → CWE-113 (HTTP Response Splitting, the manifest anchor); non-HTTP line-based protocol smuggling → CWE-74 (Injection family).

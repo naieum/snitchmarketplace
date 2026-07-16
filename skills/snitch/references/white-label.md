@@ -1,6 +1,6 @@
 # White-Label Configuration
 
-When `snitch.config.md` contains a `tool-name` field, override branding in all output.
+When `snitch-security.config.md` contains a `tool-name` field, override branding in all output.
 
 ## Config Fields
 

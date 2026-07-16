@@ -1,4 +1,5 @@
 ## CATEGORY 57: GraphQL Deep Security
+> Type: posture · Groups: — · CWE: CWE-862
 
 ### Detection
 - GraphQL server imports: `apollo-server`, `@apollo/server`, `graphql-yoga`, `mercurius`, `express-graphql`, `graphql-go`, `gqlgen`, `strawberry`, `ariadne`, `graphene`, `spring-boot-starter-graphql`, `hasura`
@@ -100,22 +101,6 @@
 6. Are DataLoaders used for nested resolvers that fetch related entities?
 7. Is alias count or per-operation cost accounted for in rate limiting?
 
-### Files to Check
-- `**/graphql/**`, `**/schema/**`, `**/resolvers/**`, `**/typeDefs/**`
-- `**/schema.graphql`, `**/schema.gql`, `**/*.graphql`
-- `**/dataloaders/**`, `**/loaders/**`
-- GraphQL server configuration and plugin setup files
-- `**/directives/**` (custom auth directives)
-- `**/permissions/**`, `**/guards/**` (field-level auth)
-- Hasura metadata directory (`metadata/`, `migrations/`)
-- `graph/schema.resolvers.go`, `graph/model/` (gqlgen)
-
-### Confidence Scoring
-- **HIGH**: GraphQL server in production with introspection enabled, no query depth limit, no complexity analysis, and sensitive fields accessible without field-level authorization. Or mutations can be batched via aliases with no alias count restriction.
-- **MEDIUM**: Some protections exist (depth limit) but complexity analysis is missing. Or introspection is enabled but the API is intentionally public. Or field-level auth exists on some fields but not all sensitive ones.
-- **LOW**: GraphQL endpoint is behind authentication and rate limiting at the HTTP level, which partially mitigates depth/complexity attacks. Or introspection is enabled in a documented public API.
-- **SKIP**: Apollo Server with `introspection: false`, `depthLimit()`, complexity limit rules, field-level auth directives, persisted query enforcement, and DataLoaders for all nested resolvers.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Checked GraphQL server configuration for `introspection` setting in production
@@ -125,3 +110,19 @@ Before reporting, verify ALL of these:
 5. [ ] Checked if alias count or per-operation cost is accounted for in rate limiting
 6. [ ] Verified DataLoader usage for nested resolvers that fetch related entities
 7. [ ] Confirmed persisted queries or operation allowlist is enforced in production
+
+### Confidence Scoring
+- **HIGH**: GraphQL server in production with introspection enabled, no query depth limit, no complexity analysis, and sensitive fields accessible without field-level authorization. Or mutations can be batched via aliases with no alias count restriction.
+- **MEDIUM**: Some protections exist (depth limit) but complexity analysis is missing. Or introspection is enabled but the API is intentionally public. Or field-level auth exists on some fields but not all sensitive ones.
+- **LOW**: GraphQL endpoint is behind authentication and rate limiting at the HTTP level, which partially mitigates depth/complexity attacks. Or introspection is enabled in a documented public API.
+- **SKIP**: Apollo Server with `introspection: false`, `depthLimit()`, complexity limit rules, field-level auth directives, persisted query enforcement, and DataLoaders for all nested resolvers.
+
+### Files to Check
+- `**/graphql/**`, `**/schema/**`, `**/resolvers/**`, `**/typeDefs/**`
+- `**/schema.graphql`, `**/schema.gql`, `**/*.graphql`
+- `**/dataloaders/**`, `**/loaders/**`
+- GraphQL server configuration and plugin setup files
+- `**/directives/**` (custom auth directives)
+- `**/permissions/**`, `**/guards/**` (field-level auth)
+- Hasura metadata directory (`metadata/`, `migrations/`)
+- `graph/schema.resolvers.go`, `graph/model/` (gqlgen)

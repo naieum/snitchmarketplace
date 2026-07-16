@@ -1,4 +1,5 @@
 ## CATEGORY 48: Race Conditions & Concurrency
+> Type: posture · Groups: — · CWE: CWE-362
 
 ### Detection
 - Non-atomic read-modify-write patterns (check-then-act)
@@ -87,20 +88,6 @@
 5. Is file access protected against TOCTOU with atomic operations or advisory locks?
 6. Could this code be called concurrently by multiple users or workers?
 
-### Files to Check
-- `**/services/**`, `**/handlers/**`, `**/controllers/**`
-- `**/payments/**`, `**/billing/**`, `**/checkout/**`
-- `**/workers/**`, `**/jobs/**`, `**/tasks/**`
-- `**/models/**`, `**/repositories/**`
-- `**/*queue*`, `**/*worker*`, `**/*consumer*`
-- Database migration files (check for missing unique constraints)
-
-### Confidence Scoring
-- **HIGH**: Financial transaction (payment, balance debit, inventory deduction) uses separate SELECT-then-UPDATE queries without `FOR UPDATE`, transaction wrapping, or optimistic locking. Or shared mutable state accessed from multiple concurrent threads/goroutines without synchronization.
-- **MEDIUM**: Check-then-act pattern exists but the operation is not financial (e.g., duplicate user registration). Or Redis `GET`-then-`SET` used instead of atomic operations but the data is not highly sensitive.
-- **LOW**: Code has a potential race condition but the endpoint is rate-limited or the operation is idempotent. Or the pattern looks racy but is single-threaded in practice (Node.js event loop with no concurrent await).
-- **SKIP**: All state-modifying operations use atomic database updates, proper transactions with row locks, or optimistic locking with version columns. Read-only operations have no race condition risk.
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Identified a check-then-act pattern where the check and action are not atomic
@@ -109,3 +96,17 @@ Before reporting, verify ALL of these:
 4. [ ] Checked if the operation involves financial data, inventory, or other data where double-processing is harmful
 5. [ ] Confirmed no database unique constraints that would prevent duplicate inserts in race windows
 6. [ ] Verified no optimistic locking (version columns) that would catch concurrent modifications
+
+### Confidence Scoring
+- **HIGH**: Financial transaction (payment, balance debit, inventory deduction) uses separate SELECT-then-UPDATE queries without `FOR UPDATE`, transaction wrapping, or optimistic locking. Or shared mutable state accessed from multiple concurrent threads/goroutines without synchronization.
+- **MEDIUM**: Check-then-act pattern exists but the operation is not financial (e.g., duplicate user registration). Or Redis `GET`-then-`SET` used instead of atomic operations but the data is not highly sensitive.
+- **LOW**: Code has a potential race condition but the endpoint is rate-limited or the operation is idempotent. Or the pattern looks racy but is single-threaded in practice (Node.js event loop with no concurrent await).
+- **SKIP**: All state-modifying operations use atomic database updates, proper transactions with row locks, or optimistic locking with version columns. Read-only operations have no race condition risk.
+
+### Files to Check
+- `**/services/**`, `**/handlers/**`, `**/controllers/**`
+- `**/payments/**`, `**/billing/**`, `**/checkout/**`
+- `**/workers/**`, `**/jobs/**`, `**/tasks/**`
+- `**/models/**`, `**/repositories/**`
+- `**/*queue*`, `**/*worker*`, `**/*consumer*`
+- Database migration files (check for missing unique constraints)

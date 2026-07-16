@@ -1,4 +1,5 @@
 ## CATEGORY 4: Authentication Issues
+> Type: posture · Groups: secrets-auth, quick-core · CWE: CWE-287
 
 ### Detection
 - Auth libraries: `jsonwebtoken`, `passport`, `express-session`, `next-auth`, `@clerk/nextjs`, `better-auth`
@@ -37,6 +38,18 @@
 1. Is middleware applied at router level?
 2. Should this route be public?
 3. Is insecure setting guarded by environment check?
+
+### Evidence Chain
+- The route handler, JWT/session config, or redirect/WebSocket handler quoted at file:line
+- For missing-auth findings: the absence demonstrated — the router/middleware registration checked (route level AND router/app level) and quoted or confirmed absent
+- The reachability/impact link: what the unprotected route or weak config exposes (admin action, account takeover via open redirect, unauthenticated WebSocket data)
+- For weak secrets/insecure settings: the config value quoted and any environment guard checked and found absent
+- Why the route is judged non-public (path name, handler behavior, data accessed)
+
+### Confidence Scoring
+- **High** — sensitive route or config with the weakness unambiguous in code (e.g. admin route with middleware confirmed absent at both route and router level; `algorithms: ['none']`; literal short session secret)
+- **Medium** — pattern present but protection could exist elsewhere not fully confirmed (e.g. possible platform-level middleware, framework defaults, or an env guard whose deployment value is unknown)
+- **Low** — cannot determine whether the route is intentionally public or whether auth is applied via an untraceable mechanism (custom decorator, infra proxy) → tag `needs human verification`
 
 ### Files to Check
 - `middleware.ts`, `**/auth/**`, `**/session/**`

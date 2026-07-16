@@ -1,4 +1,5 @@
 ## CATEGORY 31: CI/CD Pipeline Security
+> Type: posture · Groups: infra-supply-chain · CWE: CWE-200
 
 ### Detection
 - GitHub Actions: `.github/workflows/*.yml`
@@ -34,6 +35,19 @@
 2. Does the workflow use `pull_request_target` with code checkout?
 3. Are GitHub context values used in shell `run:` commands or action `with:` inputs?
 4. Are third-party actions pinned to commit SHAs?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The workflow/config snippet file:line showing the misconfiguration (plaintext secret, trigger, missing `permissions:`, unpinned action, expression in `run:`)
+- The trigger context that makes it attacker-reachable (e.g., `pull_request_target` on a public repo, issue/comment-driven event)
+- For injection findings: the attacker-controllable value's path (`${{ github.event.* }}`) into a shell `run:` step or into checked-out-and-executed PR code
+- What protection is absent: no `permissions:` scoping, branch/tag pin instead of commit SHA, secret not referenced via `${{ secrets.* }}`
+- Repository visibility (public vs. private) where it changes impact
+
+### Confidence Scoring
+- **High**: unambiguous config — plaintext secret in workflow YAML; `pull_request_target` + PR-branch checkout + execution; `github.event.*` interpolated into a shell `run:` on an attacker-controllable event
+- **Medium**: pattern present but exploitability is partial — missing `permissions:` key (impact depends on org/repo defaults), branch-pinned action from a reputable publisher, or a private repo reducing exposure
+- **Low**: repo visibility, runner isolation, or org-level policy cannot be determined from the code alone — tag `needs human verification`
 
 ### Files to Check
 - `.github/workflows/*.yml`

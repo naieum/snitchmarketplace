@@ -1,4 +1,5 @@
 ## CATEGORY 65: Insecure Deserialization
+> Type: sink-pattern · Groups: web · CWE: CWE-502
 
 Category 49 covers XXE specifically. This category covers the broader family: binary/object deserialization of attacker-controlled data in Python, Java, Ruby, PHP, .NET, and Node.js.
 
@@ -36,13 +37,25 @@ Category 49 covers XXE specifically. This category covers the broader family: bi
 4. For YAML, is the loader explicitly the safe variant?
 5. For cached data, could an attacker write to the cache (e.g., Redis exposed, cache key collision)?
 
+### Evidence Chain
+- The deserialization sink call (`pickle.loads`, `ObjectInputStream.readObject`, `unserialize`, unsafe `yaml.load`, etc.) quoted at file:line
+- The traced variable path from source to the deserialize call, hop by hop with file:line (e.g., `req.body.payload → job.data → Marshal.load(job.data)`)
+- Source classification stated explicitly: HTTP body / query param / cookie / uploaded file / queue payload / shared-cache read / trusted local file
+- Sanitizers and integrity checks looked for and shown absent or bypassable: HMAC/signature verification before the deserialize call, safe-loader option, type allowlist
+- For Java/.NET: whether attacker-selectable class instantiation is possible (no allowlist, `TypeNameHandling` enabled) and any gadget-chain libraries present on the classpath
+
+### Confidence Scoring
+- **High**: complete trace from an untrusted source (HTTP input, uploaded file, shared-cache read, externally reachable queue) to an unsafe deserializer with no signature check or safe-loader option anywhere in the path
+- **Medium**: unsafe deserializer confirmed but the input source is only partially traceable (e.g., a queue or database column whose writers could not all be enumerated), or an integrity check exists but its key handling is unclear
+- **Low**: unsafe API present but the input appears to be a locally written trusted file, or the trace dead-ends before reaching a trust boundary — tag `needs human verification`
+
 ### Files to Check
 - `**/session*.ts,py,java,rb`, `**/cache*.ts,py,java,rb`
 - Message-queue consumers, cron jobs processing persisted jobs
 - File upload handlers that parse binary formats
 - RPC / legacy SOAP / remoting endpoints
 
-### References
+### Reference
 - CWE-502: Deserialization of Untrusted Data
 - OWASP Top 10:2025 — A08 Software and Data Integrity Failures
 - CVSS 4.0: typically Critical (AV:N, AC:L, RCE)

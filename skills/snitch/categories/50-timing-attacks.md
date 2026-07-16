@@ -1,4 +1,5 @@
 ## CATEGORY 50: Timing Attacks
+> Type: posture · Groups: — · CWE: CWE-208
 
 ### Detection
 - Non-constant-time string comparison for secrets, tokens, API keys, or MACs
@@ -72,19 +73,6 @@
 4. Is the comparison in an authentication, authorization, or signature verification path?
 5. Is rate limiting in place that would make timing attacks impractical?
 
-### Files to Check
-- `**/auth*.ts`, `**/auth*.js`, `**/auth*.py`, `**/auth*.go`, `**/auth*.java`, `**/auth*.rb`
-- `**/middleware/**`, `**/verify*`, `**/validate*`
-- `**/webhook*`, `**/callback*`, `**/signature*`
-- `**/hmac*`, `**/token*`, `**/api-key*`
-- `**/crypto*`, `**/security*`
-
-### Confidence Scoring
-- **HIGH**: Secret value (API key, HMAC digest, token, signature) compared using `===`, `==`, `.equals()`, or `bytes.Equal()` in an authentication or signature verification path with no rate limiting.
-- **MEDIUM**: Non-constant-time comparison on a secret value, but the endpoint has rate limiting that makes timing attacks impractical. Or the comparison is in a secondary validation path (not the primary auth check).
-- **LOW**: String comparison found in auth-adjacent code, but the values being compared are not secrets (e.g., user IDs, content types, HTTP methods). Or password verification uses bcrypt/argon2 (constant-time internally).
-- **SKIP**: All secret comparisons use constant-time functions (`crypto.timingSafeEqual`, `hmac.compare_digest`, `subtle.ConstantTimeCompare`, `MessageDigest.isEqual`). Or no custom secret comparison exists (auth delegated to a provider).
-
 ### Evidence Chain
 Before reporting, verify ALL of these:
 1. [ ] Confirmed the value being compared is a secret (token, API key, HMAC, signature, hash) — not a public identifier
@@ -93,3 +81,16 @@ Before reporting, verify ALL of these:
 4. [ ] Checked whether rate limiting exists on the endpoint (makes timing attacks impractical)
 5. [ ] Verified no constant-time comparison function is used anywhere in the same flow
 6. [ ] Confirmed the attacker can make repeated requests to measure timing differences
+
+### Confidence Scoring
+- **HIGH**: Secret value (API key, HMAC digest, token, signature) compared using `===`, `==`, `.equals()`, or `bytes.Equal()` in an authentication or signature verification path with no rate limiting.
+- **MEDIUM**: Non-constant-time comparison on a secret value, but the endpoint has rate limiting that makes timing attacks impractical. Or the comparison is in a secondary validation path (not the primary auth check).
+- **LOW**: String comparison found in auth-adjacent code, but the values being compared are not secrets (e.g., user IDs, content types, HTTP methods). Or password verification uses bcrypt/argon2 (constant-time internally).
+- **SKIP**: All secret comparisons use constant-time functions (`crypto.timingSafeEqual`, `hmac.compare_digest`, `subtle.ConstantTimeCompare`, `MessageDigest.isEqual`). Or no custom secret comparison exists (auth delegated to a provider).
+
+### Files to Check
+- `**/auth*.ts`, `**/auth*.js`, `**/auth*.py`, `**/auth*.go`, `**/auth*.java`, `**/auth*.rb`
+- `**/middleware/**`, `**/verify*`, `**/validate*`
+- `**/webhook*`, `**/callback*`, `**/signature*`
+- `**/hmac*`, `**/token*`, `**/api-key*`
+- `**/crypto*`, `**/security*`

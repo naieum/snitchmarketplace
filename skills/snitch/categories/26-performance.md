@@ -1,4 +1,5 @@
 ## CATEGORY 26: Performance Problems
+> Type: performance · Groups: performance · CWE: —
 
 ### Detection
 - Synchronous file system operations in request handlers
@@ -37,6 +38,19 @@
 2. Is the unindexed field actually used in production queries?
 3. Is the unbounded query on a table that will remain small or could grow large?
 4. Are the sequential awaits actually independent or do they depend on each other?
+
+### Evidence Chain
+A finding's Evidence block must show:
+- The measurable pattern file:line (sync FS call, unbounded `findMany`, unindexed filtered field, full-library import, sequential independent awaits)
+- The enclosing request/render path (route handler, middleware, mapped component) showing the pattern executes per request or per render
+- Why it compounds: per-request event-loop blocking, table growth over time, or bundle bytes shipped to every client
+- For missing-index findings: the schema file:line lacking `@@index` plus the query file:line filtering/ordering on that field
+- That the mitigating construct is absent (`take`/`limit`, pagination params, tree-shaken import, `Promise.all`)
+
+### Confidence Scoring
+- **High**: pattern unambiguous at file:line on a hot request/render path with mitigation clearly absent (e.g., `fs.readFileSync` inside a route handler; `findMany({})` with no `take` on a user-data table)
+- **Medium**: pattern present but scale context is partial — table growth unknown, handler may be rarely invoked, or the bundler may tree-shake the import
+- **Low**: cannot determine whether the code path is production-reachable or what the data scale is — tag `needs human verification`
 
 ### Files to Check
 - `**/api/**/*.ts`, `**/routes/**/*.ts`, `**/middleware/**/*.ts`

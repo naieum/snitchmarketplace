@@ -24,7 +24,7 @@ Last resort: GitHub Issues via `gh` CLI (already authenticated through Devin's G
 |-------|-------|
 | Title | `[SEVERITY] Finding title -- file.ts:47` |
 | Description | Severity, CWE, OWASP, evidence (redacted), risk, fix |
-| Labels | From `snitch.config.md` ticketing-labels + severity tag |
+| Labels | From `snitch-security.config.md` ticketing-labels + severity tag |
 | Priority | P1->Urgent, P2->High, P3->Medium, P4->Low |
 
 ## Import File Format (findings-tickets.json)
@@ -40,7 +40,7 @@ Last resort: GitHub Issues via `gh` CLI (already authenticated through Devin's G
 ]
 ```
 
-## Config (snitch.config.md)
+## Config (snitch-security.config.md)
 
 ```
 ticketing-system: jira | linear | github | gitlab
