@@ -18,7 +18,7 @@
       "name": "snitch-marketing",
       "source": "./skills/snitch-marketing",
       "description": "SEO + marketing audit with evidence-based findings \u2014 technical SEO, GEO/AI-search, schema, Core Web Vitals.",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
     },

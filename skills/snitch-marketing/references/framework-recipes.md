@@ -115,6 +115,11 @@ Each section is the load-bearing knowledge an SEO auditor needs about that stack
 - `{{ canonical_url }}` outputs the canonical Shopify URL. Themes that hardcode a different canonical are wrong unless the merchant intends it.
 - Product schema is auto-emitted by most modern themes via `{% render 'product-json' %}` or similar; check the snippet before flagging missing Product schema.
 
+**Agentic commerce / AI channels (cross-ref Cat 101):**
+- Product metafields and metaobjects syndicate through Shopify Catalog to AI shopping surfaces (ChatGPT shopping, Copilot, Shop app) just like standard fields. Spec-shaped facts that live only in `description` prose or hardcoded theme Liquid don't syndicate — audit whether attributes (material, dimensions, compatibility, certifications) exist as metafields, and whether defined metafields are actually connected to products.
+- Shopify exposes UCP (Universal Commerce Protocol) agentic checkout self-serve since Spring '26; check `/.well-known/ucp` and whether the merchant's AI sales channels are enabled. A UCP-capable store with the channels off is a Cat 101 High finding.
+- Collection pages are Shopify's natural head-term landing pages. A smart collection (rule-based, e.g. product title contains the head term) with descriptive on-page copy + CollectionPage/ItemList schema outranks a bare product grid — see the Cat 18 worked fix. The collection description field renders above the grid in most themes; theme edits are needed only to move it below.
+
 ---
 
 ## Webflow / Wix / Squarespace
