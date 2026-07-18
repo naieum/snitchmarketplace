@@ -30,6 +30,12 @@ meant to serve.
 A passage far outside its surface's band is the finding (e.g., a 600-word wall where a 40–60 word
 snippet answer belongs; a one-line stub where a 134–167 word citation block belongs).
 
+**Page-level word count is NOT a dimension.** Across a study of 174,000+ pages cited in AI
+Overviews, the correlation between total word count and being cited was 0.04 — effectively
+zero — and 53.4% of cited pages were under 1,000 words (correlational). Never flag "content too
+short" as a finding on its own; length findings must be about a *passage's* fit to its surface
+band or about unanswered sub-questions, never about raw page length.
+
 ## The rubric (7 observable dimensions, 0–100)
 
 Score 3–5 sampled passages per page (the lead answer block, the most-likely-to-be-cited section,
@@ -48,6 +54,28 @@ and any FAQ entries). For each, evaluate:
 Report each scored passage with: the quoted passage, the measured length vs its surface band, the
 dimensions it passes, and the single weakest dimension as the fix. Do not aggregate into a vanity
 number here — the rollup lives in `references/geo-score.md`.
+
+## Two mechanical passage tests (run alongside the rubric)
+
+Two binary checks that serve human F-pattern scanners and LLM chunkers alike. Both produce
+quotable evidence and slot into dimensions 1 and 3:
+
+- **The BLUF test (front-loading, dimension 1):** does the *first sentence* of each section state
+  the section's conclusion, answer-first, with backstory after? LLMs weight the beginning and end
+  of a passage more heavily than the middle. Quote the opening sentence as the evidence either way.
+- **The out-of-context H2 test (self-containment, dimension 3):** read any H2 section completely
+  out of context — retrieval systems chunk pages at boundaries the author doesn't control
+  (described "tree-walking" follows semantic HTML top-to-bottom), so every section must survive
+  being lifted alone. If it doesn't make sense without the rest of the page, that's the finding;
+  quote the unresolved reference (`it`/`this`/`as mentioned above`).
+
+Supporting style signals for dimension 3: **entity-rich phrasing** (name concrete entities and
+relationships — "{Product} finds low-difficulty keywords" — instead of pronouns and vague
+references like "this tool helps") and **simple declarative sentences** (one idea per sentence,
+subject-verb-object). Explicitly NOT the fix: rewriting pages into choppy FAQ-blurbs or a special
+"AI format" — group related thoughts, one takeaway per section. This is the mechanical form of
+Cat 82's "chunking myth" stance: you don't pre-chunk; you make sections self-contained because
+you can't control where chunks fall.
 
 ## Forbidden claims
 

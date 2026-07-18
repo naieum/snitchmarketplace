@@ -53,7 +53,18 @@ if (-not (Test-Path $CategoriesDir)) {
     exit 1
 }
 
-$CatCount = (Get-ChildItem -Path $CategoriesDir -Filter "*.md" -ErrorAction SilentlyContinue).Count
+# Active-category count, sourced from the manifest (single source of truth) so
+# it never drifts from what the skill actually scans. The raw *.md file count
+# would over-report: it includes _index.md and merged-redirect stubs.
+$CatCount = $null
+$IndexFile = Join-Path $CategoriesDir "_index.md"
+if (Test-Path $IndexFile) {
+    $CatMatch = Select-String -Path $IndexFile -Pattern 'Active categories:\s*(\d+)' | Select-Object -First 1
+    if ($CatMatch) { $CatCount = [int]$CatMatch.Matches[0].Groups[1].Value }
+}
+if (-not $CatCount) {
+    $CatCount = (Get-ChildItem -Path $CategoriesDir -Filter "[0-9]*-*.md" -ErrorAction SilentlyContinue).Count
+}
 $HasExtras = (Test-Path $ReferencesDir) -or (Test-Path $ComplianceDir) -or (Test-Path $CustomRulesDir) -or (Test-Path $ConfigFile)
 
 function Write-Hr {

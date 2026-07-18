@@ -44,8 +44,7 @@ Press surfaces:
 
 ### The attention jetstream (newsjacking) and angle-first pitching
 
-Two earned-media patterns worth recommending when the audit finds PR effort producing nothing
-(StoryBrand-derived):
+Two earned-media patterns worth recommending when the audit finds PR effort producing nothing:
 
 - **Ride attention; don't manufacture it.** Nobody is paying attention to the brand, but
   they're always paying attention to *something* — and attention is a jetstream: temporary,

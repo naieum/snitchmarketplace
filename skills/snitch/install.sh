@@ -62,7 +62,11 @@ CONFIG_FILE="$SCRIPT_DIR/snitch-security.config.md"
   exit 1
 }
 
-CAT_COUNT=$(find "$CATEGORIES_DIR" -maxdepth 1 -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+# Active-category count, sourced from the manifest (single source of truth) so
+# it never drifts from what the skill actually scans. The raw *.md file count
+# would over-report: it includes _index.md and merged-redirect stubs.
+CAT_COUNT=$(sed -n 's/.*Active categories:[[:space:]]*\([0-9][0-9]*\).*/\1/p' "$CATEGORIES_DIR/_index.md" 2>/dev/null | head -1)
+[ -n "$CAT_COUNT" ] || CAT_COUNT=$(find "$CATEGORIES_DIR" -maxdepth 1 -name '[0-9]*-*.md' 2>/dev/null | wc -l | tr -d ' ')
 
 has_cmd() { command -v "$1" >/dev/null 2>&1; }
 has_dir() { [ -d "$1" ]; }

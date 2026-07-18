@@ -7,7 +7,7 @@ every screen — skip what's irrelevant, flag what's violated with a concrete fi
 ## Contents
 - 0. Framing · 0.5 Clarity — is it self-evident?
 - 1. Cognitive load & friction
-- 2. Motivation & commitment
+- 2. Motivation & commitment · 2.5 Paywalls & upgrade screens
 - 3. Trust & persuasion
 - 4. Visual hierarchy & craft
 - 5. Feedback & delight
@@ -56,6 +56,18 @@ every screen — skip what's irrelevant, flag what's violated with a concrete fi
       "Continue/Start my…" rather than "Sign up"?
 - [ ] Is anything framed as a **gain** that would be stronger as avoiding a **loss** (if true)?
 - [ ] Do you deliver **value before the ask** (reciprocity), or gate everything behind a wall?
+
+## 2.5 Paywalls & upgrade screens (when the surface sells a subscription — see `paywalls.md`)
+- [ ] Is the outcome sold *before* the price appears (onboarding → "your plan is ready" →
+      paywall), or does the wall interrupt cold?
+- [ ] Are the two silent fears answered structurally — a **trial timeline** (what happens
+      day by day) and a **"cancel anytime"** line at the CTA?
+- [ ] Two plans max, annual default, rest behind "view all plans"? Price anchored to
+      something already bought?
+- [ ] Does the friction level match the goal (qualifying card-wall for subscriber quality
+      vs. one-tap trial for volume) — or is it accidental?
+- [ ] **Ethics:** no fake-urgency wheels or misleading trial toggles (app-store rejection
+      risk); is cancellation as short a path as subscribing?
 
 ## 3. Trust & persuasion
 - [ ] Any number/price shown **in isolation** with no anchor (%, reference price, total)?

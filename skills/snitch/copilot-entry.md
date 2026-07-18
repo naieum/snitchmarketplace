@@ -24,7 +24,7 @@ Present this menu when invoked without arguments:
 [5] Compliance — Cats 20-23
 [6] Performance — Cats 24-26
 [7] Infrastructure — Cats 27-33,40
-[8] Full Scan — all 45 categories
+[8] Full Scan — all 69 categories
 [9] Governance — Cats 34-38
 [10] Custom — pick by number or name
 [11] Diff Only — scan git-changed files
@@ -37,18 +37,21 @@ Quick Scan always includes Cats 1-4 plus categories matched to dependencies.
 Load guidance before scanning each category from:
 `.github/instructions/snitch/XX-name.instructions.md`
 
-45 categories:
-01-sql-injection, 02-xss, 03-hardcoded-secrets, 04-authentication,
-05-ssrf, 06-supabase, 07-rate-limiting, 08-cors, 09-crypto,
-10-dangerous-patterns, 11-cloud, 12-data-leaks, 13-stripe,
-14-auth-providers, 15-ai-apis, 16-email, 17-database, 18-redis,
-19-sms, 20-hipaa, 21-soc2, 22-pci-dss, 23-gdpr,
-24-memory-leaks, 25-n-plus-one, 26-performance, 27-dependencies,
-28-authorization, 29-file-uploads, 30-input-validation, 31-cicd,
-32-security-headers, 33-unused-deps, 34-fips, 35-governance,
-36-bcdr, 37-monitoring, 38-data-classification, 39-token-lifetimes,
-40-tunnels-dns, 41-license-compliance, 42-container-docker,
-43-iac-security, 44-api-security, 45-ai-tool-supply-chain
+69 categories:
+01-sql-injection, 02-xss, 03-hardcoded-secrets, 04-authentication, 05-ssrf,
+06-supabase, 07-rate-limiting, 08-cors, 09-crypto, 10-dangerous-patterns,
+11-cloud, 12-data-leaks, 13-stripe, 14-auth-providers, 15-ai-apis,
+16-email, 17-database, 18-redis, 19-sms, 20-hipaa,
+21-soc2, 22-pci-dss, 23-gdpr, 24-memory-leaks, 25-n-plus-one,
+26-performance, 27-dependencies, 28-authorization, 29-file-uploads, 30-input-validation,
+31-cicd, 32-security-headers, 33-unused-deps, 34-fips, 35-governance,
+36-bcdr, 37-monitoring, 38-data-classification, 39-token-lifetimes, 40-tunnels-dns,
+41-license-compliance, 42-container-docker, 43-iac-security, 44-api-security, 45-ai-tool-supply-chain,
+46-ai-llm-app-security, 47-csrf, 48-race-conditions, 49-xxe, 50-timing-attacks,
+51-debug-endpoints, 52-secrets-rotation, 53-ccpa-sox, 54-oauth-oidc, 55-microservices,
+56-websocket-security, 57-graphql-deep, 58-message-queues, 59-backup-security, 60-audit-log-integrity,
+61-redos, 62-prototype-pollution, 63-jwt-algorithm-attacks, 64-cloud-metadata, 65-insecure-deserialization,
+66-typosquatting-postinstall, 67-type-coercion, 68-agent-prompt-injection, 72-header-injection
 
 Only load files for selected categories — do not pre-load all.
 

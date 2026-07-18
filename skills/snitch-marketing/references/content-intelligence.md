@@ -4,6 +4,10 @@ Three deterministic content metrics that sharpen the content cats with measured 
 judgment calls: readability scoring, cross-page near-duplicate detection, and keyword
 cannibalization. Each produces a quotable figure so a finding stands on evidence, not opinion.
 
+Word count is deliberately not one of these metrics: length is an answer-fitness question (does
+the page cover the subtopics the query demands), never a target number — see Cat 18 for the
+calibration evidence in both directions.
+
 ## When surfaced
 
 Loaded when Cat 18 (thin content) checks for near-duplicates, Cat 57 (topical depth) judges
@@ -21,6 +25,13 @@ score and what it implies for the audience — not a one-size target.
   concrete.
 - Don't prescribe a universal grade level; B2B/technical audiences tolerate higher grades than
   consumer/local audiences. Calibrate against the brand's ICP (`references/context-file.md`).
+- Working default for general/consumer audiences: **grade 6-8** (a widely used practitioner rule
+  of thumb). The ICP calibration above still governs — B2B/technical content legitimately reads
+  higher; strip only the jargon that isn't earning its place.
+- The commonest *editable* driver of a bad score is the transitional-word run-on: long sentences
+  chained with "and" / "because" / "that". Quote one and mark the transition words as split
+  points — that makes the fix mechanical. Replacing a wordy passage with an image, table, or
+  short list is also a legitimate readability fix, not a content cut.
 
 ## 2. Cross-page near-duplicate (Jaccard)
 

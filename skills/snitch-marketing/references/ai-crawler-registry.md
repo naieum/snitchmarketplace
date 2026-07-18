@@ -51,12 +51,44 @@ Blocking is not a single decision. The consequences differ by crawler role:
 When auditing, name which role is blocked and the specific citation consequence — not just "AI
 crawlers are blocked."
 
+## Block ≠ chosen: the provenance check
+
+Most AI-crawler blocking is inherited, not decided. An industry study of 140M websites found
+~5.9% block GPTBot (the scale figure is the study's; each site's block is a hard fact from its
+own `robots.txt`) — largely via template `robots.txt` files, stale configurations, and managed
+platforms. Notably, Cloudflare's "instruct AI bot traffic with robots.txt" feature is **enabled by
+default** and auto-rewrites `robots.txt` to signal AI-training opt-out; Cloudflare-fronted sites
+may be blocking AI crawlers without any human having decided to.
+
+Before treating a block as "intentional opt-out" (Cat 82's NOT-a-Problem carve-out), verify
+provenance: is the site on Cloudflare or another platform known to inject these rules? Was the
+directive present before the platform migration? Ask the user whether the block was deliberate. A
+default-on platform block is a finding; a documented human choice is strategy.
+
+## Behavioral diagnostic: observed bot activity
+
+Beyond the permission check, *observed* bot behavior in server logs (or any bot-analytics layer)
+is a diagnostic — AI bots visit pages far more often than humans, and the traffic patterns
+answer questions robots.txt can't:
+
+1. Segment bot hits by the training-vs-retrieval split above.
+2. Rank pages by **live-retrieval-bot** hit frequency (`ChatGPT-User`, `OAI-SearchBot`,
+   `Perplexity-User`, etc.) — pages repeatedly fetched by retrieval bots are likely being used
+   as answer sources right now; that ranked list is a citation-candidate list.
+3. Diff against the sitemap's priority pages — priority pages retrieval bots **never** visit
+   have a discoverability problem (internal linking / site structure), a Cat 82 Layer 1 finding.
+
+This is log evidence, so it needs logs: skip the diagnostic (with reason) when neither server
+logs nor a bot-analytics source is available; never infer bot behavior.
+
 ## Forbidden claims
 
 - "AI crawlers are probably blocked." Fetch/quote the `robots.txt` and name the exact user-agent
   group and directive.
 - "Blocking GPTBot removes the site from ChatGPT answers." Distinguish the training bot from
   `OAI-SearchBot` / `ChatGPT-User`; quote which one the rule targets.
+- "The site chose to opt out of AI crawling." Run the provenance check first; platform-injected
+  defaults are not a choice.
 
 ---
 

@@ -46,6 +46,38 @@ Lab fallback when field is missing: PSI `runPagespeed?url=...&strategy=mobile`.
   yet. Say "field data reflects the trailing 28 days" so nobody reads a stale number as current.
 - Thresholds (Google, p75): **LCP** good ≤2.5s / poor >4.0s · **INP** good ≤200ms / poor >500ms · **CLS** good ≤0.1 / poor >0.25.
 
+## Assessment methodology (changes how findings are verified)
+
+- **Lab to iterate, field to confirm.** Because of the 28-day window above, never declare a
+  CWV fix "verified" from field data less than ~28 days post-deploy — iterate on lab numbers,
+  then confirm against the field p75 (the History trend shows the turn earliest).
+- **The p75 is a pass rule, not an average.** A page passes a metric only when ≥75% of its
+  page loads are "good" for that metric. Report the p75 framing ("75% of mobile loads had
+  LCP ≤ X"), never averages — an average hides the failing tail that assessment actually
+  measures.
+- **Mobile and desktop are assessed separately, and mobile is what matters for ranking**
+  (mobile-first indexing). Quote mobile numbers (`formFactor: PHONE`, `strategy=mobile`) as
+  the finding; desktop is supplementary.
+- **CLS is windowed, not truly cumulative**: it reports the worst ~5-second burst of layout
+  shifts in the session, not the sum across the whole visit. A single bad late-loading widget
+  can own the score.
+- **When the shifting element isn't obvious**, a lab filmstrip with layout-shift highlighting
+  (0.1s-interval frames, webpagetest-style) localizes the exact element that moved — quote it.
+
+## Severity framing: tiebreaker, not make-or-break
+
+Ranking-wise, CWV acts as a **tiebreaker among similar-quality results** — per Google's John
+Mueller, content quality comes first and page experience matters more when multiple results
+are otherwise comparable. So never tag a CWV finding as if it decides #1 vs #15. Escalate when
+(a) SERP competitors are content-comparable, or (b) conversion is the stated goal — Google's
+own data found sites meeting all three thresholds saw users ~24% less likely to abandon page
+loads (22% fewer abandonments on news sites, 24% on shopping sites). The conversion case is
+usually the stronger business argument than the ranking one.
+
+Sequencing for fixes: page-experience basics first (mobile-friendliness, HTTPS, no intrusive
+interstitials), then baseline speed hygiene (hosting, caching, CDN, image discipline), and
+only then per-metric CWV micro-optimization.
+
 ## How it feeds findings (evidence + leading indicator)
 
 - **Corroborate a contributor finding.** A Cat 40 render-blocking finding gets stronger

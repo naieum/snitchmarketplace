@@ -7,6 +7,15 @@ exchange is fair and tied to a follow-up. Scope note: **generating** these asset
 a build task (`references/remediation-generator.md` + the funnel/tooling layer); this
 category is the **audit** — presence, value, capture quality, and conversion path.
 
+Free interactive tools have gained strategic weight: AI overviews trigger on learn-intent
+queries — one practitioner study puts the click loss to the top result at ~35% when an
+overview is present — but tool-intent queries (calculator, checker, converter, generator)
+get no overview, so clicks still flow to sites. A free tool is inherently useful, earns
+backlinks naturally, and is now cheap to build. The catch is that tool traffic is one-shot
+unless captured: the pairing that converts it into an owned audience is tool + relevant
+lead magnet (calculator → the checklist that answers the visitor's next question), gated
+by email.
+
 ### Pre-flight: relevance check
 
 Skip with reason `not applicable` for pure-content/personal sites with no conversion
@@ -54,6 +63,8 @@ grounded in the ICP.
 - **Over-gating**: thin content (a 1-page PDF) behind a long form; or gating content that
   should be ungated for SEO/GEO (cross-ref Cat 18, 82)
 - Free tool / calculator with **no conversion path** to the product (dead-end value)
+- Free tool with **no capture pairing** (no lead magnet / email capture that qualifies the
+  visitor's next step — the tool's traffic stays one-shot)
 - Capture form friction (too many fields, no SSO) — cross-ref Cat 60
 - No nurture follow-up after capture (the lead is collected and ignored) — cross-ref Cat 71
 - Asset irrelevant to the ICP's job (generic magnet that attracts the wrong audience;
@@ -70,6 +81,10 @@ grounded in the ICP.
 - **Free tool/asset with no path to the product.** Traffic and goodwill captured, never
   converted.
   Evidence required: the tool page with no product CTA/upsell.
+- **Free tool with no capture pairing.** The tool wins the visit (including AI-overview-proof
+  tool-intent visits) but nothing turns it into a relationship — no paired lead magnet, no
+  email capture tied to the visitor's next step.
+  Evidence required: the tool page with no capture surface or paired offer.
 - **Capture collected, never nurtured.** No follow-up sequence tied to the magnet.
   Evidence required: capture form present + no nurture signal (cross-ref Cat 71).
 - **Off-ICP magnet.** Attracts volume that won't convert.
@@ -102,6 +117,7 @@ Reciprocity + value-first (see `references/mental-models.md`).
 **Severity tagging:**
 - Only hard-ask CTAs, no on-ramp, on a self-serve/PLG motion → High.
 - Free tool/asset with no conversion path → Medium.
+- Free tool with no capture pairing (no lead magnet / email capture) → Medium.
 - Over-gating thin content / gating content that should rank → Medium.
 - Capture with no nurture → Medium.
 - Off-ICP magnet → Low/Medium.
@@ -121,6 +137,13 @@ Worked fix example:
 > follow up with a short nurture (Cat 71), and make sure the free thing has an obvious
 > next step to the paid thing. Keep it relevant to the ICP so you attract buyers, not
 > freebie-seekers (Cobra Effect).
+>
+> If a free tool is the on-ramp, find the idea with data, not brainstorming: run keyword
+> research on broad niche seeds, filter to the tool modifiers — calculator, checker,
+> converter, generator, template — and validate that people already search for it. Those
+> queries don't trigger AI overviews, so the clicks still arrive. Then pair the tool with
+> a lead magnet that answers the visitor's *next* question (mortgage calculator →
+> first-time-buyer checklist), so one-shot tool traffic becomes a list you own.
 >
 > Verify: track the new asset's capture rate and the capture→activation→paid path as
 > micro-conversions (Cat 55/99); A/B the offer (Cat 73). The lift is a hypothesis until

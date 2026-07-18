@@ -63,10 +63,13 @@ Patterns indicating thin content:
   Evidence required: the duplicated paragraph + at least 3 routes that contain it.
 - **Near-duplicate pages** (different URLs whose main content is substantially the same — common on templated location/feature pages). Quantify with the Jaccard near-duplicate metric in `references/content-intelligence.md` (flag pairs above 0.80, shingling the main content region only, not nav/footer chrome).
   Evidence required: the two URLs + the computed similarity figure.
+- **Content padded toward a word-count target** — the inverse thinness. Length is an answer-fitness question, not a target: word count is not a ranking factor (Google's John Mueller has said so directly), and one large correlational study (~900M pages, practitioner-published — correlation, not causation) found referring domains correlate positively with length only up to ~1,000 words and organic traffic only up to ~2,000, turning negative beyond; the plausible mechanism is that very long content buries its linkable, quotable points unread (which also hurts AI extraction, cross-ref Cat 82). Diagnose in both directions against **outline completeness** — does the page cover the subtopics the query demands (recurring subtopics across top-ranking pages, People-Also-Ask questions) — never against a number.
+  Evidence required: quoted filler/repetition passages + a required subtopic the page still misses despite its length.
 
 ### NOT a Problem
 
-- A short blog post (300 words) on a topic that doesn't need more. Length isn't quality; quality is quality.
+- A short blog post (300 words) on a topic that doesn't need more. Length isn't quality; quality is quality. Nor is quality effort: hours invested inflate perceived quality (effort-justification fallacy) — the only definition that ranks is whether the page meets the searcher's real needs better than the current top results.
+- A long page that earns its length: never flag word count itself in either direction — the correlation stats above are diagnostic context, not a target range. A page as long as its topic demands is correct at 800 or 8,000 words.
 - A product page with the actual product description AND specs AND reviews, even if the dev-written copy is short, total content is rich.
 - A landing page with very little body text but rich functional content (a calculator, a tool, an interactive demo). Functional value counts.
 - An archive / index page with rich curation: not just a list, but ranked, categorized, with intro context per category.
@@ -90,6 +93,7 @@ Google's quality rater guidelines on thin content: https://developers.google.com
 - Templated programmatic SEO with <30% per-page variation → High.
 - Duplicate paragraphs across many pages → High.
 - Index/archive page with no curation → Medium.
+- Padded content / monolith burying its point (with a quoted filler passage + missing subtopic) → Medium.
 
 **Fix voice:** `frank-chimero` (primary) | `dieter-rams` (backup).
 
@@ -100,6 +104,8 @@ Worked fix example:
 > Thin content isn't about being short. It's about not having said anything. A 100-word page can be enough; a 5,000-word page can be thin if all it does is repeat the same point.
 >
 > Look at the page through the visitor's eyes. They typed something into Google and clicked your link. Did the page answer what they were asking? If yes, you're not thin, you're efficient. If no, the fix isn't more words; it's saying the right thing.
+>
+> The right length falls out of the outline, not the other way around. Build the outline from what the query demands — the subtopics every top-ranking page covers, the questions people also ask — write to that, and stop. Padding past the outline buries the one quotable point somebody might have linked to.
 >
 > For pages that genuinely have nothing to say (auto-generated archives, placeholder service pages): either add real content (a curator's note, a context paragraph, a reason to be on this page), or `noindex` it and stop competing for slots that aren't earning their place.
 >

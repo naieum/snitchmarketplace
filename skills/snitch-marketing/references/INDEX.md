@@ -1,6 +1,6 @@
 # References Index
 
-This is the navigation map for the 50 reference docs in `references/`. The skill loads references on demand; this index helps the agent (and human readers) find the right one.
+This is the navigation map for the 51 reference docs in `references/`. The skill loads references on demand; this index helps the agent (and human readers) find the right one.
 
 The "When surfaced" column names the audit step or finding pattern that triggers the skill to read the reference. References not loaded reduce token cost.
 
@@ -48,6 +48,7 @@ The "When surfaced" column names the audit step or finding pattern that triggers
 | **citability-scoring.md** | Deterministic per-passage citability rubric (7 observable dimensions) + answer-length-by-surface table (134-167 word citation blocks per Google AI Optimization Guide; 40-60 snippet/PAA; <29 voice). Scored from quoted text only. | Cat 82 layer 2 (extractability); Cat 102 (per-LLM substrate); Cat 35 / 57 (answer fitness); Cat 70 content built-to-extract. |
 | **brand-authority-platforms.md** | Off-site authority sweep checklist (Wikipedia, Reddit, YouTube, LinkedIn, Quora, Stack Overflow, GitHub, Crunchbase, Product Hunt, G2, Trustpilot): per-platform what to check + capture method. Presence/recency/sentiment, no fabricated weights. | Cat 82 layer 3 (authority); Cat 96 layer 4 (social + sameAs off-site sweep). |
 | **geo-score.md** | Optional GEO readiness rollup (0-100) via a transparent deduction model (start 100, deduct per finding by severity). Gated to render only when the GEO cats ran; every point delta traceable to a finding. | STEP 3 report render when Cat 82 / 102 / 106 were in scope; `references/report-template.md` GEO-score section. |
+| **ai-visibility-gap-analysis.md** | Classification + prioritization for AI-visibility findings: branded entity map (step zero), six gap dimensions (visibility / narrative / topic / format / web mentions / demand), Fix-Build-Influence triage, three-pillar measurement stack (referral leakage, bot activity, self-reported attribution), four trend metrics + monthly/quarterly cadence, first-week action order. | Cat 82 / 102 produce Layer-3 or per-platform findings needing classification; STEP 4.5 synthesizes GEO work into a plan; user asks "where do we stand in AI search?". |
 | **schema-deprecations.md** | Registry of retired/narrowed rich-result types (HowTo removed Sept 2023, FAQ narrowed, SpecialAnnouncement, etc.) so the schema cats don't recommend dead rich results. | Cat 36 (HowTo); Cat 31 / 35 rich-result eligibility; any schema-group finding that would recommend a type for its SERP feature. |
 | **eeat-assessment.md** | Consolidated E-E-A-T framework tied to Google's QRG, Trust weighted heaviest, + the Who/How/Why heuristic. Unifies signals scattered across the content/trust cats. | Cat 82 layer 3 (authority); Cat 59 / 74 / 93 / 111 when a finding maps to an E-E-A-T layer. |
 | **content-intelligence.md** | Deterministic content metrics: Flesch-Kincaid readability, cross-page near-duplicate (Jaccard >0.80), keyword cannibalization. Each produces a quotable figure. | Cat 18 (near-duplicate); Cat 57 (readability); Cat 86 (cannibalization); Cat 95 (near-dup at scale). |
@@ -59,7 +60,7 @@ The "When surfaced" column names the audit step or finding pattern that triggers
 
 ## How references load
 
-References are NOT pre-loaded by the skill. The agent reads them on-demand based on the conditions in the "When surfaced" column. This keeps token cost manageable; an audit running only Quick Audit (13 cats) typically loads 4-6 references, not all 50.
+References are NOT pre-loaded by the skill. The agent reads them on-demand based on the conditions in the "When surfaced" column. This keeps token cost manageable; an audit running only Quick Audit (13 cats) typically loads 4-6 references, not all 51.
 
 ## Adding a new reference
 

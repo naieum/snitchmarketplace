@@ -21,11 +21,15 @@ Skip if the brand is in a niche too narrow for query-volume measurement (highly 
 1. For each candidate query (10-20 max per audit): `Bash curl -s "https://www.google.com/search?q=<URL-encoded-query>" | grep -oE '<h3[^>]*>[^<]+</h3>' | head -10`, capture top-10 SERP results to infer intent (informational vs commercial pages dominate?).
 2. Quote the SERP shape for each query (page types ranking, presence of AI overview, presence of People-Also-Ask, presence of paid ads, presence of brand pages).
 3. Check Google's "People Also Ask" panel and "Related searches" at the bottom of each SERP for query expansion.
+4. De-personalize every manual SERP check: logged out, private/incognito session, inspecting from (or emulating) the geography the brand wants to rank in — city/zip-level for local queries. Note the inspection location in the evidence; a personalized or wrong-geo SERP invalidates the intent read.
+5. Interpret SERP features as intent evidence, not decoration, per the feature-to-intent map in Cat 58.
 
 ### Forbidden claims
 
 - "Volume is probably high." Without a keyword tool's volume data, you don't know. Either get the data (Ahrefs / Semrush / GSC export) or report queries without volume claims.
-- "This is a low-competition keyword." Same, without difficulty score or SERP analysis, you don't know.
+- "This is a low-competition keyword." A difficulty score alone is never enough — scores are typically referring-domains-only proxies (see "Vetting winnability" below). The claim requires the score plus the five-check manual SERP validation. Score + eyeballs, never score alone.
+- A keyword-difficulty number cited without naming the tool that produced it. Different tools' scores for the same keyword diverge wildly; an unattributed score is not comparable to anything.
+- "High volume" as justification for targeting a query containing another brand's name. Navigational queries concentrate nearly all clicks on the brand's #1 result — position 3 gets almost nothing. Target one only when a non-brand page can fully satisfy the intent (a fact, number, or how-to about the brand: fair game; a login or homepage destination: skip).
 - "Customers probably search for X." Either GSC shows it OR a community / forum / customer interview confirms it OR you found it in a real SERP. Don't invent queries.
 
 ### The framework: 4 stages
@@ -41,6 +45,14 @@ Cast a wide net. Sources, in order of signal quality:
 - **Auto-suggest**: Google's autocomplete, Bing autocomplete, YouTube autocomplete (different intents per surface).
 - **People Also Ask + Related Searches** in actual SERPs.
 
+Expansion moves that surface candidates competitors' researchers miss (every output still passes Stages 2-4):
+
+- **Modifier filtering**: filter large expansions to intent-specific modifiers first — informational (how, what, why, tutorial, guide, list, ideas, tips, examples) or commercial-investigation (best, top, vs, review, price, cheap, alternative, comparison) — then apply a difficulty ceiling. Difficulty scores are most reliable on exactly these link-driven query classes.
+- **Uncommon-seed subtraction**: pull a competitor's full keyword rankings and exclude every query containing the obvious seed words; the survivors are lesser-known head terms nobody else expanded. This mines for seeds, not keywords — each survivor gets its own expansion pass. Repeat the loop through competitors-of-competitors.
+- **Brand-facet harvest** (bottom-funnel): scrape the brand/model list from a category-leading store's facet navigation, expand those names, filter to "vs" / "versus" / "review*". Purchase-adjacent queries that are typically near-zero on links. Exclude brand words that collide with common meanings.
+- **SERP-changing modifier test**: a modifier is only a separate opportunity if it changes the SERP. Compare results for two values — different results = each value needs its own page; near-identical = one page covers all. A SERP-changing modifier over an enumerable set (states, years, models, cities) is a template for a coherent cluster of pages, and the SERP-difference test is exactly what separates legitimate programmatic pages from doorway spam: content must genuinely differ per instance.
+- **Proven-winner mining**: search a page-level content index for pages already earning meaningful organic traffic (≥~500/month) with very few referring domains (≤~10) — each hit is proof its topic ranks without links. Use those pages' topics and top keywords as new seeds.
+
 Goal for an audit pass: 50-200 candidate queries. More if planning a year-long content sprint.
 
 #### Stage 2: Classify intent
@@ -54,9 +66,11 @@ Every query maps to one of four intents. The page that wins depends on the inten
 | **Commercial** | "best", "vs", "review", "alternative to", "comparison" | Listicle, comparison, review, "best of" roundup |
 | **Transactional** | "buy", "price", "near me", "discount", "free trial" | Product page, pricing page, signup |
 
-Mixed intents exist ("best running shoes under $100" is commercial + transactional). Treat as the dominant intent; note the modifier.
+Mixed intents exist ("best running shoes under $100" is commercial + transactional). Treat as the dominant intent; note the modifier. For genuinely fractured SERPs — one query serving several distinct audiences — rank the interpretations dominant > common > minor by how many top results serve each; build for the dominant intent, fall back to a common intent only when the dominant one is unservable by this site type, otherwise drop the keyword. Dominant intent is the only classification that must be right: in a practitioner exercise where three analysts classified the same keyword set, they diverged on secondary intents but always agreed on the dominant one. Full handling in Cat 58.
 
 **Verification rule:** to classify intent, look at the actual SERP. If Google's ranking pages 1-10 are predominantly articles, the query is informational regardless of how it sounds. The SERP IS the intent answer; don't second-guess it.
+
+Two lazy routes are banned: classifying from titles/snippets alone, and assigning a bucket without documenting the SERP evidence. Titles and URLs misrepresent pages — a SERP that reads as all lead-gen landing pages from its titles can actually be won by informational content. Open at least the top 3 ranking pages and record their content intent (what the page tries to do), not their SERP presentation. And classifications expire: SERPs re-shape when the world changes, so every intent read carries a freshness date (Cat 58 covers intent drift).
 
 #### Stage 3: Cluster by SERP overlap
 
@@ -73,11 +87,30 @@ In 2026, AI overviews complicate this, many informational queries get answered b
 
 Score each cluster on three dimensions:
 
-1. **Demand (volume)**, how many people search this monthly. From keyword tool or GSC.
-2. **Winnability (difficulty)**, can this brand realistically rank? Factors: domain authority gap, content depth needed, SERP saturation, AI-overview displacement risk.
+1. **Demand (traffic potential)**, how many visits ranking would actually earn. A single keyword's volume understates or misstates this because a page ranks for many queries; the better estimator is the total organic traffic of the current top-3 ranking pages (any tool with page-level traffic estimates). Low-volume keyword + high top-page traffic = hidden opportunity; the inverse — high volume, low top-page traffic, common when a SERP feature absorbs the clicks — is a trap. Fall back to keyword volume or GSC only when page-level estimates are unavailable.
+2. **Winnability (difficulty)**, can this brand realistically rank? Factors: domain authority gap, content depth needed, SERP saturation, AI-overview displacement risk, SERP stability (Context Check 3), and the difficulty-score caveats in "Vetting winnability" below. Read rank inversions as signal: a page outranking others with materially more referring domains isn't noise, it's the SERP telling you what wins. Diagnose the cause — closer intent/angle match, more topically focused domain, or tighter relevance to the query's modifier — because the diagnosis dictates the play.
 3. **Business fit**, does ranking for this drive revenue? An informational query about a topic adjacent to your product is low business fit; a commercial query for "best <your-category>" is high.
 
 Multiply: `demand × winnability × business fit` = leverage score. Sort. Top 10-20 clusters become the content backlog; the rest are noted for future sprints.
+
+### Vetting winnability: what difficulty scores miss
+
+Keyword-difficulty scores are typically a weighted average of referring domains to the current top-10 pages — a links-count-only proxy. They ignore link quality (topical relevance of the linking domains, authority of the linking pages), domain-level authority, brand equity, on-page factors, and intent. Consequences for the audit:
+
+- Scores are relative to the auditee. A "5" whose top 10 are all high-authority domains is easy for a peer-authority site and hard for a new one; there is no absolute "low."
+- Scores are most trustworthy for informational and commercial-investigation queries, where rankings are link-driven; least trustworthy for transactional head terms, where brand equity dominates — a near-zero difficulty score on a head product query whose SERP is wall-to-wall mega-retailers is unrankable for anyone who isn't a peer brand.
+- In YMYL niches (health, finance), weigh E-E-A-T on top of any score.
+- Inversion for link building: high-difficulty informational queries mean the top pages hold many backlinks — a dense pool of link prospects. Earning links on those topics and routing the equity internally to money pages is the middleman pattern (Cat 19).
+
+**Five-check manual validation**, run per SERP before any keyword is declared low-competition:
+
+1. **Intent match** — can this site type produce the dominant content type/format? If not, stop.
+2. **Authority mix** — are low-authority sites present in the top 10? Their presence proves the query is penetrable; an all-mega-brand SERP is brand-gated regardless of the score.
+3. **Topical authority** — do the ranking domains specialize in this topic, and does the auditee's?
+4. **Page specificity** — are the top pages exactly on this query, or on a broader parent? Generic pages ranking = room for a specific page to win.
+5. **Top page's link quality** — count the #1 page's referring domains, then check their quality: authority of the linking sites, followed vs nofollow. A page held up by a handful of low-authority, mostly-nofollow links is beatable on content.
+
+Portfolio guardrail: low-competition targets suit new/low-authority sites but shouldn't be the whole strategy — competitive topics carry more traffic, links, and commercial value; take them with a realistic time horizon.
 
 ### Actually Hurts the Marketing Surface
 
@@ -135,7 +168,7 @@ Audit application:
 
 1. Is GSC available? Without it, all volume claims are estimates from third-party tools.
 2. Has the brand been live long enough for query data? <90 days = thin data.
-3. Are competitors' SERP rankings stable enough to use as a benchmark? In volatile niches, last week's rankings are stale.
+3. Are the target SERPs stable? Where ranking history is available, check the top 5-6 results over ~12 months. Stable for a year = intent is settled; difficulty and link-gap analysis are reliable, but incumbents are entrenched, so wins come slower. Churning top 10 = the engine itself is unsure of the intent; discount the projected traffic, flag intent as unclear, and prefer the query only for fast experiments.
 4. Does the team have content-production capacity to act on the prioritized list? A prioritized backlog with no writer is a wishlist.
 5. Is AI-overview displacement likely for the cluster? If the top-10 SERP already shows an AI overview answering the query, ranking #1 may not earn the click. Cross-reference Cat 82.
 
@@ -156,6 +189,8 @@ Semrush Keyword Magic Tool (paid): https://www.semrush.com/
 - Intent mismatch on indexed pages → High.
 - No topic clustering → Medium.
 - No GSC integration → Medium.
+- Backlog prioritized on raw volume or an unvalidated difficulty score (no manual SERP validation, no top-page traffic estimate) → Medium.
+- Targeting another brand's navigational queries the site cannot serve → Medium.
 - Branded query bidding not in place (with paid budget) → Low (cross-reference Cat 66).
 
 **Fix voice:** `frank-chimero` (primary) | `aaron-draplin` (backup, when the fix is "use the words customers actually use, not the words you wish they did").

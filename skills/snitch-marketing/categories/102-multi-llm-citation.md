@@ -10,14 +10,19 @@ Skip with reason `not applicable` if the brand has zero presence in any LLM (in 
 
 ### The framework: 5 LLM-specific lenses
 
+The divergence is measured, not hypothetical: in a cross-platform industry study, of the top 50 most-cited domains in Google AI Overviews, ChatGPT, and Perplexity, only 7 appeared on all three — 14% overlap, 86% unique per assistant (correlational). Even within Google, AI Overviews and AI Mode share only ~13.7% of citations despite producing answers that are ~86% semantically similar — same answers, different sources. Each platform is its own ecosystem; single-platform optimization leaves the others untouched.
+
+**Prioritization rule:** don't audit all five lenses with equal weight. Pick platforms by (a) audience market share (Google's AI surfaces + ChatGPT dominate usage) and (b) overlap with existing strength — a brand that ranks well in Google has a head start in AI Overviews and Perplexity; a brand with a strong editorial-PR footprint has a head start in ChatGPT.
+
 For each major LLM the brand wants to be cited by, audit:
 
 #### Lens 1: ChatGPT (with web search enabled)
 - **Training cutoff**: most current at GPT-5 / GPT-5.5 era (2025+)
 - **Retrieval mechanism**: Bing search index for live queries; OpenAI's curated browsing
 - **Citation style**: inline numbered citations with link to source domain
-- **Trust hierarchy**: weighs Wikipedia + .edu + major publications heavily; recency-aware via Bing index
-- **Best signals to earn citation**: be in Bing index, have Wikipedia entry, original research worth quoting, recent timestamps
+- **Trust hierarchy**: weighs Wikipedia + .edu + major publications heavily; recency-aware via Bing index. Industry citation studies (correlational) profile it as publisher/media-heavy — Reddit, Wikipedia, Amazon, major business press — with a median domain rating of 90 among top-cited pages (partly content-licensing deals), and only 8-10% overlap with Google's top-10 for the same queries; Reddit is currently its most-cited domain. Strongly freshness-biased: in the same studies ~90% of its top-cited pages were updated within the year and ~76% within the last 30 days.
+- **Best signals to earn citation**: be in Bing index, have Wikipedia entry, original research worth quoting, recent timestamps, presence in editorial/press and Reddit discussions (ranking in Google helps least here)
+- **Rendering caveat**: ChatGPT's crawler does not execute JavaScript — JS-only pages are invisible to this lens specifically (Cat 82 Layer 1)
 
 #### Lens 2: Claude (with web search)
 - **Training cutoff**: knowledge cutoff varies per model; web search supplements
@@ -30,15 +35,15 @@ For each major LLM the brand wants to be cited by, audit:
 - **Training cutoff**: live retrieval per query; minimal reliance on training corpus
 - **Retrieval mechanism**: own search index + multiple search APIs
 - **Citation style**: heavy citation density; numbered sources prominent; "Sources" panel always visible
-- **Trust hierarchy**: weights authoritative + recent + on-topic; comparatively fair to indie / niche sources
-- **Best signals to earn citation**: comprehensive on-topic content, recency, structured headings + Q+A patterns, `llms.txt` advisory
+- **Trust hierarchy**: weights authoritative + recent + on-topic; comparatively fair to indie / niche / regional sources. The most Google-aligned assistant in industry studies: ~28.6% of its citations come from Google's top-10 for the query (correlational). Orders citations newest-to-oldest.
+- **Best signals to earn citation**: comprehensive on-topic content, recency, structured headings + Q+A patterns, ranking in Google (transfers here more than anywhere), `llms.txt` advisory
 
-#### Lens 4: Gemini (Google AI Overviews)
+#### Lens 4: Gemini (Google AI Overviews + AI Mode)
 - **Training cutoff**: Google's web index + curated training
 - **Retrieval mechanism**: Google Search index (full Google graph)
-- **Citation style**: AI Overview at top of SERP; sources listed in expandable panel
-- **Trust hierarchy**: weights Google's existing ranking signals (authority, relevance, freshness) PLUS AI-extraction friendliness
-- **Best signals to earn citation**: rank well in regular Google search + structured content per Cat 82 + clear topic ownership
+- **Citation style**: AI Overview at top of SERP; sources listed in expandable panel. AI Mode is a separate conversational surface with its own citation behavior — treat it as a sub-lens, not the same thing (only ~13.7% citation overlap with AIO in industry data despite near-identical answers).
+- **Trust hierarchy**: weights Google's existing ranking signals (authority, relevance, freshness) PLUS AI-extraction friendliness. Per-surface profiles from industry citation studies (correlational): **AIO** favors authoritative/encyclopedic sources + Google properties, cites YouTube heavily (~5.6% of all AIO citations) and Reddit heavily. **AI Mode** cites YouTube most of all by a wide margin, then Google properties + Wikipedia; pulls Quora ~3.5x more than AIO and reaches into Facebook/Instagram more. **The AIO↔Google-ranking coupling is weakening**: earlier studies put ~76% of AIO citations inside Google's top-10; newer data puts it near 38%, and ~14% of AIO-cited pages don't rank in Google's top 100 at all — ranking helps but is no longer the whole story.
+- **Best signals to earn citation**: rank well in regular Google search + structured content per Cat 82 + clear topic ownership + a YouTube presence for the topics where video already ranks (both Google AI surfaces cite YouTube more than any other assistant does)
 
 #### Lens 5: Grok / niche LLMs
 - **Training cutoff**: varies; Grok favors X/Twitter content heavily
@@ -50,6 +55,12 @@ For each major LLM the brand wants to be cited by, audit:
 ### Shared substrate: passage citability
 
 All five lenses sit on one substrate: a passage the LLM can lift cleanly. Before per-LLM tactics, score the brand's key passages for citability + answer-length fitness per `references/citability-scoring.md`. A passage that fails extractability fails in every LLM, so fix it once rather than per-lens; the per-LLM differentiation below only matters once the underlying passages are extractable.
+
+### Measurement: mention ≠ citation, and link rates differ per platform
+
+Record three states per query per platform: **cited-and-linked** (clickable traffic), **mentioned-but-not-linked** (brand named, no link — word-of-mouth at scale that feeds brand-name searches and training associations), and **invisible**. Only ~28% of AI mentions include a link on average, and the rate is platform-specific (industry study, correlational): Perplexity links ~51.6% of mentions, AI Mode ~36.8%, ChatGPT ~26.9%, AI Overviews ~10.7%. Impression-weighted, the picture shifts again — links concentrate on high-volume queries (Perplexity links appear in ~78% of impressions; Gemini links in ~71% of impressions despite linking a sixth of mentions). Auditing clickable citations alone therefore misses most visibility events, worst of all on AIO.
+
+The tool-agnostic metric set per platform: mentions, citations (linked), impressions, and share of voice vs competitors — and the **gap between impressions and mentions is the opportunity**: the AI is answering queries about the brand's topic without naming it. A response-type lens helps route fixes: step-by-step guides suit service/how-to brands, direct factual answers suit publishers (authority without clicks), video citations suit creators. Full measurement stack (referral leakage, bot activity, self-reported attribution) and the monthly/quarterly cadence live in `references/ai-visibility-gap-analysis.md`.
 
 ### Evidence required (do not skip)
 
@@ -95,7 +106,8 @@ All five lenses sit on one substrate: a passage the LLM can lift cleanly. Before
 ### NOT a Problem
 
 - Brand cited in 1 of 5 LLMs but only 1 LLM is meaningful for the brand's audience (e.g., a B2B dev tool cited in Claude only, most dev users use Claude; absence from Gemini may not matter).
-- Brand cited inconsistently per query, LLM behavior is non-deterministic; one off-prompt non-citation isn't a finding without a pattern.
+- Brand cited inconsistently per query, LLM behavior is non-deterministic; one off-prompt non-citation isn't a finding without a pattern. The churn is quantified: in industry data over 45% of AI Overview citations change per answer refresh, and refreshes average every ~2 days — a single capture is one draw from a distribution, so per-LLM findings need either repeated runs or a saved baseline before "absent" is claimed.
+- Mentioned-but-not-linked on a platform with a low link rate (AIO links only ~10.7% of mentions) — that's the platform's normal behavior, not a brand failure; the mention is the visibility event.
 - New brand (<6 months) absent from training-corpus-heavy LLMs, they may not have indexed yet; revisit at 12 months.
 
 ### Context Check
@@ -117,6 +129,8 @@ Perplexity citation methodology: https://www.perplexity.ai/about
 Google AI Overview / SGE updates: https://blog.google/products/search/
 
 Cat 82 (AI-search citation), foundational layer for everything in Cat 102.
+
+`references/ai-visibility-gap-analysis.md` — gap classification, measurement stack, four trend metrics, monthly/quarterly cadence.
 
 **Severity tagging:**
 - Brand cited in some LLMs, absent from others where audience exists → High.
@@ -142,3 +156,5 @@ Worked fix example:
 > **3. Per-LLM signal investment, weighted by audience.** If the audience is on Claude, invest in primary-source authorship + clear Person schema (Cat 93). If the audience is on Perplexity, invest in comprehensive content depth + structured Q+A. If the audience is on Grok, invest in founder X presence (Cat 84). Don't spread effort across all LLMs equally; weight by where the actual audience lives.
 >
 > The compounding payoff: a brand consistently cited across 4 of 5 LLMs becomes the obvious answer to category questions. AI overviews zero-click most informational queries; the brands cited in those overviews are the new top-of-funnel.
+>
+> One caution on reading results: citation sets churn between refreshes — nearly half the citations in an AI overview can change every couple of days. Run the same queries on a monthly cadence against a saved baseline, and re-run the full per-LLM comparison quarterly. Trends are findings; snapshots are noise.

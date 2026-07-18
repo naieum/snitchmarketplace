@@ -19,6 +19,7 @@ The page should match the search intent of the keywords it's targeting. Targetin
 
 - "The page may not match search intent." Quote the title + content for comparison.
 - "Targeting may be off." Be specific.
+- Intent classified from titles or snippets alone. Titles and URLs misrepresent pages — a SERP that reads as all lead-gen landing pages from its titles can actually be won by informational content. Open at least the top 3 ranking pages and classify from what each page actually tries to do (its content intent), not its SERP presentation.
 
 ### Detection
 
@@ -29,6 +30,35 @@ Intent types:
 - **Commercial investigation**: "best X", "X review", content should compare
 - **Transactional**: "buy X", "X pricing", content should sell
 - **Navigational**: brand searches, content should be the brand's home for that thing
+
+### The three C's: type, format, angle
+
+Bucketing intent isn't enough to judge (or write) the page. Decompose the query's top 10 into three concrete content decisions:
+
+- **Content type** — blog post vs product page vs category page vs landing page/tool. Tally the top 10; the majority type is near-mandatory to match.
+- **Content format** — how-to, step-by-step tutorial, listicle, opinion piece, comparison; for landing pages: tool, calculator. The majority format is near-mandatory too.
+- **Content angle** — the dominant hook in the titles: freshness/current year, thoroughness ("ultimate guide"), for-beginners, price ("cheap"). Angle is where differentiation is allowed; type and format are not.
+
+This turns "match intent" from a judgment into a checklist a page passes or fails: a page whose type or format differs from the SERP majority is an intent mismatch even when the topic matches. The angle tally also reveals the audience — a SERP where beginner "what is X" posts outrank link-heavy advanced guides is the engine saying the searchers are beginners, and the fix for an advanced page is a beginner on-ramp, not more depth.
+
+### SERP features as intent evidence
+
+SERP features are the engine publishing its own read of intent — treat them as classification evidence, not decoration:
+
+| Feature | Reads as |
+|---|---|
+| Image / video pack | Visual-format informational — a text listicle mismatches the format even when the topic matches |
+| Shopping results, ads | Commercial-transactional layer confirmed |
+| Local pack | Local intent |
+| Knowledge panel | Navigational / entity layer (a query that looks generic may name a real entity) |
+| Featured snippet | Informational or commercial-investigation |
+| People Also Ask | Sub-intents + audience level ("cheap ways to…" = budget-conscious buyers; "principles of…" = DIY beginners) |
+
+Features are clues to weigh, not verdicts — several can co-exist, and most map to more than one bucket. Record which features appear as part of the intent evidence.
+
+### Fractured SERPs: dominant, common, minor
+
+When one SERP serves multiple intents (a product name that is also a how-to topic and a brand), don't force a single bucket. Rank the interpretations dominant > common > minor by how many top results serve each. Build the page for the dominant intent; fall back to a common intent only when the dominant one is unservable by this site type (e.g., a partially navigational query when the brand isn't that brand); otherwise skip the keyword. Don't burn hours debating secondary buckets — dominant intent is the only classification that must be right, and it's reliably identifiable even when the full classification isn't (in a practitioner exercise, three analysts classifying the same keywords diverged on secondary intents but all picked the same dominant intent).
 
 ### What to Search For
 
@@ -57,8 +87,9 @@ Common mismatches:
 ### Context Check
 
 1. What keyword does the page target (per title, H1, meta)?
-2. What's the typical content shape for that keyword's SERP? (Manually check the SERP for the top 5.)
-3. Does the page's content shape match?
+2. What's the typical content shape for that keyword's SERP? (Manually check the SERP — logged out, de-personalized, from the target geography — and open the top 3-5 pages; classify from page content, not titles.)
+3. Does the page's content shape match — type and format against the SERP majority, per the three C's?
+4. How old is the intent read? SERPs re-shape when the world changes, so a page that matched intent at publish can silently stop matching — nothing on the page broke; the SERP moved. For traffic-drop diagnosis: re-inspect today's SERP and diff its majority type/format/angle against the page; a SERP that changed shape is the finding. Intent classifications carry a freshness date — schedule periodic re-checks on money keywords.
 
 ### Reference
 
@@ -68,6 +99,7 @@ Google on understanding search intent: https://developers.google.com/search/docs
 - Title/content intent mismatch on commercial keyword → High.
 - Title promises X, content doesn't deliver X → High.
 - Pricing page with no prices → Critical.
+- Page's content type or format differs from the SERP-majority type/format → High.
 
 **Fix voice:** `aaron-draplin` (primary) | `mike-monteiro` (backup).
 

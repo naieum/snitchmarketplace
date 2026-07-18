@@ -56,7 +56,7 @@ Off-site:
 ### Feedback as message research (not just proof)
 
 Reviews are double-duty assets: proof for the visitor, and the raw material for the copy
-itself. Two mining moves the audit checks for (StoryBrand-derived):
+itself. Two mining moves the audit checks for:
 
 - **Voice-of-customer language mining.** The customer's own vivid, emotional words about the
   problem — from the brand's reviews, Reddit/forum threads, YouTube comments, support
@@ -78,8 +78,44 @@ When soliciting UGC/testimonial video, spec it like a director or you get unusab
 exact length ("under 15 seconds"), exact shots ("only the last pass, then the cut"), and a
 visible reward ("if we like it, we'll tag you"). This belongs in the fix, not a finding.
 
+### The review-ask compliance line (review gating)
+
+Review gating — pre-screening customers by sentiment and only routing the happy ones to a
+public review platform — is not an optimization, it is a violation. The FTC's Consumer
+Reviews and Testimonials Rule (16 CFR Part 465, effective October 2024) prohibits review
+suppression, with civil penalties per violation; Google's review policy separately prohibits
+discouraging negative reviews or selectively soliciting positive ones, and enforcement
+includes review removal and Business Profile suspension. Widely-copied tutorials teach this
+pattern as a "review funnel," so expect to find it built in good faith — the finding should
+educate, not accuse.
+
+The gate is detectable in code. Search for:
+
+- A rating widget or survey that **branches on score**: `rating >= 4` / `stars > 3` (or a
+  thumbs up/down) where the high branch redirects to a public review URL
+  (`search.google.com/local/writereview`, `g.page/r/`, `google.com/maps` write-a-review,
+  Yelp/Trustpilot/app-store equivalents) and the low branch routes to an internal form,
+  `mailto:`, or a support endpoint.
+- Interstitial "How was your experience?" pages/components (`ReviewGate`, `ReviewFunnel`,
+  `FeedbackFilter` and similar names) that sit between the customer and the public review
+  link.
+- Review-funnel tool embeds configured with a sentiment pre-screen ahead of the public
+  review CTA (the configuration is the violation, not the vendor).
+
+The compliant shape to recommend in the fix: ask **every** customer, at a good moment
+(post-service, post-support-resolution), with the public review link and a private feedback
+channel offered **alongside each other, unconditionally** — never sequenced behind a
+sentiment check. Internal NPS/CSAT surveys are fine on their own; they become a gate only
+when the public-review ask is conditioned on the score.
+
 ### Actually Hurts the Marketing Surface
 
+- **Review gating: sentiment pre-screen ahead of the public review ask** (legal/compliance
+  violation, flagged regardless of any conversion or rating lift it produces).
+  Evidence required: the branch quoted with file:line — the score condition, the public
+  review URL in the high branch, and the internal-only route in the low branch (or the
+  gating interstitial component and both its exits). In crawl mode: the interstitial
+  survey URL + the observed conditional redirect.
 - **No testimonials / social proof on commercial pages**.
   Evidence required: pricing / signup / homepage with no testimonial section.
 - **Site copy language doesn't match customer language** (headlines in internal jargon while
@@ -115,11 +151,15 @@ visible reward ("if we like it, we'll tag you"). This belongs in the fix, not a 
 - Pre-launch / early-stage brand without external reviews. Premature.
 - Niche product where review platforms don't exist for the category.
 - Trusted-by section with NDA'd customers shown anonymously (with permission). Acceptable.
+- An internal NPS/CSAT survey with no public-review ask attached — measuring sentiment is
+  fine; only conditioning the public ask on it is gating.
+- A page offering the review link and a "contact us with concerns" path side by side,
+  unconditionally. That's the compliant pattern, not a gate.
 
 ### Context Check
 
 1. Is the audience B2B (G2, Capterra matter) or consumer (App Store, Trustpilot matter)?
-2. Is there a process to ask happy customers for reviews?
+2. Is there a review-ask process, and does it ask everyone (selective solicitation of only positive reviewers violates Google policy; a coded sentiment gate violates the FTC rule)?
 3. Are testimonials kept fresh or are they from 2019?
 4. Is there a feedback loop between customer-success and product?
 5. Do case studies use symmetric metric panels (same metrics before and after)?
@@ -134,6 +174,7 @@ visible reward ("if we like it, we'll tag you"). This belongs in the fix, not a 
 G2 review process: https://learn.g2.com/g2-reviews
 
 **Severity tagging:**
+- Review gating (sentiment pre-screen before the public review ask) → Critical (FTC rule + Google policy violation; GBP suspension risk). Cross-reference Cat 79 when the gated destination is a Google review link.
 - No social proof on commercial pages → High.
 - Site copy vocabulary contradicts the customers' own review vocabulary → Medium (the reviews are free message research going unused).
 - Anonymous / unattributed testimonials → High.

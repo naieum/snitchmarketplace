@@ -35,7 +35,7 @@ URL patterns:
 ### Identity mechanics (what makes a community a tribe)
 
 A channel full of support questions is a help desk, not a community. Communities that compound
-have four identity mechanics (StoryBrand-derived; the canonical case is "Don't Mess with
+have four identity mechanics (the canonical case is "Don't Mess with
 Texas," which cut a state's litter problem by selling membership in an identity rather than
 asking for a behavior):
 

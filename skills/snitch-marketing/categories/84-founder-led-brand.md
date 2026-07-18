@@ -38,7 +38,7 @@ Founder identification + cross-channel personal-brand activity audit.
 ### Message discipline on founder channels
 
 A founder channel that posts is necessary but not sufficient; the channel also needs message
-discipline. Four checkable patterns (StoryBrand-derived):
+discipline. Four checkable patterns:
 
 1. **3-4 repeated themes.** A working founder channel repeats a small set of named themes
    until followers can recite them; a channel about ten things is about nothing. Audit: pull
@@ -96,8 +96,6 @@ discipline. Four checkable patterns (StoryBrand-derived):
 ### Reference
 
 Justin Welsh on founder-led personal brand: https://www.justinwelsh.me
-
-Donald Miller (StoryBrand) on repeated themes, the identity line, and pivot discipline: https://storybrand.ai
 
 **Severity tagging:**
 - Founder invisible when stage warrants visibility → High.

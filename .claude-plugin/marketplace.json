@@ -1,12 +1,15 @@
 {
   "$schema": "https://code.claude.com/schemas/marketplace.json",
   "name": "snitch",
-  "owner": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "owner": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
   "plugins": [
     {
       "name": "snitch",
       "source": "./skills/snitch",
-      "description": "Security audit for AI-written code — evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).",
+      "description": "Security audit for AI-written code \u2014 evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).",
       "version": "9.1.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
@@ -14,23 +17,23 @@
     {
       "name": "snitch-marketing",
       "source": "./skills/snitch-marketing",
-      "description": "SEO + marketing audit with evidence-based findings — technical SEO, GEO/AI-search, schema, Core Web Vitals.",
-      "version": "1.7.0",
+      "description": "SEO + marketing audit with evidence-based findings \u2014 technical SEO, GEO/AI-search, schema, Core Web Vitals.",
+      "version": "1.8.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
     },
     {
       "name": "snitch-ux",
       "source": "./skills/snitch-ux",
-      "description": "Behavioral-design / UX-psychology skill — clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.",
-      "version": "0.1.0",
+      "description": "Behavioral-design / UX-psychology skill \u2014 clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.",
+      "version": "0.2.0",
       "license": "MIT",
       "homepage": "https://snitchplugin.com"
     },
     {
       "name": "snitch-cloudflare",
       "source": "./skills/snitch-cloudflare",
-      "description": "Cloudflare security + readiness — zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",
+      "description": "Cloudflare security + readiness \u2014 zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",
       "version": "1.0.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
@@ -38,7 +41,7 @@
     {
       "name": "snitch-aws",
       "source": "./skills/snitch-aws",
-      "description": "AWS security + readiness — IAM/S3/EC2/VPC/RDS/Lambda/CloudFront/CloudTrail/GuardDuty posture and hardening.",
+      "description": "AWS security + readiness \u2014 IAM/S3/EC2/VPC/RDS/Lambda/CloudFront/CloudTrail/GuardDuty posture and hardening.",
       "version": "1.0.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
@@ -46,7 +49,7 @@
     {
       "name": "snitch-azure",
       "source": "./skills/snitch-azure",
-      "description": "Azure security + readiness — subscription/Entra/RBAC/Defender/Sentinel/storage/keyvault posture and hardening.",
+      "description": "Azure security + readiness \u2014 subscription/Entra/RBAC/Defender/Sentinel/storage/keyvault posture and hardening.",
       "version": "1.0.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
@@ -54,7 +57,7 @@
     {
       "name": "snitch-digitalocean",
       "source": "./skills/snitch-digitalocean",
-      "description": "DigitalOcean security + readiness — Droplet/Database/Spaces/App-Platform/DOKS/Firewall posture and hardening.",
+      "description": "DigitalOcean security + readiness \u2014 Droplet/Database/Spaces/App-Platform/DOKS/Firewall posture and hardening.",
       "version": "1.0.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
@@ -62,7 +65,7 @@
     {
       "name": "snitch-flyio",
       "source": "./skills/snitch-flyio",
-      "description": "Fly.io security + readiness — org/apps/machines/volumes/postgres/secrets/network/token posture and hardening.",
+      "description": "Fly.io security + readiness \u2014 org/apps/machines/volumes/postgres/secrets/network/token posture and hardening.",
       "version": "1.0.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
@@ -70,7 +73,7 @@
     {
       "name": "snitch-railway",
       "source": "./skills/snitch-railway",
-      "description": "Railway security + readiness — workspace/project/services/env/volumes/databases/tokens/domains posture and hardening.",
+      "description": "Railway security + readiness \u2014 workspace/project/services/env/volumes/databases/tokens/domains posture and hardening.",
       "version": "1.0.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
@@ -78,7 +81,7 @@
     {
       "name": "snitch-vercel",
       "source": "./skills/snitch-vercel",
-      "description": "Vercel security + readiness — account/team/project/env/domains/deployments/protection/functions posture and hardening.",
+      "description": "Vercel security + readiness \u2014 account/team/project/env/domains/deployments/protection/functions posture and hardening.",
       "version": "1.0.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"

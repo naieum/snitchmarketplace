@@ -55,6 +55,13 @@ Google Maps + on-site NAP audit + schema check.
   Evidence required: GBP profile inspection.
 - **Business missing from key local directories** (Yelp, Apple Maps, Bing Places).
   Evidence required: directory search.
+- **Apple Maps place card unclaimed or thin** (no owner claim in Apple Business, missing
+  hours/photos/actions). Apple unified Business Connect/Manager/Essentials into Apple
+  Business (business.apple.com, April 2026), and a claimed place card is now also the
+  prerequisite for Apple Maps ads (launching summer 2026, US/CA) — an unclaimed card
+  forfeits Maps, Siri, Wallet, and Spotlight presence AND the ad surface.
+  Evidence required: Apple Maps place lookup; claim state confirmed by the user if not
+  externally visible.
 
 ### NOT a Problem
 
@@ -66,7 +73,7 @@ Google Maps + on-site NAP audit + schema check.
 
 1. Is the business actually local or pure-online?
 2. Service-area or storefront?
-3. Is there a process to ask happy customers for GBP reviews?
+3. Is there a review-ask process, and does it ask every customer? (Selectively soliciting only positive reviewers, or gating the ask behind a sentiment check, violates Google policy and the FTC rule — detection patterns and the compliant funnel live in Cat 74.)
 4. Is the team responding to reviews within 24-48 hours?
 
 ### Pairs with Cat 118 (GBP depth audit) and Cat 119 (Hyper-local landing pages)
@@ -111,7 +118,8 @@ Worked fix example:
 > - `/contact` page
 > - `LocalBusiness` JSON-LD on the homepage
 > - GBP
-> - Yelp, Apple Maps, Bing Places, Yellow Pages
+> - Apple Maps via Apple Business (business.apple.com) — claim the place card, fill hours / photos / actions; it feeds Siri and Spotlight too, and it's the prerequisite for Apple Maps ads
+> - Yelp, Bing Places, Yellow Pages
 >
 > Same exact spelling, same address format, same phone format. Inconsistencies confuse Google's local algorithm and dilute the listing's authority.
 >

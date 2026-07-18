@@ -5,7 +5,7 @@ license: MIT
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude.ai, Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, Goose, and 25+ more — see agentskills.io). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.2.0
   homepage: https://snitchplugin.com
 ---
 
@@ -205,6 +205,12 @@ you did not cover** and why. Never imply full coverage you didn't do — if you 
 - **Lifecycle personalization** — new vs returning vs power users see different first screens; use their name.
 - **Emotional / sensory copy** — descriptive language ("beachside escape, steps from the sand") activates imagination before price.
 
+**Paywalls & upgrade screens** — see `references/paywalls.md`
+- **The paywall is a flow, not a screen** — sell the outcome during onboarding so the price screen collects a decision already made; multi-page beats single-page.
+- **Risk reduction beats pressure** — a step-by-step trial timeline ("day 5: we remind you"), a "cancel anytime" CTA subtitle, and an exit-intent downsell outperform urgency.
+- **Friction is a dial** — a card-wall halves trials but can 5× paid conversion; removing the wall entirely can lift trial starts. Match the friction to the metric that matters.
+- **Two plans max, annual default, table sells by loss** — and anchor price to something already bought (weekly cost, "less than a coffee").
+
 **Mobile & reachability** (see `references/mobile-navigation.md`)
 - **Thumb zone** — put primary actions where a thumb reaches one-handed.
 - **Tap targets ≥ 44×44px.**
@@ -223,6 +229,7 @@ you did not cover** and why. Never imply full coverage you didn't do — if you 
 - `references/taglines-and-naming.md` — taglines (offer-not-vibe, name-strip and stranger-guess tests, category+twist, command taglines, name/tagline division of labor), naming rules (bullseye test, outcome-not-mechanism, bridge words, feature naming), and billboard-scale copy rules for any 3-second surface.
 - `references/messaging-campaign.md` — deploying the message as a campaign: the 5-3-3 structure (curiosity → enlightenment → commitment), staged disclosure, lead generators, entry offers and product ladders, pricing/premium framing, the decision-trigger close and sales-copy structures, repetition discipline, and the bad-news/crisis playbook.
 - `references/mobile-navigation.md` — bottom-nav / tab-bar hard rules (the mobile component).
+- `references/paywalls.md` — paywalls & upgrade screens: paywall-as-flow, risk-reduction patterns (trial timeline, cancel-anytime, exit-intent downsell), qualifying friction vs. pay-ramps, packaging rules (two plans, annual default, loss-framed tables), and paywall-specific dark patterns (fake-urgency wheels, cancel asymmetry).
 - `references/review-checklist.md` — a screen/flow audit to run before shipping.
 
 ## Guardrails

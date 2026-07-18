@@ -5,7 +5,7 @@ license: MIT
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude.ai, Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, Goose, and 25+ more — see agentskills.io). LLM-backed audits use the user's existing model; no separate server required. Optional Snitch CLI (https://snitchplugin.com) for SARIF/CSV/HTML export and CI integration. Optional Playwright MCP for screenshot evidence in crawl mode.
 metadata:
   author: Snitch
-  version: 1.7.0
+  version: 1.8.0
   homepage: https://snitchplugin.com
 ---
 
