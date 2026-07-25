@@ -1,10 +1,9 @@
 # Persisted ICP / positioning context file
 
 The audit's psychology, CRO, copy, and positioning findings are only as sharp as
-its model of *who the site is for*. Today the discovery phases (STEP 0.5-0.8,
-`phases/assumptions.md`, `phases/discovery.md`, `phases/niche-research.md`) capture
-this into the report, but it isn't **persisted** or **consumed** by the per-category
-checks. This reference defines a single persisted artifact —
+its model of *who the site is for*. Today the discovery sequence (STEPS 0.5-0.8, specified in
+`references/discovery-flow.md`) captures this into the report, but it isn't **persisted** or
+**consumed** by the per-category checks. This reference defines a single persisted artifact —
 **`.snitch-marketing-context.md`** — that discovery writes once and the relevant
 categories read first, so findings judge the site against its *actual* ICP, not
 generic best practice.
@@ -82,7 +81,7 @@ homepage), …". `source: user-confirmed` (the user reviewed/edited the file) le
 those findings drop the hedge. This mirrors the assumptions rule in
 `references/anti-hallucination.md`: never assert an ICP fact the audit only inferred.
 
-Cross-refs: `phases/discovery.md` (writes it), `references/mental-models.md`
+Cross-refs: `references/discovery-flow.md` (STEP 0.5 writes it), `references/mental-models.md`
 (the Four Forces / model lenses), `references/anti-hallucination.md` (assumptions),
 `references/customer-discovery-script.md` + `references/feedback-signals.md` (how to
 gather verbatim language), `INDEX.md`.

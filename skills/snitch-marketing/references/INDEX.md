@@ -1,6 +1,6 @@
 # References Index
 
-This is the navigation map for the 51 reference docs in `references/`. The skill loads references on demand; this index helps the agent (and human readers) find the right one.
+This is the navigation map for the 50 reference docs in `references/`. The skill loads references on demand; this index helps the agent (and human readers) find the right one.
 
 The "When surfaced" column names the audit step or finding pattern that triggers the skill to read the reference. References not loaded reduce token cost.
 
@@ -26,7 +26,6 @@ The "When surfaced" column names the audit step or finding pattern that triggers
 | **grader.md** | LLM-as-grader meta-evaluation spec: 5-criteria rubric (evidence specificity, risk specificity, fix specificity, three-rules adherence, evidence-to-claim alignment) + severity-calibration check, scored 0-2 each (max 10/finding), with auto-rewrite + re-grade loop. `audit_metadata.grader` schema. | STEP 3 grader pass — after the lint pass and before the HTML render. Required for customer-facing audits; toggled off via `grader.enabled: false` for internal scans. |
 | **html-template.md** | Single-file, offline, brand-palette-compliant HTML report template derived from the canonical markdown: hard constraints (no external deps, red/white/black only, print-friendly `@media print`, accessible semantics, confidential-mode banner) and the `SEO_AUDIT_REPORT.html` output path. | STEP 3 HTML render step (when python3 is available); `scripts/render-report.py` follows this template. |
 | **INDEX.md** | This file. Navigation map for the references library. | First-time skill load; agent looking for the right reference. |
-| **mcp-adapter.md** | Spec for packaging the skill as an MCP server (for tools that don't load skill bundles natively). 6 MCP tools mapping to STEP workflow. Not implemented; spec only. | Customer asks about MCP integration; future implementation of the MCP server itself. |
 | **mental-models.md** | Catalog of 70+ models from foundational thinking, behavioral psychology, and behavioral design, with a psychology hierarchy (value → credibility → friction → motivation → decisions) and reality-check / backfire questions before recommending any model. | Any psychology cat (114, 115, 116, 74, 81, 99, 60) fires and a finding needs a named psychological mechanism for its Risk or Fix. |
 | **migration-preflight.md** | STEP 4.8 migration audit. Pre-flight checklist + post-launch diagnostic chain for replatform / domain change / framework migration / CMS change. | User asks about migration; STEP 0 detects recent framework / domain change in deploy log; STEP 4.7 traffic diagnosis points at a recent migration. |
 | **output-formats.md** | Alternate report formats: full markdown (default), executive summary, JSON for tooling, CSV for spreadsheet, HTML for client-deliverable, PR-comment summary, Slack digest. | Post-scan menu Options 8-12 (export as JSON / CSV / HTML / executive summary / Slack digest). |
@@ -60,7 +59,7 @@ The "When surfaced" column names the audit step or finding pattern that triggers
 
 ## How references load
 
-References are NOT pre-loaded by the skill. The agent reads them on-demand based on the conditions in the "When surfaced" column. This keeps token cost manageable; an audit running only Quick Audit (13 cats) typically loads 4-6 references, not all 51.
+References are NOT pre-loaded by the skill. The agent reads them on-demand based on the conditions in the "When surfaced" column. This keeps token cost manageable; an audit running only Quick Audit (13 cats) typically loads 4-6 references, not all 50.
 
 ## Adding a new reference
 

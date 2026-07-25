@@ -54,6 +54,24 @@
 - Admin layout that verifies role via server-side check (API call or server function) before rendering, and redirects unauthorized users
 - Route guards that call a server endpoint to verify admin status and show a loading state until confirmed
 
+**Server Actions and RPC-style handlers are public endpoints.** A Next.js `"use server"` function,
+a tRPC procedure, or any exported handler a framework wires to a route is network-callable by anyone
+who can reach the origin — its id is discoverable in the client bundle, and the UI that "only shows
+it to admins" gates nothing. Treat an exported action with no session and no ownership check as
+unauthenticated, whatever the surrounding component does. The shape to look for is a parameter that
+identifies the target row (`userId`, `orgId`, `id`) used directly in the query, with no comparison
+against the caller's own identity:
+
+```
+"use server";
+export async function deleteAccount(userId: string) {   // finding: caller supplies the target
+  return db.user.delete({ where: { id: userId } });
+}
+```
+
+The fix is to derive the identity server-side (`const session = await getSession()`) and scope the
+query to it, never to trust the argument.
+
 ### Context Check
 1. Does the route verify the authenticated user owns or has access to the requested resource?
 2. Is there authorization middleware applied at the router level?

@@ -20,7 +20,12 @@
 - Private keys stored in source files
 
 ### NOT Vulnerable
-- Environment variable references (process.env.X)
+- Environment variable references (`process.env.X`) — the value is not in source, so this is not a
+  hardcoded-secret finding. **This is a Pass for *this* category only, not a clean bill of health:**
+  in a bundled front-end framework an env read can still cross to the browser, which is a client-
+  exposure finding (CWE-200), not CWE-798. If the project is Next.js/Vite/CRA, check the stack
+  reference before passing it — a server-only read is safe, one reachable from a client bundle is
+  not, and neither fact is visible in this file.
 - Template placeholders
 - Example values in comments
 - Test/development placeholder values

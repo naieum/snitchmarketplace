@@ -38,6 +38,18 @@
 1. Is middleware applied at router level?
 2. Should this route be public?
 3. Is insecure setting guarded by environment check?
+4. **An omitted option is not a disabled option.** Before reporting a missing auth, session, password
+   or cookie setting, confirm the library's default in the *installed* package — read
+   `node_modules/<pkg>/` or the version's docs, not your recollection. Modern auth libraries ship
+   safe defaults (password length floors, session expiry, `httpOnly` / `sameSite` cookies), so a
+   config object that simply doesn't mention a setting is usually inheriting a sound value, not
+   turning it off. The finding is an option **explicitly set** to a weak value, or a default you
+   verified is genuinely unsafe — quote the default you found and where you found it. Reporting
+   every unset option produces a wall of false positives on a correctly configured app.
+5. Where is the session token stored? A token or role written to `localStorage` / `sessionStorage` is
+   readable and writable by any script on the origin — client-writable authorization state is a
+   privilege-escalation primitive regardless of how well the token itself was issued. (Cat 14 owns
+   provider specifics; the storage location is in scope here.)
 
 ### Evidence Chain
 - The route handler, JWT/session config, or redirect/WebSocket handler quoted at file:line

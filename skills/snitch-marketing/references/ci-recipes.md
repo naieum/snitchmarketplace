@@ -36,13 +36,15 @@ jobs:
         with:
           fetch-depth: 0  # needed for diff against base ref
 
-      - name: Run Snitch: Marketing diff audit
-        uses: snitch-marketing/action@v1  # placeholder — distribute via Action when available
-        with:
-          mode: diff
-          base-ref: ${{ github.base_ref }}
-          comment-on-pr: true
-          fail-on: critical  # or 'high' or 'never'
+      # The skill runs inside an AI coding CLI — there is no Snitch-hosted Action.
+      # Swap the CLI and the key for whichever provider you already use.
+      - name: Run Snitch Marketing diff audit
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude --print "Read ./skills/snitch-marketing/SKILL.md and run a diff-mode
+            SEO audit against ${{ github.base_ref }}. Write SEO_AUDIT_REPORT.md."
 
       - name: Upload audit report
         if: always()
@@ -90,7 +92,7 @@ Re-run after fixing: `git push`.
 # .gitlab-ci.yml
 seo_audit:
   stage: test
-  image: snitch-marketing/runner:latest  # placeholder
+  image: node:22  # any image with your AI CLI installable — there is no Snitch-hosted runner
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
       changes:
@@ -99,7 +101,9 @@ seo_audit:
         - 'content/**'
         - '**/*.{tsx,mdx}'
   script:
-    - snitch-marketing audit --mode=diff --base-ref=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - npm install -g @anthropic-ai/claude-code
+    - claude --print "Read ./skills/snitch-marketing/SKILL.md and run a diff-mode SEO audit
+      against $CI_MERGE_REQUEST_TARGET_BRANCH_NAME. Write SEO_AUDIT_REPORT.md."
   artifacts:
     when: always
     paths:

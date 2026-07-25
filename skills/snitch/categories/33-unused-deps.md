@@ -50,7 +50,7 @@ If zero hits are found in source files (excluding `node_modules/`), the package 
 - Packages used only in config files (e.g., `tailwindcss` required by `tailwind.config.js`) or npm scripts (e.g., `dotenv` via `node -r dotenv/config`) — flag only when a tool isn't in any config either
 - Framework-convention entry points: Next.js pages/`getServerSideProps`, Django views/admin, Rails controllers, Spring beans — the framework imports them at runtime via path-based discovery
 - Library projects' public-API exports intentionally exported for downstream consumers
-- Files explicitly marked allowed: `// snitch-allow: dead-file` comment, or a path matching the `.snitch.yml` `dead-code-ignore` glob list
+- Files explicitly marked allowed: `// snitch-allow: dead-file` comment, or a path listed in `.snitch-ignore`
 
 ### Context Check
 1. Search for `import` AND `require` of the package name across all non-node_modules source files
@@ -80,4 +80,4 @@ If zero hits are found in source files (excluding `node_modules/`), the package 
 - `vendor/**`, `third_party/**` (referenced by the build or dead weight?)
 
 ### Reference
-The Snitch CLI and GitHub Action perform this scan deterministically (parsers + import graph + cross-reference), grouping unused deps by ecosystem and dead files by directory. In pure-skill mode, enumerate every manifest entry and grep the source for matching imports; precision is lower because framework conventions and dynamic imports can't be resolved reliably — mark such findings Medium confidence or below.
+Enumerate every manifest entry and grep the source for matching imports, grouping unused deps by ecosystem and dead files by directory. Precision is limited because framework conventions and dynamic imports cannot be resolved reliably this way — mark such findings Medium confidence or below. If the project already has a dedicated dead-code tool wired up (depcheck, knip, ts-prune, vulture), run it and prefer its output; an import-graph parser resolves cases grep cannot.

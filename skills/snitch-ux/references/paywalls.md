@@ -1,5 +1,19 @@
 # Paywalls & Upgrade Screens
 
+> **The ethics gate outranks everything in this file. Run it first.**
+> `review-checklist.md` §10 and SKILL.md Workflow Step 3.5 come *before* any technique here —
+> this file's Guardrails section is at the end, and reading top-to-bottom reaches every pressure
+> technique first. A paywall is where money, urgency, and cancellation all meet, so the gate
+> matters here more than anywhere else in the skill: is the total cost stated where the decision
+> is made, is every countdown and scarcity claim **true**, are paid options opt-in, and is
+> leaving as easy as joining? **If any answer is no, those are findings and you do not optimise
+> them, whatever was asked for.** Two techniques below are actively harmful on a surface that
+> failed the gate — exit-intent interception on a page whose exit is already a trap, and
+> "mark the one-time offer as a moment" when the offer is the fabrication.
+>
+> The gate is not subject to the `lenses` config key. `lenses: persuasion` removes the clarity
+> pass, never the gate.
+
 The paywall is the only screen that makes money, and it obeys different rules than the rest
 of the persuasion catalog — including one that contradicts it (sometimes *adding* friction
 wins). Grounded in a study of ~3,000 production paywalls plus the tested observations of a

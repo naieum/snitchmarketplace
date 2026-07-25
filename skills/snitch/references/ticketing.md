@@ -2,11 +2,11 @@
 
 ## Security: No API Keys on Engineer Machines
 
-Primary: Use Devin's org-level integrations (Settings > Integrations). The skill instructs Devin to create tickets through existing authenticated connections.
+Primary: Use the host's configured issue-tracker integration if one exists. Create tickets through that existing authenticated connection — never ask the user for an API key.
 
-Fallback: Generate `findings-tickets.json` for manual bulk import. No API keys needed.
+Fallback: Generate `findings-tickets.json` for manual bulk import. No API keys needed, works on every host.
 
-Last resort: GitHub Issues via `gh` CLI (already authenticated through Devin's GitHub integration).
+Last resort: GitHub Issues via `gh` CLI, only when `gh auth status` already succeeds. If it does not, stop at the import file.
 
 ## Flow
 

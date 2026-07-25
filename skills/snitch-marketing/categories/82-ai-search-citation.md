@@ -234,8 +234,8 @@ Worked fix example:
 >
 > # Snitch
 >
-> > Security review for the code your AI wrote. Plugin / CLI / GitHub Action,
-> > 72 categories, BYO AI key.
+> > Security review for the code your AI wrote. An Agent Skill that runs in any
+> > AI coding tool, evidence-backed findings, bring your own model.
 >
 > ## Docs
 > - [Quick start](https://snitchplugin.com/docs/quickstart)

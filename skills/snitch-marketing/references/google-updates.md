@@ -5,7 +5,8 @@ update"). When a traffic change's onset date lines up with a confirmed update wi
 table turns "it's probably an update" into "the drop onset (2024-08-19) falls inside the
 August 2024 core update window, which re-weighted quality + topical-authority signals."
 
-**This is a curated snapshot, not a live feed.** It reflects the skill's knowledge cutoff.
+**This is a curated snapshot, not a live feed.** It is compiled through 2026-07; anything
+announced after that date is not in this table, and the record for it is incomplete here.
 Two non-negotiable rules before you cite it:
 
 1. **Confirm against the primary source.** The Google Search Status Dashboard
@@ -37,6 +38,7 @@ Two non-negotiable rules before you cite it:
 | **Spam update** | Link spam, content spam, policy violations | Backlink toxicity (Cat 69), parasite/site-reputation abuse (Cat 125), expired-domain abuse (Cat 126), scaled/programmatic thin content (Cat 18, 95) |
 | **Reviews** (now folded into core) | First-hand, evidence-backed review content | Review depth + originality + first-hand experience (Cat 59, 74, 128) |
 | **Helpful-content signals** (folded into core, March 2024) | People-first vs search-engine-first content | Thin/derivative content (Cat 18, 57), AI-tells (Cat 59), intent mismatch (Cat 58, 131) |
+| **Discover update** | The article-surfacing systems behind Google Discover only — not Search | Clickbait / sensational framing (Cat 57, 117), country-local relevance, depth + demonstrated topical expertise (Cat 18, 59, 93, 128). Only route here once Search Console shows the loss is Discover-side |
 
 ## Confirmed updates (curated; verify dates on the Status Dashboard)
 
@@ -44,7 +46,15 @@ Newest first. Windows are approximate; the Status Dashboard holds the exact time
 
 | Window (approx.) | Type | Notes / what it targeted |
 |---|---|---|
-| 2025 core updates | Core | Google continued its roughly-quarterly core-update cadence through 2025. **Look up the specific 2025 windows on the Status Dashboard** rather than trusting a month here — exact dates are the load-bearing detail and they are the part most likely to be stale in this snapshot. |
+| Jun 2026 | Spam | June 2026 spam update (Jun 24 – Jun 26, 2026). Routine SpamBrain refresh; Google introduced no new spam policies with it. |
+| May 2026 | Core | May 2026 core update (May 21 – Jun 2, 2026). |
+| Mar 2026 | Core | March 2026 core update (Mar 27 – Apr 8, 2026). Started two days after the March 2026 spam update finished — a late-March onset needs the exact date to tell the two apart. |
+| Mar 2026 | Spam | March 2026 spam update (Mar 24 – Mar 25, 2026) — under 20 hours, the shortest announced spam update. A Mar 24–25 onset is a spam match, not a core one. |
+| Feb 2026 | Discover | February 2026 Discover core update (Feb 5 – Feb 27, 2026) — **Discover only, not Search**. The first Discover-only update Google has announced; rolled out to English-language users in the US first, other countries/languages later. Targeted country-local relevance, less sensational/clickbait content, and more in-depth original work from sites with demonstrated topical expertise. Split Discover from Search in Search Console before attributing: Search impressions holding while Discover impressions drop is the signature. |
+| Dec 2025 | Core | December 2025 core update (Dec 11 – Dec 29, 2025). |
+| Aug 2025 | Spam | August 2025 spam update (Aug 26 – Sep 22, 2025) — 27 days, unusually long for a spam update, so onset-inside-window is weak evidence on its own here. Broad spam-policy enforcement, not link-spam-specific. |
+| Jun 2025 | Core | June 2025 core update (Jun 30 – Jul 17, 2025). |
+| Mar 2025 | Core | March 2025 core update (Mar 13 – Mar 27, 2025). |
 | Dec 2024 | Spam | December 2024 spam update. |
 | Dec 2024 | Core | December 2024 core update (ran close behind the November one). |
 | Nov 2024 | Core | November 2024 core update (completed early December 2024). |
@@ -58,6 +68,13 @@ Newest first. Windows are approximate; the Status Dashboard holds the exact time
 
 Older updates (pre-2023) are rarely the cause of a *current* drop; if a diagnosis reaches
 back that far, go straight to the Status Dashboard's full history.
+
+**Announced updates are not the whole picture.** Google's own core-update documentation
+states: "We're continually making updates to our search algorithms, including smaller core
+updates. These updates are not announced because they aren't widely noticeable." So an onset
+with no dashboard match does not prove nothing changed on Google's side — it means you cannot
+*name* what changed. Report it as unattributed volatility and keep working the other Stage 3
+triggers; do not back-fill a window to close the gap.
 
 ## What this reference deliberately does NOT do
 

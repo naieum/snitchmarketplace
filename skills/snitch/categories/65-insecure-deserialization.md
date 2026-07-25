@@ -57,5 +57,5 @@ Category 49 covers XXE specifically. This category covers the broader family: bi
 
 ### Reference
 - CWE-502: Deserialization of Untrusted Data
-- OWASP Top 10:2025 — A08 Software and Data Integrity Failures
+- OWASP Top 10:2025 — A08 Software or Data Integrity Failures
 - CVSS 4.0: typically Critical (AV:N, AC:L, RCE)

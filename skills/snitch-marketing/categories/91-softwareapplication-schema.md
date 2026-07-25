@@ -100,12 +100,12 @@ Worked fix example:
 > const appSchema = {
 >   '@context': 'https://schema.org',
 >   '@type': 'SoftwareApplication',
->   name: 'Snitch',
+>   name: 'Snitch Security',
 >   applicationCategory: 'SecurityApplication',
 >   operatingSystem: 'Web, macOS, Linux, Windows',
 >   offers: {
 >     '@type': 'Offer',
->     price: '49.99',
+>     price: '0',
 >     priceCurrency: 'USD',
 >   },
 >   description: 'Security review for the code your AI wrote.',
@@ -115,9 +115,8 @@ Worked fix example:
 >     'https://snitchplugin.com/screenshots/report.png',
 >   ],
 >   url: 'https://snitchplugin.com',
->   softwareVersion: '7.5.0',
+>   softwareVersion: '9.1.0',
 >   releaseNotes: 'https://snitchplugin.com/changelog',
->   installUrl: 'https://snitchplugin.com/install',
 > };
 > ```
 >

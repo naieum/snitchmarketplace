@@ -17,12 +17,11 @@
 #### Critical
 - `DATABASE_URL` with credentials in client-side code
 - Connection strings in `NEXT_PUBLIC_*` variables
-- `$queryRaw` or `$executeRaw` with string interpolation (SQL injection)
-- Template literals with `${userInput}` in raw SQL
+- `$queryRawUnsafe` / `$executeRawUnsafe` where user input is inside the **query string** argument
+- `Prisma.raw(...)` / `sql.raw(...)` applied to a user-controlled value — including inside an otherwise-tagged template
+- Raw SQL assembled by string concatenation from user input, in any clause of the statement
 
 #### High
-- Prisma `$queryRawUnsafe` usage with any user input
-- Raw SQL queries built with string concatenation
 - Missing connection pooling for serverless (no PgBouncer/Prisma Accelerate)
 
 #### Medium
@@ -32,9 +31,26 @@
 
 ### NOT Vulnerable
 - `DATABASE_URL` in server-only code
-- Parameterized queries with `Prisma.sql` template tag
-- ORM queries (Prisma/Drizzle) with proper escaping
+- `Prisma.sql` fragments, including fragments composed into a larger `Prisma.sql` template — composition preserves the bindings
+- A `$queryRaw` / `$executeRaw` **tagged template** whose every slot you have **traced** to a plain
+  JS value. Concatenation *outside* the slot does not make the slot unsafe — a plain string is bound
+  however it was assembled. But a slot holding a `Prisma.Sql` from `Prisma.raw(...)` is a finding,
+  **and a slot you could not trace is also a finding** (Low confidence, `needs human verification`),
+  because a helper-returned `Prisma.raw` is visually identical to a plain string at the call site.
+  This category is reachable via `preset:modern-stack` **without** Category 1, so that rule is
+  restated here rather than referenced — see `categories/01-sql-injection.md` for the full call-form
+  table and the non-scalar escaping caveat
+- `$queryRawUnsafe` / `$executeRawUnsafe` with a literal query string and user values passed as trailing bind arguments — the method name alone is not the finding
+- ORM query-builder methods (Prisma/Drizzle finders) that escape by construction
 - Raw queries with only hardcoded values
+
+**Call form decides this category's raw-SQL dispositions, and Category 1 owns both the table and
+the severity ladder.** Read `categories/01-sql-injection.md` before rating any `$queryRaw`-family
+finding: the call-form table under "What to Search For", the per-value rule, and the severity
+ladder with its precedence rule under "Confidence Scoring". The **raw-SQL** Critical items listed
+above are sink-form starting points — apply Cat 1's downgrade-per-evidenced-constraint rule to reach the
+final severity, so a finding does not get two different ratings depending on which category
+surfaced it.
 
 ### Context Check
 1. Is the raw SQL using parameterized placeholders or string interpolation?

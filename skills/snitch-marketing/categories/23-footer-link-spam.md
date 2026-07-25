@@ -92,9 +92,9 @@ Worked fix example:
 >   <div class="cols">
 >     <div>
 >       <h4>Product</h4>
->       <a href="/plugin">Plugin</a>
->       <a href="/cli">CLI</a>
->       <a href="/action">GitHub Action</a>
+>       <a href="/security">Security</a>
+>       <a href="/marketing">Marketing</a>
+>       <a href="/ux">UX</a>
 >     </div>
 >     <div>
 >       <h4>Resources</h4>

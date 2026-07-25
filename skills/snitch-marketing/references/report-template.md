@@ -111,6 +111,35 @@ Only GEO-surface findings feed the score (crawler access, llms.txt, citability/a
 
 {Findings the audit flagged but couldn't fully verify. Same Finding Format. The user can decide whether to treat as confirmed.}
 
+## Coverage
+
+Required in every report. The denominator behind every negative claim in the audit.
+
+```markdown
+## Coverage
+
+| Surface | Discovered | Checked | Completeness |
+|---|---|---|---|
+| Sitemap URLs | 412 | 50 | partial — `crawl-max-pages: 50` |
+| Route files (source mode) | 38 | 38 | complete |
+| Off-site surfaces | 6 | 6 | complete |
+
+**Crawl-bound categories:** 9 (title), 10 (meta description), 19 (internal links), 20 (broken links)
+were computed over the 50 URLs fetched, not all 412 discovered. Their negative results read
+"none found in the 50 URLs fetched" — not "none". Raise `crawl-max-pages` in
+`snitch-marketing.config.md` to widen the denominator.
+
+**Deferred:** <surface> — <reason>
+```
+
+Rules:
+- Completeness is `complete` only when checked == discovered. A sampled or capped surface is
+  `partial`, never `complete`.
+- Every deferral is listed with its reason. A surface that was never reached and never mentioned is
+  the failure this section exists to prevent.
+- If nothing was capped or deferred, say so in one line — an explicit "complete, 38/38 routes" is
+  more useful than an absent section.
+
 ## Skipped categories
 
 {Categories selected but not run, with reason. State the evidence that produced the skip.}
@@ -216,7 +245,7 @@ The closing paragraph is the answer to "if I do nothing else, what should I do?"
 
 ## Voice rules for the report
 
-- Plain and factual. The CLAUDE.md voice rules apply: no em dashes (use commas, semicolons, colons, parens), no MCP mentions, customer-first.
+- Plain and factual. The CLAUDE.md voice rules apply: no em dashes (use commas, semicolons, colons, parens), customer-first.
 - No designer / practitioner names anywhere in user-visible output. The voice mechanism is internal; the prose carries authority on its own.
 - No sycophantic adjectives. Forbidden: "best", "best-in-class", "excellent", "great", "amazing", "world-class", "textbook", "textbook-correct", "comprehensive", "strong foundation", "well-architected", "thoughtful", "reference example".
 - "What's working" is symmetric to "What needs work". Same depth. Same evidence rigor. Same factual tone.

@@ -53,22 +53,6 @@ if command -v claude >/dev/null 2>&1; then
   else
     claude --print '/snitch diff'
   fi
-elif command -v devin >/dev/null 2>&1; then
-  if command -v timeout >/dev/null 2>&1; then
-    timeout "$TIMEOUT" devin run '@skills:snitch diff' || {
-      EXIT_CODE=$?
-      if [ "$EXIT_CODE" -eq 124 ]; then
-        echo ""
-        echo "  Snitch: scan timed out after ${TIMEOUT}s. Commit proceeding."
-        echo ""
-        exit 0
-      fi
-      if [ "${SNITCH_BLOCK:-0}" = "1" ]; then exit "$EXIT_CODE"; fi
-      exit 0
-    }
-  else
-    devin run '@skills:snitch diff'
-  fi
 else
   # Fallback: local regex scan for critical patterns
   echo "  Snitch: No AI tool CLI found. Running lightweight pattern check..."

@@ -59,5 +59,5 @@ This is the cloud-specific SSRF variant where the attacker pivots a server-side 
 
 ### Reference
 - CWE-918: Server-Side Request Forgery (cloud metadata is the canonical high-impact SSRF target)
-- OWASP Top 10:2025 — A10 Server-Side Request Forgery
+- OWASP Top 10:2025 — A01 Broken Access Control
 - CVSS 4.0: typically Critical on cloud workloads (AV:N, AC:L, credential theft → lateral movement)

@@ -8,9 +8,10 @@
 **Data flow tracing required (SKILL.md Rule 7).** Two traces apply. (1) Prompt injection: trace user / external / retrieved content to the prompt — content reaching the `system` role or concatenated into instructions is a finding; content confined to a `user`-role message with structural separation is a Pass. (2) Improper output handling: treat the model's own output as tainted and trace it forward — output reaching SQL, shell, `eval` / `Function`, raw HTML, or a redirect without escaping or validation is a finding; output used only as escaped display text is a Pass. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
 ### Detection
-- AI SDK imports: `openai`, `@anthropic-ai/sdk`, `ai`, `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@langchain/core`, `langchain`, `llamaindex`, `@google/generative-ai`, `cohere-ai`
-- Environment variables: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_AI_API_KEY`, `COHERE_API_KEY`
-- Agent/tool frameworks: `@modelcontextprotocol/sdk`, `autogen`, `crewai`, `langchain/agents`
+- AI SDK imports — npm and PyPI names are mixed below; match either. `openai`, `@anthropic-ai/sdk` (npm) / `anthropic` (PyPI), `ai`, `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@langchain/core`, `langchain`, `llamaindex` (npm) / `llama-index` (PyPI), `@google/genai` (npm) / `google-genai` (PyPI), `cohere-ai` (npm) / `cohere` (PyPI)
+- Superseded Google SDKs still widely deployed — keep matching them: `@google/generative-ai` (npm) and `google-generativeai` (PyPI). Both are deprecated in favour of the `genai` packages; their own package metadata says so
+- Environment variables: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_AI_API_KEY`, `GEMINI_API_KEY`, `COHERE_API_KEY`
+- Agent/tool frameworks: `@anthropic-ai/claude-agent-sdk` (npm) / `claude-agent-sdk` (PyPI), `@openai/agents` (npm) / `openai-agents` (PyPI), `pydantic-ai`, `@modelcontextprotocol/sdk` (npm) / `mcp` (PyPI — a short, generic token; confirm against the manifest rather than a bare grep), `autogen`, `crewai`, `langchain/agents`
 - RAG patterns: vector store imports (`@pinecone-database/pinecone`, `chromadb`, `weaviate-client`, `@qdrant/js-client-rest`, `pgvector`)
 - Chat/conversation handlers with message history accumulation
 
@@ -36,8 +37,8 @@
 **Persona-override / identity jailbreaks (DAN, ENI-class, "no restrictions" attacks):**
 - System prompt is the sole scope enforcement mechanism — no separate server-side gate before the LLM call
 - No pre-model input classifier: user messages arrive at the expensive LLM without a topic or intent check
-- No jailbreak-pattern detection on incoming user text: patterns like "you are now", "act as", "forget your instructions", "from now on you are", "no restrictions", "no boundaries", "pretend you are", "your true name is", "ignore previous instructions" reach the model unchecked
-- Input text length cap set too high (>8 000 chars) — persona-override prompts are long by design; a tight cap truncates them before they can establish the fake identity
+- No jailbreak-pattern detection on incoming user text: signals like "you are now", "act as", "forget your instructions", "from now on you are", "no restrictions", "no boundaries", "pretend you are", "your true name is", "ignore previous instructions" reach the model unchecked. The list is illustrative, never exhaustive. Advisory only — a pattern list is defense-in-depth and is bypassed by paraphrase; never report it as the missing control
+- No input length cap at all, or a cap wildly disproportionate to the endpoint's stated purpose (a subject-line field accepting unbounded text). Advisory only — do not flag on an absolute character threshold; large pasted inputs are routine
 - No abuse log: blocked or suspicious requests are not recorded, leaving no forensic trail after an incident
 
 **Improper output handling (LLM-to-app injection):**
@@ -92,8 +93,6 @@
 - Direct prompt injection: user input interpolated into prompts with no structural boundary or content filtering
 - Full conversation history sent to model with no per-turn safety re-evaluation (vulnerable to Crescendo, Many-Shot, Skeleton Key jailbreaks)
 - No pre-model input gate on public chat endpoints — scope enforcement relies entirely on system-prompt prose, which persona-override jailbreaks (DAN, ENI-class) are specifically designed to bypass
-- No jailbreak-pattern detection: user messages containing persona-override signals ("you are now", "act as", "no restrictions", "forget your instructions", "from now on you are") reach the LLM unchecked
-- Input text length cap absent or set above ~8 000 characters — persona-override prompts are intentionally long to drown the system prompt; a tight cap prevents them from fitting
 - LLM output rendered as markdown/HTML without sanitization — enables XSS and markdown image exfiltration
 - No rate limiting on AI endpoints (denial-of-wallet — attacker can burn through your API budget)
 - No `max_tokens` set on any API call (single request can generate maximum-length response at full cost)
@@ -105,7 +104,8 @@
 
 #### Medium
 - Prompt/completion pairs logged to console, files, or third-party observability tools (Langfuse, LangSmith, Helicone) without PII redaction
-- No input length validation before API calls (context window stuffing)
+- No input length cap at all, or a cap wildly disproportionate to the endpoint's stated purpose (context-window stuffing). Advisory — never flag on an absolute character threshold; 8 000+ character inputs are routine for pasted logs, documents, and code
+- No jailbreak-pattern detection on user text before the LLM call. Advisory — a pattern list is defense-in-depth, not a primary control, and is bypassed by paraphrase; report the missing pre-model gate instead
 - Raw API error messages exposed to users (may leak model config, internal URLs, or prompt fragments)
 - Agent loops without explicit iteration limits (could run indefinitely on bad input)
 - MCP servers installed from npm/pip without pinned versions or integrity checks
@@ -120,8 +120,9 @@
 - LLM output treated as untrusted: HTML-escaped before rendering, parameterized before SQL, never passed to eval/exec
 - Per-turn content filtering on both input and output in chat applications
 - Pre-model input gate (synchronous regex or cheap fast-model classifier) validates topic/intent before the primary LLM is invoked — system prompt is not the sole scope enforcer
-- Incoming user messages scanned for persona-override signals ("you are now", "act as", "no restrictions", "forget your instructions") before the LLM call; matches return a canned refusal without touching the expensive model
-- User-message character cap set at ≤8 000 chars — prevents persona-override prompts from fitting in a single turn
+- Incoming user messages scanned for persona-override signals (e.g. "you are now", "act as", "no restrictions", "no boundaries", "pretend you are", "your true name is", "forget your instructions" — an illustrative subset of the What-to-Search-For list) before the LLM call; matches return a canned refusal without touching the expensive model
+- No jailbreak-pattern scan, but user input stays in a `user`-role message behind a pre-model gate or moderation call — Pass. Absence of a pattern list is not a finding on its own
+- Any input length cap proportionate to the endpoint's purpose — Pass, whatever the number. A cap above 8 000 chars is not a finding; pasted logs, documents, and code make large inputs routine. Only an endpoint with no cap at all, or one absurdly larger than its stated purpose, is worth an advisory note
 - Blocked/suspicious requests written to an abuse log (IP, user ID, timestamp, matched pattern) for incident response
 - Conversation length bounded with sliding window or summarization
 - Agent tools scoped to minimum necessary permissions with human approval for destructive actions

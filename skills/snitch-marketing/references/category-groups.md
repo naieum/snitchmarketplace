@@ -21,17 +21,17 @@ Use these heuristics to compute the per-preset token estimate displayed in the s
 
 Categories: 1, 2, 3, 4, 5, 6, 9, 10, 13, 39, 40, 42, 45, 121, 130
 
-**Token cost: ~20-30K tokens (small/medium site).** 13 cats × ~1.5K + ~5K overhead.
+**Token cost: ~22-34K tokens (small/medium site).** 15 cats × ~1.5K + ~5K overhead.
 
-The crawl + indexing surface plus the load-bearing technical bits a search engine cares about most: robots, sitemap, canonical, noindex, redirects, title/meta, favicon, font loading, render-blocking, third-party scripts, viewport.
+The crawl + indexing surface plus the load-bearing technical bits a search engine cares about most: robots, sitemap, canonical, noindex, soft 404s, redirects, title/meta, favicon, font loading, render-blocking, third-party scripts, viewport, information architecture, IndexNow submission.
 
 ## Group 3: Content & Structure
 
 Categories: 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 57, 58, 86, 121, 122, 128, 131, 132
 
-**Token cost: ~20-30K tokens.** 13 cats × ~1.5K + ~5K overhead.
+**Token cost: ~26-39K tokens.** 18 cats × ~1.5K + ~5K overhead.
 
-Heading hierarchy, semantic HTML, content depth, internal link graph, broken links, anchor quality, breadcrumbs, footer spam, external link rels, topical depth, keyword/intent match, keyword research + intent mapping. The content cats also draw on the deterministic content-intelligence metrics (Flesch-Kincaid readability, cross-page near-duplicate via Jaccard, keyword cannibalization) in `references/content-intelligence.md` to back judgment calls with quotable figures.
+Single H1 + heading hierarchy, semantic HTML, content depth, internal link graph, broken links, anchor quality, breadcrumbs, footer spam, external link rels, topical depth, keyword/intent match, keyword research + intent mapping, information architecture, comparison / alternatives pages, citation gaps, SERP-intent alignment, SERP-overlap clustering. The content cats also draw on the deterministic content-intelligence metrics (Flesch-Kincaid readability, cross-page near-duplicate via Jaccard, keyword cannibalization) in `references/content-intelligence.md` to back judgment calls with quotable figures.
 
 ## Group 4: Schema & Structured Data
 
@@ -45,9 +45,9 @@ All schema.org JSON-LD categories. Run on a per-page-type basis (only check Arti
 
 Categories: 25, 26, 27, 28, 29, 30, 47, 48, 49, 53, 54, 55, 56, 60, 107, 108, 117, 120, 122, 123
 
-**Token cost: ~28-45K tokens.** 18 cats × ~1.5K + ~5K overhead. Cats 53-56 (analytics) cost less when no analytics is installed (fast Skip). Cat 120 (Meta ads structure) auto-skips when no Meta Pixel detected.
+**Token cost: ~31-49K tokens.** 20 cats × ~1.5K + ~5K overhead. Cats 53-56 (analytics) cost less when no analytics is installed (fast Skip). Cat 120 (Meta ads structure) auto-skips when no Meta Pixel detected.
 
-Image quality + a11y as conversion signals + analytics setup + CTAs / forms / trust signals / 404 pages + site copy lint (vague adjectives, unsupported superlatives, dark-pattern urgency, hidden price, weak social proof) + Meta ads account structure health (campaign topology, learning-phase respect, hook-variation depth).
+Image quality + a11y as conversion signals + analytics setup + pixel install completeness + UTM hygiene + CTAs / forms / trust signals / 404 pages + site copy lint (vague adjectives, unsupported superlatives, dark-pattern urgency, hidden price, weak social proof) + comparison / alternatives pages + lead-magnet acquisition assets + Meta ads account structure health (campaign topology, learning-phase respect, hook-variation depth).
 
 ## Group 6: International
 
@@ -55,7 +55,7 @@ Categories: 50, 51, 52, 133
 
 **Token cost: ~6-10K tokens.** 4 cats. Skips quickly on single-locale sites.
 
-Hreflang correctness, locale canonicals, html lang attribute. Small group; only useful when site has multiple locales.
+Hreflang correctness, locale canonicals, html lang attribute, machine-translation quality drift. Small group; only useful when site has multiple locales.
 
 ## Group 7: Email & Transactional
 
@@ -81,9 +81,9 @@ Most of this preset depends on the brand-maturity check (STEP 0.6) — categorie
 
 Categories: 82, 83, 84, 85, 106, 134
 
-**Token cost: ~10-18K tokens.** 5 cats × ~1.5K + ~5K overhead. Cat 82 (AI-search citation) adds 2-4K for ChatGPT / Claude / Perplexity test queries.
+**Token cost: ~11-20K tokens.** 6 cats × ~1.5K + ~5K overhead. Cat 82 (AI-search citation) adds 2-4K for ChatGPT / Claude / Perplexity test queries.
 
-The 2026-and-forward channel set. Different from Group 8 because these reflect what's actually working post-AI-overview, post-creator-economy: AI-search citation (the new TOFU), mid-tier creator partnerships (replacing macro-influencer), founder-led brand channel (replacing brand-account posting for early/indie brands), niche newsletter + podcast sponsorships (replacing display ads).
+The 2026-and-forward channel set. Different from Group 8 because these reflect what's actually working post-AI-overview, post-creator-economy: AI-search citation (the new TOFU), mid-tier creator partnerships (replacing macro-influencer), founder-led brand channel (replacing brand-account posting for early/indie brands), niche newsletter + podcast sponsorships (replacing display ads), llms.txt, and agent operability (can an AI agent complete the primary action).
 
 The GEO surface here is backed by several cross-cutting references: `references/citability-scoring.md` (passage citability + answer-length fitness), `references/ai-crawler-registry.md` (the full AI-crawler fleet), `references/brand-authority-platforms.md` (off-site authority sweep), and `references/schema-deprecations.md` (so the schema cats don't recommend dead rich results). When Cat 82 / 102 / 106 are in scope, the report can render an optional GEO readiness score (`references/geo-score.md`) — a transparent deduction rollup, not a vanity number.
 
@@ -109,9 +109,9 @@ The preset reflects what a top-1% B2B SaaS team checks before each major launch:
 
 Categories: 7, 9, 10, 11, 12, 22, 25, 27, 28, 29, 31, 33, 34, 73, 74, 87, 91, 94, 99, 101, 121, 122, 129, 134
 
-**Token cost: ~32-53K tokens.** 20 cats × ~1.5K + ~5K overhead. Image-heavy cats (25, 27, 28, 29) cost more on PDP-heavy stores.
+**Token cost: ~37-62K tokens.** 24 cats × ~1.5K + ~5K overhead. Image-heavy cats (25, 27, 28, 29) cost more on PDP-heavy stores.
 
-The e-commerce audit surface: pagination + faceted-nav/parameter indexation control; title/meta + Open Graph; image quality + dimensions + format; breadcrumbs + BreadcrumbList schema; Product / Recipe / Software / Review schema; CRO; customer feedback; conversion funnel deep-audit; AI-agent commerce signals.
+The e-commerce audit surface: pagination + faceted-nav/parameter indexation control; title/meta + Open Graph; image quality + dimensions + format; breadcrumbs + BreadcrumbList schema; Product / Recipe / Software / Review schema; CRO; customer feedback; conversion funnel deep-audit; information architecture; comparison / alternatives pages; AI-image provenance; AI-agent commerce signals; agent operability.
 
 **Faceted navigation / URL-parameter indexation is covered by Cat 7** (pagination, which carries the filter+sort canonical logic). Without it, a store with thousands of indexable `?color=`/`?size=`/`?sort=` URLs passes clean while bleeding crawl budget and creating duplicate-content competition — Cat 7 is the only cat that audits canonical handling of those faceted/parameter URLs, so it belongs in every e-commerce run.
 
@@ -121,9 +121,9 @@ Run with the brand-maturity check (STEP 0.6) gating off-site channels. Add Group
 
 Categories: 1, 2, 3, 9, 10, 22, 23, 25, 31, 33, 37, 49, 50, 53, 60, 75, 79, 92, 96, 118, 119, 127
 
-**Token cost: ~33-55K tokens.** 21 cats × ~1.5K + ~5K overhead. Cat 79 (GBP) + Cat 96 (brand SERP) + Cat 118 (GBP depth) require crawl-mode SERP / Maps fetches; add 2-4K each.
+**Token cost: ~34-57K tokens.** 22 cats × ~1.5K + ~5K overhead. Cat 79 (GBP) + Cat 96 (brand SERP) + Cat 118 (GBP depth) require crawl-mode SERP / Maps fetches; add 2-4K each.
 
-The local business audit: crawl + indexing fundamentals; on-site LocalBusiness schema (Cat 92) AND off-site GBP audit (Cat 79); NAP consistency; brand consistency; brand SERP defense; analytics; international (if multi-locale); accessibility (often legally required for public-sector / healthcare local businesses).
+The local business audit: crawl + indexing fundamentals; on-site LocalBusiness schema (Cat 92) AND off-site GBP audit (Cat 79); NAP consistency; brand consistency; brand SERP defense; GBP depth + hyper-local landing pages (Cats 118, 119); GBP feature-deprecation exposure (Cat 127); analytics; international (if multi-locale); accessibility (often legally required for public-sector / healthcare local businesses).
 
 NAP integrity is the load-bearing concern. Cross-reference Cat 79 GBP listing against Cat 92 on-site schema against the visible footer NAP — drift across these surfaces costs local rank.
 
@@ -131,9 +131,9 @@ NAP integrity is the load-bearing concern. Cross-reference Cat 79 GBP listing ag
 
 Categories: 2, 3, 9, 10, 16, 17, 18, 22, 30, 32, 33, 38, 42, 43, 53, 56, 57, 59, 70, 82, 93, 97, 125, 128, 132
 
-**Token cost: ~35-60K tokens.** 22 cats × ~1.5K + ~5K overhead. Content-volume cats (18 thin content, 57 topical depth, 97 content decay) cost more on high-volume sites.
+**Token cost: ~39-67K tokens.** 25 cats × ~1.5K + ~5K overhead. Content-volume cats (18 thin content, 57 topical depth, 97 content decay) cost more on high-volume sites.
 
-The publisher audit: sitemap + canonical (high stakes for content sites); single H1 + heading hierarchy (navigation map); semantic HTML; thin content; breadcrumbs; video sitemap; Article + BreadcrumbList + VideoObject schema; third-party scripts (ad-tech weight); image weight; analytics; consent mode; topical depth + AI content tells; content strategy; AI-search citation; Person/Author schema for E-E-A-T; content decay & refresh.
+The publisher audit: sitemap + canonical (high stakes for content sites); single H1 + heading hierarchy (navigation map); semantic HTML; thin content; breadcrumbs; video sitemap; Article + BreadcrumbList + VideoObject schema; third-party scripts (ad-tech weight); image weight; analytics; consent mode; topical depth + AI content tells; content strategy; AI-search citation; Person/Author schema for E-E-A-T; content decay & refresh; site-reputation-abuse risk; citation gaps; SERP-overlap clustering + cannibalization.
 
 Publishers with high content velocity also benefit from Group 9 (2026 Modern Marketing) for the AI-search + creator + founder-led layers.
 

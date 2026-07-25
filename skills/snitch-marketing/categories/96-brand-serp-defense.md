@@ -17,7 +17,7 @@ Brand SERP defense decomposes into five layers. Audit each.
 | **3. Position 1-5** | The first impression in the main column | Competitor PPC ad on top, then a negative review, then your homepage at position 4 |
 | **4. Social + sameAs** | Owned profiles linked to the brand entity | Stale / abandoned profiles, missing platforms, no `sameAs` linking them |
 | **5. Threats** | Brand-impersonation, typosquats, hostile content | Typosquat domains, hostile press dominating, fake review sites ranking |
-| **6. SERP-feature ownership** | The rich results above/around the organic list | Featured snippet, People Also Ask, image/video pack, or sitelinks-search-box answered by a third party (or a competitor) instead of the brand |
+| **6. SERP-feature ownership** | The rich results above/around the organic list | Featured snippet, People Also Ask, image/video pack, or top-stories answered by a third party (or a competitor) instead of the brand |
 
 ### Evidence required (do not skip)
 
@@ -33,7 +33,7 @@ Brand SERP defense decomposes into five layers. Audit each.
 6. Check Google Ads Transparency Center for competitors bidding on the brand name (Cat 66 cross-reference).
 7. Check Wikipedia for the brand entry (if it exists). Quote any factual errors or outdated content.
 8. Layer 4 off-site sweep: check presence + recency across the off-site platforms searchers and AI assistants weight, per `references/brand-authority-platforms.md` (Wikipedia, Reddit, YouTube, LinkedIn, G2, Trustpilot, etc.). Quote presence and last-activity per platform, and cross-check each against the `sameAs` array (a profile in `sameAs` that's abandoned or 404s is the finding).
-9. Layer 6 SERP-feature ownership: for the brand name AND the brand's top 3-5 informational/commercial queries, capture which SERP features render and WHO owns each — **featured snippet** (which URL is quoted), **People Also Ask** (whose pages answer the questions), **image pack**, **video carousel**, **knowledge panel**, **sitelinks search box**, **top-stories**. The finding is a feature the brand could own but a third party or competitor occupies (e.g., a featured snippet for "what is {brand}" pulled from a review site, not the brand's own page). Quote the feature + the owning URL + rank. Same tooling caveat as the live-SERP steps — needs a browser/WebSearch tool or a user-supplied screenshot; otherwise Skip-with-reason. Cross-reference Cat 82 (extractability) for WHY the brand's page isn't the one being pulled into the snippet.
+9. Layer 6 SERP-feature ownership: for the brand name AND the brand's top 3-5 informational/commercial queries, capture which SERP features render and WHO owns each — **featured snippet** (which URL is quoted), **People Also Ask** (whose pages answer the questions), **image pack**, **video carousel**, **knowledge panel**, **top-stories**. (Google RETIRED the Sitelinks Searchbox in Nov 2024 — it no longer renders, so don't look for it and don't flag its absence; the `WebSite` `SearchAction` markup behind it is inert, per Cat 37.) The finding is a feature the brand could own but a third party or competitor occupies (e.g., a featured snippet for "what is {brand}" pulled from a review site, not the brand's own page). Quote the feature + the owning URL + rank. Same tooling caveat as the live-SERP steps — needs a browser/WebSearch tool or a user-supplied screenshot; otherwise Skip-with-reason. Cross-reference Cat 82 (extractability) for WHY the brand's page isn't the one being pulled into the snippet.
 
 **Source mode, required tool calls:**
 

@@ -10,7 +10,7 @@
       "name": "snitch",
       "source": "./skills/snitch",
       "description": "Security audit for AI-written code \u2014 evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).",
-      "version": "9.1.0",
+      "version": "9.2.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
     },
@@ -18,7 +18,7 @@
       "name": "snitch-marketing",
       "source": "./skills/snitch-marketing",
       "description": "SEO + marketing audit with evidence-based findings \u2014 technical SEO, GEO/AI-search, schema, Core Web Vitals.",
-      "version": "1.9.0",
+      "version": "1.10.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
     },
@@ -26,7 +26,7 @@
       "name": "snitch-ux",
       "source": "./skills/snitch-ux",
       "description": "Behavioral-design / UX-psychology skill \u2014 clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "license": "MIT",
       "homepage": "https://snitchplugin.com"
     },

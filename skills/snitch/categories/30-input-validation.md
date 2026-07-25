@@ -22,14 +22,14 @@
 - `fs.readFile(path.join(baseDir, req.query.file))` without sanitizing `../` sequences
 - `Object.assign(config, req.body)` allowing `__proto__` pollution
 - Regex like `/^(a+)+$/` used to validate user input (catastrophic backtracking)
-- Express app with no `express.json({ limit: '...' })` body size configuration
+- A body parser whose cap is **explicitly raised** far beyond what the route consumes. The finding is the disproportion, not the presence or absence of the option — compare the configured cap against the largest field the handler actually reads. Severity Medium (CWE-770 / CWE-400, resource exhaustion), High when the route is unauthenticated and unthrottled
 - `lodash.merge(defaults, userInput)` with unsanitized user input
 
 ### NOT Vulnerable
 - File paths validated against an allowlist or using `path.resolve` with base dir check
 - Object merge with explicit property picking (`{ name, email } = req.body`)
 - Simple regex without nested quantifiers
-- Body parser with explicit size limits configured
+- **Any body parser left at its framework default** — a cap is configured, it simply isn't spelled out. This covers every parser in the family, not only the ones named here: `express.json()`, `express.urlencoded()`, `express.raw()`, `express.text()` all default to **100kb** whether or not other options (`extended`, `type`, `inflate`) are passed; Fastify's `bodyLimit` defaults to **1 MiB**. An options object without a `limit` key is still the default. Also a Pass when an explicit limit is *proportionate* to the payload the route accepts
 - Input validated through schema validation (Zod, Joi, Yup)
 
 ### Context Check
@@ -37,6 +37,13 @@
 2. Is object merging done with explicit property selection or raw input?
 3. Does the regex have nested quantifiers that could cause backtracking?
 4. Is there a body size limit configured on the HTTP framework?
+
+**Body-limit findings are posture, not taint.** This category is `Type: sink-pattern` and its
+tracing banner governs the traversal / prototype-pollution / ReDoS findings. A body-cap
+misconfiguration has no source and no sink, so the source→sink Evidence Chain below does not apply
+to it. Its evidence is: the parser call with its configured cap, the handler's largest consumed
+field, and whether the route is authenticated or rate-limited. Confidence is High when you read both
+the parser config and the handler, Medium when the route chain crosses a file you could not open.
 
 ### Evidence Chain
 A finding's Evidence block must show:

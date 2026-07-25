@@ -57,7 +57,7 @@ Patterns indicating thin content:
   Evidence required: quoted placeholder + the route URL.
 - **Auto-generated category / tag / archive page with no per-page content**.
   Evidence required: the page's template + the rendered output showing zero descriptive content beyond the listings.
-- **Programmatic SEO pages where only the variable token differs across hundreds of pages** ("Snitch CLI for {{language}}" with the same boilerplate body, only the language name varying).
+- **Programmatic SEO pages where only the variable token differs across hundreds of pages** ("Snitch for {{language}}" with the same boilerplate body, only the language name varying).
   Evidence required: 2-3 page samples showing the templated similarity.
 - **Duplicate content across pages** (the same paragraph repeated on every product page in a category).
   Evidence required: the duplicated paragraph + at least 3 routes that contain it.

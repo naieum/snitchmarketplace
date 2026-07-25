@@ -1,6 +1,13 @@
 ## CATEGORY 13: Stripe Security
 > Type: posture · Groups: modern-stack · CWE: CWE-798
 
+> **This category does not cover the payment page.** It covers the Stripe integration — keys,
+> webhooks, API usage. The scripts loaded *around* the Elements iframe, their integrity, and
+> tamper detection on that page are PCI DSS 6.4.3 and 11.6.1, and they live in **Category 22**.
+> A Stripe repository scanned with Cat 13 and without Cat 22 has no coverage of the browser
+> surface at all — which is where card skimming happens. Say so in the report if Cat 22 is not
+> in the selected set.
+
 ### Detection
 - `stripe` or `@stripe/stripe-js` imports
 - `STRIPE_` environment variables

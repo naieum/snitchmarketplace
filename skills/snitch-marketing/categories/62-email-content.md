@@ -9,7 +9,7 @@ The copy, voice, and information architecture inside each transactional email. S
 1. From Cat 61 inventory: list every template file or component that emits email body content.
 2. `Read` each template in full. Quote the body content.
 3. Check for: stale references ("beta", "coming soon", outdated product names), broken merge tag syntax (`{{varName}}` not interpolated), placeholder values (`123 Main St`, `support@example.com`), CTAs pointing at `localhost`, dev-only domains, or 404 paths.
-4. Cross-reference against the project's CLAUDE.md / brand voice guide if present (snitchplugin.com has voice rules: no MCP, no em dashes, no "your laptop", customer-first).
+4. Cross-reference against the project's CLAUDE.md / brand voice guide if present (snitchplugin.com has voice rules: no em dashes, no "your laptop", customer-first).
 
 **Crawl mode, required tool calls:**
 
@@ -27,7 +27,7 @@ The copy, voice, and information architecture inside each transactional email. S
 
 For each template:
 
-- **Stale product references**: search for "beta", "coming soon", "v1.x", old product names, sunset features (e.g., MCP for Snitch).
+- **Stale product references**: search for "beta", "coming soon", "v1.x", old product names, sunset features (a capability the product no longer ships).
 - **Broken merge tag syntax**: `{{var}}`, `${var}`, `<%= var %>`, confirm the template engine actually interpolates these. A literal `{{first_name}}` in production is a finding.
 - **Placeholder values shipped**: `123 Main St`, `Lorem ipsum`, `Your Company`, `support@yoursite.com`, default sender names like `Acme Corp`.
 - **Localhost / dev URLs in CTAs**: `http://localhost:3000`, `127.0.0.1`, `*.dev`, `*.local`, ngrok tunnels, Vercel preview URLs.

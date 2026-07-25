@@ -28,12 +28,6 @@ Skills load automatically from `~/.claude/skills/` or `./.claude/skills/`. If th
 /skill snitch-marketing
 ```
 
-Or install via the Snitch CLI:
-
-```
-snitch install marketing
-```
-
 ### Cursor
 
 Cursor reads from `.cursorrules` or supports custom commands. Two options:
@@ -126,10 +120,6 @@ Regardless of tool, the agent must be able to:
 
 If your tool can do the first five, this skill works; a shell adds the crawl-mode discovery and tool-backed evidence above.
 
-## What about MCP-based tools?
-
-For tools that don't natively support skill bundles but DO support MCP servers (Model Context Protocol), see `references/mcp-adapter.md` for the spec on packaging this skill as an MCP server. The MCP adapter exposes the audit as a tool call rather than a markdown-driven workflow, suitable for tools like Zed, certain Claude Desktop configurations, and custom agent harnesses.
-
 ## Validating your tool's setup
 
 After bootstrap, the agent should produce this output (or equivalent):
@@ -165,4 +155,4 @@ If the agent presents the menu correctly, the bootstrap succeeded. If it summari
 
 This bundle is a snapshot. The latest version is at https://snitchplugin.com/marketing.
 
-Updates are versioned; check `snitch-marketing.config.md` for the current version. For automatic updates in Claude Code: `snitch update marketing`.
+Updates are versioned; the current version is `metadata.version` in `SKILL.md`'s frontmatter, the single source of truth. To update, re-download the bundle and replace the directory.

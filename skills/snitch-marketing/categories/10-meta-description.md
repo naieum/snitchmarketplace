@@ -99,8 +99,8 @@ Worked fix example:
 
 > The description's job is to make a person scrolling SERP results stop and click YOUR result instead of the seven others. So write what the page actually does for them. Not what it is. What it does.
 >
-> Bad: "Snitch CLI is a security audit tool for AI-built code." (true, generic, sells nothing)
+> Bad: "Snitch is a security audit tool for AI-built code." (true, generic, sells nothing)
 >
-> Good: "Run a 72-category security review on your AI-written code from any terminal. Bring your own Claude or OpenRouter key. SARIF output, CI-ready, $19.99/mo." (specific, says what's in it for them)
+> Good: "Run a 69-category security review on your AI-written code in Claude Code, Cursor, or Copilot. Bring your own model. Every finding proved with file:line evidence." (specific, says what's in it for them)
 >
 > ~150-160 chars, page-specific, no fluff, no brand-as-suffix unless the brand IS the pitch.

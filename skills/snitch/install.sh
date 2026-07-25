@@ -6,17 +6,21 @@ set -e
 
 AUTO_YES=false
 NO_ANSI=false
+PROJECT_ARG=''
 
-for arg in "$@"; do
-  case "$arg" in
+while [ $# -gt 0 ]; do
+  case "$1" in
     --yes|-y) AUTO_YES=true ;;
     --no-ansi) NO_ANSI=true ;;
+    --project) shift; PROJECT_ARG="$1" ;;
+    --project=*) PROJECT_ARG="${1#--project=}" ;;
     *)
-      printf 'Unknown option: %s\n' "$arg" >&2
-      printf 'Usage: ./install.sh [--yes|-y] [--no-ansi]\n' >&2
+      printf 'Unknown option: %s\n' "$1" >&2
+      printf 'Usage: ./install.sh [--yes|-y] [--no-ansi] [--project <path>]\n' >&2
       exit 1
       ;;
   esac
+  shift
 done
 
 if [ -t 1 ] && [ "$NO_ANSI" != "true" ]; then
@@ -51,6 +55,7 @@ CATEGORIES_DIR="$SCRIPT_DIR/categories"
 REFS_DIR="$SCRIPT_DIR/references"
 COMPLIANCE_DIR="$SCRIPT_DIR/compliance-templates"
 CUSTOM_RULES_DIR="$SCRIPT_DIR/custom-rules"
+HOOKS_DIR="$SCRIPT_DIR/hooks"
 CONFIG_FILE="$SCRIPT_DIR/snitch-security.config.md"
 
 [ -f "$SKILL_FILE" ] || {
@@ -153,21 +158,111 @@ copy_extras() {
     [ -d "$dest/custom-rules" ] && rm -rf "$dest/custom-rules"
     cp -r "$CUSTOM_RULES_DIR" "$dest/custom-rules"
   fi
+  if [ -d "$HOOKS_DIR" ]; then
+    [ -d "$dest/hooks" ] && rm -rf "$dest/hooks"
+    cp -r "$HOOKS_DIR" "$dest/hooks"
+    chmod +x "$dest/hooks/"*.sh 2>/dev/null || true
+  fi
   if [ -f "$CONFIG_FILE" ]; then
     cp "$CONFIG_FILE" "$dest/snitch-security.config.md"
   fi
 }
 
-copy_skill_dir() {
-  dest="$1"
-  mkdir -p "$dest"
-  cp "$SKILL_FILE" "$dest/snitch-audit.md"
-  [ -d "$dest/categories" ] && rm -rf "$dest/categories"
-  cp -r "$CATEGORIES_DIR" "$dest/categories"
-  copy_extras "$dest"
-}
 
-copy_manual_dir() {
+# Skill directory name, taken from the SKILL.md frontmatter so it can never drift
+# from the skill's declared identity.
+SKILL_SLUG=$(sed -n 's/^name:[[:space:]]*\([A-Za-z0-9_-]*\).*/\1/p' "$SKILL_FILE" 2>/dev/null | head -1)
+[ -n "$SKILL_SLUG" ] || SKILL_SLUG=$(basename "$SCRIPT_DIR")
+
+# Agent registry: Name|global skills dir|detection dir|detection binary
+# Paths follow the open agent-skills convention (<agent>/skills/<skill-name>/).
+# Regenerate from the ecosystem's published agent table when new agents appear.
+AGENTS=$(cat <<'AGENTS_EOF'
+AdaL|~/.adal/skills|~/.adal|
+AiderDesk|~/.aider-desk/skills|~/.aider-desk|aider
+Amp|~/.config/agents/skills|~/.config/agents|amp
+Antigravity|~/.gemini/antigravity/skills|~/.gemini/antigravity|
+Antigravity CLI|~/.gemini/antigravity-cli/skills|~/.gemini/antigravity-cli|
+AstrBot|~/.astrbot/data/skills|~/.astrbot|
+Augment|~/.augment/skills|~/.augment|
+Autohand Code CLI|~/.autohand/skills|~/.autohand|
+Claude Code|~/.claude/skills|~/.claude|claude
+Cline|~/.agents/skills|~/.agents|
+Code Studio|~/.codestudio/skills|~/.codestudio|
+CodeArts Agent|~/.codeartsdoer/skills|~/.codeartsdoer|
+CodeBuddy|~/.codebuddy/skills|~/.codebuddy|
+Codemaker|~/.codemaker/skills|~/.codemaker|
+Codex|~/.codex/skills|~/.codex|codex
+Command Code|~/.commandcode/skills|~/.commandcode|
+Continue|~/.continue/skills|~/.continue|
+Cortex Code|~/.snowflake/cortex/skills|~/.snowflake/cortex|
+Crush|~/.config/crush/skills|~/.config/crush|crush
+Cursor|~/.cursor/skills|~/.cursor|cursor
+Deep Agents|~/.deepagents/agent/skills|~/.deepagents|
+Devin for Terminal|~/.config/devin/skills|~/.config/devin|devin
+Dexto|~/.agents/skills|~/.agents|
+Droid|~/.factory/skills|~/.factory|droid
+Firebender|~/.firebender/skills|~/.firebender|
+ForgeCode|~/.forge/skills|~/.forge|forge
+Gemini CLI|~/.gemini/skills|~/.gemini|gemini
+GitHub Copilot|~/.copilot/skills|~/.copilot|
+Goose|~/.config/goose/skills|~/.config/goose|goose
+Grok Build|~/.grok/skills|~/.grok|grok
+Hermes Agent|~/.hermes/skills|~/.hermes|
+IBM Bob|~/.bob/skills|~/.bob|
+iFlow CLI|~/.iflow/skills|~/.iflow|iflow
+inference.sh|~/.inferencesh/skills|~/.inferencesh|
+Jazz|~/.jazz/skills|~/.jazz|
+Junie|~/.junie/skills|~/.junie|
+Kilo Code|~/.kilocode/skills|~/.kilocode|
+Kimchi|~/.config/kimchi/harness/skills|~/.config/kimchi|
+Kimi Code CLI|~/.agents/skills|~/.agents|
+Kiro CLI|~/.kiro/skills|~/.kiro|kiro
+Kode|~/.kode/skills|~/.kode|kode
+Lingma|~/.lingma/skills|~/.lingma|
+Loaf|~/.agents/skills|~/.agents|
+MCPJam|~/.mcpjam/skills|~/.mcpjam|
+Mistral Vibe|~/.vibe/skills|~/.vibe|
+Moxby|~/.moxby/skills|~/.moxby|
+Mux|~/.mux/skills|~/.mux|mux
+Neovate|~/.neovate/skills|~/.neovate|
+Ona|~/.ona/skills|~/.ona|ona
+OpenClaw|~/.openclaw/skills|~/.openclaw|
+OpenCode|~/.config/opencode/skills|~/.config/opencode|opencode
+OpenHands|~/.openhands/skills|~/.openhands|openhands
+Pi|~/.pi/agent/skills|~/.pi|pi
+Pochi|~/.pochi/skills|~/.pochi|
+Qoder|~/.qoder/skills|~/.qoder|
+Qoder CN|~/.qoder-cn/skills|~/.qoder-cn|
+Qwen Code|~/.qwen/skills|~/.qwen|qwen
+Reasonix|~/.reasonix/skills|~/.reasonix|
+Replit|~/.config/agents/skills|~/.config/agents|
+Roo Code|~/.roo/skills|~/.roo|
+Rovo Dev|~/.rovodev/skills|~/.rovodev|
+Tabnine CLI|~/.tabnine/agent/skills|~/.tabnine|
+Terramind|~/.terramind/skills|~/.terramind|
+Tinycloud|~/.tinycloud/skills|~/.tinycloud|
+Trae|~/.trae/skills|~/.trae|trae
+Trae CN|~/.trae-cn/skills|~/.trae-cn|
+Universal|~/.config/agents/skills|~/.config/agents|
+Warp|~/.agents/skills|~/.agents|
+Windsurf|~/.codeium/windsurf/skills|~/.codeium/windsurf|windsurf
+ZCode|~/.zcode/skills|~/.zcode|
+Zed|~/.agents/skills|~/.agents|zed
+Zencoder|~/.zencoder/skills|~/.zencoder|
+Zenflow|~/.zencoder/skills|~/.zencoder|
+AGENTS_EOF
+)
+
+# Project-level universal path. Read by Cursor, Codex, Copilot, Gemini CLI, Cline,
+# Zed, OpenCode, Antigravity and others, so one directory covers many agents.
+UNIVERSAL_PROJECT_DIR=".agents/skills"
+
+# Locations earlier versions of this installer wrote to. Never deleted — only
+# reported, so an upgrading user knows where a stale copy still sits.
+LEGACY_PATHS=".cursor/rules .roo/rules .kilocode/rules .windsurfrules .cline/instructions.md .github/copilot-instructions.md .rules"
+
+install_payload() {
   dest="$1"
   mkdir -p "$dest"
   cp "$SKILL_FILE" "$dest/SKILL.md"
@@ -176,391 +271,130 @@ copy_manual_dir() {
   copy_extras "$dest"
 }
 
-append_skill_to_file() {
-  target="$1"
-  if [ -f "$target" ] && grep -qE "snitch\.live|snitchplugin\.com" "$target" 2>/dev/null; then
-    printf 'already_installed'
-    return 0
-  fi
-
-  mkdir -p "$(dirname "$target")"
-  if [ -f "$target" ]; then
-    printf '\n\n' >> "$target"
-  fi
-  cat "$SKILL_FILE" >> "$target"
-  target_dir="$(dirname "$target")"
-  [ -d "$target_dir/categories" ] && rm -rf "$target_dir/categories"
-  cp -r "$CATEGORIES_DIR" "$target_dir/categories"
-  copy_extras "$target_dir"
-  printf 'installed'
-}
-
-detect_tool() {
-  case "$1" in
-    claude_code)
-      if has_cmd claude; then printf 'binary'
-      elif has_dir "$HOME/.claude"; then printf '~/.claude/'
-      fi
-      ;;
-    gemini)
-      if has_cmd gemini; then printf 'binary'
-      elif has_dir "$HOME/.gemini"; then printf '~/.gemini/'
-      fi
-      ;;
-    codex)
-      if has_cmd codex; then printf 'binary'
-      elif has_dir "$HOME/.codex"; then printf '~/.codex/'
-      fi
-      ;;
-    cursor)
-      if [ -d "/Applications/Cursor.app" ]; then printf 'app'
-      elif has_cmd cursor; then printf 'binary'
-      fi
-      ;;
-    windsurf)
-      if [ -d "/Applications/Windsurf.app" ]; then printf 'app'
-      elif has_cmd windsurf; then printf 'binary'
-      fi
-      ;;
-    cline)
-      if has_vscode_ext "saoudrizwan.claude-dev"; then printf 'vscode ext'; fi
-      ;;
-    roo)
-      if has_dir "$HOME/.roo"; then printf '~/.roo/'
-      elif has_vscode_ext "rooveterinaryinc.roo-cline"; then printf 'vscode ext'
-      fi
-      ;;
-    copilot)
-      if has_vscode_ext "GitHub.copilot"; then printf 'vscode ext'; fi
-      ;;
-    aider)
-      if has_cmd aider; then printf 'binary'; fi
-      ;;
-    continue)
-      if has_dir "$HOME/.continue"; then printf '~/.continue/'
-      elif has_vscode_ext "Continue.continue"; then printf 'vscode ext'
-      fi
-      ;;
-    kilo)
-      if has_vscode_ext "kilocode.kilo-code"; then printf 'vscode ext'; fi
-      ;;
-    zed)
-      if [ -d "/Applications/Zed.app" ]; then printf 'app'
-      elif has_cmd zed; then printf 'binary'
-      fi
-      ;;
-    opencode)
-      if has_cmd opencode; then printf 'binary'
-      elif has_dir "$HOME/.config/opencode"; then printf '~/.config/opencode/'
-      fi
-      ;;
-    antigravity)
-      if has_cmd antigravity; then printf 'binary'
-      elif [ -d "/Applications/Antigravity.app" ]; then printf 'app'
-      fi
-      ;;
-  esac
-}
-
-tfield() { printf '%s' "$1" | cut -d'|' -f"$2"; }
-
-NTOOL=14
-T1="Claude Code|claude_code|global"
-T2="Gemini CLI|gemini|global"
-T3="Codex CLI|codex|perrun"
-T4="Cursor|cursor|project"
-T5="Windsurf|windsurf|project"
-T6="Cline|cline|project"
-T7="Roo Code|roo|project"
-T8="GitHub Copilot|copilot|project"
-T9="Aider|aider|perrun"
-T10="Continue.dev|continue|project"
-T11="Kilo Code|kilo|project"
-T12="Zed|zed|project"
-T13="OpenCode|opencode|global"
-T14="Antigravity|antigravity|project"
-
 header
 
-section "[1/4] Detecting tools"
+# ---------------------------------------------------------------- detect
+section "[1/4] Detecting agents"
+
 detected_count=0
-i=1
-while [ "$i" -le "$NTOOL" ]; do
-  eval "entry=\$T$i"
-  name=$(tfield "$entry" 1)
-  key=$(tfield "$entry" 2)
-  result=$(detect_tool "$key")
-  if [ -n "$result" ]; then
-    detected_count=$((detected_count + 1))
-    eval "SEL_$i=1"
-    eval "DET_$i=\$result"
-    print_detected "$name" "$result"
-  else
-    eval "SEL_$i=0"
-    eval "DET_$i="
-    print_missing "$name"
+
+TMP_DET=$(mktemp)
+printf '%s\n' "$AGENTS" | while IFS='|' read -r name gdir ddir bin; do
+  [ -n "$name" ] || continue
+  probe=$(expand_user_path "$ddir")
+  how=''
+  if [ -n "$bin" ] && has_cmd "$bin"; then
+    how='binary'
+  elif has_dir "$probe"; then
+    how="$ddir/"
   fi
-  i=$((i + 1))
+  if [ -n "$how" ]; then
+    printf '%s|%s|%s\n' "$name" "$gdir" "$how" >> "$TMP_DET"
+  fi
 done
 
-if [ "$detected_count" -eq 0 ]; then
-  section "[2/4] Installed"
-  printf '    %sNo supported tools were detected.%s\n' "$YELLOW" "$RESET"
-  printf '    Inspect the payload here: %s%s%s\n' "$WHITE" "$SCRIPT_DIR" "$RESET"
-  printf '\n'
-  exit 0
-fi
-
-PICK_N=0
-i=1
-while [ "$i" -le "$NTOOL" ]; do
-  eval "selected=\$SEL_$i"
-  if [ "$selected" = "1" ]; then
-    PICK_N=$((PICK_N + 1))
-    eval "PICK_$PICK_N=$i"
-  fi
-  i=$((i + 1))
-done
-
-section "[2/4] Choose install targets"
-if [ "$AUTO_YES" = "true" ]; then
-  printf '    %sInstalling all %s detected target(s).%s\n' "$GREEN" "$PICK_N" "$RESET"
+if [ -s "$TMP_DET" ]; then
+  while IFS='|' read -r name gdir how; do
+    print_detected "$name" "$how"
+  done < "$TMP_DET"
+  detected_count=$(wc -l < "$TMP_DET" | tr -d ' ')
 else
-  printf '    [a] all detected\n'
-  printf '    [c] custom path only\n'
-  pi=1
-  while [ "$pi" -le "$PICK_N" ]; do
-    eval "tidx=\$PICK_$pi"
-    eval "entry=\$T$tidx"
-    name=$(tfield "$entry" 1)
-    eval "result=\$DET_$tidx"
-    printf '    [%s] %s (%s)\n' "$pi" "$name" "$result"
-    pi=$((pi + 1))
-  done
-  printf '\n'
-  read_tty "    choice [a]: "
-  pick="$TTY_REPLY"
-  case "$pick" in
-    ''|a|A) ;;
-    c|C)
-      i=1
-      while [ "$i" -le "$NTOOL" ]; do
-        eval "SEL_$i=0"
-        i=$((i + 1))
-      done
-      ;;
-    n|N|q|Q)
-      printf '\n'
-      exit 0
-      ;;
-    [0-9]|[0-9][0-9])
-      eval "chosen=\$PICK_$pick"
-      if [ -n "$chosen" ]; then
-        i=1
-        while [ "$i" -le "$NTOOL" ]; do
-          eval "SEL_$i=0"
-          i=$((i + 1))
-        done
-        eval "SEL_$chosen=1"
-      else
-        printf '\n    %sInvalid choice. Pick a number from the list above, or "a" for all.%s\n' "$RED" "$RESET" >&2
-        exit 1
-      fi
-      ;;
-    *)
-      printf '\n    %sInvalid choice. Pick a number from the list above, or "a" for all.%s\n' "$RED" "$RESET" >&2
-      exit 1
-      ;;
-  esac
+  printf '    %sNo supported agents detected on this machine.%s\n' "$GRAY" "$RESET"
 fi
 
-DETECTED=''
-DETECTED_PROJECT=''
-i=1
-while [ "$i" -le "$NTOOL" ]; do
-  eval "selected=\$SEL_$i"
-  if [ "$selected" = "1" ]; then
-    eval "entry=\$T$i"
-    key=$(tfield "$entry" 2)
-    kind=$(tfield "$entry" 3)
-    case "$kind" in
-      global|perrun) DETECTED="$DETECTED $key" ;;
-      project) DETECTED_PROJECT="$DETECTED_PROJECT $key" ;;
-    esac
-  fi
-  i=$((i + 1))
-done
+total_agents=$(printf '%s\n' "$AGENTS" | grep -c '|')
+printf '\n    %s%s of %s known agents detected%s\n' "$GRAY" "$detected_count" "$total_agents" "$RESET"
+
+# ---------------------------------------------------------------- project target
+section "[2/4] Project-level install (optional)"
+
+printf '    %sOne directory — .agents/skills/ — is read by Cursor, Codex, Copilot,%s\n' "$GRAY" "$RESET"
+printf '    %sGemini CLI, Cline, Zed, OpenCode, Antigravity and more.%s\n' "$GRAY" "$RESET"
 
 PROJECT_DIR=''
-if [ -n "$(printf '%s' "$DETECTED_PROJECT" | tr -d ' ')" ]; then
-  printf '\n    Project-level targets need a project path.\n'
-  if [ "$AUTO_YES" != "true" ]; then
-    read_tty "    path (Enter to skip): "
-    PROJECT_DIR=$(expand_user_path "$TTY_REPLY")
-  fi
-
-  if [ -n "$PROJECT_DIR" ] && [ ! -d "$PROJECT_DIR" ]; then
-    printf '    %sSkipping project-level targets: path not found.%s\n' "$YELLOW" "$RESET"
+if [ -n "$PROJECT_ARG" ]; then
+  PROJECT_DIR=$(expand_user_path "$PROJECT_ARG")
+  if [ ! -d "$PROJECT_DIR" ]; then
+    printf '    %sSkipping project install: path not found.%s\n' "$YELLOW" "$RESET"
     PROJECT_DIR=''
   fi
+elif [ "$AUTO_YES" != "true" ]; then
+  read_tty "    project path (Enter to skip): "
+  PROJECT_DIR=$(expand_user_path "$TTY_REPLY")
+  if [ -n "$PROJECT_DIR" ] && [ ! -d "$PROJECT_DIR" ]; then
+    printf '    %sSkipping project install: path not found.%s\n' "$YELLOW" "$RESET"
+    PROJECT_DIR=''
+  fi
+else
+  printf '    %sskipped (--yes)%s\n' "$GRAY" "$RESET"
 fi
 
+# ---------------------------------------------------------------- install
 section "[3/4] Installing"
+
 installed_count=0
 already_count=0
-manual_count=0
-skipped_count=0
+TMP_SEEN=$(mktemp)
 
-for tool in $DETECTED; do
-  case "$tool" in
-    claude_code)
-      dest="$HOME/.claude/skills/snitch"
-      print_action "Claude Code" "copying payload to ~/.claude/skills/snitch/"
-      mkdir -p "$dest"
-      cp "$SKILL_FILE" "$dest/SKILL.md"
-      [ -d "$dest/categories" ] && rm -rf "$dest/categories"
-      cp -r "$CATEGORIES_DIR" "$dest/categories"
-      copy_extras "$dest"
+if [ -s "$TMP_DET" ]; then
+  while IFS='|' read -r name gdir how; do
+    dest="$(expand_user_path "$gdir")/$SKILL_SLUG"
+    # Several agents share one skills directory; install once per destination.
+    if grep -Fxq "$dest" "$TMP_SEEN" 2>/dev/null; then
+      print_result "$GRAY" "--" "$name" "shares a directory already installed"
+      continue
+    fi
+    printf '%s\n' "$dest" >> "$TMP_SEEN"
+    if [ -f "$dest/SKILL.md" ]; then
+      print_action "$name" "updating $gdir/$SKILL_SLUG/"
+      already_count=$((already_count + 1))
+    else
+      print_action "$name" "installing to $gdir/$SKILL_SLUG/"
       installed_count=$((installed_count + 1))
-      print_result "$GREEN" "ok" "Claude Code" "~/.claude/skills/snitch/"
-      ;;
-    gemini)
-      print_action "Gemini CLI" "appending instructions in ~/.gemini/instructions.md"
-      result=$(append_skill_to_file "$HOME/.gemini/instructions.md")
-      if [ "$result" = "already_installed" ]; then
-        already_count=$((already_count + 1))
-        print_result "$YELLOW" "--" "Gemini CLI" "already in ~/.gemini/instructions.md"
-      else
-        installed_count=$((installed_count + 1))
-        print_result "$GREEN" "ok" "Gemini CLI" "~/.gemini/instructions.md"
-      fi
-      ;;
-    codex)
-      manual_count=$((manual_count + 1))
-      print_result "$CYAN" "->" "Codex CLI" "manual setup: codex --instructions $SKILL_FILE"
-      ;;
-    aider)
-      manual_count=$((manual_count + 1))
-      print_result "$CYAN" "->" "Aider" "manual setup: aider --read $SKILL_FILE"
-      ;;
-    opencode)
-      dest="$HOME/.config/opencode/commands"
-      print_action "OpenCode" "copying payload to ~/.config/opencode/commands/"
-      mkdir -p "$dest"
-      cp "$SKILL_FILE" "$dest/snitch-audit.md"
-      [ -d "$dest/categories" ] && rm -rf "$dest/categories"
-      cp -r "$CATEGORIES_DIR" "$dest/categories"
-      copy_extras "$dest"
-      installed_count=$((installed_count + 1))
-      print_result "$GREEN" "ok" "OpenCode" "~/.config/opencode/commands/snitch-audit.md"
-      ;;
-  esac
-done
-
-if [ -n "$PROJECT_DIR" ]; then
-  for tool in $DETECTED_PROJECT; do
-    case "$tool" in
-      cursor)
-        print_action "Cursor" "copying payload to $PROJECT_DIR/.cursor/rules/"
-        copy_skill_dir "$PROJECT_DIR/.cursor/rules"
-        installed_count=$((installed_count + 1))
-        print_result "$GREEN" "ok" "Cursor" "$PROJECT_DIR/.cursor/rules/"
-        ;;
-      windsurf)
-        print_action "Windsurf" "appending instructions in $PROJECT_DIR/.windsurfrules"
-        result=$(append_skill_to_file "$PROJECT_DIR/.windsurfrules")
-        if [ "$result" = "already_installed" ]; then
-          already_count=$((already_count + 1))
-          print_result "$YELLOW" "--" "Windsurf" "already in .windsurfrules"
-        else
-          installed_count=$((installed_count + 1))
-          print_result "$GREEN" "ok" "Windsurf" ".windsurfrules"
-        fi
-        ;;
-      cline)
-        print_action "Cline" "appending instructions in $PROJECT_DIR/.cline/instructions.md"
-        result=$(append_skill_to_file "$PROJECT_DIR/.cline/instructions.md")
-        if [ "$result" = "already_installed" ]; then
-          already_count=$((already_count + 1))
-          print_result "$YELLOW" "--" "Cline" "already in .cline/instructions.md"
-        else
-          installed_count=$((installed_count + 1))
-          print_result "$GREEN" "ok" "Cline" ".cline/instructions.md"
-        fi
-        ;;
-      roo)
-        print_action "Roo Code" "copying payload to $PROJECT_DIR/.roo/rules/"
-        copy_skill_dir "$PROJECT_DIR/.roo/rules"
-        installed_count=$((installed_count + 1))
-        print_result "$GREEN" "ok" "Roo Code" "$PROJECT_DIR/.roo/rules/"
-        ;;
-      copilot)
-        print_action "GitHub Copilot" "appending instructions in $PROJECT_DIR/.github/copilot-instructions.md"
-        result=$(append_skill_to_file "$PROJECT_DIR/.github/copilot-instructions.md")
-        if [ "$result" = "already_installed" ]; then
-          already_count=$((already_count + 1))
-          print_result "$YELLOW" "--" "GitHub Copilot" "already in .github/copilot-instructions.md"
-        else
-          installed_count=$((installed_count + 1))
-          print_result "$GREEN" "ok" "GitHub Copilot" ".github/copilot-instructions.md"
-        fi
-        ;;
-      continue)
-        print_action "Continue.dev" "copying payload to $PROJECT_DIR/.continue/"
-        copy_skill_dir "$PROJECT_DIR/.continue"
-        installed_count=$((installed_count + 1))
-        print_result "$GREEN" "ok" "Continue.dev" "$PROJECT_DIR/.continue/"
-        ;;
-      kilo)
-        print_action "Kilo Code" "copying payload to $PROJECT_DIR/.kilocode/rules/"
-        copy_skill_dir "$PROJECT_DIR/.kilocode/rules"
-        installed_count=$((installed_count + 1))
-        print_result "$GREEN" "ok" "Kilo Code" "$PROJECT_DIR/.kilocode/rules/"
-        ;;
-      zed)
-        print_action "Zed" "copying payload to $PROJECT_DIR/.rules/"
-        copy_skill_dir "$PROJECT_DIR/.rules"
-        installed_count=$((installed_count + 1))
-        print_result "$GREEN" "ok" "Zed" "$PROJECT_DIR/.rules/"
-        ;;
-      antigravity)
-        print_action "Antigravity" "copying payload to $PROJECT_DIR/.antigravity/skills/"
-        copy_skill_dir "$PROJECT_DIR/.antigravity/skills"
-        installed_count=$((installed_count + 1))
-        print_result "$GREEN" "ok" "Antigravity" "$PROJECT_DIR/.antigravity/skills/"
-        ;;
-    esac
-  done
-elif [ -n "$(printf '%s' "$DETECTED_PROJECT" | tr -d ' ')" ]; then
-  skipped_count=$((skipped_count + 1))
-  print_result "$YELLOW" "--" "Project targets" "skipped: no project path provided"
+    fi
+    install_payload "$dest"
+    print_result "$GREEN" "ok" "$name" "$gdir/$SKILL_SLUG/"
+  done < "$TMP_DET"
 fi
 
-if [ "$AUTO_YES" != "true" ]; then
-  printf '\n'
-  read_tty "    copy payload to another directory? (path or Enter to skip): "
-  CUSTOM_DIR=$(expand_user_path "$TTY_REPLY")
-  if [ -n "$CUSTOM_DIR" ]; then
-    if [ ! -d "$CUSTOM_DIR" ]; then
-      read_tty "    create directory? [Y/n]: "
-      case "$TTY_REPLY" in
-        n|N) CUSTOM_DIR='' ;;
-        *) mkdir -p "$CUSTOM_DIR" ;;
-      esac
+if [ -n "$PROJECT_DIR" ]; then
+  pdest="$PROJECT_DIR/$UNIVERSAL_PROJECT_DIR/$SKILL_SLUG"
+  print_action "Project" "installing to $UNIVERSAL_PROJECT_DIR/$SKILL_SLUG/"
+  install_payload "$pdest"
+  print_result "$GREEN" "ok" "Project" "$UNIVERSAL_PROJECT_DIR/$SKILL_SLUG/"
+  installed_count=$((installed_count + 1))
+fi
+
+if [ "$installed_count" -eq 0 ] && [ "$already_count" -eq 0 ]; then
+  printf '    %snothing installed%s\n' "$GRAY" "$RESET"
+fi
+
+# ---------------------------------------------------------------- legacy check
+if [ -n "$PROJECT_DIR" ]; then
+  legacy_found=''
+  for lp in $LEGACY_PATHS; do
+    if [ -e "$PROJECT_DIR/$lp" ]; then
+      legacy_found="$legacy_found $lp"
     fi
-    if [ -n "$CUSTOM_DIR" ]; then
-      print_action "Custom copy" "copying payload to $CUSTOM_DIR/"
-      copy_manual_dir "$CUSTOM_DIR"
-      installed_count=$((installed_count + 1))
-      print_result "$GREEN" "ok" "Custom copy" "$CUSTOM_DIR/"
-    fi
+  done
+  if [ -n "$legacy_found" ]; then
+    printf '\n    %sEarlier versions installed into rules files. These still exist and may%s\n' "$YELLOW" "$RESET"
+    printf '    %shold a stale copy of the skill — review and remove them yourself:%s\n' "$YELLOW" "$RESET"
+    for lp in $legacy_found; do
+      printf '      %s%s%s\n' "$GRAY" "$lp" "$RESET"
+    done
   fi
 fi
 
+# ---------------------------------------------------------------- summary
 section "[4/4] Installed"
-printf '    %sInstalled:%s %s\n' "$DARK" "$RESET" "$installed_count"
-printf '    %sAlready present:%s %s\n' "$DARK" "$RESET" "$already_count"
-printf '    %sManual setup notes:%s %s\n' "$DARK" "$RESET" "$manual_count"
-printf '    %sSkipped:%s %s\n' "$DARK" "$RESET" "$skipped_count"
-printf '    %sPayload source:%s %s\n' "$DARK" "$RESET" "$SCRIPT_DIR"
-printf '\n'
+
+printf '    %s%s%s agent director%s written  %s(%s new, %s updated)%s\n' \
+  "$WHITE" "$((installed_count + already_count))" "$RESET" \
+  "$([ $((installed_count + already_count)) -eq 1 ] && echo 'y' || echo 'ies')" \
+  "$GRAY" "$installed_count" "$already_count" "$RESET"
+printf '    %sPayload:%s SKILL.md + %s categories + references\n' "$DARK" "$RESET" "$CAT_COUNT"
+printf '\n    %sAsk your agent for a security audit to start a scan.%s\n' "$GRAY" "$RESET"
+printf '    %ssnitchplugin.com%s\n\n' "$ACCENT" "$RESET"
+
+rm -f "$TMP_DET" "$TMP_SEEN"

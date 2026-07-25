@@ -27,8 +27,10 @@ framework auto-protections aren't flagged as bugs.
 - Express does **not** auto-escape output (no default templating) — so `res.send(userHtml)` *is* a
   real XSS sink (02). Don't assume escaping that isn't there.
 - `helmet` sets security headers (32); `express-rate-limit` covers rate limiting (07); `cors`
-  middleware with an allowlist covers CORS (08); `csurf`/double-submit covers CSRF (47). If present
-  and correctly configured, mark the related cat Pass-with-evidence.
+  middleware with an allowlist covers CORS (08); a maintained CSRF middleware (`csrf-csrf`,
+  `@dr.pogodin/csurf`) or an explicit double-submit / synchronizer-token check covers CSRF (47) —
+  note that `csurf` itself was deprecated and archived, so its presence is not evidence of a
+  maintained defense. If present and correctly configured, mark the related cat Pass-with-evidence.
 
 ## Hardening checklist (per finding, recommend the minimal fix)
 

@@ -52,5 +52,5 @@
 
 ### Reference
 - CWE-1333: Inefficient Regular Expression Complexity
-- OWASP Top 10:2025 — A04 Insecure Design
+- OWASP Top 10:2025 — A06 Insecure Design
 - CVSS 4.0: typically Medium to High (AV:N, AC:L, availability impact)

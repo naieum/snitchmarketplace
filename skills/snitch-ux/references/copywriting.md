@@ -5,6 +5,15 @@ swap table. This file is the *line-level* pass; for the *brand-level* message th
 serve — hero headline, tagline, value prop, onboarding narrative — see
 `brand-messaging.md` first (problem-first story, five sound bites, controlling idea).
 
+> **The ethics gate outranks every swap in this file.** Run `review-checklist.md` §10 and
+> SKILL.md Workflow Step 3.5 *before* applying anything here. Every rule below assumes the
+> underlying claim is **true** and the cost is **disclosed** — these are techniques for making
+> an honest offer legible, not for making a dishonest one palatable. Applied to a surface with
+> fabricated urgency, a hidden recurring charge, or a buried cancellation, several of these
+> swaps make the page measurably worse: softening a commitment word on a page that hides its
+> price removes the user's last warning. If the gate fails, the finding is the dishonesty, not
+> the wording.
+
 ## Principles
 
 - **Omit needless words.** Cut the words on the page in half, then cut what's left in half
@@ -46,13 +55,24 @@ serve — hero headline, tagline, value prop, onboarding narrative — see
   "most popular" tag tells the brain which option to pick.
 - **Loss framing in the copy** (only when true): "Don't lose your 5-day streak" >
   "Keep your streak"; a dismiss that owns the cost ("I'll risk it") > "Maybe later."
+  **A dismiss names a real consequence; it never insults the person choosing it.** "I'll risk
+  it" states what the user is accepting. "No thanks, I don't want to save money" tells them
+  they are foolish — that is confirmshaming, and it is the abusive end of this same rule.
+  The test: could the user read the decline aloud without being mocked by it? If the copy only
+  works because refusing feels embarrassing, it is a dark pattern.
 
 ## Swap table
 
+**Every row assumes the gate passed.** These swaps lower the perceived stakes of an action, which
+is only honest when the real stakes are stated at the same decision point. On a surface that hides
+a recurring charge, the commitment word *is* the user's last warning, and softening any of these is
+a dark pattern rather than a swap — that applies to the whole table, not only to the rows where it
+is spelled out.
+
 | Weaker | Stronger | Why |
 |---|---|---|
-| Sign up | Continue / Start my plan | endowment, low commitment |
-| Subscribe | Start free | "start" is light; question becomes easy |
+| Sign up | Continue / Start my plan | endowment, low commitment — **only when the price and recurrence are stated at the same decision point**; "Continue" on a page that initiates a recurring charge is worse than "Sign up" |
+| Subscribe | Start free | "start" is light; question becomes easy — **only when the price and recurrence are stated at the same decision point.** On a page that hides the recurring charge, "Subscribe" is the user's last warning and softening it is a dark pattern, not a swap |
 | Your free trial | My free trial | ownership |
 | Search | Show 12 results | previews the payoff (default + specificity) |
 | Quick setup | Set up in 2 taps | specificity = trust |
@@ -70,3 +90,5 @@ serve — hero headline, tagline, value prop, onboarding narrative — see
 - Round/fabricated stats or fake reviews.
 - Buried cost, surprise fees on the next screen, hidden cancellation.
 - Urgency/scarcity that isn't real.
+- **Confirmshaming** — a decline worded to insult the person choosing it ("No thanks, I don't
+  want to save money") rather than to name a real consequence. See the dismiss rule above.

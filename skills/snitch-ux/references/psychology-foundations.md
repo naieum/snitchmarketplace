@@ -232,7 +232,9 @@ Decisions are mostly **unconscious and emotional**, justified after the fact. Th
 levers (each detailed in `principles.md`) all work through predictable System-1 shortcuts:
 
 - **Defaults** — the pre-set option is taken as the recommendation and rarely changed.
-- **Choice overload** — too many options reduces action and satisfaction (the jam study).
+- **Choice overload** — too many *hard-to-distinguish* options can reduce action and satisfaction
+  (the jam study). A real effect under the right conditions — complex options, no formed
+  preference — not a reliable general one; meta-analysis puts the average effect near zero.
 - **Anchoring** — the first number seen frames every judgment after it.
 - **Loss aversion** — a loss hurts about twice as much as the equivalent gain pleases.
 - **Framing** — the same fact stated as a gain vs. a loss flips the decision.

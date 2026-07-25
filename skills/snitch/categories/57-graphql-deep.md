@@ -73,7 +73,7 @@
 - Spring GraphQL without `BatchLoaderRegistry`
 
 ### Actually Vulnerable
-- Apollo Server in production with `introspection: true` (default) and no query depth limit -- allows schema extraction and deeply nested denial-of-service queries
+- Apollo Server in production with an explicit `introspection: true` and no query depth limit -- allows schema extraction and deeply nested denial-of-service queries. Note the default is `NODE_ENV !== 'production'`, so introspection is already off in a correctly-configured production deploy; the finding is the explicit override, or a deploy where `NODE_ENV` is unset or is overridden by Apollo's `nodeEnv` option
 - Resolver that returns `User` with `passwordHash` field, no `@auth` directive -- any authenticated user can query sensitive fields
 - Mutation resolver for `transferFunds(amount, to)` with no rate limiting and no alias restriction -- attacker sends 100 aliased mutations in one request
 - GraphQL endpoint accepting arbitrary queries in production with no persisted query enforcement -- allows any crafted query

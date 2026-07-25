@@ -1,11 +1,13 @@
+[CmdletBinding()]
 param(
     [switch]$Yes,
-    [switch]$NoColor
+    [switch]$NoColor,
+    [string]$Project
 )
 
 $ErrorActionPreference = "Stop"
 
-$UseColor = (-not $NoColor) -and $Host.UI.SupportsVirtualTerminal
+$UseColor = (-not $NoColor) -and (-not [Console]::IsOutputRedirected) -and $Host.UI.SupportsVirtualTerminal
 if ($UseColor) {
     $ESC = [char]27
     $BOLD = "$ESC[1m"
@@ -32,21 +34,31 @@ if ($UseColor) {
 }
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+
+# On Windows $HOME is %HOMEDRIVE%%HOMEPATH%, which on a domain-joined machine with a
+# redirected home is NOT where agents put their dotdirs. Every agent writes under
+# %USERPROFILE%. On macOS/Linux USERPROFILE is unset and this falls back to $HOME.
+$UserHome = if ($env:USERPROFILE -and (Test-Path -LiteralPath $env:USERPROFILE -PathType Container)) {
+    $env:USERPROFILE
+} else {
+    $HOME
+}
 $SkillFile = Join-Path $ScriptDir "SKILL.md"
 $CategoriesDir = Join-Path $ScriptDir "categories"
 $ReferencesDir = Join-Path $ScriptDir "references"
 $ComplianceDir = Join-Path $ScriptDir "compliance-templates"
 $CustomRulesDir = Join-Path $ScriptDir "custom-rules"
+$HooksDir = Join-Path $ScriptDir "hooks"
 $ConfigFile = Join-Path $ScriptDir "snitch-security.config.md"
 
-if (-not (Test-Path $SkillFile)) {
+if (-not (Test-Path -LiteralPath $SkillFile)) {
     Write-Host ""
     Write-Host "${RED}error:${RESET} SKILL.md not found in $ScriptDir"
     Write-Host ""
     exit 1
 }
 
-if (-not (Test-Path $CategoriesDir)) {
+if (-not (Test-Path -LiteralPath $CategoriesDir)) {
     Write-Host ""
     Write-Host "${RED}error:${RESET} categories/ not found in $ScriptDir"
     Write-Host ""
@@ -58,14 +70,15 @@ if (-not (Test-Path $CategoriesDir)) {
 # would over-report: it includes _index.md and merged-redirect stubs.
 $CatCount = $null
 $IndexFile = Join-Path $CategoriesDir "_index.md"
-if (Test-Path $IndexFile) {
-    $CatMatch = Select-String -Path $IndexFile -Pattern 'Active categories:\s*(\d+)' | Select-Object -First 1
+if (Test-Path -LiteralPath $IndexFile) {
+    $CatMatch = Select-String -LiteralPath $IndexFile -Pattern 'Active categories:\s*(\d+)' | Select-Object -First 1
     if ($CatMatch) { $CatCount = [int]$CatMatch.Matches[0].Groups[1].Value }
 }
 if (-not $CatCount) {
-    $CatCount = (Get-ChildItem -Path $CategoriesDir -Filter "[0-9]*-*.md" -ErrorAction SilentlyContinue).Count
+    $CatCount = @(Get-ChildItem -LiteralPath $CategoriesDir -File -ErrorAction SilentlyContinue |
+                  Where-Object { $_.Name -match '^\d+-.*\.md$' }).Count
 }
-$HasExtras = (Test-Path $ReferencesDir) -or (Test-Path $ComplianceDir) -or (Test-Path $CustomRulesDir) -or (Test-Path $ConfigFile)
+$HasExtras = (Test-Path -LiteralPath $ReferencesDir) -or (Test-Path -LiteralPath $ComplianceDir) -or (Test-Path -LiteralPath $CustomRulesDir) -or (Test-Path -LiteralPath $ConfigFile)
 
 function Write-Hr {
     Write-Host "  ${DARK}------------------------------------------------------------${RESET}"
@@ -114,419 +127,288 @@ function Write-Action {
 function Expand-UserPath {
     param([string]$Path)
     if (-not $Path) { return "" }
-    if ($Path -eq "~") { return $HOME }
-    if ($Path.StartsWith("~\")) { return Join-Path $HOME $Path.Substring(2) }
-    if ($Path.StartsWith("~/")) { return Join-Path $HOME $Path.Substring(2) }
+    if ($Path -eq "~") { return $UserHome }
+    if ($Path.StartsWith("~\") -or $Path.StartsWith("~/")) {
+        return (Join-Path $UserHome $Path.Substring(2))
+    }
     return $Path
 }
 
 function Copy-Extras {
     param([string]$Dest)
 
-    if (Test-Path $ReferencesDir) {
+    if (Test-Path -LiteralPath $ReferencesDir) {
         $refDest = Join-Path $Dest "references"
-        if (Test-Path $refDest) { Remove-Item $refDest -Recurse -Force }
-        Copy-Item $ReferencesDir -Destination $refDest -Recurse -Force
+        if (Test-Path -LiteralPath $refDest) { Remove-Item -LiteralPath $refDest -Recurse -Force }
+        Copy-Item -LiteralPath $ReferencesDir -Destination $refDest -Recurse -Force
     }
 
-    if (Test-Path $ComplianceDir) {
+    if (Test-Path -LiteralPath $ComplianceDir) {
         $complianceDest = Join-Path $Dest "compliance-templates"
-        if (Test-Path $complianceDest) { Remove-Item $complianceDest -Recurse -Force }
-        Copy-Item $ComplianceDir -Destination $complianceDest -Recurse -Force
+        if (Test-Path -LiteralPath $complianceDest) { Remove-Item -LiteralPath $complianceDest -Recurse -Force }
+        Copy-Item -LiteralPath $ComplianceDir -Destination $complianceDest -Recurse -Force
     }
 
-    if (Test-Path $CustomRulesDir) {
+    if (Test-Path -LiteralPath $CustomRulesDir) {
         $rulesDest = Join-Path $Dest "custom-rules"
-        if (Test-Path $rulesDest) { Remove-Item $rulesDest -Recurse -Force }
-        Copy-Item $CustomRulesDir -Destination $rulesDest -Recurse -Force
+        if (Test-Path -LiteralPath $rulesDest) { Remove-Item -LiteralPath $rulesDest -Recurse -Force }
+        Copy-Item -LiteralPath $CustomRulesDir -Destination $rulesDest -Recurse -Force
     }
 
-    if (Test-Path $ConfigFile) {
-        Copy-Item $ConfigFile -Destination (Join-Path $Dest "snitch-security.config.md") -Force
+    if (Test-Path -LiteralPath $HooksDir) {
+        $hooksDest = Join-Path $Dest "hooks"
+        if (Test-Path -LiteralPath $hooksDest) { Remove-Item -LiteralPath $hooksDest -Recurse -Force }
+        Copy-Item -LiteralPath $HooksDir -Destination $hooksDest -Recurse -Force
+    }
+
+    if (Test-Path -LiteralPath $ConfigFile) {
+        Copy-Item -LiteralPath $ConfigFile -Destination (Join-Path $Dest "snitch-security.config.md") -Force
     }
 }
 
-function Copy-SkillDir {
-    param([string]$Dest)
-    New-Item -ItemType Directory -Force -Path $Dest | Out-Null
-    Copy-Item $SkillFile -Destination (Join-Path $Dest "snitch-audit.md") -Force
-    $catDest = Join-Path $Dest "categories"
-    if (Test-Path $catDest) { Remove-Item $catDest -Recurse -Force }
-    Copy-Item $CategoriesDir -Destination $catDest -Recurse -Force
-    Copy-Extras -Dest $Dest
+
+# Skill directory name, taken from the SKILL.md frontmatter so it can never drift
+# from the skill's declared identity.
+$SkillSlug = ""
+foreach ($line in (Get-Content -LiteralPath $SkillFile)) {
+    if ($line -match '^name:\s*([A-Za-z0-9_-]+)') { $SkillSlug = $Matches[1]; break }
+}
+if (-not $SkillSlug) { $SkillSlug = Split-Path -Leaf $ScriptDir }
+if (-not $SkillSlug) {
+    Write-Host ""
+    Write-Host "${RED}error:${RESET} could not determine skill slug"
+    Write-Host ""
+    exit 1
 }
 
-function Copy-ManualDir {
-    param([string]$Dest)
-    New-Item -ItemType Directory -Force -Path $Dest | Out-Null
-    Copy-Item $SkillFile -Destination (Join-Path $Dest "SKILL.md") -Force
-    $catDest = Join-Path $Dest "categories"
-    if (Test-Path $catDest) { Remove-Item $catDest -Recurse -Force }
-    Copy-Item $CategoriesDir -Destination $catDest -Recurse -Force
-    Copy-Extras -Dest $Dest
-}
-
-function Append-SkillToFile {
-    param([string]$Target)
-
-    $targetDir = Split-Path -Parent $Target
-    if ($targetDir) {
-        New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
-    }
-
-    if (Test-Path $Target) {
-        $content = Get-Content $Target -Raw -ErrorAction SilentlyContinue
-        if ($content -and ($content.Contains("snitch.live") -or $content.Contains("snitchplugin.com"))) {
-            return "already_installed"
-        }
-    } else {
-        New-Item -ItemType File -Force -Path $Target | Out-Null
-    }
-
-    if ((Get-Item $Target).Length -gt 0) {
-        Add-Content -Path $Target -Value "`n`n"
-    }
-
-    Get-Content $SkillFile -Raw | Add-Content -Path $Target
-    $catDest = Join-Path $targetDir "categories"
-    if (Test-Path $catDest) { Remove-Item $catDest -Recurse -Force }
-    Copy-Item $CategoriesDir -Destination $catDest -Recurse -Force
-    Copy-Extras -Dest $targetDir
-    return "installed"
-}
-
-function Test-VscodeExt {
-    param([string]$ExtId)
-    foreach ($cli in @("code", "codium")) {
-        if (Get-Command $cli -ErrorAction SilentlyContinue) {
-            $exts = & $cli --list-extensions 2>$null
-            if ($exts -match $ExtId) { return $true }
-        }
-    }
-    return $false
-}
-
-function Detect-Tool {
-    param([string]$Key)
-    switch ($Key) {
-        "claude_code" {
-            if (Get-Command "claude" -ErrorAction SilentlyContinue) { return "binary" }
-            if (Test-Path "$env:USERPROFILE\.claude") { return "~\.claude\" }
-        }
-        "gemini" {
-            if (Get-Command "gemini" -ErrorAction SilentlyContinue) { return "binary" }
-            if (Test-Path "$env:USERPROFILE\.gemini") { return "~\.gemini\" }
-        }
-        "codex" {
-            if (Get-Command "codex" -ErrorAction SilentlyContinue) { return "binary" }
-            if (Test-Path "$env:USERPROFILE\.codex") { return "~\.codex\" }
-        }
-        "cursor" {
-            if (Test-Path "$env:LOCALAPPDATA\Programs\Cursor\Cursor.exe") { return "app" }
-            if (Get-Command "cursor" -ErrorAction SilentlyContinue) { return "binary" }
-        }
-        "windsurf" {
-            if (Test-Path "$env:LOCALAPPDATA\Programs\Windsurf\Windsurf.exe") { return "app" }
-            if (Get-Command "windsurf" -ErrorAction SilentlyContinue) { return "binary" }
-        }
-        "cline" {
-            if (Test-VscodeExt "saoudrizwan.claude-dev") { return "vscode ext" }
-        }
-        "roo" {
-            if (Test-Path "$env:USERPROFILE\.roo") { return "~\.roo\" }
-            if (Test-VscodeExt "rooveterinaryinc.roo-cline") { return "vscode ext" }
-        }
-        "copilot" {
-            if (Test-VscodeExt "GitHub.copilot") { return "vscode ext" }
-        }
-        "aider" {
-            if (Get-Command "aider" -ErrorAction SilentlyContinue) { return "binary" }
-        }
-        "continue" {
-            if (Test-Path "$env:USERPROFILE\.continue") { return "~\.continue\" }
-            if (Test-VscodeExt "Continue.continue") { return "vscode ext" }
-        }
-        "kilo" {
-            if (Test-VscodeExt "kilocode.kilo-code") { return "vscode ext" }
-        }
-        "zed" {
-            if (Get-Command "zed" -ErrorAction SilentlyContinue) { return "binary" }
-        }
-        "opencode" {
-            if (Get-Command "opencode" -ErrorAction SilentlyContinue) { return "binary" }
-            if (Test-Path "$env:USERPROFILE\.config\opencode") { return "~\.config\opencode\" }
-        }
-        "antigravity" {
-            if (Get-Command "antigravity" -ErrorAction SilentlyContinue) { return "binary" }
-        }
-    }
-    return $null
-}
-
-$Tools = @(
-    @{ Name="Claude Code";     Key="claude_code"; Type="global" },
-    @{ Name="Gemini CLI";      Key="gemini";      Type="global" },
-    @{ Name="Codex CLI";       Key="codex";       Type="perrun" },
-    @{ Name="Cursor";          Key="cursor";      Type="project" },
-    @{ Name="Windsurf";        Key="windsurf";    Type="project" },
-    @{ Name="Cline";           Key="cline";       Type="project" },
-    @{ Name="Roo Code";        Key="roo";         Type="project" },
-    @{ Name="GitHub Copilot";  Key="copilot";     Type="project" },
-    @{ Name="Aider";           Key="aider";       Type="perrun" },
-    @{ Name="Continue.dev";    Key="continue";    Type="project" },
-    @{ Name="Kilo Code";       Key="kilo";        Type="project" },
-    @{ Name="Zed";             Key="zed";         Type="project" },
-    @{ Name="OpenCode";        Key="opencode";    Type="global" },
-    @{ Name="Antigravity";     Key="antigravity"; Type="project" }
+# Agent registry: Name|global skills dir|detection dir|detection binary
+# Paths follow the open agent-skills convention (<agent>/skills/<skill-name>/).
+# Regenerate from the ecosystem's published agent table when new agents appear.
+$Agents = @(
+    "AdaL|~/.adal/skills|~/.adal|"
+    "AiderDesk|~/.aider-desk/skills|~/.aider-desk|aider"
+    "Amp|~/.config/agents/skills|~/.config/agents|amp"
+    "Antigravity|~/.gemini/antigravity/skills|~/.gemini/antigravity|"
+    "Antigravity CLI|~/.gemini/antigravity-cli/skills|~/.gemini/antigravity-cli|"
+    "AstrBot|~/.astrbot/data/skills|~/.astrbot|"
+    "Augment|~/.augment/skills|~/.augment|"
+    "Autohand Code CLI|~/.autohand/skills|~/.autohand|"
+    "Claude Code|~/.claude/skills|~/.claude|claude"
+    "Cline|~/.agents/skills|~/.agents|"
+    "Code Studio|~/.codestudio/skills|~/.codestudio|"
+    "CodeArts Agent|~/.codeartsdoer/skills|~/.codeartsdoer|"
+    "CodeBuddy|~/.codebuddy/skills|~/.codebuddy|"
+    "Codemaker|~/.codemaker/skills|~/.codemaker|"
+    "Codex|~/.codex/skills|~/.codex|codex"
+    "Command Code|~/.commandcode/skills|~/.commandcode|"
+    "Continue|~/.continue/skills|~/.continue|"
+    "Cortex Code|~/.snowflake/cortex/skills|~/.snowflake/cortex|"
+    "Crush|~/.config/crush/skills|~/.config/crush|crush"
+    "Cursor|~/.cursor/skills|~/.cursor|cursor"
+    "Deep Agents|~/.deepagents/agent/skills|~/.deepagents|"
+    "Devin for Terminal|~/.config/devin/skills|~/.config/devin|devin"
+    "Dexto|~/.agents/skills|~/.agents|"
+    "Droid|~/.factory/skills|~/.factory|droid"
+    "Firebender|~/.firebender/skills|~/.firebender|"
+    "ForgeCode|~/.forge/skills|~/.forge|forge"
+    "Gemini CLI|~/.gemini/skills|~/.gemini|gemini"
+    "GitHub Copilot|~/.copilot/skills|~/.copilot|"
+    "Goose|~/.config/goose/skills|~/.config/goose|goose"
+    "Grok Build|~/.grok/skills|~/.grok|grok"
+    "Hermes Agent|~/.hermes/skills|~/.hermes|"
+    "IBM Bob|~/.bob/skills|~/.bob|"
+    "iFlow CLI|~/.iflow/skills|~/.iflow|iflow"
+    "inference.sh|~/.inferencesh/skills|~/.inferencesh|"
+    "Jazz|~/.jazz/skills|~/.jazz|"
+    "Junie|~/.junie/skills|~/.junie|"
+    "Kilo Code|~/.kilocode/skills|~/.kilocode|"
+    "Kimchi|~/.config/kimchi/harness/skills|~/.config/kimchi|"
+    "Kimi Code CLI|~/.agents/skills|~/.agents|"
+    "Kiro CLI|~/.kiro/skills|~/.kiro|kiro"
+    "Kode|~/.kode/skills|~/.kode|kode"
+    "Lingma|~/.lingma/skills|~/.lingma|"
+    "Loaf|~/.agents/skills|~/.agents|"
+    "MCPJam|~/.mcpjam/skills|~/.mcpjam|"
+    "Mistral Vibe|~/.vibe/skills|~/.vibe|"
+    "Moxby|~/.moxby/skills|~/.moxby|"
+    "Mux|~/.mux/skills|~/.mux|mux"
+    "Neovate|~/.neovate/skills|~/.neovate|"
+    "Ona|~/.ona/skills|~/.ona|ona"
+    "OpenClaw|~/.openclaw/skills|~/.openclaw|"
+    "OpenCode|~/.config/opencode/skills|~/.config/opencode|opencode"
+    "OpenHands|~/.openhands/skills|~/.openhands|openhands"
+    "Pi|~/.pi/agent/skills|~/.pi|pi"
+    "Pochi|~/.pochi/skills|~/.pochi|"
+    "Qoder|~/.qoder/skills|~/.qoder|"
+    "Qoder CN|~/.qoder-cn/skills|~/.qoder-cn|"
+    "Qwen Code|~/.qwen/skills|~/.qwen|qwen"
+    "Reasonix|~/.reasonix/skills|~/.reasonix|"
+    "Replit|~/.config/agents/skills|~/.config/agents|"
+    "Roo Code|~/.roo/skills|~/.roo|"
+    "Rovo Dev|~/.rovodev/skills|~/.rovodev|"
+    "Tabnine CLI|~/.tabnine/agent/skills|~/.tabnine|"
+    "Terramind|~/.terramind/skills|~/.terramind|"
+    "Tinycloud|~/.tinycloud/skills|~/.tinycloud|"
+    "Trae|~/.trae/skills|~/.trae|trae"
+    "Trae CN|~/.trae-cn/skills|~/.trae-cn|"
+    "Universal|~/.config/agents/skills|~/.config/agents|"
+    "Warp|~/.agents/skills|~/.agents|"
+    "Windsurf|~/.codeium/windsurf/skills|~/.codeium/windsurf|windsurf"
+    "ZCode|~/.zcode/skills|~/.zcode|"
+    "Zed|~/.agents/skills|~/.agents|zed"
+    "Zencoder|~/.zencoder/skills|~/.zencoder|"
+    "Zenflow|~/.zencoder/skills|~/.zencoder|"
 )
+
+# Project-level universal path. Read by Cursor, Codex, Copilot, Gemini CLI, Cline,
+# Zed, OpenCode, Antigravity and others, so one directory covers many agents.
+$UniversalProjectDir = ".agents/skills"
+
+# Locations earlier versions of this installer wrote to. Never deleted - only
+# reported, so an upgrading user knows where a stale copy still sits.
+$LegacyPaths = @(".cursor/rules", ".roo/rules", ".kilocode/rules", ".windsurfrules",
+                 ".cline/instructions.md", ".github/copilot-instructions.md", ".rules")
+
+function Install-Payload {
+    param([string]$Dest)
+    # .NET APIs resolve relative paths against the process working directory, not $PWD,
+    # and Set-Location does not sync the two. Anchor to an absolute path so
+    # CreateDirectory and the Copy-Item cmdlets below cannot disagree about what
+    # a relative $Dest means. GetUnresolvedProviderPathFromPSPath works on paths
+    # that do not exist yet and does not glob, so it preserves the -LiteralPath intent.
+    $Dest = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Dest)
+    [void][System.IO.Directory]::CreateDirectory($Dest)
+    Copy-Item -LiteralPath $SkillFile -Destination (Join-Path $Dest "SKILL.md") -Force
+    $catDest = Join-Path $Dest "categories"
+    if (Test-Path -LiteralPath $catDest) { Remove-Item -LiteralPath $catDest -Recurse -Force }
+    Copy-Item -LiteralPath $CategoriesDir -Destination $catDest -Recurse -Force
+    Copy-Extras -Dest $Dest
+}
 
 Write-Header
 
-Write-Section "[1/4] Detecting tools"
+# ---------------------------------------------------------------- detect
+Write-Section "[1/4] Detecting agents"
+
 $Detected = @()
-foreach ($tool in $Tools) {
-    $result = Detect-Tool -Key $tool.Key
-    if ($result) {
-        Write-Detected -Name $tool.Name -Detail $result
-        $Detected += @{ Tool = $tool; Result = $result }
-    } else {
-        Write-Missing -Name $tool.Name
+foreach ($entry in $Agents) {
+    $f = $entry -split '\|'
+    $name = $f[0]; $gdir = $f[1]; $ddir = $f[2]; $bin = $f[3]
+    $probe = Expand-UserPath $ddir
+    $how = ""
+    if ($bin -and (Get-Command $bin -ErrorAction SilentlyContinue)) {
+        $how = "binary"
+    } elseif (Test-Path -LiteralPath $probe -PathType Container) {
+        $how = "$ddir/"
+    }
+    if ($how) {
+        $Detected += [PSCustomObject]@{ Name = $name; GlobalDir = $gdir; How = $how }
     }
 }
 
-if ($Detected.Count -eq 0) {
-    Write-Section "[2/4] Installed"
-    Write-Host "    ${YELLOW}No supported tools were detected.${RESET}"
-    Write-Host "    Inspect the payload here: ${WHITE}$ScriptDir${RESET}"
-    Write-Host ""
-    exit 0
-}
-
-Write-Section "[2/4] Choose install targets"
-if ($Yes) {
-    Write-Host "    ${GREEN}Installing all $($Detected.Count) detected target(s).${RESET}"
+if ($Detected.Count -gt 0) {
+    foreach ($d in $Detected) { Write-Detected $d.Name $d.How }
 } else {
-    Write-Host "    [a] all detected"
-    Write-Host "    [c] custom path only"
-    for ($i = 0; $i -lt $Detected.Count; $i++) {
-        $n = $i + 1
-        $name = $Detected[$i].Tool.Name
-        $detail = $Detected[$i].Result
-        Write-Host "    [$n] $name ($detail)"
-    }
-
-    Write-Host ""
-    $pick = Read-Host "    choice [a]"
-    if (-not $pick) { $pick = "a" }
-
-    switch -regex ($pick) {
-        "^[aA]$" { }
-        "^[cC]$" { $Detected = @() }
-        "^[nNqQ]$" { exit 0 }
-        "^\d+$" {
-            $idx = [int]$pick - 1
-            if ($idx -ge 0 -and $idx -lt $Detected.Count) {
-                $Detected = @($Detected[$idx])
-            } else {
-                Write-Host ""
-                Write-Host "${RED}Invalid choice.${RESET}"
-                exit 1
-            }
-        }
-        default {
-            Write-Host ""
-            Write-Host "${RED}Invalid choice.${RESET}"
-            exit 1
-        }
-    }
+    Write-Host "    ${GRAY}No supported agents detected on this machine.${RESET}"
 }
+Write-Host ""
+Write-Host "    ${GRAY}$($Detected.Count) of $($Agents.Count) known agents detected${RESET}"
 
-$GlobalTools = $Detected | Where-Object { $_.Tool.Type -in @("global", "perrun") }
-$ProjectTools = $Detected | Where-Object { $_.Tool.Type -eq "project" }
+# ---------------------------------------------------------------- project target
+Write-Section "[2/4] Project-level install (optional)"
+
+Write-Host "    ${GRAY}One directory - .agents/skills/ - is read by Cursor, Codex, Copilot,${RESET}"
+Write-Host "    ${GRAY}Gemini CLI, Cline, Zed, OpenCode, Antigravity and more.${RESET}"
+
+$Interactive = (-not $Yes) -and (-not [Console]::IsInputRedirected)
+
 $ProjectDir = ""
-
-if ($ProjectTools.Count -gt 0) {
-    Write-Host ""
-    Write-Host "    Project-level targets need a project path."
-    if (-not $Yes) {
-        $ProjectDir = Expand-UserPath (Read-Host "    path (Enter to skip)")
-    }
-
-    if ($ProjectDir -and -not (Test-Path $ProjectDir)) {
-        Write-Host "    ${YELLOW}Skipping project-level targets: path not found.${RESET}"
+if ($Project) {
+    $ProjectDir = Expand-UserPath $Project
+    if (-not (Test-Path -LiteralPath $ProjectDir -PathType Container)) {
+        Write-Host "    ${YELLOW}Skipping project install: path not found.${RESET}"
         $ProjectDir = ""
+    } else {
+        $ProjectDir = (Resolve-Path -LiteralPath $ProjectDir).ProviderPath
     }
+} elseif ($Interactive) {
+    $reply = Read-Host "    project path (Enter to skip)"
+    if ($reply) { $reply = $reply.Trim() }
+    if ($reply) {
+        $ProjectDir = Expand-UserPath $reply
+        if (-not (Test-Path -LiteralPath $ProjectDir -PathType Container)) {
+            Write-Host "    ${YELLOW}Skipping project install: path not found.${RESET}"
+            $ProjectDir = ""
+        } else {
+            $ProjectDir = (Resolve-Path -LiteralPath $ProjectDir).ProviderPath
+        }
+    }
+} elseif ($Yes) {
+    Write-Host "    ${GRAY}skipped (-Yes)${RESET}"
+} else {
+    Write-Host "    ${GRAY}skipped (non-interactive)${RESET}"
 }
 
+# ---------------------------------------------------------------- install
 Write-Section "[3/4] Installing"
-$InstalledCount = 0
-$AlreadyCount = 0
-$ManualCount = 0
-$SkippedCount = 0
 
-foreach ($item in $GlobalTools) {
-    switch ($item.Tool.Key) {
-        "claude_code" {
-            $dest = Join-Path $env:USERPROFILE ".claude\skills\snitch"
-            Write-Action -Name "Claude Code" -Detail "copying payload to ~\.claude\skills\snitch\"
-            New-Item -ItemType Directory -Force -Path $dest | Out-Null
-            Copy-Item $SkillFile -Destination (Join-Path $dest "SKILL.md") -Force
-            $catDest = Join-Path $dest "categories"
-            if (Test-Path $catDest) { Remove-Item $catDest -Recurse -Force }
-            Copy-Item $CategoriesDir -Destination $catDest -Recurse -Force
-            Copy-Extras -Dest $dest
-            $InstalledCount++
-            Write-Result -Color $GREEN -Prefix "ok" -Name "Claude Code" -Detail "~\.claude\skills\snitch\"
-        }
-        "gemini" {
-            $target = Join-Path $env:USERPROFILE ".gemini\instructions.md"
-            Write-Action -Name "Gemini CLI" -Detail "appending instructions in ~\.gemini\instructions.md"
-            $result = Append-SkillToFile -Target $target
-            if ($result -eq "already_installed") {
-                $AlreadyCount++
-                Write-Result -Color $YELLOW -Prefix "--" -Name "Gemini CLI" -Detail "already in ~\.gemini\instructions.md"
-            } else {
-                $InstalledCount++
-                Write-Result -Color $GREEN -Prefix "ok" -Name "Gemini CLI" -Detail "~\.gemini\instructions.md"
-            }
-        }
-        "codex" {
-            $ManualCount++
-            Write-Result -Color $CYAN -Prefix "->" -Name "Codex CLI" -Detail "manual setup: codex --instructions $SkillFile"
-        }
-        "aider" {
-            $ManualCount++
-            Write-Result -Color $CYAN -Prefix "->" -Name "Aider" -Detail "manual setup: aider --read $SkillFile"
-        }
-        "opencode" {
-            $dest = Join-Path $env:USERPROFILE ".config\opencode\commands"
-            Write-Action -Name "OpenCode" -Detail "copying payload to ~\.config\opencode\commands\"
-            New-Item -ItemType Directory -Force -Path $dest | Out-Null
-            Copy-Item $SkillFile -Destination (Join-Path $dest "snitch-audit.md") -Force
-            $catDest = Join-Path $dest "categories"
-            if (Test-Path $catDest) { Remove-Item $catDest -Recurse -Force }
-            Copy-Item $CategoriesDir -Destination $catDest -Recurse -Force
-            Copy-Extras -Dest $dest
-            $InstalledCount++
-            Write-Result -Color $GREEN -Prefix "ok" -Name "OpenCode" -Detail "~\.config\opencode\commands\snitch-audit.md"
-        }
+$installedCount = 0
+$alreadyCount = 0
+$seen = @{}
+
+foreach ($d in $Detected) {
+    $dest = Join-Path (Expand-UserPath $d.GlobalDir) $SkillSlug
+    # Several agents share one skills directory; install once per destination.
+    if ($seen.ContainsKey($dest)) {
+        Write-Result $GRAY "--" $d.Name "shares a directory already installed"
+        continue
     }
+    $seen[$dest] = $true
+    if (Test-Path -LiteralPath (Join-Path $dest "SKILL.md")) {
+        Write-Action $d.Name "updating $($d.GlobalDir)/$SkillSlug/"
+        $alreadyCount++
+    } else {
+        Write-Action $d.Name "installing to $($d.GlobalDir)/$SkillSlug/"
+        $installedCount++
+    }
+    Install-Payload $dest
+    Write-Result $GREEN "ok" $d.Name "$($d.GlobalDir)/$SkillSlug/"
 }
 
 if ($ProjectDir) {
-    foreach ($item in $ProjectTools) {
-        switch ($item.Tool.Key) {
-            "cursor" {
-                $dest = Join-Path $ProjectDir ".cursor\rules"
-                Write-Action -Name "Cursor" -Detail "copying payload to $dest\"
-                Copy-SkillDir -Dest $dest
-                $InstalledCount++
-                Write-Result -Color $GREEN -Prefix "ok" -Name "Cursor" -Detail "$dest\"
-            }
-            "windsurf" {
-                $target = Join-Path $ProjectDir ".windsurfrules"
-                Write-Action -Name "Windsurf" -Detail "appending instructions in $target"
-                $result = Append-SkillToFile -Target $target
-                if ($result -eq "already_installed") {
-                    $AlreadyCount++
-                    Write-Result -Color $YELLOW -Prefix "--" -Name "Windsurf" -Detail "already in .windsurfrules"
-                } else {
-                    $InstalledCount++
-                    Write-Result -Color $GREEN -Prefix "ok" -Name "Windsurf" -Detail ".windsurfrules"
-                }
-            }
-            "cline" {
-                $target = Join-Path $ProjectDir ".cline\instructions.md"
-                Write-Action -Name "Cline" -Detail "appending instructions in $target"
-                $result = Append-SkillToFile -Target $target
-                if ($result -eq "already_installed") {
-                    $AlreadyCount++
-                    Write-Result -Color $YELLOW -Prefix "--" -Name "Cline" -Detail "already in .cline\instructions.md"
-                } else {
-                    $InstalledCount++
-                    Write-Result -Color $GREEN -Prefix "ok" -Name "Cline" -Detail ".cline\instructions.md"
-                }
-            }
-            "roo" {
-                $dest = Join-Path $ProjectDir ".roo\rules"
-                Write-Action -Name "Roo Code" -Detail "copying payload to $dest\"
-                Copy-SkillDir -Dest $dest
-                $InstalledCount++
-                Write-Result -Color $GREEN -Prefix "ok" -Name "Roo Code" -Detail "$dest\"
-            }
-            "copilot" {
-                $target = Join-Path $ProjectDir ".github\copilot-instructions.md"
-                Write-Action -Name "GitHub Copilot" -Detail "appending instructions in $target"
-                $result = Append-SkillToFile -Target $target
-                if ($result -eq "already_installed") {
-                    $AlreadyCount++
-                    Write-Result -Color $YELLOW -Prefix "--" -Name "GitHub Copilot" -Detail "already in .github\copilot-instructions.md"
-                } else {
-                    $InstalledCount++
-                    Write-Result -Color $GREEN -Prefix "ok" -Name "GitHub Copilot" -Detail ".github\copilot-instructions.md"
-                }
-            }
-            "continue" {
-                $dest = Join-Path $ProjectDir ".continue"
-                Write-Action -Name "Continue.dev" -Detail "copying payload to $dest\"
-                Copy-SkillDir -Dest $dest
-                $InstalledCount++
-                Write-Result -Color $GREEN -Prefix "ok" -Name "Continue.dev" -Detail "$dest\"
-            }
-            "kilo" {
-                $dest = Join-Path $ProjectDir ".kilocode\rules"
-                Write-Action -Name "Kilo Code" -Detail "copying payload to $dest\"
-                Copy-SkillDir -Dest $dest
-                $InstalledCount++
-                Write-Result -Color $GREEN -Prefix "ok" -Name "Kilo Code" -Detail "$dest\"
-            }
-            "zed" {
-                $dest = Join-Path $ProjectDir ".rules"
-                Write-Action -Name "Zed" -Detail "copying payload to $dest\"
-                Copy-SkillDir -Dest $dest
-                $InstalledCount++
-                Write-Result -Color $GREEN -Prefix "ok" -Name "Zed" -Detail "$dest\"
-            }
-            "antigravity" {
-                $dest = Join-Path $ProjectDir ".antigravity\skills"
-                Write-Action -Name "Antigravity" -Detail "copying payload to $dest\"
-                Copy-SkillDir -Dest $dest
-                $InstalledCount++
-                Write-Result -Color $GREEN -Prefix "ok" -Name "Antigravity" -Detail "$dest\"
-            }
-        }
-    }
-} elseif ($ProjectTools.Count -gt 0) {
-    $SkippedCount++
-    Write-Result -Color $YELLOW -Prefix "--" -Name "Project targets" -Detail "skipped: no project path provided"
+    $pdest = Join-Path (Join-Path $ProjectDir $UniversalProjectDir) $SkillSlug
+    Write-Action "Project" "installing to $UniversalProjectDir/$SkillSlug/"
+    Install-Payload $pdest
+    Write-Result $GREEN "ok" "Project" "$UniversalProjectDir/$SkillSlug/"
+    $installedCount++
 }
 
-if (-not $Yes) {
-    Write-Host ""
-    $CustomDir = Expand-UserPath (Read-Host "    copy payload to another directory? (path or Enter to skip)")
-    if ($CustomDir) {
-        if (-not (Test-Path $CustomDir)) {
-            $create = Read-Host "    create directory? [Y/n]"
-            if ($create -notmatch "^[nN]") {
-                New-Item -ItemType Directory -Force -Path $CustomDir | Out-Null
-            } else {
-                $CustomDir = ""
-            }
-        }
+if (($installedCount -eq 0) -and ($alreadyCount -eq 0)) {
+    Write-Host "    ${GRAY}nothing installed${RESET}"
+}
 
-        if ($CustomDir) {
-            Write-Action -Name "Custom copy" -Detail "copying payload to $CustomDir\"
-            Copy-ManualDir -Dest $CustomDir
-            $InstalledCount++
-            Write-Result -Color $GREEN -Prefix "ok" -Name "Custom copy" -Detail "$CustomDir\"
-        }
+# ---------------------------------------------------------------- legacy check
+if ($ProjectDir) {
+    $legacyFound = @()
+    foreach ($lp in $LegacyPaths) {
+        if (Test-Path -LiteralPath (Join-Path $ProjectDir $lp)) { $legacyFound += $lp }
+    }
+    if ($legacyFound.Count -gt 0) {
+        Write-Host ""
+        Write-Host "    ${YELLOW}Earlier versions installed into rules files. These still exist and may${RESET}"
+        Write-Host "    ${YELLOW}hold a stale copy of the skill - review and remove them yourself:${RESET}"
+        foreach ($lp in $legacyFound) { Write-Host "      ${GRAY}$lp${RESET}" }
     }
 }
 
+# ---------------------------------------------------------------- summary
 Write-Section "[4/4] Installed"
-Write-Host "    ${DARK}Installed:${RESET} $InstalledCount"
-Write-Host "    ${DARK}Already present:${RESET} $AlreadyCount"
-Write-Host "    ${DARK}Manual setup notes:${RESET} $ManualCount"
-Write-Host "    ${DARK}Skipped:${RESET} $SkippedCount"
-Write-Host "    ${DARK}Payload source:${RESET} $ScriptDir"
+
+$total = $installedCount + $alreadyCount
+$word = if ($total -eq 1) { "directory" } else { "directories" }
+Write-Host "    ${WHITE}$total${RESET} agent $word written  ${GRAY}($installedCount new, $alreadyCount updated)${RESET}"
+Write-Host "    ${DARK}Payload:${RESET} SKILL.md + $CatCount categories + references"
+Write-Host ""
+Write-Host "    ${GRAY}Ask your agent for a security audit to start a scan.${RESET}"
+Write-Host "    ${ACCENT}snitchplugin.com${RESET}"
 Write-Host ""

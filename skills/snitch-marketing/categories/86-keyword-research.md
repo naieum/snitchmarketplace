@@ -77,7 +77,7 @@ Two lazy routes are banned: classifying from titles/snippets alone, and assignin
 Group queries that should target the same page. Two methods:
 
 - **SERP overlap** (mechanical, reliable): if two queries share 3+ of the top 10 results, they want the same page. Build the cluster around the dominant query.
-- **Topical relevance** (judgmental): "how to install Snitch CLI" and "Snitch CLI quick start" are the same topic, different facets. Group by underlying job-to-be-done.
+- **Topical relevance** (judgmental): "how to install Snitch" and "Snitch quick start" are the same topic, different facets. Group by underlying job-to-be-done.
 
 A typical cluster: 1 primary query (highest volume in cluster), 3-8 secondary queries (long-tail variants), targeting one page that comprehensively addresses all of them.
 

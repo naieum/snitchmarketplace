@@ -47,7 +47,7 @@ Found `stripe` or `@stripe/stripe-js`:
 Found `@supabase/supabase-js` or `@supabase/ssr`:
 - Add Category 6 (Supabase Security)
 
-Found `openai`, `@anthropic-ai/sdk`, `ai`, `@ai-sdk/openai`, `@langchain/core`, `langchain`, `@google/generative-ai`, `cohere-ai`, `@modelcontextprotocol/sdk`, or `llamaindex`:
+Found any of these (npm and PyPI names are mixed — match either) — `openai`, `@anthropic-ai/sdk` / `anthropic`, `ai`, `@ai-sdk/openai`, `@langchain/core`, `langchain`, `@google/genai` / `google-genai`, `cohere-ai` / `cohere`, `@modelcontextprotocol/sdk` / `mcp`, `@anthropic-ai/claude-agent-sdk` / `claude-agent-sdk`, `@openai/agents` / `openai-agents`, `pydantic-ai`, `llamaindex` / `llama-index` — or the superseded Google SDKs `@google/generative-ai` (npm) / `google-generativeai` (PyPI), both deprecated in favour of the `genai` packages but still worth matching:
 - Add Category 15 (AI API Security)
 
 Found `resend`, `@sendgrid/mail`, or `postmark`:
@@ -219,7 +219,7 @@ Any project with a package manifest / lockfile:
 Any JavaScript, TypeScript, PHP, Python, or Ruby project with auth, password, token, or role-comparison code:
 - Add Category 67 (Type Coercion Bypasses)
 
-Found AI SDKs + agent/tool-use frameworks (`@anthropic-ai/sdk`, `openai`, `ai`, `@ai-sdk/*`, `langchain`, `@langchain/core`, `langgraph`, `llamaindex`, `@mastra/core`, `crewai`, `autogen`, `@modelcontextprotocol/sdk`) combined with a vector DB (`pinecone`, `@pinecone-database/pinecone`, `weaviate`, `chromadb`, `pgvector`, `@cloudflare/vectorize`) OR a `tools:` array / function-calling pattern:
+Found AI SDKs + agent/tool-use frameworks — npm and PyPI names mixed, match either (`@anthropic-ai/sdk` / `anthropic`, `openai`, `ai`, `@ai-sdk/*`, `@google/genai` / `google-genai`, `@google/generative-ai` / `google-generativeai` (both superseded, still deployed), `langchain`, `@langchain/core`, `langgraph`, `llamaindex` / `llama-index`, `@mastra/core`, `crewai`, `autogen`, `pydantic-ai`, `@anthropic-ai/claude-agent-sdk` / `claude-agent-sdk`, `@openai/agents` / `openai-agents`, `@modelcontextprotocol/sdk` / `mcp`) combined with a vector DB (`pinecone`, `@pinecone-database/pinecone`, `weaviate`, `chromadb`, `pgvector`, `@cloudflare/vectorize`) OR a `tools:` array / function-calling pattern:
 - Add Category 68 (Agent & Indirect Prompt Injection)
 
 ## Validation Signal Activation (Auto in Quick Scan)
@@ -247,6 +247,9 @@ findings stay precise and framework defaults aren't reported as bugs.
 | `fastapi` | `references/stacks/python-fastapi.md` |
 | `flask` | `references/stacks/python-flask.md` |
 | Go (`go.mod`, `net/http`, `database/sql`) | `references/stacks/go.md` |
+| Rails (`Gemfile` with `rails`, `config/application.rb`, `app/controllers/`) | `references/stacks/ruby-rails.md` |
+
+**Fall back to file contents when the layout is not conventional.** Path-based triggers miss vendored, flattened, extracted, or partially-checked-out trees. Content signals that identify a stack on their own: `Rails::Application` / `ActionController::Base` / `ActiveRecord::Base` / `.html.erb` (Rails), `django.` imports or `DJANGO_SETTINGS_MODULE` (Django), `from fastapi import` (FastAPI), `require('express')` / `express()` (Express), `next/` imports or `"use client"` (Next.js), `package main` with `net/http` (Go). A stack file that does not load is worse than one that does not exist — the scan proceeds with the category rules alone, which is exactly the state the stack file was written to correct.
 
 Load more than one when the repo spans stacks (e.g., a Next.js frontend + a Go service). If no
 per-stack reference exists for the detected stack, proceed with the category guidance alone (the

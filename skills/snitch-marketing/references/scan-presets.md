@@ -11,25 +11,25 @@ SEO & Marketing Audit for [project-name or domain]
 
 What would you like to scan?
 
-[1]  Quick Audit (Recommended), 10-13 highest-impact cats. ~15-25K tokens. ~5-10 min small / ~15-30 min large
-[2]  Technical SEO, 13 cats (crawl & indexing, title/meta, performance, mobile/a11y). ~20-30K tokens. ~15-30 min
-[3]  Content & Structure, 13 cats (headings, content quality, internal linking, E-E-A-T, keyword research). ~20-30K tokens. ~15-30 min
+[1]  Quick Audit (Recommended), 12-13 highest-impact cats. ~16-27K tokens. ~5-10 min small / ~15-30 min large
+[2]  Technical SEO, 15 cats (crawl & indexing, title/meta, performance, mobile/a11y). ~22-34K tokens. ~15-30 min
+[3]  Content & Structure, 18 cats (headings, content quality, internal linking, E-E-A-T, keyword research). ~26-39K tokens. ~15-30 min
 [4]  Schema & Structured Data, 8 cats (schema.org JSON-LD across all supported types). ~12-20K tokens. ~10-20 min
-[5]  Conversion & Trust, 16 cats (CTAs, forms, trust signals, 404 pages, analytics, pixel install completeness, UTM hygiene). ~25-40K tokens. ~25-45 min
-[6]  International, 3 cats (hreflang, locale canonicals, lang attribute). ~5-8K tokens. ~5-10 min
+[5]  Conversion & Trust, 20 cats (CTAs, forms, trust signals, 404 pages, analytics, pixel install completeness, UTM hygiene). ~31-49K tokens. ~25-45 min
+[6]  International, 4 cats (hreflang, locale canonicals, lang attribute, translation quality). ~6-10K tokens. ~5-10 min
 [7]  Email & Transactional, 5 cats (inventory, content, deliverability, design, compliance). ~10-18K tokens. ~15-30 min
-[8]  Off-site & Channels, 17 cats. ~30-50K tokens. ~50-95 min
-[9]  2026 Modern Marketing, 5 cats (AI-search citation, creator partnerships, founder-led brand, newsletter/podcast sponsorships, llms.txt). ~10-18K tokens. ~20-35 min
-[10] Full Audit, all 134 categories. ~170-240K tokens. ~150-280 min. **CONFIRM BUDGET FIRST**
+[8]  Off-site & Channels, 19 cats. ~33-55K tokens. ~50-95 min
+[9]  2026 Modern Marketing, 6 cats (AI-search citation, creator partnerships, founder-led brand, newsletter/podcast sponsorships, llms.txt, agent operability). ~11-20K tokens. ~20-35 min
+[10] Full Audit, all 134 categories. ~185-260K tokens. ~150-280 min. **CONFIRM BUDGET FIRST**
 [11] Custom Selection, pick categories by name or number
 [12] Diff Mode, audit changes since previous run (source mode: changed files since last commit; crawl mode: delta vs previous snitchfindings/{slug}/ report). Cost scales with diff size
 
 Vertical presets (curated subsets per business type):
 [13] B2B SaaS preset, 25 cats. ~38-53K tokens. ~30-60 min
-[14] E-commerce preset, 19 cats. ~30-50K tokens. ~30-60 min
-[15] Local business preset, 19 cats. ~30-50K tokens. ~30-50 min
-[16] Publisher / media preset, 22 cats. ~35-60K tokens. ~45-75 min
-[17] Accessibility deep-dive, 13 cats (WCAG 2.2 AA, keyboard, screen reader). ~20-35K tokens. ~30-60 min
+[14] E-commerce preset, 24 cats. ~37-62K tokens. ~30-60 min
+[15] Local business preset, 22 cats. ~34-57K tokens. ~30-50 min
+[16] Publisher / media preset, 25 cats. ~39-67K tokens. ~45-75 min
+[17] Accessibility deep-dive, 14 cats (WCAG 2.2 AA, keyboard, screen reader). ~22-38K tokens. ~30-60 min
 
 Toggles (apply to whichever option you pick):
 [c]  Confidence floor, current: all (toggle: all / medium+ / high+only, high+only suppresses Low/Medium findings from the report)
@@ -46,9 +46,9 @@ Enter your choice (0-17, c, r, v):
 ## Menu Behavior
 
 - **0 (Exit):** Display "SEO audit cancelled. No changes made." and exit.
-- **1 (Quick Audit):** Run stack detection (`references/smart-detection.md`), pick 8-12 categories that map to the detected stack. Always include: 01 (title & meta), 02 (canonical & indexing), 06 (single H1 / heading hierarchy), 14 (image alt presence), 21 (schema.org JSON-LD presence).
+- **1 (Quick Audit):** Always include: 1 (robots.txt), 2 (sitemap.xml), 3 (canonical), 4 (indexability), 9 (title tag), 10 (meta description), 11 (Open Graph), 15 (single H1), 25 (image alt presence), 31 (JSON-LD presence). Then run stack detection (`references/smart-detection.md`) and add the 2-3 stack-specific cats listed under "Quick Audit (menu Option 1)" in `references/category-groups.md`.
 - **2-9 (Presets):** Scan the predefined category group. Read `references/category-groups.md` for group → category mappings.
-- **10 (Full):** All 134 categories. Warn user about token cost. **Require explicit confirmation** ("yes, I confirm the ~170-240K token budget") before launching.
+- **10 (Full):** All 134 categories. Warn user about token cost. **Require explicit confirmation** ("yes, I confirm the ~185-260K token budget") before launching.
 - **11 (Custom):** Present the category picker. Read `references/custom-selection.md` for the menu.
 - **12 (Diff):** Two paths depending on mode:
   - **Source mode**: run `git diff HEAD --name-only`, scan only changed files plus their declared route layouts / heads.

@@ -1,0 +1,100 @@
+# Snitch: UX — config
+
+Edit this file to tune the review behavior. The skill reads it at Step 0, before it enumerates
+the surface list.
+
+## tool-name
+
+Name the skill uses for itself in report headings and prose. Change it to white-label the output.
+
+```
+tool-name: Snitch
+```
+
+## report-title
+
+Heading written at the top of the review report.
+
+```
+report-title: UX Review
+```
+
+## min-severity
+
+Findings below this level land in a "Minor" section at the end of the report instead of the main
+body. Nothing is dropped silently — the count of demoted findings is stated.
+
+```
+min-severity: Low
+```
+
+Valid values: `Low` (default — everything in the main body), `Medium`, `High`, `Critical`.
+
+## lenses
+
+Which of the skill's two lenses run. Clarity findings are the accidental question marks (is that
+clickable? where am I?); persuasion findings are the intentional ones (defaults, anchoring, framing,
+social proof).
+
+```
+lenses: both
+```
+
+Valid values: `both` (default), `clarity` (clarity pass only — use when the brief is "make it
+understandable," or when persuasion moves are out of scope for the team), `persuasion` (assumes the
+clarity pass already happened; rarely the right choice on a first review).
+
+**This key never disables the ethics gate.** Step 3.5 and `references/review-checklist.md` §10 run
+at every value of `lenses`, including `clarity`. The gate is not a persuasion technique — it is the
+check that decides whether persuasion techniques may be used at all, so restricting the lenses
+narrows what gets *optimised*, never what gets *checked*.
+
+## platform
+
+Which platform conventions apply. Governs whether the mobile hard rules (tab count, thumb zone,
+44×44px tap targets — `references/mobile-navigation.md`) are enforced or skipped, and which
+familiar-pattern set counts as "the convention."
+
+```
+platform: auto
+```
+
+Valid values: `auto` (default — infer from the codebase or the rendered viewport), `web`, `ios`,
+`android`. Set explicitly when the repo holds more than one target and auto-detection would guess.
+
+## report-output
+
+Where the markdown report is written. Default: a `snitchfindings/` subdirectory of the working
+directory, with a per-target subfolder.
+
+```
+report-output: snitchfindings/{target_slug}/UX_REVIEW.md
+```
+
+The `{target_slug}` token is derived from the `package.json` `name` field if present, otherwise from
+the working-directory basename; for a live-site review, from the target domain's second-level name
+(`https://www.atlasforms.app` → `atlasforms`). Set this to a literal path to override, e.g.
+`report-output: docs/ux-review.md`.
+
+Add `snitchfindings/` to `.gitignore` if review output should stay local.
+
+## confirm-scope
+
+Whether Step 0 presents the enumerated surface list and waits for the user to confirm or narrow it
+before the pass starts. Default `true`. Set to `false` for batch runs where no one is there to
+answer — the skill then reviews every surface it enumerated and says so.
+
+```
+confirm-scope: true
+```
+
+## high-stakes
+
+Set `true` when the audience includes vulnerable users or the flow carries high stakes (children,
+elders, health, money, crisis). The skill then always loads `references/inclusive-design.md` and
+dials the persuasion half *down* rather than up — no urgency, no loss framing, no friction on the
+exit. Default `false` (the skill still applies the inclusive-design gate in the review checklist).
+
+```
+high-stakes: false
+```

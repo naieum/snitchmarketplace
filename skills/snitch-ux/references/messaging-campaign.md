@@ -2,11 +2,11 @@
 
 How the brand message (see `brand-messaging.md`) gets deployed as a campaign: what collateral
 exists at each funnel zone, how the offer is priced and framed, and how the sale is closed.
-Derived from Donald Miller's StoryBrand material. Two ordering rules govern everything here:
-**messaging campaign before marketing campaign** (words first; channels, ads, and funnels are
-built around the words — most teams do it backwards, starting with logos and media buys), and
-**never do a deeper zone's job in a shallower zone** (explaining nuance in the hero is
-"assuming you're on the fifth date when you never asked them out").
+Derived from the same brand-messaging framework as that file. Two ordering rules govern
+everything here: **messaging campaign before marketing campaign** (words first; channels, ads,
+and funnels are built around the words — most teams do it backwards, starting with logos and
+media buys), and **never do a deeper zone's job in a shallower zone** (explaining nuance in
+the hero is "assuming you're on the fifth date when you never asked them out").
 
 ## The 5-3-3 shape
 

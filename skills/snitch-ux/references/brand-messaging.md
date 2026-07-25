@@ -2,8 +2,9 @@
 
 How to write the *brand-level* message — the homepage hero, tagline, value prop, onboarding
 sequence, pitch — as opposed to the button-level microcopy in `copywriting.md`. Derived from
-Donald Miller's StoryBrand framework (the "customer is the hero, you are the guide" model and
-the five-sound-bites messaging pattern).
+a widely-taught brand-messaging framework that ports screenwriting story structure into
+marketing copy — the "customer is the hero, you are the guide" model and its five-sound-bites
+pattern — refined across many thousands of business rewrites over more than a decade.
 
 The core mistake this fixes: businesses *tell their story* ("we're passionate about
 world-class solutions") instead of **inviting the customer into a story** in which the
@@ -38,11 +39,11 @@ works standing alone as an ad, a headline, or a cold-open. Acronym **PEACE**:
 | P | **Problem** | Hook — name the hole the hero is in | "Have you ever worried about money?" |
 | E | **Empathy** | Position yourself as the guide who cares | "We know how you feel." |
 | A | **Answer** | Throw the rope — place the product as the solution | "Download the YNAB app." |
-| C | **Change** | The transformation — an *aspirational identity* | "…and get good with money." |
+| C | **Change** | The transformation — an *aspirational identity* | "…and get good at money." |
 | E | **End result** | The climactic scene — what *life* looks like after | "…so you'll never have to worry about money again." |
 
 Read in order they form one sentence: *"Have you ever worried about money? We know how you
-feel. Download the YNAB app and get good with money — so you'll never have to worry about
+feel. Download the YNAB app and get good at money — so you'll never have to worry about
 money again."* That sentence is the brand's message. Everything else hangs off it.
 
 ### Rules for writing them
@@ -88,7 +89,7 @@ money again."* That sentence is the brand's message. Everything else hangs off i
 
 ### Completing the script — the full seven slots
 
-PEACE is the compressed set. The complete BrandScript has a few more slots; every one should
+PEACE is the compressed set. The complete script has a few more slots; every one should
 exist as a written sound bite (and appear somewhere on the website):
 
 - **The want** — one short line stating what the customer wants. One thing, never ten.
@@ -147,7 +148,7 @@ Every brand story benefits from a villain — with strict rules:
   gatekeepers (Tidal launched on "we artists deserve more money" — a pitch for the 0.001%
   who are artists — and was ignored until customers heard the customer-side story).
 - **The villain is the root cause, not the problem itself.** Fill-in test: "What ___ is
-  doing to our customers isn't right." (StoryBrand's villain is *confusion*.)
+  doing to our customers isn't right." (For a messaging practice, the villain is *confusion*.)
 - **Two concrete words beat a paragraph.** "Cardboard feel" (Bombas, on tube socks),
   "cardboard taste." Exaggeration is fine if it's instantly recognized.
 - **Ask what your product removes.** The George Foreman grill sold $5M/yr as the "Fajita
@@ -266,7 +267,7 @@ years; that's a messaging campaign):
   picture" slot in `site-navigation.md` — the tagline there *is* the controlling idea.)
 - **Onboarding:** five consecutive emails, one sound bite each. In-product UI copy that
   echoes the sound bites — audit the actual interface strings and swap generic words for the
-  message ("your budget" → "get good with money").
+  message ("your budget" → "get good at money").
 - **Lead generators & content:** title every asset from a sound bite, including inversions
   of the change line ("5 signs the man you're dating is *bad* with money"). Every clip,
   short, or post covers exactly one of the five — never a sixth idea.

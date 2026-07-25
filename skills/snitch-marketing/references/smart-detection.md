@@ -110,4 +110,5 @@ When mode is crawl-only (or both with no source-mode evidence found for a catego
 3. Parse the HTML once into a DOM-ish tree usable across all categories.
 4. Cache the fetch in memory for the rest of the audit.
 5. Optionally fetch `/robots.txt` and `/sitemap.xml` (or the URL declared in robots.txt) once at audit start; cache results.
-6. For internal-link-graph and broken-link categories (19-20), fetch up to `crawl-max-pages` URLs from the sitemap (default 50). Stop early if the cap is hit and note it in the report.
+6. For every crawl-bound category — title (9), meta description (10), internal-link-graph (19), broken links (20) — fetch up to `crawl-max-pages` URLs from the sitemap (default 50). Stop early if the cap is hit.
+   **Record both numbers — URLs discovered in the sitemap and URLs actually fetched — and carry them into the report's Coverage section.** Every one of these categories produces negative claims ("no duplicate titles", "no orphan pages", "no broken links"), and a negative claim from a capped crawl is invalid, not merely weaker: the duplicate may be on the first URL you did not fetch. Where the cap bound the crawl, phrase every negative result as "none found in the N URLs fetched" and mark that category `partial`.

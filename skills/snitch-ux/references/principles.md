@@ -1,5 +1,17 @@
 # Principle Catalog
 
+> **The ethics gate outranks every principle in this file. Run it first.**
+> `review-checklist.md` §10 and SKILL.md Workflow Step 3.5 decide whether this surface has
+> earned these techniques — run them *before* you apply anything below. Every rule here assumes
+> the underlying claim is **true** and the cost is **disclosed**. This is the file SKILL.md calls
+> the loaded tool: applied to a surface with fabricated urgency, a hidden recurring charge, a
+> pre-checked paid option, or a buried cancellation, several of these principles make the page
+> measurably worse rather than better. **If the gate fails, the finding is the dishonesty, not the
+> wording — report those items and do not optimise them, whatever was asked for.**
+>
+> The gate is not subject to the `lenses` config key. `lenses: persuasion` removes the clarity
+> pass, never the gate.
+
 Each entry: **the rule**, *why it works* (the psychology), and concrete **Do / Don't**.
 Grouped by the job it does. Apply the few that fit the surface — not all at once.
 
@@ -23,19 +35,27 @@ case isn't covered, reason up from that file.
 ### Smart defaults
 **Rule:** Pre-select the most common choice for every field; don't make users decide
 what you can already predict.
-*Why:* 70–90% of users never change a default and read it as a recommendation ("this is
-what most people pick"). A blank form is a pile of decisions → decision fatigue → no
-choice → they leave.
+*Why:* most users never change a default and read it as a recommendation ("this is what
+most people pick"). The effect is large and well-replicated across very different contexts
+— retirement enrollment, organ-donor registration, privacy and cookie settings, app
+permissions — but the exact share that sticks depends on the population and on how
+consequential and reversible the default is, so treat it as a strong tendency, not a fixed
+number. A blank form is a pile of decisions → decision fatigue → no choice → they leave.
 - **Do:** pre-fill dates/quantities/options; show the pre-filled state as "scan & adjust,"
   not "fill from scratch"; let the primary button preview the result ("Show 12 results,"
   not "Search").
 - **Don't:** present five empty fields when sensible defaults exist.
 
-### Choice reduction (Hick's Law)
+### Choice reduction
 **Rule:** More options means harder, not better. Reduce, group, or stage choices; one
 clear primary action per screen.
-*Why:* the classic jam study — 24 flavors → 3% bought; 6 flavors → 30% bought. Decision
-time and abandonment rise with option count.
+*Why:* the classic jam study found 3% of shoppers who stopped at a 24-jam display bought,
+versus ~30% at a 6-jam display — though the larger display drew more people to stop in the
+first place, and the wider choice-overload literature does not replicate reliably. It shows up
+when options are hard to tell apart, the task is complex, or the user has no formed preference,
+and washes out otherwise. Treat "fewer options" as a move that works on a genuinely confusing
+choice, not as a law. (Hick's Law proper is about *reaction time* rising with option count, not
+about whether people buy — don't cite it for conversion.)
 - **Do:** limit visible choices; use a recommended/"most popular" pick to collapse the decision.
 - **Don't:** show every option with equal weight and let the user sort it out.
 

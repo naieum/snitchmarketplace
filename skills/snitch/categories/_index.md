@@ -23,10 +23,10 @@ Active categories: 69.
 | 02 | xss | Cross-Site Scripting (XSS) | sink-pattern | web, quick-core | A05 Injection | CWE-79 | active |
 | 03 | hardcoded-secrets | Hardcoded Secrets | posture | secrets-auth, quick-core | A07 Authentication Failures | CWE-798 | active |
 | 04 | authentication | Authentication Issues | posture | secrets-auth, quick-core | A07 Authentication Failures | CWE-287 | active |
-| 05 | ssrf | SSRF (Server-Side Request Forgery) | sink-pattern | web | A10 Server-Side Request Forgery | CWE-918 | active |
+| 05 | ssrf | SSRF (Server-Side Request Forgery) | sink-pattern | web | A01 Broken Access Control | CWE-918 | active |
 | 06 | supabase | Supabase Security | posture | modern-stack | A01 Broken Access Control | CWE-862 | active |
 | 07 | rate-limiting | Rate Limiting | posture | secrets-auth | A06 Insecure Design | CWE-770 | active |
-| 08 | cors | CORS Configuration | posture | web | A05 Injection | CWE-346 | active |
+| 08 | cors | CORS Configuration | posture | web | A02 Security Misconfiguration | CWE-346 | active |
 | 09 | crypto | Cryptography | posture | — | A04 Cryptographic Failures | CWE-327 | active |
 | 10 | dangerous-patterns | Dangerous Code Patterns | sink-pattern | web | A05 Injection | CWE-94 | active |
 | 11 | cloud | Cloud Security | posture | modern-stack | A02 Security Misconfiguration | CWE-16 | active |
@@ -49,7 +49,7 @@ Active categories: 69.
 | 28 | authorization | Authorization & Access Control (IDOR) | posture | infra-supply-chain | A01 Broken Access Control | CWE-639 | active |
 | 29 | file-uploads | File Upload Security | sink-pattern | infra-supply-chain | A06 Insecure Design | CWE-434 | active |
 | 30 | input-validation | Input Validation & ReDoS | sink-pattern | infra-supply-chain | A05 Injection | CWE-20 | active |
-| 31 | cicd | CI/CD Pipeline Security | posture | infra-supply-chain | A02 Security Misconfiguration | CWE-200 | active |
+| 31 | cicd | CI/CD Pipeline Security | posture | infra-supply-chain | A02 Security Misconfiguration | CWE-250 | active |
 | 32 | security-headers | Security Headers | posture | infra-supply-chain | A02 Security Misconfiguration | CWE-693 | active |
 | 33 | unused-deps | Unused Dependencies, Dead Code & Package Bloat | posture | infra-supply-chain | A03 Software Supply Chain Failures | CWE-1104 | active |
 | 34 | fips | FIPS 140-3 / Cryptographic Compliance | compliance | governance | A04 Cryptographic Failures | CWE-327 | active |
@@ -63,7 +63,7 @@ Active categories: 69.
 | 42 | container-docker | Container & Docker Security | posture | — | A02 Security Misconfiguration | CWE-250 | active |
 | 43 | iac-security | Infrastructure as Code Security | posture | — | A02 Security Misconfiguration | CWE-16 | active |
 | 44 | api-security | API Security | sink-pattern | — | A01 Broken Access Control | CWE-862 | active |
-| 45 | ai-tool-supply-chain | AI Tool Supply Chain Security | posture | — | A08 Software and Data Integrity Failures | CWE-506 | active |
+| 45 | ai-tool-supply-chain | AI Tool Supply Chain Security | posture | — | A08 Software or Data Integrity Failures | CWE-506 | active |
 | 46 | ai-llm-app-security | AI/LLM Application Security | sink-pattern | — | A05 Injection | CWE-77 | active |
 | 47 | csrf | CSRF Protection | posture | — | A01 Broken Access Control | CWE-352 | active |
 | 48 | race-conditions | Race Conditions & Concurrency | posture | — | A06 Insecure Design | CWE-362 | active |
@@ -82,10 +82,10 @@ Active categories: 69.
 | 61 | redos | ReDoS | sink-pattern | web, performance | A06 Insecure Design | CWE-1333 | active |
 | 62 | prototype-pollution | Prototype Pollution | sink-pattern | web | A05 Injection | CWE-1321 | active |
 | 63 | jwt-algorithm-attacks | JWT Algorithm & Key Attacks | posture | secrets-auth | A07 Authentication Failures | CWE-347 | active |
-| 64 | cloud-metadata | Cloud Metadata Endpoint Exploitation | sink-pattern | web, modern-stack | A10 Server-Side Request Forgery | CWE-918 | active |
-| 65 | insecure-deserialization | Insecure Deserialization | sink-pattern | web | A08 Software and Data Integrity Failures | CWE-502 | active |
+| 64 | cloud-metadata | Cloud Metadata Endpoint Exploitation | sink-pattern | web, modern-stack | A01 Broken Access Control | CWE-918 | active |
+| 65 | insecure-deserialization | Insecure Deserialization | sink-pattern | web | A08 Software or Data Integrity Failures | CWE-502 | active |
 | 66 | typosquatting-postinstall | Typosquatting & Malicious Install Scripts | posture | infra-supply-chain | A03 Software Supply Chain Failures | CWE-1357 | active |
-| 67 | type-coercion | Type Coercion & Juggling Bypasses | posture | web | A07 Authentication Failures | CWE-697 | active |
+| 67 | type-coercion | Type Coercion & Juggling Bypasses | sink-pattern | web | A07 Authentication Failures | CWE-697 | active |
 | 68 | agent-prompt-injection | Agent & Indirect Prompt Injection | sink-pattern | modern-stack | A05 Injection | CWE-1427 | active |
 | 69 | vulnerable-dependencies | Vulnerable Dependencies (SCA) | posture | — | A03 Software Supply Chain Failures | CWE-1395 | merged→27 |
 | 70 | dead-code-unused-deps | Dead Code & Unused Dependencies | posture | — | A03 Software Supply Chain Failures | CWE-1104 | merged→33 |

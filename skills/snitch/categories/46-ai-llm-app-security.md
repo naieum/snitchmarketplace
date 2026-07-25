@@ -4,7 +4,8 @@
 **Data flow tracing required (SKILL.md Rule 7).** Trace in two directions. (1) Into the prompt: user or RAG content reaching the `system` role or concatenated into instructions is a finding; confined to a `user`-role message it is a Pass. (2) Out of the model: treat LLM output as tainted and trace it to its sink — reaching SQL, shell, `eval` / `Function`, raw HTML (`dangerouslySetInnerHTML` / `v-html`), a file path, or `res.redirect` without validation is a finding; escaped display-only output is a Pass. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
 ### Detection
-- AI/LLM SDK imports: `openai`, `@anthropic-ai/sdk`, `ai`, `@ai-sdk/openai`, `@langchain/core`, `langchain`, `@google/generative-ai`, `cohere-ai`, `llamaindex`
+- AI/LLM SDK imports: `openai`, `@anthropic-ai/sdk`, `ai`, `@ai-sdk/openai`, `@langchain/core`, `langchain`, `@google/genai`, `google-genai`, `@google/generative-ai` (deprecated, still match it), `cohere-ai`, `llamaindex`
+- Agent framework imports: `@anthropic-ai/claude-agent-sdk`, `@openai/agents`, `pydantic-ai`
 - Prompt construction patterns in application code
 - RAG (Retrieval-Augmented Generation) pipeline components
 - Vector database integrations: `@pinecone-database/pinecone`, `chromadb`, `weaviate-client`, `@qdrant/js-client-rest`

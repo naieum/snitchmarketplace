@@ -107,13 +107,13 @@ Read `souls/aaron-draplin.json` before writing the Fix.
 
 Worked fix example:
 
-> The page title says "How to install the Snitch CLI." That's an informational query. The user wants steps. Right now the content has two paragraphs about why security matters and a link to buy the Pro plan. That's a sales pitch, not a how-to.
+> The page title says "How to install the Snitch security skill." That's an informational query. The user wants steps. Right now the content has two paragraphs about why security matters and a link to the other two skills. That's a cross-sell, not a how-to.
 >
 > Match the title's promise:
 >
-> 1. Quick step-by-step (npm install, then snitch scan).
+> 1. Quick step-by-step (run the installer, then ask your agent for an audit).
 > 2. Each common environment / framework's gotchas.
 > 3. Sample output so the user knows what success looks like.
 > 4. Link to deeper docs at the end.
 >
-> The page can mention the Pro plan once at the bottom for users who finish the tutorial. The promise was instructions; deliver instructions. That's how the page ranks for the query and how the visitor leaves satisfied.
+> The page can point to the other skills once at the bottom for users who finish the tutorial. The promise was instructions; deliver instructions. That's how the page ranks for the query and how the visitor leaves satisfied.

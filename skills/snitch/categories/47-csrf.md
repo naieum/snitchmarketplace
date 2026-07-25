@@ -6,17 +6,22 @@
 - State-changing operations on GET endpoints
 - Missing SameSite cookie attributes on session cookies
 - No CSRF middleware in web framework configuration
-- Framework CSRF imports: `csurf`, `csrf_token`, `CsrfFilter`, `protect_from_forgery`, `gorilla/csrf`
+- Framework CSRF imports: `csrf-csrf`, `@fastify/csrf-protection`, `csurf` (deprecated/archived 2022 — still deployed, so still match it), `csrf_token`, `CsrfFilter`, `protect_from_forgery`, `gorilla/csrf`
+- Any locally-defined verifier in a mutation handler's chain, whatever it is named — match the position and behavior, not an identifier
 
 ### What to Search For
 
 **JavaScript/TypeScript (Express, Next.js, Fastify):**
-- Missing `csurf` or `csrf` middleware in Express app setup
+- No token or origin verifier anywhere in a mutation handler's middleware chain. **Match the behavior, not a package name** — a locally-defined verifier counts whatever it is called, and an unrecognised name is not the same as an absent defense
 - POST/PUT/DELETE routes with no CSRF token validation
 - Session cookies set without `SameSite` attribute or with `SameSite=None` without `Secure`
 - Forms rendered without `<input type="hidden" name="_csrf">`
 - Next.js API routes accepting mutations without CSRF verification
-- Custom CSRF implementations that use predictable tokens
+- Custom CSRF implementations with weak tokens. What to check: the token comes from a CSPRNG
+  (`crypto.randomBytes`, `SecureRandom`), is bound to the session rather than global, and is
+  compared in constant time. **If the implementing module is outside the scan scope**, do not
+  guess — record a Pass at Medium confidence, name the unread file, and say which of the three
+  properties you could not verify
 
 **Python (Django, Flask):**
 - Django templates with forms missing `{% csrf_token %}`
@@ -33,7 +38,23 @@
 - JSP forms missing `<input type="hidden" name="${_csrf.parameterName}">`
 
 **Ruby (Rails):**
-- Controllers missing `protect_from_forgery with: :exception`
+- **Rails — read `config/application.rb` before grading any controller.** `config.load_defaults`
+  of `"5.2"` or later sets `action_controller.default_protect_from_forgery = true`, so every
+  `ActionController::Base` subclass is protected **with no explicit line in the controller**. The
+  generators stopped emitting `protect_from_forgery` in 5.2, so its absence in a modern app is the
+  normal secure state and flagging it false-positives on essentially every Rails app of the last
+  several years. Under `load_defaults` 5.1 or earlier — or an explicit
+  `default_protect_from_forgery = false`, or an override in `config/initializers/` or
+  `config/environments/*.rb` — protection exists only where `protect_from_forgery` is called
+  **somewhere in the controller's ancestor chain**. `protect_from_forgery` installs a
+  `before_action`, and callbacks are **inherited**: from Rails 4.0 to 5.1 the generators emitted it
+  in `ApplicationController` and nowhere else, so that single line protects every subclass. Walk the
+  chain up to `ActionController::Base` before reporting — flagging a subclass whose parent carries
+  the call is a false positive across essentially the entire pre-5.2 population this rule exists for.
+  Absence from the **whole chain** is a **High** finding against every state-changing action.
+  If the deciding ancestor or config file is outside the scan scope, say which file you could not
+  read and drop to Medium confidence (SKILL.md Rule 7) rather than assuming either default.
+  A controller's own text is never sufficient evidence here; the deciding fact is always elsewhere
 - `skip_before_action :verify_authenticity_token` without API-only justification
 - `protect_from_forgery with: :null_session` on non-API controllers
 - Forms without `authenticity_token`
@@ -44,7 +65,7 @@
 - Cookie-based sessions without SameSite attribute set via `http.Cookie`
 
 ### Actually Vulnerable
-- Express app with session cookies and POST routes but no `csurf` middleware
+- Express app with session-cookie auth and state-changing POST routes where no middleware in the chain verifies a token or the request origin
 - Django view with `@csrf_exempt` that performs state-changing operations (user creation, password change, fund transfer)
 - Spring Security config with `.csrf().disable()` on a web application serving HTML forms
 - Rails controller with `skip_before_action :verify_authenticity_token` on a non-API controller
@@ -61,7 +82,7 @@
 - SPA applications using `Authorization: Bearer <token>` headers (not cookie-based auth)
 - Django REST Framework API views using token authentication (cookies not used)
 - GraphQL endpoints authenticated via headers, not cookies
-- Express routes using `csurf` middleware with properly validated tokens
+- Express routes whose chain contains a token verifier ahead of the handler — a maintained middleware (`csrf-csrf`, `@fastify/csrf-protection`), a framework-native check, or a hand-rolled double-submit/synchronizer verifier. **`csurf` itself is deprecated and archived**: its presence is evidence a defense was intended, not that it is maintained, and it must never be the *recommended fix*
 - Spring Security with CSRF enabled and Thymeleaf auto-injecting tokens
 - Rails controllers with `protect_from_forgery with: :exception` (default)
 - Stateless APIs using JWT in Authorization header
@@ -80,7 +101,7 @@
 Before reporting, verify ALL of these:
 1. [ ] Confirmed the application uses cookie-based authentication or sessions (not token-based auth via headers)
 2. [ ] Verified state-changing operations (POST/PUT/DELETE) exist that modify data
-3. [ ] Checked for CSRF middleware in the application setup (csurf, csrf, protect_from_forgery, CsrfFilter)
+3. [ ] Checked the application setup for a token or origin verifier by behavior (any middleware name), and for Rails read `config/application.rb` for `load_defaults`
 4. [ ] Verified HTML forms include CSRF tokens (hidden input fields)
 5. [ ] Checked session cookie `SameSite` attribute setting
 6. [ ] For `@csrf_exempt` endpoints, verified alternative protection exists (HMAC signature, webhook secret verification)

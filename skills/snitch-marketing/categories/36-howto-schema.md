@@ -74,8 +74,8 @@ Worked fix example:
 >
 > ```tsx
 > const steps = [
->   { name: "Install the CLI", text: "Run npm install -g @snitchplugin/cli." },
->   { name: "Run your first scan", text: "From your repo root, run snitch scan." },
+>   { name: "Install the skill", text: "Run the installer and pick your AI coding tool." },
+>   { name: "Run your first scan", text: "From your repo root, ask your agent for a security audit." },
 >   { name: "Read the report", text: "Open SECURITY_AUDIT_REPORT.md in your editor." },
 > ];
 >

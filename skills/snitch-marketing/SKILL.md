@@ -1,11 +1,11 @@
 ---
 name: snitch-marketing
-description: Audit a site's SEO and marketing with evidence-based findings. Reads site source or crawls a URL and reports issues a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS-prevention; true field CWV LCP/INP/CLS via optional free CrUX/PSI fetch when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads or pixel readiness (use ads-ready), security review (use snitch), or generic content writing.
+description: Audit a site's SEO and marketing with evidence-based findings. Reads site source or crawls a URL and reports issues a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS-prevention; true field CWV LCP/INP/CLS via optional free CrUX/PSI fetch when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads or pixel readiness (use ads-ready), security review (use snitch-security), UX / interface critique judged against the user's decision path (use snitch-ux), or generic content writing.
 license: MIT
-compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude.ai, Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, Goose, and 25+ more — see agentskills.io). LLM-backed audits use the user's existing model; no separate server required. Optional Snitch CLI (https://snitchplugin.com) for SARIF/CSV/HTML export and CI integration. Optional Playwright MCP for screenshot evidence in crawl mode.
+compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). LLM-backed audits use the user's existing model; no separate server required. Exports the report as markdown, JSON, CSV, and (when python3 is present) HTML on its own. Optional Playwright MCP for screenshot evidence in crawl mode.
 metadata:
   author: Snitch
-  version: 1.9.0
+  version: 1.10.0
   homepage: https://snitchplugin.com
 ---
 
@@ -36,8 +36,8 @@ Invoke this skill when the user is asking for any of:
 
 Hand off rather than running this skill when the user is asking for:
 
-- **Code-level security review**, use the `snitch` skill (its sister product). Snitch: Marketing reports SEO consequences but does not analyze application security beyond the surface layer.
-- **Pure UX / design critique** disconnected from search / conversion outcomes, Snitch: Marketing's voice library helps with fix prose, but a design critique skill is a better fit.
+- **Code-level security review**, use the `snitch-security` skill (its sister product). Snitch: Marketing reports SEO consequences but does not analyze application security beyond the surface layer.
+- **UX / interface critique**, use the `snitch-ux` skill (its sister product). The split is what the finding is judged against: marketing owns anything evidenced against search and traffic outcomes; snitch-ux owns anything evaluated against the user's decision path (clarity, scanning, navigation, friction, persuasion). A hero headline scored on keyword and intent match is marketing; the same headline scored on whether a visitor knows what to do next is snitch-ux.
 - **Paid-ads campaign management** (bid strategy, daily ad spend optimization, audience set changes inside Meta Ads Manager). This skill audits whether the channel is set up well; it does not run the ads.
 - **Content writing as a service**, this skill audits content quality and recommends what to write; it does not draft full long-form articles for publication.
 - **Penalty-recovery negotiation with Google / link disavow file management**, diagnostic guidance is in scope, but the actual link-removal outreach + Search Console disavow workflow is human work the customer drives.
@@ -116,7 +116,7 @@ Severity calibration is impossible without these steps; never skip them.
 
 - **No arguments + ambiguous instruction**: display the menu above. Before showing the menu, ALSO suggest a recommended preset per STEP 1.5 below (this gives the user a one-tap path through if the recommendation fits).
 - **Explicit preset named in instruction**: bypass the menu (e.g., user said "run quick audit" → directly run Quick).
-- **Explicit categories named**: bypass the menu when the user (or host) passed explicit category IDs in the request — e.g., a list like `categories 1,5,21`, named category IDs, or a preset name. Host-specific invocation grammars vary (Claude Code uses `@skills:snitch-marketing categories 1,5,21`; other hosts pass arguments differently); the contract is "category IDs were specified," not the syntax.
+- **Explicit categories named**: bypass the menu when the user (or host) passed explicit category IDs in the request — e.g., a list like `categories 1,5,21`, named category IDs, or a preset name. Host-specific invocation grammars vary; the contract is "category IDs were specified," not the syntax.
 - **Ambiguous instruction ("run it", "audit", "scan")**: ALWAYS show the menu. Do not pick a default. Tokens spent on the wrong scope are far more expensive than the user typing a number.
 
 **STEP 1.5: Component-driven Recommendation**
@@ -254,6 +254,7 @@ For each category:
 - Build the findings report.
 - Display summary in console.
 - **Generate the executive snapshot first**, before drafting the full report. The snapshot is a one-page header (≤300 words) that opens every report, naming: the bottleneck (one sentence), the fix (one sentence), this-week action (one sentence), top 3 findings, and a short "read the rest if..." pointer. The snapshot is the audit's TL;DR; customers triaging the report read just the snapshot and act. Failure to include the snapshot is a Rule 7 violation (the report is incomplete).
+- **Run the redaction gate (always on, hard fail).** Before saving — or, when no file will be written, before presenting the report — scan the full drafted output for analytics/ad identifiers, credentials, and real personal data per the Redaction gate section of `references/report-lint.md`. Any live value anywhere in the draft blocks the save; apply the redaction-only rewrite and re-scan until clean. This enforces Rule 5 and runs regardless of `grader.enabled` or whether the audit is internal.
 - **Run the pre-output lint pass** after drafting the full report and before saving. Full spec, scanner rules, and `audit_metadata.lint` schema live in `references/report-lint.md`. Mandatory; skipping invalidates the audit's compliance with brand rules (em-dash density, no designer names in user-visible output, no sycophancy, negative-evidence shape). Rewrite each hit and re-run until clean.
 - **Run the LLM-as-grader pass** after the lint pass and before the HTML render. The grader reads the report and scores each finding against 5 criteria (evidence specificity, risk specificity, fix specificity, three-rules adherence, evidence-to-claim alignment) plus a severity-calibration check. Failing findings are auto-rewritten; the rewrite is re-graded; the pass-rate is recorded in `audit_metadata.grader`. Default pass threshold is 8/10 per finding; configurable in `snitch-marketing.config.md`. Full spec: `references/grader.md`. Required for customer-facing audits; toggle off via `grader.enabled: false` for internal exploratory scans where token budget is tight.
 - **Render the HTML alongside the markdown (if python3 is available)** after lint pass and grader pass complete and the markdown is final. Invoke the renderer (`{skill_dir}` is this skill bundle's own directory — the folder that contains this SKILL.md; in Claude Code it resolves to `${CLAUDE_SKILL_DIR}`, in other hosts substitute the path where the bundle was loaded):
@@ -262,8 +263,21 @@ For each category:
   ```
   Pass `--confidential` if `snitch-marketing.config.md` has `confidential: true`. The script writes `SEO_AUDIT_REPORT.html` next to the markdown. **If `python3` is unavailable (e.g., python-less hosts like Claude.ai web or ChatGPT), skip the HTML render and note it in `audit_metadata`** (e.g., `html_render: "skipped — python3 unavailable on this host"`), mirroring how Cat 11 marks a missing `file`/`curl` tool as Skip-with-reason rather than failing. The markdown report stays the canonical artifact regardless. The HTML is a derived view; the markdown is the canonical artifact. Customers who prefer markdown ignore the HTML; customers who want a formatted, in-browser, printable report open the HTML. See `references/html-template.md` for the template structure and `references/output-formats.md` for the broader output-format options.
 - Save to `{working_directory}/snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md`. Create the `snitchfindings/` parent and the per-target subfolder if they don't yet exist. The path is always relative to the user's current working directory at invocation, never a hardcoded absolute path. The `{target_slug}` is derived per `snitch-marketing.config.md` (source mode: `package.json` name or directory basename; crawl mode: the target domain's second-level name). Secondary outputs (STRATEGIC_RECOMMENDATIONS.md, CAT_96_BRAND_SERP_ADDENDUM.md, JSON / CSV / HTML exports, PORTFOLIO_AUDIT_REPORT.md) all land in the same `snitchfindings/{target_slug}/` directory.
-- **Scan comparison**: If a previous `SEO_AUDIT_REPORT.md` exists in the same `snitchfindings/{target_slug}/` directory, parse its finding counts and add: `Previous: X findings | This audit: Y | Resolved: Z | New: W`. For element-level regression beyond finding counts (a canonical that silently changed, JSON-LD that vanished from a template, a `noindex` that shipped by accident), see `references/seo-drift.md` — it writes a small baseline artifact on one run and diffs it on the next using only Read/Write, no database.
+- **Stable finding identity**: every finding carries `ruleId` + a semantic `anchor` (+ `instance` for siblings) per `references/finding-identity.md`. In crawl mode the anchor is a route *pattern* plus selector, so one bad template on a 400-page site is one finding with 400 instances, not 400 findings.
+- **Scan comparison**: If a previous `SEO_AUDIT_REPORT.md` exists in the same `snitchfindings/{target_slug}/` directory, reconcile **by fingerprint** — not by count — and add: `Previous: X findings | This audit: Y | Resolved: Z | New: W`. Counts are not identity: two fixed and two new reads as "Resolved: 0" if you subtract totals. For element-level regression beyond finding counts (a canonical that silently changed, JSON-LD that vanished from a template, a `noindex` that shipped by accident), see `references/seo-drift.md` — it writes a small baseline artifact on one run and diffs it on the next using only Read/Write, no database.
 - On first run, suggest the user add `snitchfindings/` to their `.gitignore` if the directory is inside a git repository. Audit outputs are typically local-only and shouldn't be tracked.
+- **Coverage section (required).** Every audit states its denominator: URLs **discovered** vs URLs
+  **actually fetched**, and per-category completeness of `complete` / `partial` / `unknown`. A crawl
+  that stopped at `crawl-max-pages` (default 50) is `partial` — say so, give both numbers, and name
+  the cap as the reason. **No silent sampling.**
+  This is not report hygiene, it is validity. Categories 9, 10, 19 and 20 compute *negative* claims
+  from the crawl set — "no duplicate titles", "no orphan pages", "no broken links". A negative claim
+  drawn from 50 of 400 URLs is not a weaker finding, it is an invalid one: the duplicate may simply
+  be on page 51. Where the cap bound the crawl, report the positive findings normally and state the
+  negative ones as "none found in the N URLs fetched", never as "none".
+  When the sitemap is larger than the cap, say what the remaining URLs would cost to check and let
+  the user raise `crawl-max-pages` — a bounded audit the reader can see the edges of is worth more
+  than a complete-looking one they cannot.
 - **SCOPE RULE for the report**: Only reference selected categories. No passed-checks list for unscanned categories.
 - Include metadata at the top:
   - `audit_mode_detected` (source / crawl / both)
@@ -302,7 +316,7 @@ Audit complete. What would you like to do?
 - **Option 2:** For each finding by SEO-impact, display and ask "Apply this fix? [Yes / Skip / Stop]". Apply on Yes. Disabled in crawl mode (no source to edit).
 - **Option 3:** Show a summary of all proposed fixes, confirm "Apply all X fixes? [Yes / No]". Apply on Yes.
 - **Color-fix safeguard (Option 2 AND Option 3):** any fix that touches a color value (Cat 49 contrast, Cat 113 color-blind safety, or any fix rewriting a color token, hex, `oklch/hsl/rgb`, or design-token color) requires **per-finding confirmation even in batch mode**. Show before/after + measured contrast (Cat 49) or redundant-channel addition (Cat 113), then ask "Apply this color change? [Yes / Skip]". Cat 113 fixes should add a redundant channel (icon, text, pattern, weight, position), not rewrite a color — flag misclassified color rewrites. Never substitute a "CVD-safe palette" for the user's brand palette without explicit request.
-- **Option 4:** For each finding, mark as `accepted` / `false_positive` / `confirmed`. Persist to `.snitch-marketing-triage.json` in the working directory.
+- **Option 4:** For each finding, mark as `accepted` / `false_positive` / `confirmed`. Persist to `.snitch-marketing-triage.json` in the working directory, **keyed by fingerprint** (`references/finding-identity.md`) so the state survives a line-number shift or a URL change. A dismissed finding that returns next audit is why customers stop reading the report.
 - **Option 5:** Create a new branch (`snitch-marketing-fixes/{timestamp}`), apply all fixes in distinct commits per category, leave it unpushed for the user to review.
 - **Option 6:** Re-run the same selected categories. Show resolved vs remaining.
 - **Option 7:** Compare to the previous `SEO_AUDIT_REPORT.md`. Show new / resolved / unchanged.
@@ -345,16 +359,41 @@ Category detection rules, context analysis, and SEO patterns live in separate fi
 
 **Custom rules:** If `custom-rules/` exists next to this SKILL.md, also read all `.md` files in it after loading built-in category guidance.
 
-**Additional references (loaded on demand):**
+### Reference Loading Map
 
-- Stack & site detection: `references/smart-detection.md`
-- Output format: `references/report-template.md`
-- Schema.org type catalog and SEO-impact alignment: `references/standards-table.md`
-- Per-framework gotchas: `references/framework-recipes.md`
-- Preset → category mappings: `references/category-groups.md`
-- Category picker menu: `references/custom-selection.md`
-- Voice mapping (which soul writes which category's fixes): `references/voice-mapping.md`
-- Soul library: `souls/{slug}.json`, read on demand when writing a Fix
+**`references/INDEX.md` is the complete catalogue of all 50 references**, with a "When surfaced"
+column naming the trigger for each. Read INDEX.md when you need a reference this table does not
+name — most of the library is specialist material reached by finding shape, not by phase.
+
+Read a reference only when its condition holds. Never pre-load the list.
+
+| Phase | Condition | Read |
+|---|---|---|
+| Detect | every audit | `references/smart-detection.md` |
+| Discovery | STEPS 0.4 → 0.8, always | `references/discovery-flow.md` |
+| Discovery | interviewing the owner / stakeholder available | `references/customer-discovery-script.md` |
+| Discovery | a context file exists or is being written | `references/context-file.md` |
+| Select | preset menu shown | `references/category-groups.md` |
+| Select | custom picker | `references/custom-selection.md` |
+| Select | STEP 1.5 component recommendation | `references/component-cat-map.md` |
+| Select | audit mode is comparative | `references/comparative-mode.md` |
+| Scan | stack detected | `references/framework-recipes.md` |
+| Scan | crawl mode with screenshots | `references/screenshot-integration.md` |
+| Scan | any accessibility category | `references/accessibility-audit-workflow.md` |
+| Scan | AI-search / citation categories | `references/geo-score.md`, `references/citability-scoring.md`, `references/ai-crawler-registry.md` |
+| Scan | E-E-A-T or authority categories | `references/eeat-assessment.md`, `references/brand-authority-platforms.md` |
+| Scan | backlink category | `references/backlink-commoncrawl.md` |
+| Scan | paid-media categories | `references/ads-detection-matrix.md`, `references/meta-ads-account-health.md` |
+| Scan | local categories | `references/local-services-playbook.md` |
+| Scan | schema categories | `references/standards-table.md`, `references/schema-deprecations.md` |
+| Report | every report | `references/report-template.md`, `references/finding-identity.md` |
+| Report | writing any Fix | `references/voice-mapping.md`, then `souls/{slug}.json` |
+| Report | before saving | `references/report-lint.md`, `references/grader.md` |
+| Report | STEP 4.5 strategic synthesis | `references/remediation-generator.md`, `references/mental-models.md` |
+| Diagnose | traffic drop / ranking loss reported | `references/traffic-diagnosis.md`, then `references/google-updates.md` |
+| Diagnose | a migration or replatform is planned | `references/migration-preflight.md` |
+| Post-audit | triage of findings | `references/triage-workflow.md` |
+| Post-audit | CI / automation questions | `references/ci-recipes.md` |
 
 ---
 

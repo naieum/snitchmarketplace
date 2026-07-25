@@ -1,10 +1,10 @@
 # Taglines, Names & Short-Format Copy
 
 How to write the shortest surfaces — the tagline, the brand/product name, the billboard-sized
-line (which is also the hero H1 and the ad headline). Derived from Donald Miller's StoryBrand
-material. The governing law for all of it: **the customer will not spend calories decoding
-you.** A line that must be explained has already failed, because you won't be there to
-explain it.
+line (which is also the hero H1 and the ad headline). Derived from the same brand-messaging
+framework as `brand-messaging.md`. The governing law for all of it: **the customer will not
+spend calories decoding you.** A line that must be explained has already failed, because you
+won't be there to explain it.
 
 ## Taglines
 

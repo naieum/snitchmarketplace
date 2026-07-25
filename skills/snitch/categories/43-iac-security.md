@@ -13,11 +13,16 @@ Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Doc
 ### What to Search For
 
 **Terraform:**
-- Public S3 buckets (`acl = "public-read"` / `"public-read-write"`, or `aws_s3_bucket_public_access_block` with all four blocks disabled)
+- Public S3 buckets. **Modern Terraform splits this across four resources — the bucket alone tells you almost nothing:**
+  - `aws_s3_bucket_public_access_block` — **check what is inside it, never that it exists.** All four arguments (`block_public_acls`, `block_public_policy`, `ignore_public_acls`, `restrict_public_buckets`) are Optional and **default to `false`** in the provider schema. A block declaring only `bucket` enables nothing, and is *worse than absent*: since April 2023 AWS enables Block Public Access on new buckets by default, so an empty resource actively **overrides** that protection. Deleting it would leave the bucket safer than declaring it this way. The finding is any of the four omitted **or** false; the Pass requires all four explicitly `true`, quoted.
+  - `aws_s3_bucket_policy` — judged on its **`Principal`**, not on existing. See the policy rule below.
+  - `aws_s3_bucket_acl` / inline `acl = "public-read"` / `"public-read-write"` — the legacy shape. The inline argument is deprecated but **still present in the current provider**, so it is live HCL, not a syntax error.
+  - `aws_s3_bucket_ownership_controls` — `object_ownership = "BucketOwnerEnforced"` disables ACLs entirely, which makes the whole ACL class unreachable. Credit it in the Pass; its absence is what makes an ACL finding exploitable.
 - Overly permissive security groups: ingress `cidr_blocks = ["0.0.0.0/0"]` on sensitive ports — 22 (SSH), 3389 (RDP), 3306 (MySQL), 5432 (Postgres), 6379 (Redis), 27017 (Mongo), 9200 (Elasticsearch)
 - Missing encryption at rest (`encrypted = false`, `storage_encrypted = false`, or encryption not specified) on RDS, ElastiCache, EBS
 - Hardcoded credentials in `.tf` / `.tfvars` (`AKIA...`, `sk_live_...`, `BEGIN PRIVATE KEY`, `xoxp-`/`xoxb-`)
 - Wildcard IAM policies (`"Action": "*"` + `"Resource": "*"` + `Effect = "Allow"` together)
+- **Resource policies are judged on `Principal`, and need no wildcard action to be catastrophic.** In an `aws_s3_bucket_policy`, SQS/SNS policy, or any resource policy, `Principal = "*"` (or `{"AWS": "*"}`, or `AllUsers`/`AuthenticatedUsers`) with `Effect = "Allow"` grants the world, even when the Action is a single narrow verb like `s3:GetObject` and the Resource is scoped to one bucket. AWS's own definition of a public policy is a grant to a non-fixed principal. A policy is **not** public when the principal is a fixed account/role/service ARN, or when a condition key genuinely constrains it (`aws:PrincipalOrgID`, `aws:SourceVpce`, `aws:SourceAccount`). The IAM wildcard rule above under-fires badly here — do not reuse it for resource policies.
 - Missing logging/monitoring on resources (no CloudTrail, no VPC flow logs)
 - Default VPC usage instead of custom VPCs
 - Missing state file encryption or remote state without locking
@@ -77,13 +82,14 @@ Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Doc
 A finding's Evidence block must show:
 - The offending resource block / manifest snippet quoted with file:line (the exact `acl`, `cidr_blocks`, PolicyDocument, `securityContext`, or `RUN curl | sh` line)
 - The resource identity and its exposure context — what the resource is (S3 bucket, security group, pod spec) and whether it is production-facing, internet-reachable, or scoped to a private VPC/sandbox
-- The absent mitigation checked for (no `aws_s3_bucket_public_access_block`, no KMS/`storage_encrypted`, no `runAsNonRoot`/resource limits, credentials not sourced from Vault/SSM)
+- The absent **or ineffective** mitigation checked for. State which: a control that is *declared but not configured* is a distinct and more misleading case than one that is missing, because it reads as protection. For S3: no **effective** public-access block — the resource absent, **or** present with any of the four arguments omitted or `false`, given the provider defaults them to `false`. Likewise no KMS/`storage_encrypted`, no `runAsNonRoot`/resource limits, credentials not sourced from Vault/SSM. Quote the arguments you read, not the resource name you matched.
 - Confirmation that no `# snitch-allow: <rule-id>` exception or deliberate-public naming convention covers the resource
 - For generated files (CDK output, rendered Helm): the source template file:line, since the fix belongs there — not in the rendered output
 
 ### Confidence Scoring
 - **HIGH**: The configuration is unambiguous in the file — literal `0.0.0.0/0` ingress on a sensitive port, `"Action": "*"` + `"Resource": "*"` + `Allow` together, `privileged: true`, `acl = "public-read"` on an app-data bucket, or a hardcoded `AKIA...` key — and the environment context (prod / public-facing) is established.
-- **MEDIUM**: The pattern is present but context is partial — the environment (prod vs. sandbox) is undetermined, the value comes through one level of variable indirection, or encryption is merely unspecified (provider defaults may apply) rather than explicitly disabled.
+- **MEDIUM**: The pattern is present but context is partial — the value comes through one level of variable indirection, or encryption is merely unspecified (provider defaults may apply) rather than explicitly disabled.
+- **Undetermined environment does not cap severity when the config is unsafe in every environment.** A bucket policy granting `Principal = "*"`, `0.0.0.0/0` to a database port, or a hardcoded long-lived key is a finding at full confidence whether it lands in prod or a sandbox — there is no environment in which it is correct. Reserve the environment-context downgrade for patterns whose risk genuinely depends on where they run (a permissive security group between private subnets, debug logging, a relaxed retention policy). A world-readable data bucket rated Medium because no `provider` block was in scope is a rubric failure, not a calibrated finding.
 - **LOW**: The value cannot be resolved statically — HCL interpolation, `var.`/`local.` chains sourced outside the repo, subtle multi-doc YAML structure, or Helm templating that obscures the final rendered value. Tag `needs human verification`.
 
 ### Files to Check
@@ -94,4 +100,4 @@ A finding's Evidence block must show:
 - `.github/workflows/*.yml` (IaC deployment steps)
 
 ### Reference
-The Snitch CLI and GitHub Action perform these checks deterministically (S3 / IAM / RDS / SG / secret-in-TF for Terraform + CloudFormation; runAsRoot / privileged / host-network / no-resource-limits / latest-tag for Kubernetes; runAsRoot / curl-pipe-sh / latest-base for Dockerfile), with rule IDs and per-resource fixes. In pure-skill mode, walk every `*.tf` / CFN template / K8s manifest / Dockerfile against the same patterns; precision is lower on subtle YAML structure and HCL interpolation, so calibrate confidence accordingly.
+Walk every `*.tf` / CFN template / K8s manifest / Dockerfile against the checks above (S3 / IAM / RDS / SG / secret-in-TF for Terraform + CloudFormation; runAsRoot / privileged / host-network / no-resource-limits / latest-tag for Kubernetes; runAsRoot / curl-pipe-sh / latest-base for Dockerfile), reporting a rule ID and a per-resource fix for each. Precision is lower on subtle YAML structure and HCL interpolation, so calibrate confidence accordingly. If the project already runs a dedicated IaC scanner (tfsec, checkov, trivy), run it and reconcile against these checks rather than duplicating them.

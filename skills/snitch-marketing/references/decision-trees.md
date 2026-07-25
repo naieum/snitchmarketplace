@@ -73,7 +73,8 @@ Does the channel produce ICP-qualified intent? (signups match the ICP scoring fr
         └── Yes
             │
             └── Does CAC payback work at current price + margin?
-                (channel CAC ≤ LTV / payback target, per `references/funnel-analytics.md`)
+                (channel CAC ≤ LTV / payback target — both numbers come from the
+                 customer; the audit cannot observe CAC or LTV. Ask, don't estimate.)
                 ├── No → Do not scale. Raise price (Cat 91 / 112), improve
                 │        conversion (Cat 60), reduce channel cost, or stop.
                 └── Yes → Scale gradually with kill-rule guardrails pre-committed.

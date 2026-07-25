@@ -21,8 +21,12 @@ home-page big picture — see `site-navigation.md`.
 
 ## Counts & sizing
 
-- **3–5 tabs (6 max).** More causes choice paralysis and shrinks each target.
-- **Tap target ≥ 44×44px** (average thumb). 24×24 is too small → mistaps.
+- **3–5 tabs.** Both platforms top out there: above five, Material directs you to a different
+  component rather than a six-tab bar, and iOS collapses the overflow into a "More" tab. More
+  options also cause choice paralysis and shrink each target.
+- **Tap target 44–48px** (average thumb): 44pt is Apple HIG and WCAG 2.2 AAA (2.5.5), 48dp is
+  Material. **24×24 CSS px is the WCAG 2.2 AA floor** (2.5.8) — conformant, not comfortable;
+  a nav bar tapped hundreds of times a day should sit at 44–48, not at the minimum.
 - **Icon ~24px** — recognizable without dominating.
 - **Labels 10–12px**, concise, **single line** (never wrap to two).
 - **Respect the safe area** — keep the bar above the home indicator with breathing room;
@@ -37,7 +41,8 @@ home-page big picture — see `site-navigation.md`.
   consistent icon style). If your icon set has no filled variants, use a **filled
   highlight pill / indicator bar** behind the active icon instead.
 - Keep **inactive** states legible — prefer slightly reduced opacity over a drastically
-  different color; meet **WCAG 3:1** minimum contrast for UI/graphical elements.
+  different color; meet the **3:1 minimum contrast for UI and graphical elements**
+  (WCAG 2.2 AA, 1.4.11) — and 4.5:1 for the label text itself (1.4.3).
 
 ## Icons, color, labels
 
