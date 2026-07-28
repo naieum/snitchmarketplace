@@ -1,0 +1,25 @@
+## Coding standards <!-- devready:standards -->
+
+Two tiers, and the tier is the contract. **Enforced** rules are machine-checked by the
+gates below — treat them as hard constraints: run the gate before presenting work, fix
+what it flags, and never disable, skip, or inline-suppress a check to make a diff pass.
+**Advisory** rules are conventions to match when writing new code — follow them in what
+you write, but don't refactor passing code just to satisfy them.
+
+### Enforced (machine-checked)
+<!-- One line per gate that actually runs, with its command. Fill from
+     `devready.sh standards` output; delete layers the repo doesn't have. -->
+- Lint: `{{LINT_CMD}}` — zero errors before work is presented
+- Format: `{{FORMAT_CMD}}` — every touched file formatted
+- Types: `{{TYPECHECK_CMD}}` — must pass
+- Tests: `{{TEST_CMD}}` — green before done; new behavior gets a test first
+
+### Advisory (style — match in new code)
+<!-- The rules the team wants but no tool checks: naming, error-handling shape,
+     comment policy, module boundaries. Keep this list SHORT — if it outgrows the
+     enforced list, that's the signal to promote rules into tooling. -->
+- {{ADVISORY_RULES}}
+
+A rule this repo doesn't gate is advice, and advice drifts. When an advisory rule gets
+argued in review twice, promote it: add the lint rule, hook, or CI step — then move the
+line up a tier.

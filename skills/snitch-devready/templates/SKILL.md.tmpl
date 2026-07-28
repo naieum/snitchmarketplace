@@ -1,0 +1,46 @@
+---
+name: <skill-name>
+description: <Verb-first one line of what the skill does>. Use when <the user asks for X, says "<trigger phrase>", "<trigger phrase>">. Do NOT use for <adjacent thing> (use <other-skill>), or <out-of-scope thing>.
+metadata:
+  author: <you>
+  version: 0.1.0
+---
+
+# <Skill Name>
+
+<One or two sentences: what this skill is and the core principle behind it. Write the
+body FOR the agent, as directives — imperative, verb-first, no hedging.>
+
+## When this applies
+
+<The conditions under which the agent should act on this skill. A pre-flight / relevance
+check if the skill should sometimes skip.>
+
+## Workflow
+
+1. **<Step>** — <what to do, concretely>.
+2. **<Step>** — <...>.
+3. **<Step>** — <...>.
+
+<Keep the body lean. Push detailed specs, tables, and examples into `references/` and
+point at them — progressive disclosure: metadata is always in context, the body loads
+when the skill triggers, references load on demand.>
+
+## Evidence / output rules
+
+- <What every output must include so it's verifiable, not vibes — quote the source,
+  cite file:line or URL, name the rule it satisfies.>
+- <What the skill must NEVER claim without evidence.>
+
+## References (loaded on demand)
+
+- `references/<topic>.md` — <when the agent should read it>.
+
+<!--
+Authoring notes (delete before shipping):
+- description is the trigger: verb-first + real phrases users say + an explicit
+  "Do NOT use for ... (use <other-skill>)" negative-scope clause to prevent overlap.
+- Keep SKILL.md short; a bloated body costs context on every trigger.
+- Add slash commands in commands/<name>.md (frontmatter: description + argument-hint;
+  body uses $ARGUMENTS) only if this skill is packaged as a plugin.
+-->

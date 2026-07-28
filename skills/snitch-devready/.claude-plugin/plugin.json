@@ -1,0 +1,21 @@
+{
+  "name": "snitch-devready",
+  "description": "Bootstrap a repo for AI-assisted development — greenfield/brownfield-aware CLAUDE.md, slash commands, feedback loop, permissions allowlist, and a two-tier coding standard (enforced vs advisory) wired to the repo's real gates.",
+  "version": "0.3.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "bootstrap",
+    "claude-md",
+    "coding-standards",
+    "hooks",
+    "enforcement",
+    "devex",
+    "snitch"
+  ]
+}

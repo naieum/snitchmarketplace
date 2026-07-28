@@ -1,0 +1,49 @@
+# {{PROJECT_NAME}}
+
+{{ONE_LINE_PURPOSE}}
+
+<!--
+  claude-ready: GREENFIELD north-star spec.
+  Sections tagged <!-- INTENDED --> describe what we PLAN to build — they are the
+  plan-before-code contract Claude should follow, not a description of existing
+  code. Re-run `claude-ready` once code exists to reconcile them against reality
+  (realized / diverged / dropped). Keep this file SHORT — context is precious.
+-->
+
+## What we're building <!-- INTENDED -->
+{{PRODUCT_INTENT}}
+
+## Stack <!-- INTENDED -->
+- Language/runtime: {{LANGUAGE}}
+- Framework: {{FRAMEWORK}}
+- Package manager: {{PACKAGE_MANAGER}}
+- Deploy target: {{DEPLOY_TARGET}}
+
+## Architecture <!-- INTENDED -->
+{{INTENDED_ARCHITECTURE}}
+<!-- e.g. directory layout, module boundaries, data flow, key entry points -->
+
+## Commands <!-- INTENDED -->
+<!-- Fill the ones that apply; remove the rest. These become real once scaffolded. -->
+- Install: `{{INSTALL_CMD}}`
+- Dev/run: `{{DEV_CMD}}`
+- Test: `{{TEST_CMD}}`
+- Lint/format: `{{LINT_CMD}}`
+- Build: `{{BUILD_CMD}}`
+
+## Feedback loop (how Claude checks its own work)
+{{FEEDBACK_LOOP}}
+<!--
+  Boris' highest-leverage tip: give Claude a way to SEE its result so it iterates.
+  Establish this from feature #1. Examples:
+   - Tests: write a failing test first, implement until `{{TEST_CMD}}` passes.
+   - UI: after each change, screenshot via the configured MCP and compare to the mock.
+-->
+
+## Conventions <!-- INTENDED -->
+- {{STYLE_NOTES}}
+- Commits: {{COMMIT_STYLE}}
+
+## Workflow expectations
+- Before large changes, brainstorm and make a plan; get approval before writing code.
+- Prefer the feedback loop above over "looks right" — iterate until the check passes.
