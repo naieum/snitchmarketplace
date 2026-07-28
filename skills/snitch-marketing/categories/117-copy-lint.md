@@ -39,6 +39,31 @@ Findings without all four components are Rule 1 violations (see `references/anti
 
 **Crawl mode:** fetch the homepage, `/pricing`, `/about`, `/features`, top product page, and `/compare/*` if present. Extract rendered visible text per surface. Run the six pattern checks.
 
+### Scored mechanics lens (run alongside the pattern checks)
+
+For each audited surface, pipe the extracted visible copy through the deterministic linter
+(`references/writing-system.md` holds the rules; `copy-lint.audit-mode` in the config, default
+flavored):
+
+```bash
+python3 {skill_dir}/scripts/copy-lint.py --mode flavored extracted-copy.txt
+```
+
+The score — weighted violations per 100 words, with per-rule counts — joins the finding's
+Evidence block: `copy-lint: 7.3 violations/100w (n=412) — top: W8 vague-adjectives ×6, W9
+superlatives ×2`. The vague-adjective and buzzword-density failure modes cite the script's
+deterministic count instead of a hand count; the script's W8/W9 lists are this category's
+lists, so the numbers reconcile. The seven failure modes above remain the audit judgment —
+the script counts, this category decides. In flavored mode W8 hits are half-weight because
+the "NOT a problem" qualified-flavor-word carve-out below needs judgment the script lacks:
+adjudicate each W8 hit against that carve-out before it becomes part of a finding. If
+python3 is unavailable, apply W1-W14 by hand and mark the evidence `copy-lint: manual`.
+
+Score bands (from `references/writing-system.md`): under 2.0 is clean and worth reporting as
+a pass; 2.0-5.0 supports a Medium mechanics finding; over 5.0 supports High. Bands calibrate
+the *mechanics* finding only — a dark-pattern or hidden-price finding keeps its own severity
+from the table below regardless of how cleanly it is written.
+
 ### What to search for
 
 **Vague-adjective patterns (regex-style):**
@@ -123,6 +148,7 @@ Findings without all four components are Rule 1 violations (see `references/anti
 
 ### Severity tagging
 
+- Copy-lint score over 5.0 violations/100w on a critical surface (hero, pricing) → High; 2.0-5.0 → Medium. Under 2.0, no mechanics finding — report the pass.
 - Hero copy is entirely vague adjectives / hidden price on self-serve product → Critical.
 - Unsupported superlatives in hero / dark-pattern urgency without real deadline / weak social proof in hero → High.
 - Buzzword density in hero or subhead / logo wall without context / vague adjectives in body copy → Medium.

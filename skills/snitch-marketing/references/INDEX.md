@@ -1,6 +1,6 @@
 # References Index
 
-This is the navigation map for the 50 reference docs in `references/`. The skill loads references on demand; this index helps the agent (and human readers) find the right one.
+This is the navigation map for the 52 reference docs in `references/`. The skill loads references on demand; this index helps the agent (and human readers) find the right one.
 
 The "When surfaced" column names the audit step or finding pattern that triggers the skill to read the reference. References not loaded reduce token cost.
 
@@ -56,10 +56,12 @@ The "When surfaced" column names the audit step or finding pattern that triggers
 | **backlink-commoncrawl.md** | Free, no-key backlink signals via Common Crawl: a crawl-coverage proxy (the bundled `scripts/commoncrawl_backlinks.py`) plus the heavier web-graph authority method, with explicit limits (it is not a referring-domain list). | Cat 69 runs and the user has no paid link index; Cat 82 inbound-link-as-citation signal. |
 | **google-updates.md** | Curated changelog of confirmed Google core / spam / helpful-content / reviews updates and what each type re-weights. A lookup table, not a live monitor; always confirm exact dates against the Status Dashboard. | `references/traffic-diagnosis.md` Stage 3b (a drop's onset matches an update window); Cat 125 / 126 / 69 policy context. |
 | **seo-drift.md** | Stateless element-level regression check (git-diff for SEO): write a baseline artifact, diff it on re-audit against severity-ranked rules (canonical / JSON-LD / noindex / title / H1 / status). Read/Write only, no database. | SKILL.md STEP 3 scan-comparison; post-scan Option 7; post-deploy regression or traffic-drop (Stage 3a); Cat 97 content decay. |
+| **finding-identity.md** | Stable finding identity: `ruleId` + semantic `anchor` (+ `instance` for siblings) and the fingerprint that keys triage state and scan comparison, so findings survive line-number shifts and URL changes. | STEP 3 report generation (every report); post-scan Option 4 triage; scan comparison against a previous report. |
+| **writing-system.md** | The prose-mechanics rule set: strict/flavored modes, machine-checked rules W1-W14 (implemented by `scripts/copy-lint.py`, scored as violations per 100 words), agent-judged rules A1-A7, score bands, and the soul-cadence precedence rule. Governs the skill's own prose and the scored lens on user copy. | STEP 3 copy-mechanics lint on report prose (before the grader); Cat 59 / Cat 117 scored lens; before any copy draft or rewrite the skill produces. |
 
 ## How references load
 
-References are NOT pre-loaded by the skill. The agent reads them on-demand based on the conditions in the "When surfaced" column. This keeps token cost manageable; an audit running only Quick Audit (13 cats) typically loads 4-6 references, not all 50.
+References are NOT pre-loaded by the skill. The agent reads them on-demand based on the conditions in the "When surfaced" column. This keeps token cost manageable; an audit running only Quick Audit (13 cats) typically loads 4-6 references, not all 52.
 
 ## Adding a new reference
 

@@ -10,7 +10,12 @@ This is an E-E-A-T problem when the slop erases the author's first-hand Experien
 
 1. `Read` the page content fully.
 2. Scan for AI tells: hedging frequency, generic transition density, made-up "studies show" without citations, em dash density (suspicious if every paragraph has one), platitudes ("in today's fast-paced world").
-3. Quote 3-5 tell-bearing sentences with the pattern called out.
+3. **Score the page with the deterministic linter** (`references/writing-system.md`; the AI-tell, hedge, transition, and em-dash counts stop being hand counts):
+   ```bash
+   python3 {skill_dir}/scripts/copy-lint.py --mode flavored page-content.txt
+   ```
+   The score joins the Evidence block: `copy-lint: 8.9 violations/100w (n=730) — top: W7 ai-tell ×9, W11 transition-opener ×5, W10 em-dash ×4`. If python3 is unavailable, apply W1-W14 by hand and mark the evidence `copy-lint: manual`.
+4. Quote 3-5 tell-bearing sentences with the pattern called out.
 
 **Crawl mode, required tool calls:**
 
@@ -88,5 +93,6 @@ Worked fix example:
 > 3. Replace made-up stats with real ones (cited) or remove the stat and make the point another way.
 > 4. Get the em dash count to under one per 200 words. Use commas / periods / colons / semicolons / parens for the rest.
 > 5. Read the page out loud. If you'd cringe saying it to a friend, rewrite it.
+> 6. Re-run the linter on the edited page and keep editing until it scores under 2.0 violations per 100 words. The before/after pair is your proof the edit worked.
 >
 > The result sounds like a person who knows the topic. Google's algorithm increasingly distinguishes that voice from the slop voice. So do readers.

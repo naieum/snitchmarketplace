@@ -18,7 +18,7 @@
       "name": "snitch-marketing",
       "source": "./skills/snitch-marketing",
       "description": "SEO + marketing audit with evidence-based findings \u2014 technical SEO, GEO/AI-search, schema, Core Web Vitals.",
-      "version": "1.10.0",
+      "version": "1.11.0",
       "license": "BUSL-1.1",
       "homepage": "https://snitchplugin.com"
     },
@@ -26,7 +26,7 @@
       "name": "snitch-ux",
       "source": "./skills/snitch-ux",
       "description": "Behavioral-design / UX-psychology skill \u2014 clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "license": "MIT",
       "homepage": "https://snitchplugin.com"
     },

@@ -5,7 +5,7 @@ license: MIT
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.3.0
+  version: 0.4.0
   homepage: https://snitchplugin.com
 ---
 
@@ -280,6 +280,7 @@ It can change what you do next, so read it before enumerating anything:
 | `report-output` | Where the report is written |
 | `confirm-scope` | Whether to confirm the surface list with the user before reviewing |
 | `high-stakes` | Forces the `inclusive-design.md` pass regardless of what scoping concluded |
+| `writing-system` | How the copy pass's prose-mechanics lens runs — `auto` / `strict` / `flavored` / `off`. **Never touches the Step 3.5 ethics gate**, and the skill's own prose meets the bar at every value |
 
 Before building or reviewing anything, work out *exactly* what you're covering and why. Do
 not sample a couple of screens and proceed.
@@ -379,13 +380,33 @@ acquisition findings is the failure mode this triage exists to prevent.
    removes the user's last warning. If the gate failed, the finding is the dishonesty, not the
    wording.
    Prefer the highest-leverage 2–4 for this surface — don't cram all of them.
-5. **Pass the copy** through `references/copywriting.md` (specificity, possessive, verbs, and
-   omit needless words). For **brand-level surfaces** — home hero, tagline, value prop,
+5. **Pass the copy — twice, because *what it says* and *how it's built* fail independently.**
+   First through `references/copywriting.md` (specificity, possessive, verbs, and
+   omit needless words). Then through `references/writing-system.md` — the prose-mechanics
+   rules (sentence length, active voice, hedge stacking, the banned phrase lists) with its
+   scored lens: run the deterministic linter on the surface's extracted copy,
+   ```
+   python3 scripts/copy-lint.py --mode strict -    # microcopy, CTAs, errors, empty states
+   python3 scripts/copy-lint.py --mode flavored -  # hero, tagline, brand narrative
+   ```
+   (script path relative to this skill bundle; it reads stdin or a file, writes stdout, and
+   never writes a file — running it is a read, so the review phase stays read-only). The
+   score bands in `writing-system.md` calibrate copy-mechanics findings, and the score goes
+   in the finding's **Evidence** field. If python3 is unavailable, apply rules W1-W14 by
+   hand and say so in the report. The `writing-system` config key can force a mode or turn
+   the scored lens off; like `lenses`, it never touches the Step 3.5 gate, which this pass
+   runs after and under — a lint-clean dark pattern is still a finding.
+   For **brand-level surfaces** — home hero, tagline, value prop,
    pricing page, onboarding sequence, pitch copy — also check the *message* against
    `references/brand-messaging.md` (problem-first, five sound bites, one controlling idea);
    for taglines, names, and headline-scale lines use `references/taglines-and-naming.md`,
    and for funnel collateral (lead magnets, pricing framing, CTAs/closes, sales emails) use
    `references/messaging-campaign.md`.
+   **Whatever copy you propose passes the same bar.** Any replacement line this skill writes
+   — a Fix-field rewrite, a suggested error message, a hero alternative — is linted before
+   it is shown, strict or flavored per the surface it targets. The review report's own
+   narrative prose passes strict; note the result in one line near the coverage block
+   (`Report copy: 1.1 violations/100w, strict`).
 6. **Review** against `references/review-checklist.md` before you call the surface done —
    including the accessibility/inclusion and ethics gates.
 7. **Validate, don't debate.** When a call is contested or risky, don't argue from opinion —
@@ -445,6 +466,7 @@ say which happened.
 - **Minimize noise** — treat every element as visual clutter until it earns its place.
 - **Navigation is the site** — Site ID, sections, a way home, a search box; page names that match the link clicked; obvious "you are here." Pass the **parachute test** (`references/site-navigation.md`).
 - **Convey the big picture** — a first-time visitor knows *what is this, what can I do, why here* from the tagline + welcome blurb (`references/site-navigation.md`).
+- **Build the sentence like a control** — length caps, active voice, one idea per sentence, no stacked hedges, no banned filler; strict mode for microcopy, flavored for brand voice (`references/writing-system.md`, scored by `scripts/copy-lint.py`).
 
 **Reduce the thinking (cognitive load)**
 - **Smart defaults** — pre-select the most common choice; most people never change a default and read it as a recommendation (a strong tendency, not a fixed rate — it depends on how consequential and reversible the choice is). Never show a blank form you could pre-fill. **Never pre-select a charge or a consent** — that is an ethics-gate failure, not a default.
@@ -525,6 +547,7 @@ say which happened.
 - `references/inclusive-design.md` — who the user really is: the full range of ability/culture/attention, cognitive inclusion, localization, and when to dial persuasion *down* for vulnerable users and high-stakes moments.
 - `references/principles.md` — full persuasion catalog: each principle with the psychology, the rule, and do/don't.
 - `references/copywriting.md` — CTA & microcopy patterns (verbs, possessives, numbers, framing, omit needless words).
+- `references/writing-system.md` — prose mechanics: the strict/flavored mode split, machine-checked rules W1-W14 (scored by `scripts/copy-lint.py` as violations per 100 words), agent-judged rules A1-A7, score bands, and the voice-precedence rule. `copywriting.md` owns what the copy says; this file owns how the sentences are built.
 - `references/brand-messaging.md` — brand-level message, adapted from a widely used
   story-structure framework for brand narrative: customer-as-hero / brand-as-guide, the five PEACE sound bites plus the full script (three-step plan, CTA, stakes), the one-liner, the villain rules, the controlling idea, message audits (cognitive-load weighing, Sharpie test, 5-second test), where the founder's story belongs, and the funnel zones.
 - `references/taglines-and-naming.md` — taglines (offer-not-vibe, name-strip and stranger-guess tests, category+twist, command taglines, name/tagline division of labor), naming rules (bullseye test, outcome-not-mechanism, bridge words, feature naming), and billboard-scale copy rules for any 3-second surface.

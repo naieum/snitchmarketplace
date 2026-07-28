@@ -2,7 +2,7 @@
 
 This skill bundle is portable. It works in Claude Code (native skill loading), Cursor, GitHub Copilot Chat, OpenAI Codex / ChatGPT with file access, Continue.dev, Cody, Amazon Q Developer — any AI coding tool that can read markdown files from disk and follow extended instructions.
 
-The skill's brain is `SKILL.md`. Everything else is loaded on-demand by the agent following SKILL.md's directives: the reference library in `./references/` (14 files) holds the depth behind each cheat-sheet line.
+The skill's brain is `SKILL.md`. Everything else is loaded on-demand by the agent following SKILL.md's directives: the reference library in `./references/` (15 files) holds the depth behind each cheat-sheet line, and `./scripts/copy-lint.py` is the deterministic copy-mechanics linter the copy pass invokes.
 
 ## Universal bootstrap
 
@@ -131,6 +131,7 @@ Regardless of tool, the agent must be able to:
 4. **Ask the user a question mid-run** (the host's clarifying-question tool, or plain chat). Step 0 requires confirming scope, goal, and audience rather than guessing. If your tool can't pause to ask, set `confirm-scope: false` in `snitch-ux.config.md` and state the assumed scope in the report.
 5. **Write a markdown file** at the end (see `report-output` in `snitch-ux.config.md`).
 6. **Fetch URLs or drive a browser** (optional) — needed only for reviewing a live site rather than a codebase. A screenshot tool (Playwright MCP, or your host's built-in browser) lets the agent judge visual hierarchy, active states, and tap targets directly instead of inferring them from source. Without it, live-site review degrades to reading the served HTML/CSS; codebase review is unaffected.
+7. **Run python3** (optional) — powers the deterministic copy linter (`scripts/copy-lint.py`) in the copy pass. Without it, the agent applies the writing-system rules by hand and says so in the report; nothing fails.
 
 If your tool can do the first five, this skill works.
 

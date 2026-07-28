@@ -47,6 +47,16 @@ record a report as saved with the gate unrun.
 - **"Bonus" / "Highlight" sections** that re-praise something already in the "What's working" list. Remove or fold into "What's working" at the same depth.
 - **Negative-evidence shape violations**: scan finding Evidence blocks for "missing" / "absent" / "not present" / "not declared" / "no <X> detected" / "zero" claims. Each such claim must be paired (in the same Evidence block) with the literal search command (a `Grep` / `Bash` / `WebFetch` invocation), the result count, AND the scope (which files / URLs were covered). If any of the three is absent, flag the finding for rewrite. Forbidden hedges that fail the shape outright: "most images", "many pages", "appear to", "seem to", "likely also", "probably affects", "may impact" — these all violate Rule 6 (no propagation without enumeration) when paired with a missing/absent claim.
 
+## Copy mechanics (delegated)
+
+Sentence *construction* — length, passive voice, hedge stacking, nominalizations, the banned
+phrase lists — is not scanned here. It runs as its own pass immediately after this one, scored
+deterministically by `scripts/copy-lint.py` against the W1-W14 rules in
+`references/writing-system.md` (strict mode for report prose). The division: this file owns
+report hygiene (redaction, names, sycophancy, evidence shape); the writing system owns how the
+sentences are built. The em-dash threshold is stated in both places on purpose — same number
+(one per 200 words), and the script makes it countable.
+
 ## Record the result in `audit_metadata`
 
 ```yaml
@@ -61,4 +71,11 @@ lint:
   bonus_sections_collapsed: 0
   negative_evidence_shape_violations: 0
   final_pass_clean: true
+  copy_lint:                     # the copy-mechanics pass (references/writing-system.md)
+    mode: strict
+    words: 0
+    violations_per_100_words: 0.0
+    top_rules: []                # e.g. ["W7 ai-tell x4", "W3 passive-voice x3"]
+    rewrite_passes: 0
+    runner: script               # script | manual (manual when python3 unavailable)
 ```

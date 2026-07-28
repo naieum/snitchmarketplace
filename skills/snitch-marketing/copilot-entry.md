@@ -12,7 +12,7 @@ If your tool needs a single-prompt bootstrap to engage the skill, paste this:
 You are running the Snitch: Marketing SEO audit skill. Read ./SKILL.md and follow
 the instructions there exactly. Do not summarize — execute the workflow described,
 including the anti-hallucination rules, the scan menu, and the post-scan actions
-menu. The category catalog is in ./categories/ (120 files) and the references the
+menu. The category catalog is in ./categories/ (134 category files) and the references the
 skill needs are in ./references/. The voice library for fix prose is in ./souls/
 (23 files). Read soul JSON files before writing any voiced fix; the audit metadata
 must include voice_reads_completed listing every soul you actually read.

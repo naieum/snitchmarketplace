@@ -5,7 +5,7 @@ license: MIT
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). LLM-backed audits use the user's existing model; no separate server required. Exports the report as markdown, JSON, CSV, and (when python3 is present) HTML on its own. Optional Playwright MCP for screenshot evidence in crawl mode.
 metadata:
   author: Snitch
-  version: 1.10.0
+  version: 1.11.0
   homepage: https://snitchplugin.com
 ---
 
@@ -256,6 +256,11 @@ For each category:
 - **Generate the executive snapshot first**, before drafting the full report. The snapshot is a one-page header (≤300 words) that opens every report, naming: the bottleneck (one sentence), the fix (one sentence), this-week action (one sentence), top 3 findings, and a short "read the rest if..." pointer. The snapshot is the audit's TL;DR; customers triaging the report read just the snapshot and act. Failure to include the snapshot is a Rule 7 violation (the report is incomplete).
 - **Run the redaction gate (always on, hard fail).** Before saving — or, when no file will be written, before presenting the report — scan the full drafted output for analytics/ad identifiers, credentials, and real personal data per the Redaction gate section of `references/report-lint.md`. Any live value anywhere in the draft blocks the save; apply the redaction-only rewrite and re-scan until clean. This enforces Rule 5 and runs regardless of `grader.enabled` or whether the audit is internal.
 - **Run the pre-output lint pass** after drafting the full report and before saving. Full spec, scanner rules, and `audit_metadata.lint` schema live in `references/report-lint.md`. Mandatory; skipping invalidates the audit's compliance with brand rules (em-dash density, no designer names in user-visible output, no sycophancy, negative-evidence shape). Rewrite each hit and re-run until clean.
+- **Run the copy-mechanics lint** after the report-lint pass and before the grader, so the grader grades final prose. Score the drafted report's narrative prose with the deterministic linter (`references/writing-system.md` has the rules; the script's preprocessor skips code blocks and the `audit_metadata` block itself):
+  ```bash
+  python3 {skill_dir}/scripts/copy-lint.py --mode strict --json {working_directory}/snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md
+  ```
+  Rewrite the worst offenders and re-run until the score is at or under `copy-lint.max-report-score` (`snitch-marketing.config.md`, default 2.0 violations per 100 words), then record the result in `audit_metadata.lint.copy_lint` (schema in `references/report-lint.md`). **If `python3` is unavailable, apply rules W1-W14 by hand** from the table in `references/writing-system.md` and record `runner: manual` — the same degradation contract as the HTML render. Skip entirely only when `copy-lint.enabled: false`.
 - **Run the LLM-as-grader pass** after the lint pass and before the HTML render. The grader reads the report and scores each finding against 5 criteria (evidence specificity, risk specificity, fix specificity, three-rules adherence, evidence-to-claim alignment) plus a severity-calibration check. Failing findings are auto-rewritten; the rewrite is re-graded; the pass-rate is recorded in `audit_metadata.grader`. Default pass threshold is 8/10 per finding; configurable in `snitch-marketing.config.md`. Full spec: `references/grader.md`. Required for customer-facing audits; toggle off via `grader.enabled: false` for internal exploratory scans where token budget is tight.
 - **Render the HTML alongside the markdown (if python3 is available)** after lint pass and grader pass complete and the markdown is final. Invoke the renderer (`{skill_dir}` is this skill bundle's own directory — the folder that contains this SKILL.md; in Claude Code it resolves to `${CLAUDE_SKILL_DIR}`, in other hosts substitute the path where the bundle was loaded):
   ```bash
@@ -361,7 +366,7 @@ Category detection rules, context analysis, and SEO patterns live in separate fi
 
 ### Reference Loading Map
 
-**`references/INDEX.md` is the complete catalogue of all 50 references**, with a "When surfaced"
+**`references/INDEX.md` is the complete catalogue of all 52 references**, with a "When surfaced"
 column naming the trigger for each. Read INDEX.md when you need a reference this table does not
 name — most of the library is specialist material reached by finding shape, not by phase.
 
@@ -386,9 +391,10 @@ Read a reference only when its condition holds. Never pre-load the list.
 | Scan | paid-media categories | `references/ads-detection-matrix.md`, `references/meta-ads-account-health.md` |
 | Scan | local categories | `references/local-services-playbook.md` |
 | Scan | schema categories | `references/standards-table.md`, `references/schema-deprecations.md` |
+| Scan | copy-mechanics categories (Cat 59, Cat 117) | `references/writing-system.md` |
 | Report | every report | `references/report-template.md`, `references/finding-identity.md` |
 | Report | writing any Fix | `references/voice-mapping.md`, then `souls/{slug}.json` |
-| Report | before saving | `references/report-lint.md`, `references/grader.md` |
+| Report | before saving | `references/report-lint.md`, `references/writing-system.md`, `references/grader.md` |
 | Report | STEP 4.5 strategic synthesis | `references/remediation-generator.md`, `references/mental-models.md` |
 | Diagnose | traffic drop / ranking loss reported | `references/traffic-diagnosis.md`, then `references/google-updates.md` |
 | Diagnose | a migration or replatform is planned | `references/migration-preflight.md` |

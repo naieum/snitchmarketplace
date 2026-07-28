@@ -49,6 +49,22 @@ With voice (the prose carries the discipline; the name is absent):
 
 The customer reads a fix with a clear point of view. The customer does not need to know who informed the cadence; the cadence does the work.
 
+## Mechanics vs cadence
+
+Voiced Fix prose is also subject to the writing system (`references/writing-system.md`), in
+**flavored** mode, and the precedence between the two is fixed:
+
+- **The soul owns rhythm** — fragments, sentence-length variation, repetition for emphasis,
+  where the stress lands. Flavored mode is built so none of these register as violations.
+- **The writing system owns mechanics** — the banned phrase lists (W4/W6/W7), hedge stacking,
+  vague adjectives, superlatives, em-dash density, one name per concept.
+
+When a flavored-mode lint hit lands on voiced prose, rewrite the hit **in cadence** — never
+flatten a fragment or de-voice a sentence to clear a score. The converse holds with equal
+force: no soul authorizes a mechanics violation. No practitioner in `souls/` ever wrote
+"robust, world-class platform"; a banned phrase inside a voiced Fix is a voice failure *and*
+a lint failure, and the fix for both is the same rewrite.
+
 ## Voice fidelity rules (anti-hallucination, voice edition)
 
 - **You may not invent a quote** and attribute it to a soul. If you write something in quotes inside a Fix, it must appear verbatim in `signature_quotes` of the soul JSON. Otherwise paraphrase without quotes.

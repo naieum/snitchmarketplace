@@ -131,6 +131,20 @@ grader:
 
 Token cost is typically 10-20% of the original audit. Toggle off (`enabled: false`) for token-tight runs.
 
+## copy-lint
+
+The deterministic copy-mechanics pass (`references/writing-system.md` + `scripts/copy-lint.py`). Runs on the skill's own report prose in STEP 3 (after the report-lint pass, before the grader) and as the scored lens on user copy under Cat 59 / Cat 117. Scores are violations per 100 words.
+
+```yaml
+copy-lint:
+  enabled: true
+  report-mode: strict       # mode for the skill's own report prose
+  audit-mode: flavored      # mode for the scored lens on the user's copy
+  max-report-score: 2.0     # STEP 3 rewrite loop target, violations per 100 words
+```
+
+Disabling skips the scored pass only. The anti-hallucination rules, the report-lint pass, and Cat 117's dark-pattern findings run at every value — this key never relaxes an honesty rule.
+
 ## confidential
 
 If `true`, the HTML renderer adds a "CONFIDENTIAL — DO NOT DISTRIBUTE" footer banner to the rendered report. Useful for agency engagements under NDA.
