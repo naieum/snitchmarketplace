@@ -7,11 +7,15 @@ The skill is a thin tool surface; YOU (the agent) drive the flow. Always:
    Never silently overwrite an existing CLAUDE.md / settings / .mcp.json — merge.
 4. Print the manual follow-ups the skill can't do.
 
+Every recipe below says "CLAUDE.md" for brevity; the actual target follows **SKILL.md's
+context-file targeting** — `AGENTS.md` as canonical with per-tool pointers when the team
+runs more than Claude Code. The content is the same markdown either way.
+
 ---
 
 ## Recipe A — brownfield (real code present)
 
-Boris' methodology runs *extract-inward*:
+The extract-inward methodology:
 1. Codebase Q&A: explore languages, entry points, how to run/test/build.
 2. Read git history for conventions (commit style, ownership).
 3. Generate a SHORT CLAUDE.md from REALITY (no `INTENDED` tags) using the 6-criteria
@@ -93,11 +97,15 @@ or as step 7 of Recipe A / the tail of Recipe C.
    starter assumptions. If the team already argued a rule into `.eslintrc`, it's settled;
    never relax it (Hard rule: never weaken an existing gate).
 4. **Propose the closes, smallest first, as diffs:**
-   - **Agent-loop gate** (`template settings-hooks`): a fast file-scoped check after each
-     Edit/Write, the fuller verify on Stop. This is the highest-leverage close — the agent
-     gets the violation while the file is still open, not in review.
    - **Commit gate** where none exists: lint-staged/husky (node), pre-commit (python), or
-     the stack's equivalent — running the *already-defined* tools only.
+     the stack's equivalent — running the *already-defined* tools only. **This is the
+     tool-agnostic gate**: it catches every agent and every human, whatever editor or CLI
+     produced the commit. On a multi-tool team it is the close that matters most.
+   - **Agent-loop gate** (`template settings-hooks` — Claude Code's hooks schema): a fast
+     file-scoped check after each Edit/Write, the fuller verify on Stop. Highest-leverage
+     for Claude Code users — the agent gets the violation while the file is still open,
+     not in review. Other tools' loop-hook equivalents aren't bundled; for them the
+     commit gate is the answer, and say so rather than improvising a config.
    - **Missing layer configs** only when `.gaps` names them AND the user wants them: a
      starter linter/formatter config matching the stack's dominant convention. Propose,
      don't push — a team that chose not to lint may have a reason; record their answer.
@@ -123,7 +131,7 @@ Anti-patterns this recipe refuses:
 
 ## Manual follow-ups (always print — the skill cannot do these)
 
-These are one-time, machine-level steps from Boris' talk:
+These are one-time, machine-level steps (Claude Code hosts):
 - `/terminal-setup` (Shift+Enter for newlines)
 - `/theme` (light/dark/colorblind)
 - `/install-github-app` (@mention Claude on issues/PRs)

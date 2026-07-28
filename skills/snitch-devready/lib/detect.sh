@@ -205,6 +205,12 @@ run_detect() {
   local has_settings="false"; [[ -f .claude/settings.local.json || -f .claude/settings.json ]] && has_settings="true"
   local has_mcp="false"; [[ -f .mcp.json ]] && has_mcp="true"
   local has_commands="false"; [[ -d .claude/commands ]] && has_commands="true"
+  # Other agent tools' context files — drives context-file targeting (SKILL.md).
+  local has_agents_md="false"; [[ -f AGENTS.md ]] && has_agents_md="true"
+  local has_cursor_rules="false"; { [[ -d .cursor/rules || -f .cursorrules ]]; } && has_cursor_rules="true"
+  local has_copilot_instructions="false"; [[ -f .github/copilot-instructions.md ]] && has_copilot_instructions="true"
+  local has_gemini_md="false"; [[ -f GEMINI.md ]] && has_gemini_md="true"
+  local has_windsurf_rules="false"; { [[ -f .windsurfrules || -d .windsurf/rules ]]; } && has_windsurf_rules="true"
 
   jq -n \
     --arg ts "$ts" \
@@ -219,6 +225,11 @@ run_detect() {
     --argjson has_settings "$has_settings" \
     --argjson has_mcp "$has_mcp" \
     --argjson has_commands "$has_commands" \
+    --argjson has_agents_md "$has_agents_md" \
+    --argjson has_cursor_rules "$has_cursor_rules" \
+    --argjson has_copilot_instructions "$has_copilot_instructions" \
+    --argjson has_gemini_md "$has_gemini_md" \
+    --argjson has_windsurf_rules "$has_windsurf_rules" \
     --argjson stacks "$stacks" \
     --argjson spec_files "$spec_files" \
     --argjson package_managers "$pms" \
@@ -239,7 +250,12 @@ run_detect() {
         claude_md: $has_claude_md,
         settings: $has_settings,
         mcp_json: $has_mcp,
-        commands_dir: $has_commands
+        commands_dir: $has_commands,
+        agents_md: $has_agents_md,
+        cursor_rules: $has_cursor_rules,
+        copilot_instructions: $has_copilot_instructions,
+        gemini_md: $has_gemini_md,
+        windsurf_rules: $has_windsurf_rules
       }
     }'
 }

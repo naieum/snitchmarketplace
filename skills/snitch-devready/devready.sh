@@ -15,7 +15,7 @@ export SKILL_DIR LIB_DIR REF_DIR TPL_DIR
 
 usage() {
   cat <<'EOF'
-snitch-devready: bootstrap a repo for Claude Code (Boris-style). Thin tools; agent
+snitch-devready: bootstrap a repo for AI-assisted development. Thin tools; agent
 orchestrates. Run `detect` first, then branch on `.mode`.
 
 Read tools (JSON on stdout):

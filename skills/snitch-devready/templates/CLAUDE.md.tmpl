@@ -3,10 +3,10 @@
 {{ONE_LINE_PURPOSE}}
 
 <!--
-  claude-ready: GREENFIELD north-star spec.
+  snitch-devready: GREENFIELD north-star spec.
   Sections tagged <!-- INTENDED --> describe what we PLAN to build — they are the
   plan-before-code contract Claude should follow, not a description of existing
-  code. Re-run `claude-ready` once code exists to reconcile them against reality
+  code. Re-run `snitch-devready` once code exists to reconcile them against reality
   (realized / diverged / dropped). Keep this file SHORT — context is precious.
 -->
 
@@ -34,7 +34,7 @@
 ## Feedback loop (how Claude checks its own work)
 {{FEEDBACK_LOOP}}
 <!--
-  Boris' highest-leverage tip: give Claude a way to SEE its result so it iterates.
+  The highest-leverage tip: give the agent a way to SEE its result so it iterates.
   Establish this from feature #1. Examples:
    - Tests: write a failing test first, implement until `{{TEST_CMD}}` passes.
    - UI: after each change, screenshot via the configured MCP and compare to the mock.

@@ -1,13 +1,13 @@
 # lib/perms.sh — map a project_kind (or explicit stack list) to a starter
 # permissions allowlist for .claude/settings.local.json.
 #
-# Boris' talk: "customize the set of allowed tools so you're not prompted every
+# The principle: "customize the set of allowed tools so you're not prompted every
 # time." Greenfield lets us seed this from the CHOSEN stack before code exists.
 #
 # Exports:
 #   run_perms [project_kind] — emit JSON {allow:[...], deny:[...], ask:[]}
 #
-# The deny list encodes Boris' "block dangerous commands" guidance.
+# The deny list encodes the "block dangerous commands" guidance.
 
 _perms_base_allow() {
   cat <<'EOF'

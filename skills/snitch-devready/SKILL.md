@@ -6,7 +6,7 @@ compatibility: Standalone skill — the bundled shell tools need bash + jq; arti
 allowed-tools: Bash(${CLAUDE_SKILL_DIR}/devready.sh:*), Bash(/Users/ianmuench/.claude/skills/snitch-devready/devready.sh:*)
 metadata:
   author: Snitch
-  version: 0.3.0
+  version: 0.4.0
   homepage: https://snitchplugin.com
 ---
 
@@ -42,6 +42,29 @@ This emits JSON with `.mode` ∈ `greenfield | thin-greenfield | brownfield`, pl
 `.existing_artifacts`. **Branch on `.mode`.** Then read
 `references/30-recipes.md` for the full per-mode flow.
 
+## Context-file targeting (tool-agnostic)
+
+The context artifact is one document; **where it lands depends on which agent tools the
+team uses**. `.existing_artifacts` reports what's already present (`claude_md`,
+`agents_md`, `cursor_rules`, `copilot_instructions`, `gemini_md`, `windsurf_rules`);
+confirm with the user when it's ambiguous.
+
+- **Claude Code only** → `CLAUDE.md`, as the recipes describe.
+- **Multiple tools, or non-Claude** → **`AGENTS.md` is the canonical file** (most agent
+  CLIs and editors read it natively), and each tool that doesn't gets a thin pointer, not
+  a copy: a `CLAUDE.md` containing `@AGENTS.md` (Claude Code follows imports), a
+  `.github/copilot-instructions.md` that says "follow AGENTS.md", and so on. **One
+  canonical document, N pointers — never N diverging copies.**
+- **A repo that already has both** with different content is a finding, not a choice:
+  show the diff, merge into the canonical one, demote the other to a pointer.
+
+Everything this skill writes into the context file — the spec sections, the standards
+section from Recipe E — is plain markdown with no tool-specific syntax, so it works
+wherever it lands. The tool-specific artifacts (`.claude/commands/`, settings
+permissions, the hooks template) are Claude Code's; equivalents for other tools exist but
+aren't bundled — say so rather than improvising one, and note that the *commit gate and
+CI gate from Recipe E are tool-agnostic by nature* and cover every agent the team runs.
+
 ## The modes (summary — details in references/30-recipes.md)
 
 - **brownfield** → *extract-inward*: codebase Q&A + git history → a SHORT CLAUDE.md
@@ -72,7 +95,7 @@ writing anything (pairs with the "never silently overwrite" rule). Fill the last
 
 | Artifact | What it gives the team | This repo? |
 |---|---|---|
-| `CLAUDE.md` | Shared, checked-in context — the network-effect win | yes — {mode} flavor |
+| `CLAUDE.md` / `AGENTS.md` (per context-file targeting above) | Shared, checked-in context — the network-effect win | yes — {mode} flavor |
 | Coding-standards section + hooks | The agent's code is machine-checked, not advised (Recipe E) | brownfield/thin — from `standards` output |
 | `.claude/commands/` | Repeatable slash-command workflows | yes / skip |
 | Feedback loop (`.mcp.json` screenshot, or the test runner) | Lets the agent *see* its output and iterate | only if `.ui` / has tests |
