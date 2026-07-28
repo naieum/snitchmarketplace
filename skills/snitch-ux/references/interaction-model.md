@@ -69,6 +69,13 @@ possible (execution), or not know whether it worked (evaluation)?
 - **Feedback** — immediate, informative confirmation of the result of an action. Must be
   prompt (delayed feedback reads as "nothing happened") and proportionate (not so much it
   becomes noise). → Feedback is what closes the Gulf of Evaluation.
+  The thresholds are known numbers, so cite them: **~0.1s** reads as instantaneous — no
+  acknowledgment needed beyond the state change; **~400ms** is the pace that keeps an
+  exchange feeling conversational — under it people stay engaged and productive, over it
+  attention starts to wander; by **~1s** the wait itself is noticed and needs an
+  acknowledgment (spinner, skeleton, optimistic update); by **~10s** the user's focus is
+  gone unless there's determinate progress and a way to do something else. A response that
+  will run long is a design moment, not a delay to apologize for.
 - **Constraints** — physical, cultural, semantic, and logical limits that *reduce the set
   of possible actions* so the wrong move is hard or impossible. → Prevent errors by design
   rather than warning about them afterward.

@@ -69,6 +69,10 @@ every screen — skip what's irrelevant, flag what's violated with a concrete fi
 - [ ] Is advanced complexity **progressively disclosed** rather than dumped upfront?
 - [ ] Does the input control **match the context** (slider for setup, stepper for frequent)?
 - [ ] Recognition over recall — are you showing, not making them remember?
+- [ ] Did a simplification **move complexity onto the user** instead of removing it — a
+      hidden gesture as the only route, a rule the form enforces but never states, a
+      "clean" screen that requires remembering what it no longer shows? Complexity is
+      conserved; check who's carrying it (`principles.md` §A).
 
 ## 2. Motivation & commitment
 - [ ] If users aren't acting, which of **motivation / ability / prompt** is missing? (too
@@ -102,13 +106,25 @@ every screen — skip what's irrelevant, flag what's violated with a concrete fi
 
 ## 4. Visual hierarchy & craft
 - [ ] Are **values emphasized over labels**? Is importance encoded in size/weight/color/position?
+- [ ] In any list, menu, or step sequence: are the items that matter **first or last**, not
+      buried mid-list? First and last positions are remembered and reached best; the middle
+      sags (`psychology-foundations.md`, serial position). One deliberate odd-one-out for
+      the thing that matters most — if everything is emphasized, nothing is.
 - [ ] **Real content** shown, not decorative filler?
 - [ ] Shadows soft and tinted to background? Palette limited? Type doing hierarchy work?
 - [ ] Is every element earning its place (minimalism), or is there decoration for its own sake?
 
 ## 5. Feedback & delight
 - [ ] Does every tap/selection have a clear, satisfying **state change**?
-- [ ] Do values/consequences update **live** (new total/balance shown immediately)?
+- [ ] Do values/consequences update **live** (new total/balance shown immediately)? Does the
+      response land fast enough to feel conversational (~400ms), and is any longer wait
+      **acknowledged** — skeleton, optimistic update, determinate progress — rather than a
+      silent pause? (`interaction-model.md` has the thresholds.)
+- [ ] Does the flow **end on purpose**? People judge the whole experience by its worst
+      moment and its ending — so the last screen is designed (a success state that confirms
+      what happened and offers the next step), not just where the clicking stopped; and the
+      worst moment (the error, the wait, the payment) gets the most design attention, not
+      the least. A flow that works but just trails off is leaving its memory to chance.
 - [ ] Is the **empty state** a CTA, not a dead end?
 - [ ] Does **search** offer suggestions on focus?
 - [ ] Is the experience **personalized** (name, lifecycle stage) where it can be?

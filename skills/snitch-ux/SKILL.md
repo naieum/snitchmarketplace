@@ -5,7 +5,7 @@ license: MIT
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.4.0
+  version: 0.5.0
   homepage: https://snitchplugin.com
 ---
 
@@ -511,9 +511,11 @@ say which happened.
 - **Make the current state readable** — no negated labels over checked boxes, no toggle whose polarity you have to guess, no value that won't say whether it's the default or the user's saved choice.
 - **Say when it commits** — auto-save, explicit save, and save-on-blur each need a visible answer, and "Cancel" must mean something on an auto-saving page.
 - **Undo beats confirmation** wherever the action can be held briefly — it costs nothing when the user meant it.
+- **Complexity is conserved — decide who carries it.** The task's floor of complexity can only be moved, not removed: absorb it with defaults, inference, and remembered state, and never "simplify" by making the user memorize a hidden rule or gesture (`principles.md` §A).
 
 **Feedback, personalization & delight**
-- **System feedback** — every action gets an immediate, satisfying response (state change, live-updating value, instant consequence like a new balance).
+- **System feedback** — every action gets an immediate, satisfying response (state change, live-updating value, instant consequence like a new balance). Pace is part of it: ~0.1s reads as instant, ~400ms keeps the exchange conversational, and past ~1s the wait needs acknowledging (skeleton, optimistic update, progress).
+- **End on purpose** — the experience is judged by its worst moment and its ending; design the final screen (confirm + next step) and spend the most care on the worst moment (error, wait, payment), never let a flow just trail off.
 - **Micro-interactions** — tap feedback (scale/ripple), animated active states, soft screen transitions.
 - **Empty states as opportunities** — never a dead end; explain the value, add an illustration, give a CTA.
 - **Smart search** — on focus, offer recents / popular / personalized suggestions instead of a blank box.
@@ -587,5 +589,8 @@ Three more habits keep the psychology honest:
   not intensify — see `references/inclusive-design.md`.
 - **Watch your own biases.** The same shortcuts these techniques rely on run in *you* — you
   overweight the vivid demo, assume users are like you, and see the pattern you hoped to
-  find. Treat your instinct as a hypothesis, and let watching real people (see
+  find. A polished screen buys forgiveness from users *and from you*: attractive designs
+  are rated more usable than they are and reviewed less skeptically, so never let visual
+  quality stand in for task success — the flows on the beautiful page get the same scrutiny
+  as the plain one. Treat your instinct as a hypothesis, and let watching real people (see
   `references/usability-testing.md`) overrule it.

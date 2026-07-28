@@ -65,7 +65,28 @@ about whether people buy — don't cite it for conversion.)
 - **Do:** expose content directly (not behind a banner/extra tap); offer tappable common
   options instead of free-text (+ an "other" escape hatch); show choices as open swatches,
   not dropdowns (a dropdown makes users click just to see basic options).
+- **Do:** count *travel*, not just steps — time-to-target grows with distance and shrinks
+  with size, so put the next action where the pointer or thumb already is, make
+  frequently-paired controls adjacent (the field and its submit, the item and its primary
+  action), and give the important target the big hit area. Big-and-near beats
+  small-and-far; a confirmation flung to the opposite corner of the screen is a tax on
+  every single use.
 - **Don't:** add a step "for cleanliness" that costs the user a tap.
+
+### Complexity is conserved — decide who carries it
+**Rule:** Every task has a floor of complexity that cannot be removed, only moved. The
+design choice is *who absorbs it*: the system, or the user.
+*Why:* "simplifying" a screen by deleting the control doesn't delete the need — it relocates
+the work into the user's head (a memorized gesture, a magic default they must guess, a
+convention that lives nowhere on screen). The complexity bill always gets paid; good design
+pays it on the system side once, instead of charging every user on every use.
+- **Do:** absorb complexity with smart defaults, inference, and remembered state (the
+  address parsed from a paste, the account it almost certainly means); when you
+  progressively disclose, make sure the disclosed path still *exists* and is findable.
+- **Don't:** ship minimalism that pushes the floor below what the task needs — an
+  undiscoverable swipe as the only route, a "clean" form that fails opaquely because the
+  rule it enforces is invisible. If users must learn a hidden rule to succeed, the design
+  didn't get simpler; the user got the job.
 
 ### Progressive disclosure
 **Rule:** Keep the initial interface clean; reveal advanced/extra options only when asked.
@@ -241,10 +262,15 @@ prominent and its label quiet.
 
 ### System feedback
 **Rule:** Every action gets an immediate, legible, satisfying response.
-*Why:* feedback tells users their input registered and gives a sense of control.
+*Why:* feedback tells users their input registered and gives a sense of control. The pace
+matters as much as the presence: ~0.1s reads as instant, ~400ms keeps the exchange feeling
+conversational, and past ~1s the wait itself needs acknowledging (thresholds and the
+perceived-performance moves in `interaction-model.md`).
 - **Do:** distinct selected states (color + size change), live-updating values, instant
-  consequences (show the new balance/total right away), error *prevention* via clarity.
-- **Don't:** leave a tap ambiguous.
+  consequences (show the new balance/total right away), error *prevention* via clarity;
+  where real work takes longer, respond instantly anyway — optimistic update, skeleton,
+  determinate progress.
+- **Don't:** leave a tap ambiguous, or let a silent second pass after one.
 
 ### Micro-interactions
 **Rule:** Once fundamentals are solid, add small motion that makes the UI feel alive.

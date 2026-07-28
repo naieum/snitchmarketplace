@@ -61,6 +61,14 @@ everything:
   to add another label/button/explanation.
 - **Discount feature requests.** "I wish it had X" usually just tells you what they like,
   not what the design needs.
+- **Discount "I like it" — attractive designs test better than they work.** People rate a
+  polished screen as *more usable* than a plain one with identical behavior, and forgive
+  its failures longer — so a beautiful prototype's glowing session can hide the same wall
+  an ugly one would have exposed. Weigh what they *did* (completed, stalled, backtracked,
+  how long) over what they *said*, and when a polished screen tests suspiciously clean,
+  re-watch the recording for wrong turns the participant talked past. The same bias runs
+  in the reviewer: a screen that looks professionally made gets its flows read less
+  skeptically — which is exactly backwards.
 - **Don't break what works.** When you make one thing more prominent, something else gets
   de-emphasized — check you didn't trade one problem for another.
 
