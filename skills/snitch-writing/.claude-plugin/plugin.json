@@ -1,0 +1,21 @@
+{
+  "name": "snitch-writing",
+  "description": "Write or rewrite technical prose in a controlled style adapted from ASD-STE100 Simplified Technical English, and score any prose for AI slop with a deterministic linter (violations per 100 words).",
+  "version": "0.1.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "technical-writing",
+    "documentation",
+    "ste",
+    "simplified-technical-english",
+    "anti-slop",
+    "linter",
+    "snitch"
+  ]
+}
