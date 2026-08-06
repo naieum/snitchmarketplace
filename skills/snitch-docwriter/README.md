@@ -1,4 +1,4 @@
-# snitch-writing v0.1.0
+# snitch-docwriter v0.2.0
 
 Controlled technical writing (ASD-STE100-derived) plus a deterministic anti-slop linter — rewrite docs, READMEs, error messages, and runbooks so they cannot be misread.
 
@@ -8,7 +8,7 @@ Claude Code:
 
 ```
 /plugin marketplace add naieum/snitchmarketplace
-/plugin install snitch-writing@snitch
+/plugin install snitch-docwriter@snitch
 ```
 
 Any other tool that loads Agent Skills: copy this folder into your tool's skills
@@ -18,7 +18,7 @@ plain words for an audit.
 The skill itself lives in [`SKILL.md`](SKILL.md). No build step, no server, no
 telemetry; it runs on your model, against your code.
 
-**Learn more:** [snitchplugin.com/writing](https://snitchplugin.com/writing) · [Docs](https://snitchplugin.com/docs/writing) · [Docs as markdown](https://snitchplugin.com/docs/writing.md)
+**Learn more:** [snitchplugin.com/docwriter](https://snitchplugin.com/docwriter) · [Docs](https://snitchplugin.com/docs/docwriter) · [Docs as markdown](https://snitchplugin.com/docs/docwriter.md)
 
 ## License
 

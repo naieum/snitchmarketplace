@@ -39,8 +39,8 @@
       "homepage": "https://snitchplugin.com"
     },
     {
-      "name": "snitch-writing",
-      "source": "./skills/snitch-writing",
+      "name": "snitch-docwriter",
+      "source": "./skills/snitch-docwriter",
       "description": "Controlled technical writing (ASD-STE100-derived) plus a deterministic anti-slop linter \u2014 rewrite docs, READMEs, error messages, and runbooks so they cannot be misread.",
       "version": "0.1.0",
       "license": "MIT with Commons Clause",

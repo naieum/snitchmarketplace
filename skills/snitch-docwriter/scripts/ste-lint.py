@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ste-lint.py — deterministic anti-slop scorer for snitch-writing.
+"""ste-lint.py — deterministic anti-slop scorer for snitch-docwriter.
 
 Implements exactly the machine-checkable rules in references/rules.md, nothing more.
 Score = total violations per 100 words (length-normalized; noisy under ~50 words).

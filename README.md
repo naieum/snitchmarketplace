@@ -61,7 +61,7 @@ Then ask in plain words: *"run a snitch security scan."*
 | [`snitch-ux`](skills/snitch-ux) | 0.5.0 | **UX & conversion.** Clarity lens, persuasion lens, and a blocking ethics gate that reports dark patterns instead of building them. [Site](https://snitchplugin.com/ux) · [Docs](https://snitchplugin.com/docs/ux) |
 | [`snitch-marketing`](skills/snitch-marketing) | 1.11.0 | **SEO & marketing.** 134 categories: what search engines see, what AI assistants cite, Core Web Vitals contributors, conversion. Reads your source. [Site](https://snitchplugin.com/marketing) · [Docs](https://snitchplugin.com/docs/marketing) |
 | [`snitch-devready`](skills/snitch-devready) | 0.4.0 | **Repo readiness.** Context files the whole team shares, coding standards wired to gates that actually run. [Site](https://snitchplugin.com/devready) · [Docs](https://snitchplugin.com/docs/devready) |
-| [`snitch-writing`](skills/snitch-writing) | 0.1.0 | **Technical prose.** ASD-STE100-derived controlled writing plus a deterministic anti-slop linter (violations per 100 words). [Site](https://snitchplugin.com/writing) · [Docs](https://snitchplugin.com/docs/writing) |
+| [`snitch-docwriter`](skills/snitch-docwriter) | 0.2.0 | **Technical docs.** Rewrites READMEs, runbooks, and error messages so they cannot be misread, and scores any prose for AI slop. [Site](https://snitchplugin.com/docwriter) · [Docs](https://snitchplugin.com/docs/docwriter) |
 
 ## Platform hardening skills
 

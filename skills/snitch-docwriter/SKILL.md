@@ -1,15 +1,15 @@
 ---
-name: snitch-writing
+name: snitch-docwriter
 description: Write or rewrite technical prose — docs, READMEs, PR descriptions, commit messages, error messages, release notes, runbooks, API docs, code comments, reports — in a controlled technical style adapted from ASD-STE100 Simplified Technical English, and score existing prose with a deterministic anti-slop linter (violations per 100 words). Triggers on make this not sound like AI, remove AI slop, plain English, simplify these docs, tighten this README / PR description, controlled language, Simplified Technical English, STE, rewrite this error message, does my writing sound like AI. Do NOT use for marketing copy, landing pages, brand voice, or UI microcopy judged for persuasion (use snitch-marketing / snitch-ux — their writing systems keep voice; this skill strips it on purpose), and never rewrite code, identifiers, or command syntax.
-license: MIT
+license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance plus one optional local Python script; no server or external calls required.
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.2.0
   homepage: https://snitchplugin.com
 ---
 
-# Snitch: Writing
+# Snitch: Docwriter
 
 Write technical prose in a controlled style adapted from **ASD-STE100 Simplified Technical
 English** — the aerospace maintenance-documentation standard (first issued 1986, free
