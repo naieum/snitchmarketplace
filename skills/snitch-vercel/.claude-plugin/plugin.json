@@ -1,9 +1,22 @@
 {
   "name": "snitch-vercel",
-  "description": "Vercel security + readiness — account/team/project/env/domains/deployments/protection/functions posture and hardening. Powered by Snitch.",
+  "description": "Vercel security + readiness \u2014 account/team/project/env/domains/deployments/protection/functions posture and hardening. Powered by Snitch.",
   "version": "1.0.0",
-  "author": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
   "homepage": "https://snitchplugin.com",
-  "license": "BUSL-1.1",
-  "keywords": ["vercel","deployments","edge","middleware","domains","security","hardening","readiness","snitch"]
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "vercel",
+    "deployments",
+    "edge",
+    "middleware",
+    "domains",
+    "security",
+    "hardening",
+    "readiness",
+    "snitch"
+  ]
 }

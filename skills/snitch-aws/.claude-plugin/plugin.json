@@ -1,9 +1,22 @@
 {
   "name": "snitch-aws",
-  "description": "AWS security + readiness — IAM/S3/EC2/VPC/RDS/Lambda/CloudFront/CloudTrail/GuardDuty posture and hardening. Powered by Snitch.",
+  "description": "AWS security + readiness \u2014 IAM/S3/EC2/VPC/RDS/Lambda/CloudFront/CloudTrail/GuardDuty posture and hardening. Powered by Snitch.",
   "version": "1.0.0",
-  "author": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
   "homepage": "https://snitchplugin.com",
-  "license": "BUSL-1.1",
-  "keywords": ["aws","iam","s3","guardduty","cloudtrail","security","hardening","readiness","snitch"]
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "aws",
+    "iam",
+    "s3",
+    "guardduty",
+    "cloudtrail",
+    "security",
+    "hardening",
+    "readiness",
+    "snitch"
+  ]
 }

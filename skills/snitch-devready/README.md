@@ -22,4 +22,8 @@ telemetry; it runs on your model, against your code.
 
 ## License
 
-MIT. © Snitch — [snitchplugin.com](https://snitchplugin.com)
+**Free to use, not to sell.** MIT with the Commons Clause: use the skills anywhere
+(including at work), modify them, share them — every copy and derivative must keep
+the license and credit Snitch. Selling the skills, or a product or service whose
+value derives substantially from them, is not permitted. Full text in
+[`LICENSE`](LICENSE). © Snitch — [snitchplugin.com](https://snitchplugin.com)

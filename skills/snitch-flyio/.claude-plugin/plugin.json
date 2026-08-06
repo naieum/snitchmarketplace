@@ -1,9 +1,22 @@
 {
   "name": "snitch-flyio",
-  "description": "Fly.io security + readiness — org/apps/machines/volumes/postgres/secrets/network/token posture and hardening. Powered by Snitch.",
+  "description": "Fly.io security + readiness \u2014 org/apps/machines/volumes/postgres/secrets/network/token posture and hardening. Powered by Snitch.",
   "version": "1.0.0",
-  "author": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
   "homepage": "https://snitchplugin.com",
-  "license": "BUSL-1.1",
-  "keywords": ["flyio","fly","machines","postgres","wireguard","security","hardening","readiness","snitch"]
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "flyio",
+    "fly",
+    "machines",
+    "postgres",
+    "wireguard",
+    "security",
+    "hardening",
+    "readiness",
+    "snitch"
+  ]
 }

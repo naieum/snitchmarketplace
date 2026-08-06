@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>AI writes your code fast. Snitch checks it.</strong><br>
-  Five open-source Agent Skills that audit AI-written work — security, UX, SEO,
+  Five free Agent Skills that audit AI-written work — security, UX, SEO,
   repo readiness, and docs.<br>
   Every finding cites the exact file and line. No proof, no finding.
 </p>
@@ -102,4 +102,8 @@ Reading this programmatically? Everything you need in one fetch:
 
 ## License
 
-MIT, all skills. © Snitch — [snitchplugin.com](https://snitchplugin.com)
+**Free to use, not to sell.** MIT with the Commons Clause: use the skills anywhere
+(including at work), modify them, share them — every copy and derivative must keep
+the license and credit Snitch. Selling the skills, or a product or service whose
+value derives substantially from them, is not permitted. Full text in
+[`LICENSE`](LICENSE). © Snitch — [snitchplugin.com](https://snitchplugin.com)

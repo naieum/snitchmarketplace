@@ -1,9 +1,22 @@
 {
   "name": "snitch-railway",
-  "description": "Railway security + readiness — workspace/project/services/env/volumes/databases/tokens/domains posture and hardening. Powered by Snitch.",
+  "description": "Railway security + readiness \u2014 workspace/project/services/env/volumes/databases/tokens/domains posture and hardening. Powered by Snitch.",
   "version": "1.0.0",
-  "author": { "name": "Snitch", "url": "https://snitchplugin.com" },
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
   "homepage": "https://snitchplugin.com",
-  "license": "BUSL-1.1",
-  "keywords": ["railway","services","volumes","databases","domains","security","hardening","readiness","snitch"]
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "railway",
+    "services",
+    "volumes",
+    "databases",
+    "domains",
+    "security",
+    "hardening",
+    "readiness",
+    "snitch"
+  ]
 }
