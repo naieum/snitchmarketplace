@@ -2,58 +2,104 @@
   <img src="assets/snitch-shield.png" alt="Snitch" width="120">
 </p>
 
-<h1 align="center">Snitch — Security Skill Marketplace</h1>
+<h1 align="center">Snitch</h1>
 
 <p align="center">
-  Evidence-based security &amp; readiness skills for AI coding agents.<br>
-  One brand, à-la-carte install. <strong>Powered by Snitch.</strong>
+  <strong>AI writes your code fast. Snitch checks it.</strong><br>
+  Five open-source Agent Skills that audit AI-written work — security, UX, SEO,
+  repo readiness, and docs.<br>
+  Every finding cites the exact file and line. No proof, no finding.
+</p>
+
+<p align="center">
+  <a href="https://snitchplugin.com">snitchplugin.com</a> ·
+  <a href="https://snitchplugin.com/docs">Docs</a> ·
+  <a href="https://snitchplugin.com/lab/cream">The Lab</a> ·
+  <a href="https://snitchplugin.com/self-audit">Self-audit</a> ·
+  <a href="https://snitchplugin.com/llms.txt">For agents</a>
 </p>
 
 ---
 
-A Claude Code **plugin marketplace** that bundles the Snitch family of security skills. Each skill
-is its own plugin — install only the ones you need, and only those load into your agent's context.
+A skill is a plain folder of instructions your AI coding tool reads. There is no build step, no
+server, no account, and no telemetry. Skills run inside your coding tool, on your model, against
+your code. Nothing phones home.
+
+They load in any tool that reads Agent Skills: Claude Code, Codex, Cursor, GitHub Copilot,
+Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more.
 
 ## Install
 
-Add the marketplace once, then install any plugin:
+**Claude Code — all skills, one command:**
 
 ```
 /plugin marketplace add naieum/snitchmarketplace
-/plugin install snitch-cloudflare@snitch
+/plugin install snitch@snitch
 ```
 
-> The repo is private during prep — `marketplace add` works while you're authenticated to GitHub
-> with read access. The public product home is **[snitchplugin.com](https://snitchplugin.com)**.
+**Any terminal — snitch-security only:**
 
-## Catalog
+```
+curl -fsSL https://snitchplugin.com/snitch.sh | sh
+```
 
-| Plugin | Audits | Install |
+**Every other tool — copy one folder:**
+
+```
+git clone https://github.com/naieum/snitchmarketplace
+cp -r snitchmarketplace/skills/<name> <your tool's skills directory>/
+```
+
+Common skills directories: `~/.cursor/skills/`, `~/.codex/skills/`. Check your tool's docs.
+Then ask in plain words: *"run a snitch security scan."*
+
+## The five skills
+
+| Skill | Version | What it audits |
 |---|---|---|
-| `snitch` | AI-written code — OWASP, CWE, data-flow, SARIF, compliance (HIPAA/SOC 2/PCI-DSS/GDPR) | `/plugin install snitch@snitch` |
-| `snitch-marketing` | SEO / GEO (AI-search) / schema / Core Web Vitals | `/plugin install snitch-marketing@snitch` |
-| `snitch-cloudflare` | Cloudflare zone/account/Workers/Pages/Tunnel/Access posture + hardening | `/plugin install snitch-cloudflare@snitch` |
-| `snitch-aws` | AWS IAM/S3/EC2/VPC/RDS/Lambda/CloudTrail/GuardDuty posture + hardening | `/plugin install snitch-aws@snitch` |
-| `snitch-azure` | Azure subscription/Entra/RBAC/Defender/storage/keyvault posture + hardening | `/plugin install snitch-azure@snitch` |
-| `snitch-digitalocean` | DigitalOcean Droplet/Database/Spaces/App-Platform/DOKS/Firewall posture + hardening | `/plugin install snitch-digitalocean@snitch` |
-| `snitch-flyio` | Fly.io org/apps/machines/volumes/postgres/secrets/network posture + hardening | `/plugin install snitch-flyio@snitch` |
-| `snitch-railway` | Railway workspace/project/services/env/volumes/databases/domains posture + hardening | `/plugin install snitch-railway@snitch` |
-| `snitch-vercel` | Vercel account/team/project/env/domains/deployments/functions posture + hardening | `/plugin install snitch-vercel@snitch` |
+| [`snitch`](skills/snitch) | 9.2.0 | **Security.** 69 categories, sink-to-source data-flow tracing, CWE + OWASP + CVSS mapping, SARIF/CSV export, compliance packs (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX). [Site](https://snitchplugin.com/security) · [Docs](https://snitchplugin.com/docs/security) |
+| [`snitch-ux`](skills/snitch-ux) | 0.5.0 | **UX & conversion.** Clarity lens, persuasion lens, and a blocking ethics gate that reports dark patterns instead of building them. [Site](https://snitchplugin.com/ux) · [Docs](https://snitchplugin.com/docs/ux) |
+| [`snitch-marketing`](skills/snitch-marketing) | 1.11.0 | **SEO & marketing.** 134 categories: what search engines see, what AI assistants cite, Core Web Vitals contributors, conversion. Reads your source. [Site](https://snitchplugin.com/marketing) · [Docs](https://snitchplugin.com/docs/marketing) |
+| [`snitch-devready`](skills/snitch-devready) | 0.4.0 | **Repo readiness.** Context files the whole team shares, coding standards wired to gates that actually run. [Site](https://snitchplugin.com/devready) · [Docs](https://snitchplugin.com/docs/devready) |
+| [`snitch-writing`](skills/snitch-writing) | 0.1.0 | **Technical prose.** ASD-STE100-derived controlled writing plus a deterministic anti-slop linter (violations per 100 words). [Site](https://snitchplugin.com/writing) · [Docs](https://snitchplugin.com/docs/writing) |
 
-## What these skills do
+## Platform hardening skills
 
-- **`snitch` / `snitch-marketing`** — content-driven audit skills. They read your code (or crawl a
-  URL) and report evidence-based findings with `file:line` precision. No false-positive guesswork.
-- **The provider skills (`snitch-<cloud>`)** — thin bash tools the agent composes. They `detect` your
-  project, `audit` your live cloud posture, apply **idempotent** hardening (`fix`), respond to
-  incidents (`panic`), and give honest migration/scaling verdicts. Read-only tools emit JSON;
-  mutations are explicit and confirmable.
+Posture audits + idempotent hardening for the platform you deploy on:
 
-## Licensing
+| Skill | Version | Platform |
+|---|---|---|
+| [`snitch-cloudflare`](skills/snitch-cloudflare) | 1.0.0 | Cloudflare — zone, Workers, Pages, Tunnel, Access |
+| [`snitch-aws`](skills/snitch-aws) | 1.0.0 | AWS — IAM, S3, EC2, VPC, RDS, Lambda, CloudTrail, GuardDuty |
+| [`snitch-azure`](skills/snitch-azure) | 1.0.0 | Azure — Entra, RBAC, Defender, storage, Key Vault |
+| [`snitch-digitalocean`](skills/snitch-digitalocean) | 1.0.0 | DigitalOcean — Droplets, Spaces, DOKS, firewalls |
+| [`snitch-flyio`](skills/snitch-flyio) | 1.0.0 | Fly.io — apps, machines, volumes, Postgres, secrets |
+| [`snitch-railway`](skills/snitch-railway) | 1.0.0 | Railway — services, env, volumes, databases, domains |
+| [`snitch-vercel`](skills/snitch-vercel) | 1.0.0 | Vercel — projects, env, deployment protection, functions |
 
-Every plugin is licensed **BUSL-1.1** (Business Source License 1.1) — source-available, and
-converts to Apache-2.0 on the change date. See each skill's `LICENSE`.
+## The method
 
----
+Every skill enforces the same rules:
 
-<p align="center"><sub>Powered by <strong>Snitch</strong> · <a href="https://snitchplugin.com">snitchplugin.com</a></sub></p>
+- **Evidence or it didn't happen.** A finding without a file and line does not ship.
+- **Passes are results, not silence.** Clean categories come with proof, not a checkmark.
+- **Honest coverage.** Skips are stated with reasons. "3 of 11 surfaces" means 3 of 11.
+- **Read-only scans.** Auditing and fixing are separate phases, always.
+- **We audit ourselves.** [snitchplugin.com/self-audit](https://snitchplugin.com/self-audit) is
+  this family's own skills run against its own site, findings published — including the open ones.
+
+Want proof the method matters? [Eight AI models ran the same audit on the same
+codebase.](https://snitchplugin.com/lab/cream) One found the missing buy button. One cited a
+line that says the opposite of its claim.
+
+## For agents
+
+Reading this programmatically? Everything you need in one fetch:
+
+- Structured manifest: [snitchplugin.com/skills.json](https://snitchplugin.com/skills.json)
+- Full reference: [snitchplugin.com/llms-full.txt](https://snitchplugin.com/llms-full.txt)
+- Raw-markdown docs: `https://snitchplugin.com/docs/<slug>.md`
+
+## License
+
+MIT, all skills. © Snitch — [snitchplugin.com](https://snitchplugin.com)
