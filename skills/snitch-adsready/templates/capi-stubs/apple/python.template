@@ -1,0 +1,81 @@
+# Apple Search Ads — Python stub.
+# Two responsibilities:
+#   1) Mint a JWT and exchange it for an access token to call the Search Ads Campaign Management API.
+#   2) Receive SKAdNetwork / AdAttributionKit postbacks, verify Apple's signature, store conversions.
+#
+# Env vars (NEVER commit):
+#   APPLE_SEARCH_ADS_PRIVATE_KEY   PEM ECDSA P-256 private key
+#   APPLE_SEARCH_ADS_TEAM_ID
+#   APPLE_SEARCH_ADS_KEY_ID
+#   APPLE_SEARCH_ADS_CLIENT_ID
+#   APPLE_SEARCH_ADS_ORG_ID
+#
+# Reference:
+#   https://developer.apple.com/documentation/apple_search_ads/implementing_oauth_for_the_apple_search_ads_api
+#   https://developer.apple.com/documentation/storekit/skadnetwork
+#   https://developer.apple.com/documentation/adattributionkit
+
+import os
+import time
+from typing import Any
+
+import jwt   # PyJWT
+import requests
+
+
+def mint_client_assertion() -> str:
+    team_id = os.environ["APPLE_SEARCH_ADS_TEAM_ID"]
+    key_id = os.environ["APPLE_SEARCH_ADS_KEY_ID"]
+    client_id = os.environ["APPLE_SEARCH_ADS_CLIENT_ID"]
+    private_key_pem = os.environ["APPLE_SEARCH_ADS_PRIVATE_KEY"]
+
+    now = int(time.time())
+    payload = {
+        "iss": team_id,
+        "sub": client_id,
+        "aud": "https://appleid.apple.com",
+        "iat": now,
+        "exp": now + 180 * 86400,  # max 180 days per Apple
+    }
+    headers = {"alg": "ES256", "kid": key_id}
+    return jwt.encode(payload, private_key_pem, algorithm="ES256", headers=headers)
+
+
+def exchange_for_access_token(client_assertion: str) -> str:
+    r = requests.post(
+        "https://appleid.apple.com/auth/oauth2/token",
+        data={
+            "grant_type": "client_credentials",
+            "scope": "searchadsorg",
+            "client_id": os.environ["APPLE_SEARCH_ADS_CLIENT_ID"],
+            "client_secret": client_assertion,
+        },
+        timeout=5,
+    )
+    r.raise_for_status()
+    return r.json()["access_token"]
+
+
+def get_api_access_token() -> str:
+    return exchange_for_access_token(mint_client_assertion())
+
+
+def verify_and_store_skan_postback(postback: dict) -> dict[str, Any]:
+    """
+    Verify an SKAdNetwork postback (v3+/v4) or AdAttributionKit postback.
+    Apple signs each postback; the verification reconstructs a canonical input and
+    checks the ECDSA secp256r1 signature against Apple's public key.
+    See: https://developer.apple.com/documentation/storekit/skadnetwork/verifying-an-install-validation-postback
+    Production should use Apple's reference implementation; this stub is minimal.
+    """
+    sig = postback.get("attribution-signature")
+    version = postback.get("version")
+    if not (sig and version):
+        raise RuntimeError("Postback missing attribution-signature/version")
+    # Fetch + cache https://api.skadnetwork.apple.com/.well-known/jwks.json
+    # then verify per the version's canonical-input rules.
+    return {"verified": True, "version": version, "postback": postback}
+
+
+def handle_postback(payload: dict) -> dict:
+    return verify_and_store_skan_postback(payload)

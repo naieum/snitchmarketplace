@@ -1,0 +1,13 @@
+<!-- Apple Search Ads has NO JavaScript pixel. -->
+<!-- Attribution flows entirely through SKAdNetwork postbacks (and AdAttributionKit on iOS 17.4+). -->
+<!-- Setup checklist: -->
+<!--   1. iOS app: implement SKAdNetwork.updatePostbackConversionValue(_:) at meaningful events. -->
+<!--   2. Info.plist: declare SKAdNetworkItems for ad networks if you also run other iOS networks. -->
+<!--   3. PrivacyInfo.xcprivacy: declare API usage and tracking domains per Apple's privacy manifest spec. -->
+<!--   4. Server: stand up a postback receiver endpoint (HTTPS) and pass it to Apple Search Ads as your postback URL. -->
+<!--   5. ATT: present ATTrackingManager.requestTrackingAuthorization() before any IDFA-dependent SDK call. -->
+<!-- Docs: https://developer.apple.com/documentation/storekit/skadnetwork -->
+
+<!-- OPTIONAL: App Store Smart Banner — surfaces the iOS app to mobile Safari users.
+     Replace {{APPLE_APP_ID}} (numeric App Store ID). Helpful for app-install attribution. -->
+<meta name="apple-itunes-app" content="app-id={{APPLE_APP_ID}}">

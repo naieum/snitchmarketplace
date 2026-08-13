@@ -1,0 +1,1027 @@
+{
+  "_comment": "Tool-option catalogs surfaced by lib/recommend.sh. Update install_command + url when vendors change. Pricing fields are general-tier descriptions \u2014 agent should fact-check current pricing via WebFetch when the user asks.",
+  "cmp": [
+    {
+      "name": "OneTrust",
+      "vendor": "OneTrust LLC",
+      "pricing": "Enterprise \u2014 quote-based; typical floor ~$1,500/mo for full Privacy + Consent suite",
+      "url": "https://www.onetrust.com/products/cookie-consent/",
+      "install_command": "Sign up; copy the OneTrust SDK script tag into your page <head>",
+      "pros": [
+        "Recognized as the enterprise default in IAB TCF + GPC + APAC frameworks",
+        "Cookie scanner, geo rules, audit logs included",
+        "Full Consent Mode v2 + Microsoft UET consent + Meta consent integrations"
+      ],
+      "cons": [
+        "Heaviest CMP; can add 100kB+ of script weight if not pruned",
+        "Cost overshoot for small/mid sites",
+        "Onboarding requires admin training"
+      ],
+      "recommended_for": [
+        "enterprise (>$1B revenue, >100M monthly visitors)",
+        "regulated industries (finance, healthcare)",
+        "multi-region (EU + UK + CA + US-state) compliance"
+      ]
+    },
+    {
+      "name": "Cookiebot (by Usercentrics)",
+      "vendor": "Usercentrics A/S",
+      "pricing": "Free up to 100 sub-pages; Premium from ~$11/mo per domain (small) up to ~$100/mo (large)",
+      "url": "https://www.cookiebot.com/",
+      "install_command": "Sign up; paste the Cookiebot CMP script as the FIRST <script> in <head>; keep auto-blocking enabled",
+      "pros": [
+        "Self-serve, no sales call",
+        "Auto-scans cookies and renders descriptions",
+        "Built-in IAB TCF v2.2 + Consent Mode v2 + Google certified"
+      ],
+      "cons": [
+        "Auto-blocking can break edge cases (canvas trackers, async iframes); occasional manual exemption needed",
+        "Branding requires the Premium plan"
+      ],
+      "recommended_for": [
+        "mid-market and SMB sites",
+        "EU-heavy traffic with GDPR scope",
+        "teams that want a single vendor for both consent + cookie scan"
+      ]
+    },
+    {
+      "name": "CookieYes",
+      "vendor": "CookieYes Limited",
+      "pricing": "Free up to 25,000 page views/mo; paid from ~$9/mo for Basic up to $39/mo for Ultimate",
+      "url": "https://www.cookieyes.com/",
+      "install_command": "Sign up; install via the WordPress plugin or paste the script tag into <head> for non-WP",
+      "pros": [
+        "Generous free tier",
+        "Simple WordPress plugin path",
+        "GDPR + CCPA + Consent Mode v2 supported"
+      ],
+      "cons": [
+        "Less advanced rule editor than OneTrust / Cookiebot",
+        "TCF support requires the higher tier"
+      ],
+      "recommended_for": [
+        "small businesses",
+        "WordPress sites",
+        "anyone needing a free starter CMP that scales"
+      ]
+    },
+    {
+      "name": "Klaro!",
+      "vendor": "KIProtect (open-source)",
+      "pricing": "Free, MIT-licensed; self-hosted",
+      "url": "https://klaro.org/",
+      "install_command": "npm install klaro; or self-host the standalone klaro.js + klaro.css. Configure services in JS.",
+      "pros": [
+        "Open-source; no vendor lock-in",
+        "Pure JS, drops in anywhere",
+        "Privacy-friendly defaults; respects DNT"
+      ],
+      "cons": [
+        "No managed cookie scanner \u2014 you maintain the service list",
+        "No built-in TCF or geo-rules",
+        "No support beyond GitHub issues"
+      ],
+      "recommended_for": [
+        "privacy-first projects",
+        "engineers comfortable maintaining their own CMP",
+        "open-source / self-hosted stacks"
+      ]
+    },
+    {
+      "name": "Termly",
+      "vendor": "Termly LLC",
+      "pricing": "Free for cookie consent banner; Solo from ~$15/mo, Teams from ~$25/mo for combined Privacy + Consent",
+      "url": "https://termly.io/",
+      "install_command": "Sign up; embed the Termly CMP script in <head>; generates Privacy Policy + Terms in the same flow",
+      "pros": [
+        "Combines policy generator with CMP \u2014 one bill",
+        "Approachable UI for non-technical owners",
+        "GDPR + CCPA + LGPD covered"
+      ],
+      "cons": [
+        "Less granular than OneTrust",
+        "Branded banner on the free tier"
+      ],
+      "recommended_for": [
+        "small business owners who need legal + consent in one tool",
+        "marketing-led teams without a privacy engineer"
+      ]
+    },
+    {
+      "name": "Osano",
+      "vendor": "Osano Inc.",
+      "pricing": "Free up to 5k visitors/mo; paid from ~$199/mo for Business",
+      "url": "https://www.osano.com/products/cookie-consent",
+      "install_command": "Sign up; embed the Osano script in <head>; configure consent categories in the dashboard",
+      "pros": [
+        "Strong audit-log + DSAR workflow",
+        "Multi-jurisdiction templates pre-built",
+        "Solid data-discovery side"
+      ],
+      "cons": [
+        "Mid-market price floor jumps quickly",
+        "Heavier than Cookiebot for similar features"
+      ],
+      "recommended_for": [
+        "mid-market with formal privacy program",
+        "B2B SaaS with US-state law scope (CO, CT, VA, etc.)"
+      ]
+    }
+  ],
+  "gtm-server": [
+    {
+      "name": "Google Cloud App Engine",
+      "vendor": "Google",
+      "pricing": "Pay-per-use; budget ~$40-120/mo for a small to mid traffic site (F1 \u2192 F4 instance class)",
+      "url": "https://developers.google.com/tag-platform/tag-manager/server-side/manual-setup-guide",
+      "install_command": "Run Google's deployment script in Cloud Shell \u2014 provisions App Engine + GTM container",
+      "pros": [
+        "Canonical Google-recommended path",
+        "First-party domain via custom subdomain (sgtm.example.com)",
+        "Same auth surface as your other GCP usage"
+      ],
+      "cons": [
+        "GCP billing setup required",
+        "Cold starts on F1 \u2014 bump instance class for production"
+      ],
+      "recommended_for": [
+        "teams already on GCP",
+        "advertisers running heavy Google Ads + GA4 setups"
+      ]
+    },
+    {
+      "name": "Cloudflare Workers (custom)",
+      "vendor": "Cloudflare",
+      "pricing": "Free tier covers ~100k requests/day; Workers Paid $5/mo for 10M; sgtm container itself runs on Workers via cf-sgtm or rolling-your-own adapter",
+      "url": "https://github.com/gtm-server/cloudflare-worker",
+      "install_command": "Deploy a community sgtm-on-Workers template via wrangler; set GTM container ID + preview URL as secrets",
+      "pros": [
+        "Edge-local; lowest tracking latency for global traffic",
+        "Cheap at scale",
+        "Same domain as the site (no third-party cookie issues)"
+      ],
+      "cons": [
+        "Community-maintained, not Google-supported \u2014 verify each Workers update against the GTM tag template you use",
+        "Some tags depend on GTM features not yet ported to Workers"
+      ],
+      "recommended_for": [
+        "Cloudflare-native stacks",
+        "high-volume sites where App Engine bills hurt"
+      ]
+    },
+    {
+      "name": "Stape.io",
+      "vendor": "Stape Inc.",
+      "pricing": "Free starter; paid from ~$20/mo (Basic) up to ~$300/mo (Custom) by traffic + features",
+      "url": "https://stape.io/",
+      "install_command": "Sign up; paste your GTM container ID; Stape provisions the sGTM endpoint and DNS",
+      "pros": [
+        "Zero-DevOps server-side GTM in minutes",
+        "Geographically distributed (US + EU + AU + others)",
+        "Pre-built Stape Power-Ups for Meta CAPI, TikTok Events, etc."
+      ],
+      "cons": [
+        "Vendor lock-in; you don't own the container host",
+        "Cost grows fast at high request volumes"
+      ],
+      "recommended_for": [
+        "small/mid teams without a DevOps function",
+        "fast-validation projects"
+      ]
+    },
+    {
+      "name": "Vercel (custom function)",
+      "vendor": "Vercel",
+      "pricing": "Hobby + Pro tiers; sgtm requires Pro for production traffic; ~$20/mo Pro + function compute",
+      "url": "https://vercel.com/templates",
+      "install_command": "Custom \u2014 deploy the Google sGTM container on Vercel as a long-running function (more friction than App Engine)",
+      "pros": [
+        "Same vendor as the marketing site for many teams",
+        "Edge functions reduce latency"
+      ],
+      "cons": [
+        "Not a first-class sGTM target; you maintain the bridge",
+        "Function timeouts can clip slow tag fires"
+      ],
+      "recommended_for": [
+        "Vercel-native stacks where ops simplification > raw compatibility"
+      ]
+    },
+    {
+      "name": "AWS App Runner",
+      "vendor": "Amazon Web Services",
+      "pricing": "~$25-150/mo for typical sgtm load (1 vCPU / 2GB)",
+      "url": "https://aws.amazon.com/apprunner/",
+      "install_command": "Push the sgtm container image to ECR, then create an App Runner service pointing at it",
+      "pros": [
+        "Container-native; same image App Engine uses",
+        "Auto-scaling with predictable bill"
+      ],
+      "cons": [
+        "More setup than App Engine; no Google-published deployment script",
+        "VPC + IAM setup if you want private networking"
+      ],
+      "recommended_for": [
+        "AWS-native stacks",
+        "teams that want ECS-class control without the EKS complexity"
+      ]
+    }
+  ],
+  "capi-helpers": {
+    "google": {
+      "node": [
+        {
+          "name": "google-ads-api (NPM)",
+          "url": "https://www.npmjs.com/package/google-ads-api",
+          "install_command": "npm i google-ads-api",
+          "pros": [
+            "Typed",
+            "Active maintenance"
+          ],
+          "cons": [
+            "Wraps the full Ads API; heavier than Measurement Protocol alone"
+          ],
+          "recommended_for": [
+            "Google Ads Enhanced Conversions, offline conversions, audience uploads"
+          ]
+        },
+        {
+          "name": "@google-analytics/data (NPM)",
+          "url": "https://www.npmjs.com/package/@google-analytics/data",
+          "install_command": "npm i @google-analytics/data",
+          "pros": [
+            "Official Google client",
+            "Direct GA4 Data API"
+          ],
+          "cons": [
+            "Read-only \u2014 for sending events use Measurement Protocol via plain fetch"
+          ],
+          "recommended_for": [
+            "GA4 reporting endpoints"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "google-ads (PyPI)",
+          "url": "https://pypi.org/project/google-ads/",
+          "install_command": "pip install google-ads",
+          "pros": [
+            "Official Google client",
+            "All Google Ads features"
+          ],
+          "cons": [
+            "Larger dependency footprint"
+          ],
+          "recommended_for": [
+            "Enhanced Conversions, offline imports"
+          ]
+        },
+        {
+          "name": "google-analytics-data (PyPI)",
+          "url": "https://pypi.org/project/google-analytics-data/",
+          "install_command": "pip install google-analytics-data",
+          "pros": [
+            "Official Google client"
+          ],
+          "cons": [
+            "Read-only"
+          ],
+          "recommended_for": [
+            "GA4 reporting"
+          ]
+        }
+      ]
+    },
+    "meta": {
+      "node": [
+        {
+          "name": "facebook-nodejs-business-sdk",
+          "url": "https://github.com/facebook/facebook-nodejs-business-sdk",
+          "install_command": "npm i facebook-nodejs-business-sdk",
+          "pros": [
+            "Official Meta SDK",
+            "Includes ServerEvent for CAPI"
+          ],
+          "cons": [
+            "Heavy package; consider direct fetch + crypto for simple use cases"
+          ],
+          "recommended_for": [
+            "full Marketing API + CAPI integration"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "facebook_business (PyPI)",
+          "url": "https://pypi.org/project/facebook-business/",
+          "install_command": "pip install facebook_business",
+          "pros": [
+            "Official Meta SDK"
+          ],
+          "cons": [
+            "Older API style"
+          ],
+          "recommended_for": [
+            "Marketing API + CAPI"
+          ]
+        }
+      ]
+    },
+    "microsoft": {
+      "node": [
+        {
+          "name": "Bing Ads SDK for JS (community)",
+          "url": "https://learn.microsoft.com/en-us/advertising/guides/sdks",
+          "install_command": "npm i bing-ads-node-sdk",
+          "pros": [
+            "Wraps SOAP API"
+          ],
+          "cons": [
+            "No first-party Node SDK; offline conversions usually done via CSV upload to UI"
+          ],
+          "recommended_for": [
+            "UET offline conversion uploads when you have a server-side store"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "bingads (PyPI)",
+          "url": "https://pypi.org/project/bingads/",
+          "install_command": "pip install bingads",
+          "pros": [
+            "Microsoft official"
+          ],
+          "cons": [
+            "SOAP-based"
+          ],
+          "recommended_for": [
+            "offline conversion CSV imports"
+          ]
+        }
+      ]
+    },
+    "linkedin": {
+      "node": [
+        {
+          "name": "Direct fetch + REST",
+          "url": "https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads-reporting/conversions-api",
+          "install_command": "Use built-in fetch; no SDK published",
+          "pros": [
+            "No dependency"
+          ],
+          "cons": [
+            "You write the HMAC + retry logic yourself"
+          ],
+          "recommended_for": [
+            "LinkedIn CAPI direct integration"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "linkedin-api-python-client (community)",
+          "url": "https://github.com/linkedin-developers/linkedin-api-python-client",
+          "install_command": "pip install linkedin-api-client",
+          "pros": [
+            "LinkedIn-published client"
+          ],
+          "cons": [
+            "Coverage focused on UGC/Profile; CAPI is direct REST"
+          ],
+          "recommended_for": [
+            "LinkedIn Marketing API; CAPI you'll likely call directly"
+          ]
+        }
+      ]
+    },
+    "tiktok": {
+      "node": [
+        {
+          "name": "Direct fetch",
+          "url": "https://business-api.tiktok.com/portal/docs?id=1771101027431425",
+          "install_command": "Use built-in fetch",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "You handle hashing + signing"
+          ],
+          "recommended_for": [
+            "TikTok Events API S2S"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "Direct requests",
+          "url": "https://business-api.tiktok.com/portal/docs?id=1771101027431425",
+          "install_command": "pip install requests",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "Manual hashing"
+          ],
+          "recommended_for": [
+            "TikTok Events API S2S"
+          ]
+        }
+      ]
+    },
+    "x": {
+      "node": [
+        {
+          "name": "twitter-api-v2",
+          "url": "https://www.npmjs.com/package/twitter-api-v2",
+          "install_command": "npm i twitter-api-v2",
+          "pros": [
+            "Modern X API client",
+            "OAuth 1.0a + OAuth 2 support"
+          ],
+          "cons": [
+            "Ads-API features are partial; check coverage before relying"
+          ],
+          "recommended_for": [
+            "X Ads CAPI calls + general X API"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "tweepy",
+          "url": "https://www.tweepy.org/",
+          "install_command": "pip install tweepy",
+          "pros": [
+            "Mature library"
+          ],
+          "cons": [
+            "Ads coverage limited"
+          ],
+          "recommended_for": [
+            "general X API; Ads-CAPI direct fetch"
+          ]
+        }
+      ]
+    },
+    "pinterest": {
+      "node": [
+        {
+          "name": "Direct fetch",
+          "url": "https://developers.pinterest.com/docs/api/v5/",
+          "install_command": "Use built-in fetch",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "Hash + sign yourself"
+          ],
+          "recommended_for": [
+            "Pinterest Conversions API"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "Direct requests",
+          "url": "https://developers.pinterest.com/docs/api/v5/",
+          "install_command": "pip install requests",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "Manual hashing"
+          ],
+          "recommended_for": [
+            "Pinterest Conversions API"
+          ]
+        }
+      ]
+    },
+    "reddit": {
+      "node": [
+        {
+          "name": "Direct fetch",
+          "url": "https://ads-api.reddit.com/docs/v3/",
+          "install_command": "Use built-in fetch",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "Manual auth"
+          ],
+          "recommended_for": [
+            "Reddit CAPI"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "Direct requests",
+          "url": "https://ads-api.reddit.com/docs/v3/",
+          "install_command": "pip install requests",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "Manual auth"
+          ],
+          "recommended_for": [
+            "Reddit CAPI"
+          ]
+        }
+      ]
+    },
+    "snapchat": {
+      "node": [
+        {
+          "name": "Direct fetch",
+          "url": "https://marketingapi.snapchat.com/docs/conversion.html",
+          "install_command": "Use built-in fetch",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "Manual hashing"
+          ],
+          "recommended_for": [
+            "Snap Conversions API v3"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "Direct requests",
+          "url": "https://marketingapi.snapchat.com/docs/conversion.html",
+          "install_command": "pip install requests",
+          "pros": [
+            "No SDK overhead"
+          ],
+          "cons": [
+            "Manual hashing"
+          ],
+          "recommended_for": [
+            "Snap Conversions API v3"
+          ]
+        }
+      ]
+    },
+    "apple": {
+      "node": [
+        {
+          "name": "jose (JWT signing)",
+          "url": "https://www.npmjs.com/package/jose",
+          "install_command": "npm i jose",
+          "pros": [
+            "Modern JWS/JWT library",
+            "Edge-runtime compatible"
+          ],
+          "cons": [
+            "Apple's auth flow is JWT-then-token-exchange; you wire the rest"
+          ],
+          "recommended_for": [
+            "Apple Search Ads API JWT auth"
+          ]
+        }
+      ],
+      "python": [
+        {
+          "name": "PyJWT + cryptography",
+          "url": "https://pypi.org/project/PyJWT/",
+          "install_command": "pip install pyjwt cryptography",
+          "pros": [
+            "Standard JWT lib + ES256 backend"
+          ],
+          "cons": [
+            "Token-exchange step is your code"
+          ],
+          "recommended_for": [
+            "Apple Search Ads API JWT auth"
+          ]
+        }
+      ]
+    }
+  },
+  "lighthouse-runner": [
+    {
+      "name": "lighthouse CLI (local)",
+      "vendor": "Google open-source",
+      "pricing": "Free",
+      "url": "https://github.com/GoogleChrome/lighthouse",
+      "install_command": "npm i -g lighthouse",
+      "pros": [
+        "Local control; full audit JSON",
+        "Runs in CI without external service",
+        "Same engine PSI uses"
+      ],
+      "cons": [
+        "Single-machine results vary; aggregate with multiple runs",
+        "Doesn't capture field data \u2014 pair with CrUX / RUM for real users"
+      ],
+      "recommended_for": [
+        "per-PR CI checks; local audits"
+      ]
+    },
+    {
+      "name": "Lighthouse CI Server (self-hosted)",
+      "vendor": "Google open-source",
+      "pricing": "Free; you pay the host",
+      "url": "https://github.com/GoogleChrome/lighthouse-ci",
+      "install_command": "Deploy lhci-server via Docker or Heroku-style host; @lhci/cli in CI uploads runs to it",
+      "pros": [
+        "History + diff",
+        "Self-hosted; data stays yours",
+        "Free"
+      ],
+      "cons": [
+        "You maintain the host",
+        "No field-data aggregation"
+      ],
+      "recommended_for": [
+        "teams with budget for the host but no budget for SaaS"
+      ]
+    },
+    {
+      "name": "Calibre",
+      "vendor": "Calibre App Pty Ltd",
+      "pricing": "From ~$83/mo (Solo) to ~$416/mo (Team)",
+      "url": "https://calibreapp.com/",
+      "install_command": "Sign up; CLI: npm i -g @calibre/cli; calibre snapshot create",
+      "pros": [
+        "Field + lab data combined",
+        "Slack/PR integrations",
+        "Excellent budgets/alerts"
+      ],
+      "cons": [
+        "Pricier than self-hosted"
+      ],
+      "recommended_for": [
+        "mid-market with performance as a KPI"
+      ]
+    },
+    {
+      "name": "SpeedCurve",
+      "vendor": "SpeedCurve",
+      "pricing": "From ~$114/mo (Lite) to ~$1100/mo (Pro)",
+      "url": "https://www.speedcurve.com/",
+      "install_command": "Sign up; CLI for synthetic + LUX RUM beacon for field",
+      "pros": [
+        "Best-in-class waterfall + filmstrip UI",
+        "Filmstrip diff between deploys",
+        "RUM + synthetic"
+      ],
+      "cons": [
+        "Premium pricing",
+        "Setup more involved than Calibre"
+      ],
+      "recommended_for": [
+        "enterprise/marketing where every percentile matters"
+      ]
+    },
+    {
+      "name": "DebugBear",
+      "vendor": "DebugBear Ltd",
+      "pricing": "From ~$60/mo (Solo) to ~$210/mo (Team)",
+      "url": "https://www.debugbear.com/",
+      "install_command": "Sign up; CLI for CI; pixel beacon for RUM",
+      "pros": [
+        "Strong INP analysis",
+        "Good price-feature ratio",
+        "Real-user CrUX integration"
+      ],
+      "cons": [
+        "Less flashy UI than SpeedCurve"
+      ],
+      "recommended_for": [
+        "small/mid teams who want SpeedCurve features at lower price"
+      ]
+    }
+  ],
+  "cwv-monitoring": [
+    {
+      "name": "web-vitals JS (DIY)",
+      "vendor": "Google open-source",
+      "pricing": "Free",
+      "url": "https://github.com/GoogleChrome/web-vitals",
+      "install_command": "npm i web-vitals; ship a small beacon to GA4 / your endpoint",
+      "pros": [
+        "Tiny library; no vendor",
+        "Pipes into GA4 as events",
+        "Edge-runtime compatible"
+      ],
+      "cons": [
+        "You own the dashboard / alerting",
+        "Sample-rate decisions are yours"
+      ],
+      "recommended_for": [
+        "everyone \u2014 start here, layer a paid tool only if dashboards are a bottleneck"
+      ]
+    },
+    {
+      "name": "Vercel Speed Insights",
+      "vendor": "Vercel",
+      "pricing": "$10/mo per project (Pro tier required); higher for high-traffic",
+      "url": "https://vercel.com/docs/speed-insights",
+      "install_command": "@vercel/speed-insights \u2014 npm i @vercel/speed-insights",
+      "pros": [
+        "Zero config on Vercel",
+        "First-party dashboard"
+      ],
+      "cons": [
+        "Vercel-only",
+        "Aggregate dashboard; less drilldown than Calibre/SpeedCurve"
+      ],
+      "recommended_for": [
+        "Vercel-native projects"
+      ]
+    },
+    {
+      "name": "Cloudflare Web Analytics",
+      "vendor": "Cloudflare",
+      "pricing": "Free for sites on Cloudflare; included in Workers Paid",
+      "url": "https://www.cloudflare.com/web-analytics/",
+      "install_command": "Free + cookieless beacon \u2014 paste the snippet in <head> or use the Cloudflare zone setting",
+      "pros": [
+        "Cookieless; no consent banner needed",
+        "Free for typical traffic"
+      ],
+      "cons": [
+        "Lighter dashboard than paid tools",
+        "Not as deep on INP attribution"
+      ],
+      "recommended_for": [
+        "Cloudflare-fronted sites that want privacy-first RUM"
+      ]
+    },
+    {
+      "name": "Sentry Performance",
+      "vendor": "Sentry",
+      "pricing": "Performance Monitoring from ~$26/mo (Team) up; transactions priced per-volume",
+      "url": "https://sentry.io/for/performance/",
+      "install_command": "@sentry/browser + @sentry/tracing \u2014 npm i",
+      "pros": [
+        "Combines errors + performance",
+        "Trace-level INP attribution"
+      ],
+      "cons": [
+        "Cost climbs with traffic",
+        "Heavier client JS than web-vitals alone"
+      ],
+      "recommended_for": [
+        "teams already on Sentry for errors"
+      ]
+    },
+    {
+      "name": "Datadog RUM",
+      "vendor": "Datadog",
+      "pricing": "From ~$1.50 per 1k sessions; min $15/mo",
+      "url": "https://www.datadoghq.com/product/real-user-monitoring/",
+      "install_command": "@datadog/browser-rum \u2014 npm i @datadog/browser-rum",
+      "pros": [
+        "Single pane of glass with backend metrics",
+        "Strong session replay"
+      ],
+      "cons": [
+        "Most expensive option at scale",
+        "Privacy review needed"
+      ],
+      "recommended_for": [
+        "enterprise on Datadog for everything else"
+      ]
+    }
+  ],
+  "listings": [
+    {
+      "name": "Google Business Profile",
+      "vendor": "Google",
+      "pricing": "Free",
+      "url": "https://business.google.com/",
+      "install_command": "Claim or create the profile at business.google.com; complete verification (video, phone, or postcard)",
+      "pros": [
+        "Powers the local pack, Google Maps, and local answers in AI Overviews",
+        "Reviews, posts, Q&A, and messaging in one dashboard",
+        "Required for location assets in Google Ads / Performance Max"
+      ],
+      "cons": [
+        "Verification friction; suspensions common for virtual offices / service-area edge cases",
+        "Category and service-area rules are strict and opaque"
+      ],
+      "recommended_for": [
+        "goal: more local customers",
+        "any business with a storefront or service area",
+        "prerequisite for local extensions in Google Ads"
+      ]
+    },
+    {
+      "name": "Apple Business Connect",
+      "vendor": "Apple",
+      "pricing": "Free",
+      "url": "https://businessconnect.apple.com/",
+      "install_command": "Sign in with an Apple ID at businessconnect.apple.com; claim the location and verify",
+      "pros": [
+        "Controls how the business appears in Apple Maps, Siri, Spotlight, and CarPlay",
+        "Default map surface for iPhone users",
+        "Showcases (offers) and custom action links"
+      ],
+      "cons": [
+        "No native review ecosystem (pulls ratings from partners like Yelp)",
+        "Lower direct-search volume than Google"
+      ],
+      "recommended_for": [
+        "goal: more local customers",
+        "iPhone-heavy customer demographics",
+        "restaurants, retail, and drive-to businesses"
+      ]
+    },
+    {
+      "name": "Bing Places for Business",
+      "vendor": "Microsoft",
+      "pricing": "Free",
+      "url": "https://www.bingplaces.com/",
+      "install_command": "Claim at bingplaces.com; fastest path is 'Import from Google Business Profile' and keep the sync enabled",
+      "pros": [
+        "Feeds Bing local results AND the Bing index behind Microsoft Copilot and ChatGPT search \u2014 an AI-recommendation surface",
+        "One-click import + ongoing sync from Google Business Profile",
+        "Ties into Microsoft Advertising location assets"
+      ],
+      "cons": [
+        "Small direct-traffic share; easy to deprioritize and let go stale",
+        "Slower moderation than Google"
+      ],
+      "recommended_for": [
+        "goal: more local customers",
+        "goal: get recommended by AI assistants",
+        "anyone already maintaining a Google Business Profile (import takes minutes)"
+      ]
+    },
+    {
+      "name": "Yelp for Business",
+      "vendor": "Yelp",
+      "pricing": "Free listing; Yelp Ads optional (budget-based)",
+      "url": "https://business.yelp.com/",
+      "install_command": "Search for the business at business.yelp.com and claim it; verify by phone or email",
+      "pros": [
+        "Heavily cited by LLMs and AI assistants for 'best X near me' style queries",
+        "Large review corpus with high domain trust",
+        "Feeds ratings to Apple Maps and other partners"
+      ],
+      "cons": [
+        "Persistent ad-sales outreach after claiming",
+        "Review filter can hide legitimate reviews; no opt-out of the platform"
+      ],
+      "recommended_for": [
+        "goal: get recommended by AI assistants",
+        "restaurants, home services, local professional services",
+        "businesses with an active review-generation habit"
+      ]
+    },
+    {
+      "name": "Better Business Bureau (BBB)",
+      "vendor": "BBB",
+      "pricing": "Free business profile; accreditation is a separate paid program (varies by size, often $500+/yr)",
+      "url": "https://www.bbb.org/",
+      "install_command": "Search for the business on bbb.org and claim the free profile; accreditation is optional and separate",
+      "pros": [
+        "High-trust domain that AI assistants cite for legitimacy / 'is X reputable' queries",
+        "Free profile includes ratings and complaint history transparency",
+        "Strong for service businesses selling trust"
+      ],
+      "cons": [
+        "Paid accreditation is often conflated with the free listing \u2014 you do not need to pay to be listed",
+        "Complaint handling obligations once engaged"
+      ],
+      "recommended_for": [
+        "goal: get recommended by AI assistants",
+        "trust-sensitive verticals (contractors, finance-adjacent, home services)",
+        "established businesses with a clean track record"
+      ]
+    },
+    {
+      "name": "Nextdoor for Business",
+      "vendor": "Nextdoor",
+      "pricing": "Free business page; local ads optional",
+      "url": "https://business.nextdoor.com/",
+      "install_command": "Claim the business page at business.nextdoor.com; verify the business address",
+      "pros": [
+        "Neighborhood recommendation threads are literal word-of-mouth at scale",
+        "'Faves' and recommendations surface in neighbors' feeds",
+        "Free local awareness posts"
+      ],
+      "cons": [
+        "Reach limited to claimed neighborhoods",
+        "Thin analytics; engagement varies widely by area"
+      ],
+      "recommended_for": [
+        "goal: word-of-mouth referrals",
+        "home services, restaurants, local retail",
+        "businesses whose customers are within a few miles"
+      ]
+    },
+    {
+      "name": "Facebook Business Page",
+      "vendor": "Meta",
+      "pricing": "Free",
+      "url": "https://www.facebook.com/pages/create",
+      "install_command": "Create the Page from a personal profile; complete the About, category, service area, and contact fields",
+      "pros": [
+        "Recommendations posts in local groups drive word-of-mouth discovery",
+        "Prerequisite for running Meta ads later (Page + Business Manager)",
+        "Messaging + reviews + events in one place"
+      ],
+      "cons": [
+        "Organic reach for Pages is low without group activity or ads",
+        "Page management UX churns frequently"
+      ],
+      "recommended_for": [
+        "goal: word-of-mouth referrals",
+        "any business that may run Meta ads later",
+        "community-oriented local businesses"
+      ]
+    },
+    {
+      "name": "Alignable",
+      "vendor": "Alignable",
+      "pricing": "Free basic; premium tiers ~$20-40/mo",
+      "url": "https://www.alignable.com/",
+      "install_command": "Create a business profile at alignable.com; join local groups and ask/answer referral threads",
+      "pros": [
+        "B2B referral network of small-business owners \u2014 built for passing word-of-mouth leads",
+        "Local groups and 'who do you recommend' threads",
+        "Free tier is enough to be findable"
+      ],
+      "cons": [
+        "Little consumer visibility \u2014 this is owner-to-owner networking",
+        "Value depends on active participation, not just claiming"
+      ],
+      "recommended_for": [
+        "goal: word-of-mouth referrals",
+        "B2B and local professional services",
+        "owners willing to engage weekly"
+      ]
+    },
+    {
+      "name": "Angi",
+      "vendor": "Angi Inc.",
+      "pricing": "Free listing; leads are pay-per-lead via Angi Ads / Angi Leads",
+      "url": "https://www.angi.com/",
+      "install_command": "Search for the business on angi.com and claim it via the Angi for Pros flow; keep the free profile even if declining paid leads",
+      "pros": [
+        "Large homeowner audience searching by trade",
+        "Free profile carries reviews and licensing info",
+        "AI assistants cite it for contractor-selection queries"
+      ],
+      "cons": [
+        "Aggressive lead-sales motion; shared leads can be low quality",
+        "Pay-per-lead costs escalate quickly if left unmanaged"
+      ],
+      "recommended_for": [
+        "goal: contractor / home-services visibility",
+        "trades: plumbing, electrical, HVAC, roofing, remodel",
+        "claim the free profile even if you never buy leads"
+      ]
+    },
+    {
+      "name": "Houzz",
+      "vendor": "Houzz Inc.",
+      "pricing": "Free professional profile; Houzz Pro subscription optional",
+      "url": "https://www.houzz.com/pro",
+      "install_command": "Create a professional profile at houzz.com/pro; upload project photos \u2014 portfolio depth drives ranking",
+      "pros": [
+        "Design-intent audience (kitchen/bath/remodel) with long project budgets",
+        "Portfolio + reviews format suits visual trades",
+        "Free profile is fully functional"
+      ],
+      "cons": [
+        "Skews design/remodel; weak for repair-type trades",
+        "Pro subscription upsell is persistent"
+      ],
+      "recommended_for": [
+        "goal: contractor / home-services visibility",
+        "design-build, remodelers, architects, interior designers",
+        "businesses with strong project photography"
+      ]
+    },
+    {
+      "name": "Thumbtack",
+      "vendor": "Thumbtack",
+      "pricing": "Free profile; pay-per-lead when customers contact you",
+      "url": "https://www.thumbtack.com/pro",
+      "install_command": "Sign up at thumbtack.com/pro; set services + travel area; profile is free until you respond to leads",
+      "pros": [
+        "High-intent quote requests across hundreds of service categories",
+        "Free profile ranks in Thumbtack's own SEO-heavy category pages",
+        "Budget controls per service"
+      ],
+      "cons": [
+        "Lead prices fluctuate; charged per contact, not per job won",
+        "Race-to-respond dynamics favor fast repliers"
+      ],
+      "recommended_for": [
+        "goal: contractor / home-services visibility",
+        "solo operators and small crews wanting inbound quote requests",
+        "services beyond construction (cleaning, tutoring, events)"
+      ]
+    }
+  ]
+}

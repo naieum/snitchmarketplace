@@ -1,0 +1,89 @@
+# X (Twitter) Ads CAPI — Python stub.
+# OAuth 1.0a (use requests-oauthlib for production).
+#
+# Env vars (NEVER commit):
+#   X_ADS_CONSUMER_KEY
+#   X_ADS_CONSUMER_SECRET
+#   X_ADS_ACCESS_TOKEN
+#   X_ADS_ACCESS_TOKEN_SECRET
+#   X_ADS_ACCOUNT_ID
+#   X_ADS_PIXEL_ID
+
+import hashlib
+import os
+from datetime import datetime, timezone
+from typing import Any
+
+import requests
+from requests_oauthlib import OAuth1
+
+API_BASE = "https://ads-api.twitter.com/12"
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def _auth() -> OAuth1:
+    return OAuth1(
+        os.environ["X_ADS_CONSUMER_KEY"],
+        os.environ["X_ADS_CONSUMER_SECRET"],
+        os.environ["X_ADS_ACCESS_TOKEN"],
+        os.environ["X_ADS_ACCESS_TOKEN_SECRET"],
+    )
+
+
+def send_x_conversion(
+    *,
+    event_id: str | None,
+    value: float | None = None,
+    currency: str | None = None,
+    quantity: int | None = None,
+    conversion_time=None,
+    email: str | None = None,
+    phone: str | None = None,
+    twclid: str | None = None,
+    description: str | None = None,
+) -> dict[str, Any]:
+    pixel_id = os.environ["X_ADS_PIXEL_ID"]   # {{PLACEHOLDER}}
+
+    if conversion_time is None:
+        conversion_time = datetime.now(tz=timezone.utc).isoformat()
+    elif isinstance(conversion_time, (int, float)):
+        conversion_time = datetime.fromtimestamp(conversion_time, tz=timezone.utc).isoformat()
+
+    identifiers = []
+    if email: identifiers.append({"hashed_email": sha256(email)})
+    if phone: identifiers.append({"hashed_phone_number": sha256(phone)})
+    if twclid: identifiers.append({"twclid": twclid})
+
+    body = {
+        "conversions": [{
+            "conversion_time": conversion_time,
+            "event_id": event_id,
+            "identifiers": identifiers,
+            "number_items": quantity,
+            "price_micro": int(round(value * 1_000_000)) if value else None,
+            "currency": currency,
+            "conversion_id": event_id,
+            "description": description,
+        }]
+    }
+
+    r = requests.post(f"{API_BASE}/measurement/conversions/{pixel_id}", auth=_auth(), json=body, timeout=5)
+    r.raise_for_status()
+    return r.json()
+
+
+def handle_conversion(payload: dict) -> dict:
+    return send_x_conversion(
+        event_id=payload.get("event_id"),
+        value=payload.get("value"),
+        currency=payload.get("currency"),
+        quantity=payload.get("quantity"),
+        conversion_time=payload.get("conversion_time"),
+        email=payload.get("email"),
+        phone=payload.get("phone"),
+        twclid=payload.get("twclid"),
+        description=payload.get("description"),
+    )

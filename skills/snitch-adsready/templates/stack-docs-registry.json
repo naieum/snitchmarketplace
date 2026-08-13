@@ -1,0 +1,119 @@
+{
+  "_comment": "Per-stack: framework docs URL + relevant ads-tracking tutorial URLs. Used by lib/stack_docs.sh to emit URL lists the agent should WebFetch for fresh ground truth.",
+
+  "nextjs": {
+    "framework_docs": [
+      "https://nextjs.org/docs",
+      "https://nextjs.org/docs/app/building-your-application/optimizing/scripts",
+      "https://nextjs.org/docs/app/api-reference/components/script"
+    ],
+    "ads_tracking_docs": [
+      "https://nextjs.org/docs/app/guides/third-party-libraries",
+      "https://github.com/vercel/next.js/tree/canary/packages/third-parties",
+      "https://nextjs.org/learn/seo/improve/web-vitals"
+    ]
+  },
+
+  "astro": {
+    "framework_docs": [
+      "https://docs.astro.build/",
+      "https://docs.astro.build/en/guides/integrations-guide/partytown/"
+    ],
+    "ads_tracking_docs": [
+      "https://docs.astro.build/en/recipes/analytics/",
+      "https://partytown.builder.io/google-tag-manager"
+    ]
+  },
+
+  "sveltekit": {
+    "framework_docs": [
+      "https://kit.svelte.dev/docs",
+      "https://kit.svelte.dev/docs/load"
+    ],
+    "ads_tracking_docs": [
+      "https://kit.svelte.dev/docs/seo",
+      "https://kit.svelte.dev/docs/web-standards"
+    ]
+  },
+
+  "remix": {
+    "framework_docs": [
+      "https://remix.run/docs/en/main"
+    ],
+    "ads_tracking_docs": [
+      "https://remix.run/docs/en/main/discussion/data-flow",
+      "https://remix.run/docs/en/main/guides/seo"
+    ]
+  },
+
+  "nuxt": {
+    "framework_docs": [
+      "https://nuxt.com/docs",
+      "https://nuxt.com/docs/api/composables/use-head"
+    ],
+    "ads_tracking_docs": [
+      "https://nuxt.com/modules/gtag",
+      "https://nuxt.com/modules/google-fonts"
+    ]
+  },
+
+  "vite-spa": {
+    "framework_docs": [
+      "https://vitejs.dev/guide/"
+    ],
+    "ads_tracking_docs": [
+      "https://web.dev/vitals/",
+      "https://developers.google.com/tag-platform/tag-manager/web"
+    ]
+  },
+
+  "vue": {
+    "framework_docs": [
+      "https://vuejs.org/guide/introduction.html"
+    ],
+    "ads_tracking_docs": [
+      "https://router.vuejs.org/guide/advanced/navigation-guards.html",
+      "https://nuxt.com/"
+    ]
+  },
+
+  "gatsby": {
+    "framework_docs": [
+      "https://www.gatsbyjs.com/docs/"
+    ],
+    "ads_tracking_docs": [
+      "https://www.gatsbyjs.com/plugins/gatsby-plugin-google-tagmanager/",
+      "https://www.gatsbyjs.com/plugins/gatsby-plugin-facebook-pixel/"
+    ]
+  },
+
+  "wordpress": {
+    "framework_docs": [
+      "https://developer.wordpress.org/themes/basics/template-files/"
+    ],
+    "ads_tracking_docs": [
+      "https://wordpress.org/plugins/google-site-kit/",
+      "https://developer.wordpress.org/reference/hooks/wp_head/"
+    ]
+  },
+
+  "shopify": {
+    "framework_docs": [
+      "https://shopify.dev/docs"
+    ],
+    "ads_tracking_docs": [
+      "https://shopify.dev/docs/api/web-pixels-api",
+      "https://shopify.dev/docs/apps/marketing"
+    ]
+  },
+
+  "webflow": {
+    "framework_docs": [
+      "https://help.webflow.com/"
+    ],
+    "ads_tracking_docs": [
+      "https://help.webflow.com/hc/en-us/articles/33961376754195-Custom-code-in-the-head-and-body-tags",
+      "https://help.webflow.com/hc/en-us/articles/33961356176147-Open-Graph-settings"
+    ]
+  }
+}

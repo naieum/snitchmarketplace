@@ -1,0 +1,79 @@
+# LinkedIn Conversions API — Python stub.
+# Hashes email + phone with SHA-256, sends server-side conversion to /rest/conversionEvents.
+#
+# Env vars (NEVER commit):
+#   LINKEDIN_ADS_ACCESS_TOKEN
+#   LINKEDIN_CONVERSION_RULE_ID
+
+import hashlib
+import os
+import time
+from typing import Any
+
+import requests
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def send_linkedin_conversion(
+    *,
+    event_id: str | None,
+    value: float,
+    currency: str = "USD",
+    conversion_happened_at: int | None = None,
+    email: str | None = None,
+    phone: str | None = None,
+    first_party_id: str | None = None,
+    first_name: str | None = None,
+    last_name: str | None = None,
+    title: str | None = None,
+    company_name: str | None = None,
+) -> dict[str, Any]:
+    access_token = os.environ.get("LINKEDIN_ADS_ACCESS_TOKEN")          # {{PLACEHOLDER}}
+    conversion_urn = os.environ.get("LINKEDIN_CONVERSION_RULE_ID")      # {{PLACEHOLDER}}
+    if not (access_token and conversion_urn):
+        raise RuntimeError("LINKEDIN_ADS_ACCESS_TOKEN and LINKEDIN_CONVERSION_RULE_ID must be set")
+
+    user_ids = []
+    if email: user_ids.append({"idType": "SHA256_EMAIL", "idValue": sha256(email)})
+    if first_party_id: user_ids.append({"idType": "LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID", "idValue": first_party_id})
+    if phone: user_ids.append({"idType": "SHA256_PHONE", "idValue": sha256(phone)})
+
+    user_info = None
+    if first_name or last_name:
+        user_info = {"firstName": first_name, "lastName": last_name, "title": title, "companyName": company_name}
+
+    body = {
+        "conversion": conversion_urn,
+        "conversionHappenedAt": conversion_happened_at or int(time.time() * 1000),
+        "conversionValue": {"currencyCode": currency, "amount": str(value)},
+        "eventId": event_id,
+        "user": {"userIds": user_ids, "userInfo": user_info},
+    }
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "LinkedIn-Version": "202410",
+        "X-Restli-Protocol-Version": "2.0.0",
+        "Content-Type": "application/json",
+    }
+    r = requests.post("https://api.linkedin.com/rest/conversionEvents", headers=headers, json=body, timeout=5)
+    r.raise_for_status()
+    return {"ok": True}
+
+
+def handle_conversion(payload: dict) -> dict:
+    return send_linkedin_conversion(
+        event_id=payload.get("event_id"),
+        value=payload["value"],
+        currency=payload.get("currency", "USD"),
+        conversion_happened_at=payload.get("conversion_time"),
+        email=payload.get("email"),
+        phone=payload.get("phone"),
+        first_party_id=payload.get("li_fat_id"),
+        first_name=payload.get("first_name"),
+        last_name=payload.get("last_name"),
+        title=payload.get("title"),
+        company_name=payload.get("company"),
+    )

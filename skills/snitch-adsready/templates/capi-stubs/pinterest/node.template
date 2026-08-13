@@ -1,0 +1,81 @@
+// Pinterest Conversions API — Node.js stub.
+// Hashes PII with SHA-256, posts to /v5/ad_accounts/<adv>/events.
+// Pair with the client-side pintrk pixel's event_id for deduplication.
+//
+// Env vars (NEVER commit):
+//   PINTEREST_ADS_ACCESS_TOKEN
+//   PINTEREST_ADS_ADVERTISER_ID
+
+import crypto from "node:crypto";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+export async function sendPinterestConversion(event) {
+  const accessToken = process.env.PINTEREST_ADS_ACCESS_TOKEN;          // {{PLACEHOLDER}}
+  const advertiserId = process.env.PINTEREST_ADS_ADVERTISER_ID;        // {{PLACEHOLDER}}
+  if (!accessToken || !advertiserId) {
+    throw new Error("PINTEREST_ADS_ACCESS_TOKEN and PINTEREST_ADS_ADVERTISER_ID must be set");
+  }
+
+  const url = `https://api.pinterest.com/v5/ad_accounts/${advertiserId}/events`;
+  const body = {
+    data: [{
+      event_name: event.eventName,                                     // e.g. "checkout"
+      action_source: "web",
+      event_time: Math.floor((event.eventTime || Date.now()) / 1000),
+      event_id: event.eventId,                                          // dedup with pintrk
+      event_source_url: event.url,
+      user_data: {
+        em: event.email ? [sha256(event.email)] : undefined,
+        ph: event.phone ? [sha256(event.phone)] : undefined,
+        external_id: event.externalId ? [sha256(event.externalId)] : undefined,
+        client_ip_address: event.ip,
+        client_user_agent: event.userAgent,
+        click_id: event.epik
+      },
+      custom_data: {
+        currency: event.currency,
+        value: event.value ? String(event.value) : undefined,
+        order_id: event.orderId,
+        content_ids: event.contentIds,
+        contents: event.contents,
+        num_items: event.numItems
+      }
+    }]
+  };
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(`Pinterest CAPI failed: ${JSON.stringify(data)}`);
+  return data;
+}
+
+export async function handleConversion(req, res) {
+  try {
+    const r = await sendPinterestConversion({
+      eventName: req.body.event || "checkout",
+      eventId: req.body.event_id,
+      email: req.body.email,
+      phone: req.body.phone,
+      externalId: req.body.external_id,
+      ip: req.headers["x-forwarded-for"]?.split(",")[0] || req.socket?.remoteAddress,
+      userAgent: req.headers["user-agent"],
+      epik: req.body.epik,
+      url: req.body.url,
+      currency: req.body.currency,
+      value: req.body.value,
+      orderId: req.body.order_id,
+      contentIds: req.body.content_ids,
+      contents: req.body.contents,
+      numItems: req.body.num_items
+    });
+    return res.status(200).json({ ok: true, result: r });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

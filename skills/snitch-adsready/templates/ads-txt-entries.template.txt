@@ -1,0 +1,89 @@
+# ads.txt — Authorized Digital Sellers (IAB Tech Lab)
+# https://iabtechlab.com/ads-txt/
+#
+# Purpose: tells SSPs/exchanges which sellers are allowed to monetize this domain.
+# Without ads.txt, programmatic demand drops 20-40% (buy-side filters traffic from unverified sellers).
+#
+# Format per line:
+#   <domain of seller>, <publisher account ID>, <DIRECT|RESELLER>, <TAG-ID>
+#   - <domain>: the SSP's canonical domain.
+#   - <pub ID>: your account/seller ID at that SSP.
+#   - DIRECT: you have a direct contractual relationship with the seller.
+#   - RESELLER: a third party (network) is authorized to sell on your behalf.
+#   - <TAG-ID>: optional 40-char hex from the SSP's certification authority.
+#
+# Comment lines start with `#` — keep yours so future maintainers know why each line exists.
+#
+# ----------------------------------------------------------------------
+# Common publisher entries by ad-platform demand source. ONLY include the
+# lines for SSPs you actually monetize through. Replace {{PUB_ID}} with
+# the ID issued in that SSP's dashboard.
+# ----------------------------------------------------------------------
+
+# platform: google
+# --- Google AdSense / Ad Manager / AdX (display + video; the dominant SSP) ---
+# Get your AdSense Publisher ID at https://www.google.com/adsense/ → Account → Account information.
+google.com, pub-{{GOOGLE_ADSENSE_PUB_ID}}, DIRECT, f08c47fec0942fa0
+
+# platform: meta
+# --- Meta Audience Network (mobile + display via FB ad network) ---
+# Only include if you've enrolled the site in Audience Network.
+# facebook.com, {{META_PUB_ID}}, RESELLER, c3e20eee3f780d68
+
+# platform: microsoft
+# --- Microsoft Audience Network (Microsoft Advertising display) ---
+# microsoftadvertising.com, {{MICROSOFT_PUB_ID}}, DIRECT
+
+# platform: amazon
+# --- Amazon Publisher Services (Transparent Ad Marketplace / UAM) ---
+# Only if APS is wired into your ad stack.
+# aps.amazon.com, {{APS_PUB_ID}}, DIRECT
+
+# platform: tiktok
+# --- TikTok Audience Network (publishers running TikTok display via partners) ---
+# Rare in pure web inventory; common for in-app.
+# tiktok.com, {{TIKTOK_PUB_ID}}, DIRECT
+
+# platform: pinterest
+# --- Pinterest (only for partner publishers running Pinterest-source demand) ---
+# Rare. Pinterest is mostly a buy-side, not a seller — most sites do NOT need a pinterest line.
+
+# platform: linkedin
+# --- LinkedIn — buy-side only; no ads.txt entry required for advertisers. ---
+
+# platform: reddit
+# --- Reddit — buy-side; no entry required for advertisers. ---
+
+# platform: snapchat
+# --- Snapchat — buy-side; no entry required for advertisers. ---
+
+# platform: x
+# --- X (Twitter) — buy-side; no entry required for advertisers. ---
+
+# platform: apple
+# --- Apple Search Ads — App Store buy-side only; no web ads.txt entry. ---
+
+# ----------------------------------------------------------------------
+# Common reseller / SSP partners (add only those in your ad stack):
+# ----------------------------------------------------------------------
+# rubiconproject.com, {{RUBICON_PUB_ID}}, RESELLER, 0bfd66d529a55807
+# pubmatic.com, {{PUBMATIC_PUB_ID}}, RESELLER, 5d62403b186f2ace
+# openx.com, {{OPENX_PUB_ID}}, RESELLER, 6a698e2ec38604c6
+# appnexus.com, {{APPNEXUS_PUB_ID}}, RESELLER, f5ab79cb980f11d1
+# indexexchange.com, {{IX_PUB_ID}}, DIRECT, 50b1c356f2c5c8fc
+# tradedesk.com, {{TRADEDESK_PUB_ID}}, DIRECT
+# criteo.com, {{CRITEO_PUB_ID}}, RESELLER
+
+# ----------------------------------------------------------------------
+# OWNERDOMAIN / MANAGERDOMAIN (optional but recommended; IAB ads.txt v1.1):
+# ----------------------------------------------------------------------
+# ownerdomain={{YOUR_DOMAIN}}
+# managerdomain={{YOUR_DOMAIN}}
+
+# ----------------------------------------------------------------------
+# Validation:
+#  - https://adstxt.guru/  — paste your URL
+#  - https://transparencyreport.google.com/ad-impressions/ad-platforms — Google audit
+#  - DV / IAS auditors will sanity-check; broken syntax = unsold inventory
+#
+# Mobile in-app monetization needs a parallel /app-ads.txt at the same root.

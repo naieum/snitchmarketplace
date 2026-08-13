@@ -1,0 +1,86 @@
+// Meta Conversions API — Node.js stub.
+// Hashes PII with SHA-256, computes appsecret_proof (HMAC-SHA256), POSTs to Graph API events endpoint.
+// Pair with the client-side fbq pixel's eventID to deduplicate.
+//
+// Env vars (NEVER commit):
+//   META_PIXEL_ID
+//   META_ACCESS_TOKEN     long-lived system-user token
+//   META_APP_SECRET       for appsecret_proof (recommended)
+//   META_TEST_EVENT_CODE  optional, set to TEST123 for the Test Events tab
+
+import crypto from "node:crypto";
+
+const META_GRAPH_VERSION = "v21.0";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+const appsecretProof = (token, secret) =>
+  crypto.createHmac("sha256", secret).update(token).digest("hex");
+
+export async function sendMetaCapiEvent(event) {
+  const pixelId = process.env.META_PIXEL_ID;            // {{PLACEHOLDER}}
+  const accessToken = process.env.META_ACCESS_TOKEN;    // {{PLACEHOLDER}}
+  const appSecret = process.env.META_APP_SECRET;        // {{PLACEHOLDER}}
+  const testCode = process.env.META_TEST_EVENT_CODE;    // optional
+  if (!pixelId || !accessToken) {
+    throw new Error("META_PIXEL_ID and META_ACCESS_TOKEN must be set");
+  }
+
+  const proof = appSecret ? appsecretProof(accessToken, appSecret) : null;
+  const url = new URL(`https://graph.facebook.com/${META_GRAPH_VERSION}/${pixelId}/events`);
+  url.searchParams.set("access_token", accessToken);
+  if (proof) url.searchParams.set("appsecret_proof", proof);
+
+  const body = {
+    data: [{
+      event_name: event.eventName,                    // e.g. "Purchase"
+      event_time: Math.floor((event.eventTime || Date.now()) / 1000),
+      event_id: event.eventId,                        // dedup with client-side fbq("track", ..., {eventID: ...})
+      event_source_url: event.url,
+      action_source: event.actionSource || "website",
+      user_data: {
+        em: event.email ? [sha256(event.email)] : undefined,
+        ph: event.phone ? [sha256(event.phone)] : undefined,
+        client_ip_address: event.ip,
+        client_user_agent: event.userAgent,
+        fbc: event.fbc, // _fbc cookie
+        fbp: event.fbp  // _fbp cookie
+      },
+      custom_data: event.customData || {}
+    }],
+    ...(testCode ? { test_event_code: testCode } : {})
+  };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok || data.error) {
+    throw new Error(`Meta CAPI failed: ${JSON.stringify(data)}`);
+  }
+  return data;
+}
+
+// Express/Hono/Fastify-shaped handler.
+export async function handleConversion(req, res) {
+  try {
+    const r = await sendMetaCapiEvent({
+      eventName: req.body.event || "Purchase",
+      eventId: req.body.event_id,            // MUST match client-side fbq eventID
+      url: req.body.url,
+      email: req.body.email,
+      phone: req.body.phone,
+      ip: req.headers["x-forwarded-for"]?.split(",")[0] || req.socket?.remoteAddress,
+      userAgent: req.headers["user-agent"],
+      fbc: req.body.fbc,
+      fbp: req.body.fbp,
+      customData: { value: req.body.value, currency: req.body.currency, content_ids: req.body.content_ids }
+    });
+    return res.status(200).json({ ok: true, fbtrace_id: r.fbtrace_id });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

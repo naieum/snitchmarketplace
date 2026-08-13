@@ -1,0 +1,91 @@
+// Microsoft / Bing Ads Offline Conversions — Node.js stub.
+// Microsoft Ads doesn't have a real-time CAPI like Meta; offline conversions are uploaded
+// against the UET tag via the Bulk Upload API or by POSTing OfflineConversion entities.
+// This stub records the event server-side and queues it for upload.
+//
+// Env vars (NEVER commit):
+//   MICROSOFT_ADS_DEVELOPER_TOKEN
+//   MICROSOFT_ADS_REFRESH_TOKEN
+//   MICROSOFT_ADS_CLIENT_ID
+//   MICROSOFT_ADS_CUSTOMER_ID
+//   MICROSOFT_ADS_ACCOUNT_ID
+//
+// Reference: https://learn.microsoft.com/en-us/advertising/campaign-management-service/applyofflineconversions
+
+import crypto from "node:crypto";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+/** Refresh OAuth access token using the refresh token. */
+async function refreshAccessToken() {
+  const url = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+  const params = new URLSearchParams({
+    client_id: process.env.MICROSOFT_ADS_CLIENT_ID,
+    refresh_token: process.env.MICROSOFT_ADS_REFRESH_TOKEN,
+    grant_type: "refresh_token",
+    scope: "https://ads.microsoft.com/msads.manage offline_access"
+  });
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params.toString()
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(`Microsoft OAuth failed: ${JSON.stringify(data)}`);
+  return data.access_token;
+}
+
+export async function applyOfflineConversion({ msclkid, conversionName, conversionTime, value, currency, email }) {
+  const developerToken = process.env.MICROSOFT_ADS_DEVELOPER_TOKEN; // {{PLACEHOLDER}}
+  const customerId = process.env.MICROSOFT_ADS_CUSTOMER_ID;        // {{PLACEHOLDER}}
+  const accountId = process.env.MICROSOFT_ADS_ACCOUNT_ID;          // {{PLACEHOLDER}}
+  if (!developerToken || !customerId || !accountId) {
+    throw new Error("MICROSOFT_ADS_DEVELOPER_TOKEN / CUSTOMER_ID / ACCOUNT_ID must be set");
+  }
+
+  const accessToken = await refreshAccessToken();
+  const url = "https://campaign.api.bingads.microsoft.com/CampaignManagement/v13/OfflineConversions/Apply";
+
+  const body = {
+    OfflineConversions: [{
+      MicrosoftClickId: msclkid,                    // from msclkid query param at click time
+      ConversionName: conversionName,               // matches the goal in Bing Ads UI
+      ConversionTime: new Date(conversionTime || Date.now()).toISOString(),
+      ConversionValue: value,
+      ConversionCurrencyCode: currency,
+      HashedEmailAddress: email ? sha256(email) : undefined
+    }]
+  };
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "DeveloperToken": developerToken,
+      "CustomerId": customerId,
+      "CustomerAccountId": accountId,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(`Microsoft Ads OfflineConversion failed: ${JSON.stringify(data)}`);
+  return data;
+}
+
+export async function handleConversion(req, res) {
+  try {
+    const r = await applyOfflineConversion({
+      msclkid: req.body.msclkid,
+      conversionName: req.body.conversion_name || "Purchase",
+      conversionTime: req.body.conversion_time,
+      value: req.body.value,
+      currency: req.body.currency || "USD",
+      email: req.body.email
+    });
+    return res.status(200).json({ ok: true, result: r });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "_comment": "Per-stack ads-readiness verdict. Used by lib/fit_matrix.sh. verdict ∈ strong | partial | weak. Surface notes verbatim.",
+
+  "nextjs": {
+    "verdict": "strong",
+    "notes": "@next/third-parties has first-class GoogleTagManager + GoogleAnalytics + MetaPixel helpers. App Router lets you place Script tags in app/layout.tsx with strategy=\"afterInteractive\" so pixels load without blocking LCP. Edge runtime + middleware can do server-side conversion sends.",
+    "best_for": ["Google Ads + GA4", "Meta CAPI", "TikTok Pixel", "any platform with a Script-tag pattern"]
+  },
+
+  "astro": {
+    "verdict": "strong",
+    "notes": "Static-first by default → great CWV out of the box. Use the partytown integration to offload pixels to a web worker (turns most ad scripts into off-main-thread loaders). @astrojs/partytown is the canonical wiring.",
+    "best_for": ["all 10 platforms; partytown helps with main-thread cost"]
+  },
+
+  "sveltekit": {
+    "verdict": "strong",
+    "notes": "+layout.svelte hosts the pixels; +server.ts hooks for server-side CAPI. Adapters for Vercel, Cloudflare, Node. Beware: +page.svelte runs both server + client; init pixels in onMount only.",
+    "best_for": ["Google Ads + GA4", "Meta CAPI", "TikTok"]
+  },
+
+  "remix": {
+    "verdict": "strong",
+    "notes": "root.tsx hosts the pixels. Loaders/actions are server-side and ideal for CAPI sends. Edge adapters cover Vercel + Cloudflare + Fly.",
+    "best_for": ["Google Ads + GA4", "Meta CAPI", "B2B platforms (LinkedIn) given Remix's enterprise traction"]
+  },
+
+  "nuxt": {
+    "verdict": "strong",
+    "notes": "useHead() in app.vue places pixels; nitro server-routes (server/api/) host CAPI. Module ecosystem includes @nuxtjs/google-analytics, nuxt-gtag, nuxt-meta-pixel.",
+    "best_for": ["Google Ads + GA4", "Meta", "TikTok"]
+  },
+
+  "vite-spa": {
+    "verdict": "weak",
+    "notes": "Pure SPA = single entry HTML, no SSR. Pixels load fine but: (1) Page-view events are SPA-route-change-driven — must wire a router listener manually; (2) Bots and scrapers see only the shell — Schema.org + AI search readiness suffers; (3) CWV is harder because LCP often resolves AFTER hydration. Recommend an SSR migration (Astro / Next / Remix) for ad-heavy projects.",
+    "best_for": ["internal-only or low-CTR landing-page-free apps; SaaS post-login dashboards"]
+  },
+
+  "vue": {
+    "verdict": "partial",
+    "notes": "Plain Vue 3 SPA: same caveats as vite-spa. Vue + Nuxt: see nuxt entry. If on plain Vue and your ad spend is meaningful, plan a migration to Nuxt for SSR — the ROI is usually positive within a quarter.",
+    "best_for": ["Vue 3 + Nuxt only; plain Vue → migrate"]
+  },
+
+  "gatsby": {
+    "verdict": "partial",
+    "notes": "Static export → good CWV foundation. gatsby-plugin-google-tagmanager + gatsby-plugin-facebook-pixel exist but are community-maintained; verify currency. Note Gatsby Cloud is sunset; ensure your hosting + build pipeline still works.",
+    "best_for": ["content sites; Google Ads + GA4; Meta"]
+  },
+
+  "wordpress": {
+    "verdict": "strong",
+    "notes": "Easiest to install pixels (plugins like Site Kit by Google, Pixel Caffeine, PixelYourSite) but hardest to optimize for CWV — the typical bloat from page builders + heavy plugins drags LCP. Use a lightweight theme (GeneratePress, Astra, Kadence), enable a caching plugin, and keep the plugin count under 25.",
+    "best_for": ["all 10 platforms via plugins; CWV needs active management"]
+  },
+
+  "shopify": {
+    "verdict": "strong",
+    "notes": "Native integrations for Google + Meta + TikTok + Microsoft via Shopify's Marketing apps. Web Pixel API (introduced 2023) replaces theme.liquid edits — pixels run sandboxed and respect customer privacy preferences. Use Hydrogen for headless if CWV matters; standard themes are pixel-friendly but heavier.",
+    "best_for": ["all 10 platforms via Marketing apps; Hydrogen for CWV-sensitive shops"]
+  },
+
+  "webflow": {
+    "verdict": "partial",
+    "notes": "Pixels go in Project Settings → Custom Code. CWV decent. Limitations: (1) No native server-side / CAPI support — you bridge via Make/Zapier or a Cloudflare Worker; (2) No native consent management — bring an external CMP; (3) Schema.org JSON-LD must be hand-crafted in the Custom Code field per page.",
+    "best_for": ["small marketing sites with simple pixel setups; CAPI requires an external bridge"]
+  }
+}

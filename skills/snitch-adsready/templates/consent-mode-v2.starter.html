@@ -1,0 +1,48 @@
+<!--
+  Consent Mode v2 starter — drop into <head>, BEFORE any pixel/tag library loads.
+  https://developers.google.com/tag-platform/security/guides/consent
+
+  Defaults: deny everything. Your CMP must call gtag('consent', 'update', {...})
+  after the user makes a choice. Without that update call, conversions and
+  audiences will be limited (Google) or silently dropped (Meta/Microsoft/etc.).
+
+  Replace this with your CMP's own snippet ONLY if the CMP advertises native
+  Consent Mode v2 integration AND you've verified it sets all four fields.
+-->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+
+  // Default: deny all storage and ad signals until the user opts in.
+  // Wait-for-update keeps tags pending up to 500ms, giving the CMP time
+  // to load and either grant or deny per the user's prior choice.
+  gtag('consent', 'default', {
+    'ad_storage':            'denied',
+    'ad_user_data':          'denied',
+    'ad_personalization':    'denied',
+    'analytics_storage':     'denied',
+    'functionality_storage': 'granted',
+    'security_storage':      'granted',
+    'wait_for_update':       500,
+  });
+
+  // Region-specific override (optional).
+  // EEA / UK / Switzerland: keep defaults strict; CMP banner is required.
+  // Comment out these lines if you don't run a CMP in EU regions.
+  gtag('consent', 'default', {
+    'ad_storage':         'denied',
+    'ad_user_data':       'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage':  'denied',
+    'region': ['AT','BE','BG','CY','CZ','DE','DK','EE','ES','FI','FR','GR','HR','HU','IE','IS','IT','LI','LT','LU','LV','MT','NL','NO','PL','PT','RO','SE','SI','SK','GB','CH'],
+  });
+
+  // Outside EEA/UK: you MAY default to granted if your privacy posture allows.
+  // Recommended: still default to denied and rely on the CMP for parity across regions.
+
+  // Hash-based redaction for unconsented ad_storage:
+  // gtag('set', 'ads_data_redaction', true);
+
+  // URL passthrough — preserves Google Click ID through redirects when ad_storage is denied.
+  gtag('set', 'url_passthrough', true);
+</script>

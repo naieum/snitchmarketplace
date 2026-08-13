@@ -1,0 +1,79 @@
+# Microsoft / Bing Ads Offline Conversions — Python stub.
+# Records server-side conversions and uploads them via the Campaign Management API.
+#
+# Env vars (NEVER commit):
+#   MICROSOFT_ADS_DEVELOPER_TOKEN
+#   MICROSOFT_ADS_REFRESH_TOKEN
+#   MICROSOFT_ADS_CLIENT_ID
+#   MICROSOFT_ADS_CUSTOMER_ID
+#   MICROSOFT_ADS_ACCOUNT_ID
+
+import hashlib
+import os
+from datetime import datetime, timezone
+from typing import Any
+
+import requests
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def refresh_access_token() -> str:
+    url = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
+    data = {
+        "client_id": os.environ["MICROSOFT_ADS_CLIENT_ID"],
+        "refresh_token": os.environ["MICROSOFT_ADS_REFRESH_TOKEN"],
+        "grant_type": "refresh_token",
+        "scope": "https://ads.microsoft.com/msads.manage offline_access",
+    }
+    r = requests.post(url, data=data, timeout=5)
+    r.raise_for_status()
+    return r.json()["access_token"]
+
+
+def apply_offline_conversion(*, msclkid: str, conversion_name: str, conversion_time, value: float, currency: str, email: str | None) -> dict[str, Any]:
+    developer_token = os.environ["MICROSOFT_ADS_DEVELOPER_TOKEN"]   # {{PLACEHOLDER}}
+    customer_id = os.environ["MICROSOFT_ADS_CUSTOMER_ID"]           # {{PLACEHOLDER}}
+    account_id = os.environ["MICROSOFT_ADS_ACCOUNT_ID"]             # {{PLACEHOLDER}}
+
+    access_token = refresh_access_token()
+    url = "https://campaign.api.bingads.microsoft.com/CampaignManagement/v13/OfflineConversions/Apply"
+
+    if isinstance(conversion_time, (int, float)):
+        conversion_time = datetime.fromtimestamp(conversion_time, tz=timezone.utc).isoformat()
+    if conversion_time is None:
+        conversion_time = datetime.now(tz=timezone.utc).isoformat()
+
+    payload = {
+        "OfflineConversions": [{
+            "MicrosoftClickId": msclkid,
+            "ConversionName": conversion_name,
+            "ConversionTime": conversion_time,
+            "ConversionValue": value,
+            "ConversionCurrencyCode": currency,
+            "HashedEmailAddress": sha256(email) if email else None,
+        }]
+    }
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "DeveloperToken": developer_token,
+        "CustomerId": customer_id,
+        "CustomerAccountId": account_id,
+        "Content-Type": "application/json",
+    }
+    r = requests.post(url, headers=headers, json=payload, timeout=5)
+    r.raise_for_status()
+    return r.json()
+
+
+def handle_conversion(payload: dict) -> dict:
+    return apply_offline_conversion(
+        msclkid=payload["msclkid"],
+        conversion_name=payload.get("conversion_name", "Purchase"),
+        conversion_time=payload.get("conversion_time"),
+        value=payload["value"],
+        currency=payload.get("currency", "USD"),
+        email=payload.get("email"),
+    )

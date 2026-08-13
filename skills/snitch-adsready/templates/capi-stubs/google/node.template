@@ -1,0 +1,59 @@
+// Google Ads Enhanced Conversions / GA4 Measurement Protocol — Node.js stub.
+// Receives an order/lead webhook, hashes PII (email + phone) with SHA-256, sends to GA4 Measurement Protocol.
+// For Google Ads Enhanced Conversions, swap to /uploadConversionAdjustments with a v2 token.
+//
+// Env vars (NEVER commit; set at deploy):
+//   GA4_MEASUREMENT_ID     e.g. G-XXXXXXX
+//   GA4_API_SECRET         from GA4 Admin → Data Streams → Measurement Protocol API secrets
+//   GOOGLE_ADS_CONVERSION_ID   AW-XXXXXXX (for Enhanced Conversions; via gtag client-side dedup with gclid)
+//
+// Adapt the route export to your framework (Express / Fastify / Hono / Next API).
+
+import crypto from "node:crypto";
+
+const GA4_ENDPOINT = "https://www.google-analytics.com/mp/collect";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+/** Send a server-side GA4 event. */
+export async function sendGa4Event({ clientId, eventName, params, userData }) {
+  const measurementId = process.env.GA4_MEASUREMENT_ID; // {{PLACEHOLDER}}
+  const apiSecret = process.env.GA4_API_SECRET;         // {{PLACEHOLDER}}
+  if (!measurementId || !apiSecret) {
+    throw new Error("GA4_MEASUREMENT_ID and GA4_API_SECRET must be set");
+  }
+  const url = `${GA4_ENDPOINT}?measurement_id=${encodeURIComponent(measurementId)}&api_secret=${encodeURIComponent(apiSecret)}`;
+  const body = {
+    client_id: clientId, // GA4 client_id from the cookie _ga or generated server-side
+    events: [{ name: eventName, params: params || {} }],
+    ...(userData ? { user_data: { sha256_email_address: sha256(userData.email || ""), sha256_phone_number: sha256(userData.phone || "") } } : {})
+  };
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  // GA4 MP returns 204 on success.
+  if (res.status !== 204) {
+    const text = await res.text();
+    throw new Error(`GA4 MP failed ${res.status}: ${text}`);
+  }
+  return { ok: true };
+}
+
+// Express/Hono/Fastify-shaped handler — adapt to your router.
+export async function handleConversion(req, res) {
+  try {
+    const { clientId, email, phone, value, currency, transactionId } = req.body || {};
+    await sendGa4Event({
+      clientId: clientId || "anonymous",
+      eventName: "purchase",
+      params: { value, currency, transaction_id: transactionId },
+      userData: { email, phone }
+    });
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

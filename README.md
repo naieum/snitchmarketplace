@@ -6,8 +6,8 @@
 
 <p align="center">
   <strong>AI writes your code fast. Snitch checks it.</strong><br>
-  Five free Agent Skills that audit AI-written work — security, UX, SEO,
-  repo readiness, and docs.<br>
+  Seven free Agent Skills that audit AI-written work — security, UX, SEO,
+  repo readiness, docs, persuasive copy, and ad readiness.<br>
   Every finding cites the exact file and line. No proof, no finding.
 </p>
 
@@ -53,7 +53,7 @@ cp -r snitchmarketplace/skills/<name> <your tool's skills directory>/
 Common skills directories: `~/.cursor/skills/`, `~/.codex/skills/`. Check your tool's docs.
 Then ask in plain words: *"run a snitch security scan."*
 
-## The five skills
+## The seven skills
 
 | Skill | Version | What it audits |
 |---|---|---|
@@ -62,6 +62,8 @@ Then ask in plain words: *"run a snitch security scan."*
 | [`snitch-marketing`](skills/snitch-marketing) | 1.11.0 | **SEO & marketing.** 134 categories: what search engines see, what AI assistants cite, Core Web Vitals contributors, conversion. Reads your source. [Site](https://snitchplugin.com/marketing) · [Docs](https://snitchplugin.com/docs/marketing) |
 | [`snitch-devready`](skills/snitch-devready) | 0.4.0 | **Repo readiness.** Context files the whole team shares, coding standards wired to gates that actually run. [Site](https://snitchplugin.com/devready) · [Docs](https://snitchplugin.com/docs/devready) |
 | [`snitch-docwriter`](skills/snitch-docwriter) | 0.2.0 | **Technical docs.** Rewrites READMEs, runbooks, and error messages so they cannot be misread, and scores any prose for AI slop. [Site](https://snitchplugin.com/docwriter) · [Docs](https://snitchplugin.com/docs/docwriter) |
+| [`snitch-focusedcopy`](skills/snitch-focusedcopy) | 0.1.0 | **Persuasive copy.** Maps landing pages, pricing pages, and cold emails to the six-stage CLOSER sales arc; reorders before rewriting; verifies every claim against the product. [Site](https://snitchplugin.com/focusedcopy) · [Docs](https://snitchplugin.com/docs/focusedcopy) |
+| [`snitch-adsready`](skills/snitch-adsready) | 0.2.0 | **Paid-media readiness.** Pixels, conversion tracking, Consent Mode v2, ads.txt, Core Web Vitals across 10 ad platforms; idempotent fixes as diffs. [Site](https://snitchplugin.com/adsready) · [Docs](https://snitchplugin.com/docs/adsready) |
 
 ## Platform hardening skills
 

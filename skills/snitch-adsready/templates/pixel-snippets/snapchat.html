@@ -1,0 +1,16 @@
+<!-- Snap Pixel — https://businesshelp.snapchat.com/s/article/snap-pixel-about -->
+<!-- Replace {{SNAP_PIXEL_ID}}. Use user_email / user_phone_number (hashed) for advanced matching. -->
+<script>
+  (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function()
+  {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};
+  a.queue=[];var s='script';r=t.createElement(s);r.async=!0;
+  r.src=n;var u=t.getElementsByTagName(s)[0];
+  u.parentNode.insertBefore(r,u);})(window,document,
+  'https://sc-static.net/scevent.min.js');
+
+  snaptr('init', '{{SNAP_PIXEL_ID}}', {
+    // 'user_email': '<sha256-of-email>'
+  });
+
+  snaptr('track', 'PAGE_VIEW');
+</script>

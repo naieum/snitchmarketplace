@@ -1,0 +1,79 @@
+// Snap Conversions API v3 — Node.js stub.
+// Hashes PII with SHA-256, posts to https://tr.snapchat.com/v3/<pixel_id>/events.
+// Pair with the client-side snaptr pixel's client_dedup_id for deduplication.
+//
+// Env vars (NEVER commit):
+//   SNAPCHAT_ADS_ACCESS_TOKEN
+//   SNAPCHAT_ADS_PIXEL_ID
+
+import crypto from "node:crypto";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+export async function sendSnapConversion(event) {
+  const accessToken = process.env.SNAPCHAT_ADS_ACCESS_TOKEN;     // {{PLACEHOLDER}}
+  const pixelId = process.env.SNAPCHAT_ADS_PIXEL_ID;             // {{PLACEHOLDER}}
+  if (!accessToken || !pixelId) {
+    throw new Error("SNAPCHAT_ADS_ACCESS_TOKEN and SNAPCHAT_ADS_PIXEL_ID must be set");
+  }
+
+  const url = `https://tr.snapchat.com/v3/${pixelId}/events`;
+  const body = {
+    data: [{
+      event_name: event.eventName,                               // e.g. "PURCHASE"
+      event_time: Math.floor((event.eventTime || Date.now()) / 1000),
+      action_source: "WEB",
+      event_source_url: event.url,
+      event_id: event.eventId,                                    // dedup with snaptr client_dedup_id
+      user_data: {
+        em: event.email ? [sha256(event.email)] : undefined,
+        ph: event.phone ? [sha256(event.phone)] : undefined,
+        external_id: event.externalId ? [sha256(event.externalId)] : undefined,
+        client_ip_address: event.ip,
+        client_user_agent: event.userAgent,
+        sc_click_id: event.scid                                   // _scid cookie / scid query param
+      },
+      custom_data: {
+        currency: event.currency,
+        value: event.value,
+        order_id: event.orderId,
+        content_ids: event.contentIds,
+        num_items: event.numItems
+      }
+    }]
+  };
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(`Snap CAPI failed: ${JSON.stringify(data)}`);
+  return data;
+}
+
+export async function handleConversion(req, res) {
+  try {
+    const r = await sendSnapConversion({
+      eventName: req.body.event || "PURCHASE",
+      eventId: req.body.event_id,
+      email: req.body.email,
+      phone: req.body.phone,
+      externalId: req.body.external_id,
+      ip: req.headers["x-forwarded-for"]?.split(",")[0] || req.socket?.remoteAddress,
+      userAgent: req.headers["user-agent"],
+      scid: req.body.scid,
+      url: req.body.url,
+      currency: req.body.currency,
+      value: req.body.value,
+      orderId: req.body.order_id,
+      contentIds: req.body.content_ids,
+      numItems: req.body.num_items
+    });
+    return res.status(200).json({ ok: true, result: r });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

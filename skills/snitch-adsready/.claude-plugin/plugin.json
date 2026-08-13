@@ -1,0 +1,22 @@
+{
+  "name": "snitch-adsready",
+  "description": "Paid-media readiness audit across 10 ad platforms — pixel coverage, conversion tracking, Consent Mode v2, ads.txt, Core Web Vitals — with idempotent fixes proposed as diffs, plus free business-listing catalogs by goal.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "ads",
+    "paid-media",
+    "pixel",
+    "conversion-tracking",
+    "consent-mode",
+    "ads-txt",
+    "core-web-vitals",
+    "business-listings",
+    "snitch"
+  ]
+}

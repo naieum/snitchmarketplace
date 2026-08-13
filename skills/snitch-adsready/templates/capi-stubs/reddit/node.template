@@ -1,0 +1,80 @@
+// Reddit Conversions API — Node.js stub.
+// Hashes PII with SHA-256, posts to /api/v2.0/conversions/events/<account_id>.
+// Pair with the client-side rdt pixel's event_id for deduplication.
+//
+// Env vars (NEVER commit):
+//   REDDIT_ADS_ACCESS_TOKEN
+//   REDDIT_ADS_ACCOUNT_ID
+//   REDDIT_ADS_PIXEL_ID
+
+import crypto from "node:crypto";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+export async function sendRedditConversion(event) {
+  const accessToken = process.env.REDDIT_ADS_ACCESS_TOKEN;     // {{PLACEHOLDER}}
+  const accountId = process.env.REDDIT_ADS_ACCOUNT_ID;          // {{PLACEHOLDER}}
+  const pixelId = process.env.REDDIT_ADS_PIXEL_ID;              // {{PLACEHOLDER}}
+  if (!accessToken || !accountId || !pixelId) {
+    throw new Error("REDDIT_ADS_ACCESS_TOKEN, ACCOUNT_ID, PIXEL_ID must be set");
+  }
+
+  const url = `https://ads-api.reddit.com/api/v2.0/conversions/events/${accountId}`;
+  const body = {
+    test_mode: process.env.REDDIT_TEST_MODE === "true",
+    events: [{
+      event_at: new Date(event.eventTime || Date.now()).toISOString(),
+      event_type: { tracking_type: event.eventType },             // e.g. "Purchase"
+      click_id: event.rdtCid,
+      event_metadata: {
+        currency: event.currency,
+        item_count: event.quantity,
+        value_decimal: event.value,
+        conversion_id: event.eventId,                              // dedup
+        products: event.products
+      },
+      user: {
+        email: event.email ? sha256(event.email) : undefined,
+        external_id: event.externalId ? sha256(event.externalId) : undefined,
+        ip_address: event.ip,
+        user_agent: event.userAgent,
+        screen_dimensions: event.screen,
+        aaid: event.aaid,
+        idfa: event.idfa
+      },
+      pixel_id: pixelId
+    }]
+  };
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${accessToken}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(`Reddit CAPI failed: ${JSON.stringify(data)}`);
+  return data;
+}
+
+export async function handleConversion(req, res) {
+  try {
+    const r = await sendRedditConversion({
+      eventType: req.body.event_type || "Purchase",
+      eventId: req.body.event_id,
+      eventTime: req.body.conversion_time,
+      email: req.body.email,
+      externalId: req.body.external_id,
+      rdtCid: req.body.rdt_cid,
+      ip: req.headers["x-forwarded-for"]?.split(",")[0] || req.socket?.remoteAddress,
+      userAgent: req.headers["user-agent"],
+      currency: req.body.currency,
+      value: req.body.value,
+      quantity: req.body.quantity,
+      products: req.body.products
+    });
+    return res.status(200).json({ ok: true, result: r });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

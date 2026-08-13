@@ -1,0 +1,103 @@
+# Meta Conversions API — Python stub.
+# Hashes PII with SHA-256, computes appsecret_proof (HMAC-SHA256), POSTs to Graph API events endpoint.
+# Pair with the client-side fbq pixel's eventID to deduplicate.
+#
+# Env vars (NEVER commit):
+#   META_PIXEL_ID
+#   META_ACCESS_TOKEN
+#   META_APP_SECRET
+#   META_TEST_EVENT_CODE   optional
+
+import hashlib
+import hmac
+import os
+import time
+from typing import Any
+
+import requests
+
+META_GRAPH_VERSION = "v21.0"
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def appsecret_proof(token: str, secret: str) -> str:
+    return hmac.new(secret.encode("utf-8"), token.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def send_meta_capi_event(
+    *,
+    event_name: str,
+    event_id: str | None,
+    url: str | None,
+    email: str | None = None,
+    phone: str | None = None,
+    ip: str | None = None,
+    user_agent: str | None = None,
+    fbc: str | None = None,
+    fbp: str | None = None,
+    custom_data: dict | None = None,
+) -> dict[str, Any]:
+    pixel_id = os.environ.get("META_PIXEL_ID")            # {{PLACEHOLDER}}
+    access_token = os.environ.get("META_ACCESS_TOKEN")    # {{PLACEHOLDER}}
+    app_secret = os.environ.get("META_APP_SECRET")
+    test_code = os.environ.get("META_TEST_EVENT_CODE")
+    if not (pixel_id and access_token):
+        raise RuntimeError("META_PIXEL_ID and META_ACCESS_TOKEN must be set")
+
+    params: dict[str, str] = {"access_token": access_token}
+    if app_secret:
+        params["appsecret_proof"] = appsecret_proof(access_token, app_secret)
+
+    user_data = {}
+    if email: user_data["em"] = [sha256(email)]
+    if phone: user_data["ph"] = [sha256(phone)]
+    if ip: user_data["client_ip_address"] = ip
+    if user_agent: user_data["client_user_agent"] = user_agent
+    if fbc: user_data["fbc"] = fbc
+    if fbp: user_data["fbp"] = fbp
+
+    data = [{
+        "event_name": event_name,
+        "event_time": int(time.time()),
+        "event_id": event_id,
+        "event_source_url": url,
+        "action_source": "website",
+        "user_data": user_data,
+        "custom_data": custom_data or {},
+    }]
+    body = {"data": data}
+    if test_code:
+        body["test_event_code"] = test_code
+
+    resp = requests.post(
+        f"https://graph.facebook.com/{META_GRAPH_VERSION}/{pixel_id}/events",
+        params=params,
+        json=body,
+        timeout=5,
+    )
+    payload = resp.json()
+    if not resp.ok or "error" in payload:
+        raise RuntimeError(f"Meta CAPI failed: {payload}")
+    return payload
+
+
+def handle_conversion(payload: dict) -> dict:
+    return send_meta_capi_event(
+        event_name=payload.get("event") or "Purchase",
+        event_id=payload.get("event_id"),
+        url=payload.get("url"),
+        email=payload.get("email"),
+        phone=payload.get("phone"),
+        ip=payload.get("ip"),
+        user_agent=payload.get("user_agent"),
+        fbc=payload.get("fbc"),
+        fbp=payload.get("fbp"),
+        custom_data={
+            "value": payload.get("value"),
+            "currency": payload.get("currency"),
+            "content_ids": payload.get("content_ids"),
+        },
+    )

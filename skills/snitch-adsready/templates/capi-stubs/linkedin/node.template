@@ -1,0 +1,81 @@
+// LinkedIn Conversions API — Node.js stub.
+// Sends server-side conversions tied to the LinkedIn Insight Tag (Member ID via _liadid cookie or LinkedIn first-party identifier).
+// Hashes email + phone with SHA-256.
+//
+// Env vars (NEVER commit):
+//   LINKEDIN_ADS_ACCESS_TOKEN
+//   LINKEDIN_ADS_ACCOUNT_ID
+//   LINKEDIN_CONVERSION_RULE_ID   the conversion rule URN (urn:lla:llaPartnerConversion:<id>)
+//
+// Reference: https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads-reporting/conversions-api
+
+import crypto from "node:crypto";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+export async function sendLinkedInConversion(event) {
+  const accessToken = process.env.LINKEDIN_ADS_ACCESS_TOKEN;       // {{PLACEHOLDER}}
+  const conversionUrn = process.env.LINKEDIN_CONVERSION_RULE_ID;   // {{PLACEHOLDER}}
+  if (!accessToken || !conversionUrn) {
+    throw new Error("LINKEDIN_ADS_ACCESS_TOKEN and LINKEDIN_CONVERSION_RULE_ID must be set");
+  }
+
+  const url = "https://api.linkedin.com/rest/conversionEvents";
+  const body = {
+    conversion: conversionUrn,
+    conversionHappenedAt: event.conversionHappenedAt || Date.now(),
+    conversionValue: { currencyCode: event.currency || "USD", amount: String(event.value ?? "0") },
+    eventId: event.eventId, // for deduplication with the Insight Tag
+    user: {
+      userIds: [
+        event.email ? { idType: "SHA256_EMAIL", idValue: sha256(event.email) } : null,
+        event.firstPartyId ? { idType: "LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID", idValue: event.firstPartyId } : null,
+        event.phone ? { idType: "SHA256_PHONE", idValue: sha256(event.phone) } : null
+      ].filter(Boolean),
+      userInfo: event.firstName || event.lastName ? {
+        firstName: event.firstName,
+        lastName: event.lastName,
+        title: event.title,
+        companyName: event.companyName
+      } : undefined
+    }
+  };
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "LinkedIn-Version": "202410",
+      "X-Restli-Protocol-Version": "2.0.0",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) {
+    const text = await r.text();
+    throw new Error(`LinkedIn CAPI failed ${r.status}: ${text}`);
+  }
+  return { ok: true };
+}
+
+export async function handleConversion(req, res) {
+  try {
+    await sendLinkedInConversion({
+      eventId: req.body.event_id,
+      conversionHappenedAt: req.body.conversion_time,
+      value: req.body.value,
+      currency: req.body.currency,
+      email: req.body.email,
+      phone: req.body.phone,
+      firstPartyId: req.body.li_fat_id,
+      firstName: req.body.first_name,
+      lastName: req.body.last_name,
+      title: req.body.title,
+      companyName: req.body.company
+    });
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

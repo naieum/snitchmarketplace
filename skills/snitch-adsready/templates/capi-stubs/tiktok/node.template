@@ -1,0 +1,88 @@
+// TikTok Events API S2S — Node.js stub.
+// Hashes PII with SHA-256, posts to /open_api/v1.3/event/track/.
+// Pair with the client-side ttq pixel's event_id to deduplicate.
+//
+// Env vars (NEVER commit):
+//   TIKTOK_PIXEL_CODE
+//   TIKTOK_ACCESS_TOKEN
+//   TIKTOK_TEST_EVENT_CODE   optional — set to TEST123 for the Test Events tab
+
+import crypto from "node:crypto";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+export async function sendTikTokEvent(event) {
+  const pixelCode = process.env.TIKTOK_PIXEL_CODE;        // {{PLACEHOLDER}}
+  const accessToken = process.env.TIKTOK_ACCESS_TOKEN;    // {{PLACEHOLDER}}
+  const testCode = process.env.TIKTOK_TEST_EVENT_CODE;
+  if (!pixelCode || !accessToken) {
+    throw new Error("TIKTOK_PIXEL_CODE and TIKTOK_ACCESS_TOKEN must be set");
+  }
+
+  const url = "https://business-api.tiktok.com/open_api/v1.3/event/track/";
+  const body = {
+    event_source: "web",
+    event_source_id: pixelCode,
+    data: [{
+      event: event.event,                                   // e.g. "CompletePayment"
+      event_time: Math.floor((event.eventTime || Date.now()) / 1000),
+      event_id: event.eventId,                              // dedup with client-side ttq.track(..., {event_id})
+      user: {
+        email: event.email ? sha256(event.email) : undefined,
+        phone: event.phone ? sha256(event.phone) : undefined,
+        external_id: event.externalId ? sha256(event.externalId) : undefined,
+        ttclid: event.ttclid,                               // _ttp / ttclid query param
+        ttp: event.ttp,
+        ip: event.ip,
+        user_agent: event.userAgent
+      },
+      properties: {
+        currency: event.currency,
+        value: event.value,
+        contents: event.contents,
+        content_type: event.contentType,
+        order_id: event.orderId
+      },
+      page: { url: event.url, referrer: event.referrer }
+    }],
+    ...(testCode ? { test_event_code: testCode } : {})
+  };
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Access-Token": accessToken, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await r.json();
+  if (!r.ok || (data.code && data.code !== 0)) {
+    throw new Error(`TikTok Events API failed: ${JSON.stringify(data)}`);
+  }
+  return data;
+}
+
+export async function handleConversion(req, res) {
+  try {
+    const r = await sendTikTokEvent({
+      event: req.body.event || "CompletePayment",
+      eventId: req.body.event_id,
+      email: req.body.email,
+      phone: req.body.phone,
+      externalId: req.body.external_id,
+      ttclid: req.body.ttclid,
+      ttp: req.body.ttp,
+      ip: req.headers["x-forwarded-for"]?.split(",")[0] || req.socket?.remoteAddress,
+      userAgent: req.headers["user-agent"],
+      url: req.body.url,
+      referrer: req.body.referrer,
+      currency: req.body.currency,
+      value: req.body.value,
+      contents: req.body.contents,
+      contentType: req.body.content_type,
+      orderId: req.body.order_id
+    });
+    return res.status(200).json({ ok: true, result: r });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

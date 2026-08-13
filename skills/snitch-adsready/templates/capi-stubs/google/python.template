@@ -1,0 +1,58 @@
+# Google Ads Enhanced Conversions / GA4 Measurement Protocol — Python stub.
+# Hashes PII with SHA-256, sends server-side event to GA4 Measurement Protocol.
+# For Google Ads Enhanced Conversions, swap to googleads /uploadConversionAdjustments via google-ads PyPI client.
+#
+# Env vars (NEVER commit):
+#   GA4_MEASUREMENT_ID
+#   GA4_API_SECRET
+#
+# Adapt to Flask / FastAPI / Django.
+
+import os
+import hashlib
+import requests
+
+GA4_ENDPOINT = "https://www.google-analytics.com/mp/collect"
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def send_ga4_event(client_id: str, event_name: str, params: dict, email: str | None = None, phone: str | None = None) -> dict:
+    measurement_id = os.environ.get("GA4_MEASUREMENT_ID")  # {{PLACEHOLDER}}
+    api_secret = os.environ.get("GA4_API_SECRET")          # {{PLACEHOLDER}}
+    if not (measurement_id and api_secret):
+        raise RuntimeError("GA4_MEASUREMENT_ID and GA4_API_SECRET must be set")
+
+    body = {"client_id": client_id, "events": [{"name": event_name, "params": params or {}}]}
+    if email or phone:
+        body["user_data"] = {
+            "sha256_email_address": sha256(email or ""),
+            "sha256_phone_number": sha256(phone or ""),
+        }
+
+    resp = requests.post(
+        f"{GA4_ENDPOINT}?measurement_id={measurement_id}&api_secret={api_secret}",
+        json=body,
+        timeout=5,
+    )
+    if resp.status_code != 204:
+        raise RuntimeError(f"GA4 MP failed {resp.status_code}: {resp.text}")
+    return {"ok": True}
+
+
+# Flask/FastAPI-shaped handler — adapt the framework decorator.
+def handle_conversion(payload: dict) -> dict:
+    client_id = payload.get("client_id") or "anonymous"
+    return send_ga4_event(
+        client_id=client_id,
+        event_name="purchase",
+        params={
+            "value": payload.get("value"),
+            "currency": payload.get("currency"),
+            "transaction_id": payload.get("transaction_id"),
+        },
+        email=payload.get("email"),
+        phone=payload.get("phone"),
+    )

@@ -1,106 +1,122 @@
 {
-  "$schema": "https://code.claude.com/schemas/marketplace.json",
-  "name": "snitch",
-  "owner": {
-    "name": "Snitch",
-    "url": "https://snitchplugin.com"
+ "$schema": "https://code.claude.com/schemas/marketplace.json",
+ "name": "snitch",
+ "owner": {
+  "name": "Snitch",
+  "url": "https://snitchplugin.com"
+ },
+ "plugins": [
+  {
+   "name": "snitch",
+   "source": "./skills/snitch",
+   "description": "Security audit for AI-written code — evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).",
+   "version": "9.2.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
   },
-  "plugins": [
-    {
-      "name": "snitch",
-      "source": "./skills/snitch",
-      "description": "Security audit for AI-written code \u2014 evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).",
-      "version": "9.2.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-marketing",
-      "source": "./skills/snitch-marketing",
-      "description": "SEO + marketing audit with evidence-based findings \u2014 technical SEO, GEO/AI-search, schema, Core Web Vitals.",
-      "version": "1.11.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-ux",
-      "source": "./skills/snitch-ux",
-      "description": "Behavioral-design / UX-psychology skill \u2014 clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.",
-      "version": "0.5.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-devready",
-      "source": "./skills/snitch-devready",
-      "description": "Bootstrap a repo for AI-assisted development \u2014 CLAUDE.md, commands, feedback loop, permissions, and a two-tier coding standard (enforced vs advisory) wired to real gates.",
-      "version": "0.4.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-docwriter",
-      "source": "./skills/snitch-docwriter",
-      "description": "Controlled technical writing (ASD-STE100-derived) plus a deterministic anti-slop linter \u2014 rewrite docs, READMEs, error messages, and runbooks so they cannot be misread.",
-      "version": "0.1.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-cloudflare",
-      "source": "./skills/snitch-cloudflare",
-      "description": "Cloudflare security + readiness \u2014 zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",
-      "version": "1.0.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-aws",
-      "source": "./skills/snitch-aws",
-      "description": "AWS security + readiness \u2014 IAM/S3/EC2/VPC/RDS/Lambda/CloudFront/CloudTrail/GuardDuty posture and hardening.",
-      "version": "1.0.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-azure",
-      "source": "./skills/snitch-azure",
-      "description": "Azure security + readiness \u2014 subscription/Entra/RBAC/Defender/Sentinel/storage/keyvault posture and hardening.",
-      "version": "1.0.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-digitalocean",
-      "source": "./skills/snitch-digitalocean",
-      "description": "DigitalOcean security + readiness \u2014 Droplet/Database/Spaces/App-Platform/DOKS/Firewall posture and hardening.",
-      "version": "1.0.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-flyio",
-      "source": "./skills/snitch-flyio",
-      "description": "Fly.io security + readiness \u2014 org/apps/machines/volumes/postgres/secrets/network/token posture and hardening.",
-      "version": "1.0.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-railway",
-      "source": "./skills/snitch-railway",
-      "description": "Railway security + readiness \u2014 workspace/project/services/env/volumes/databases/tokens/domains posture and hardening.",
-      "version": "1.0.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    },
-    {
-      "name": "snitch-vercel",
-      "source": "./skills/snitch-vercel",
-      "description": "Vercel security + readiness \u2014 account/team/project/env/domains/deployments/protection/functions posture and hardening.",
-      "version": "1.0.0",
-      "license": "MIT with Commons Clause",
-      "homepage": "https://snitchplugin.com"
-    }
-  ]
+  {
+   "name": "snitch-marketing",
+   "source": "./skills/snitch-marketing",
+   "description": "SEO + marketing audit with evidence-based findings — technical SEO, GEO/AI-search, schema, Core Web Vitals.",
+   "version": "1.11.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-ux",
+   "source": "./skills/snitch-ux",
+   "description": "Behavioral-design / UX-psychology skill — clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.",
+   "version": "0.5.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-devready",
+   "source": "./skills/snitch-devready",
+   "description": "Bootstrap a repo for AI-assisted development — CLAUDE.md, commands, feedback loop, permissions, and a two-tier coding standard (enforced vs advisory) wired to real gates.",
+   "version": "0.4.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-docwriter",
+   "source": "./skills/snitch-docwriter",
+   "description": "Controlled technical writing (ASD-STE100-derived) plus a deterministic anti-slop linter — rewrite docs, READMEs, error messages, and runbooks so they cannot be misread.",
+   "version": "0.1.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-focusedcopy",
+   "source": "./skills/snitch-focusedcopy",
+   "description": "Persuasive copy structure via the six-stage CLOSER framework — reorders landing pages, pricing pages, and cold emails before rewriting; anti-fabrication gate verifies every claim.",
+   "version": "0.1.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-adsready",
+   "source": "./skills/snitch-adsready",
+   "description": "Paid-media readiness audit across 10 ad platforms — pixels, conversion tracking, Consent Mode v2, ads.txt, Core Web Vitals — with idempotent fixes proposed as diffs.",
+   "version": "0.2.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-cloudflare",
+   "source": "./skills/snitch-cloudflare",
+   "description": "Cloudflare security + readiness — zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",
+   "version": "1.0.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-aws",
+   "source": "./skills/snitch-aws",
+   "description": "AWS security + readiness — IAM/S3/EC2/VPC/RDS/Lambda/CloudFront/CloudTrail/GuardDuty posture and hardening.",
+   "version": "1.0.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-azure",
+   "source": "./skills/snitch-azure",
+   "description": "Azure security + readiness — subscription/Entra/RBAC/Defender/Sentinel/storage/keyvault posture and hardening.",
+   "version": "1.0.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-digitalocean",
+   "source": "./skills/snitch-digitalocean",
+   "description": "DigitalOcean security + readiness — Droplet/Database/Spaces/App-Platform/DOKS/Firewall posture and hardening.",
+   "version": "1.0.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-flyio",
+   "source": "./skills/snitch-flyio",
+   "description": "Fly.io security + readiness — org/apps/machines/volumes/postgres/secrets/network/token posture and hardening.",
+   "version": "1.0.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-railway",
+   "source": "./skills/snitch-railway",
+   "description": "Railway security + readiness — workspace/project/services/env/volumes/databases/tokens/domains posture and hardening.",
+   "version": "1.0.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-vercel",
+   "source": "./skills/snitch-vercel",
+   "description": "Vercel security + readiness — account/team/project/env/domains/deployments/protection/functions posture and hardening.",
+   "version": "1.0.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  }
+ ]
 }

@@ -1,0 +1,95 @@
+# Pinterest Conversions API — Python stub.
+# Hashes PII with SHA-256, posts to /v5/ad_accounts/<adv>/events.
+#
+# Env vars (NEVER commit):
+#   PINTEREST_ADS_ACCESS_TOKEN
+#   PINTEREST_ADS_ADVERTISER_ID
+
+import hashlib
+import os
+import time
+from typing import Any
+
+import requests
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def send_pinterest_conversion(
+    *,
+    event_name: str,
+    event_id: str | None,
+    email: str | None = None,
+    phone: str | None = None,
+    external_id: str | None = None,
+    ip: str | None = None,
+    user_agent: str | None = None,
+    epik: str | None = None,
+    url: str | None = None,
+    currency: str | None = None,
+    value: float | None = None,
+    order_id: str | None = None,
+    content_ids: list | None = None,
+    contents: list | None = None,
+    num_items: int | None = None,
+) -> dict[str, Any]:
+    access_token = os.environ["PINTEREST_ADS_ACCESS_TOKEN"]    # {{PLACEHOLDER}}
+    advertiser_id = os.environ["PINTEREST_ADS_ADVERTISER_ID"]  # {{PLACEHOLDER}}
+
+    user_data = {
+        "em": [sha256(email)] if email else None,
+        "ph": [sha256(phone)] if phone else None,
+        "external_id": [sha256(external_id)] if external_id else None,
+        "client_ip_address": ip,
+        "client_user_agent": user_agent,
+        "click_id": epik,
+    }
+    body = {
+        "data": [{
+            "event_name": event_name,
+            "action_source": "web",
+            "event_time": int(time.time()),
+            "event_id": event_id,
+            "event_source_url": url,
+            "user_data": {k: v for k, v in user_data.items() if v is not None},
+            "custom_data": {
+                "currency": currency,
+                "value": str(value) if value is not None else None,
+                "order_id": order_id,
+                "content_ids": content_ids,
+                "contents": contents,
+                "num_items": num_items,
+            },
+        }]
+    }
+
+    r = requests.post(
+        f"https://api.pinterest.com/v5/ad_accounts/{advertiser_id}/events",
+        headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+        json=body,
+        timeout=5,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def handle_conversion(payload: dict) -> dict:
+    return send_pinterest_conversion(
+        event_name=payload.get("event", "checkout"),
+        event_id=payload.get("event_id"),
+        email=payload.get("email"),
+        phone=payload.get("phone"),
+        external_id=payload.get("external_id"),
+        ip=payload.get("ip"),
+        user_agent=payload.get("user_agent"),
+        epik=payload.get("epik"),
+        url=payload.get("url"),
+        currency=payload.get("currency"),
+        value=payload.get("value"),
+        order_id=payload.get("order_id"),
+        content_ids=payload.get("content_ids"),
+        contents=payload.get("contents"),
+        num_items=payload.get("num_items"),
+    )

@@ -1,0 +1,102 @@
+// X (Twitter) Ads CAPI — Node.js stub.
+// Sends server-side conversions to the X Ads measurement endpoint.
+// Auth: OAuth 1.0a (consumer + access tokens).
+//
+// Env vars (NEVER commit):
+//   X_ADS_CONSUMER_KEY
+//   X_ADS_CONSUMER_SECRET
+//   X_ADS_ACCESS_TOKEN
+//   X_ADS_ACCESS_TOKEN_SECRET
+//   X_ADS_ACCOUNT_ID
+//   X_ADS_PIXEL_ID
+
+import crypto from "node:crypto";
+
+const API_BASE = "https://ads-api.twitter.com/12";
+
+const sha256 = (s) =>
+  crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
+
+/** Minimal OAuth 1.0a header generator. For production prefer a tested library (oauth-1.0a + crypto). */
+function oauth1Header(method, url, params) {
+  const ck = process.env.X_ADS_CONSUMER_KEY;
+  const cs = process.env.X_ADS_CONSUMER_SECRET;
+  const tk = process.env.X_ADS_ACCESS_TOKEN;
+  const ts = process.env.X_ADS_ACCESS_TOKEN_SECRET;
+  if (!ck || !cs || !tk || !ts) throw new Error("X_ADS OAuth env vars must be set");
+
+  const oauth = {
+    oauth_consumer_key: ck,
+    oauth_nonce: crypto.randomBytes(16).toString("hex"),
+    oauth_signature_method: "HMAC-SHA1",
+    oauth_timestamp: String(Math.floor(Date.now() / 1000)),
+    oauth_token: tk,
+    oauth_version: "1.0"
+  };
+  const allParams = { ...oauth, ...(params || {}) };
+  const paramString = Object.keys(allParams).sort()
+    .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(allParams[k])}`).join("&");
+  const baseString = [method.toUpperCase(), encodeURIComponent(url), encodeURIComponent(paramString)].join("&");
+  const signingKey = `${encodeURIComponent(cs)}&${encodeURIComponent(ts)}`;
+  oauth.oauth_signature = crypto.createHmac("sha1", signingKey).update(baseString).digest("base64");
+  const header = "OAuth " + Object.keys(oauth).sort()
+    .map(k => `${encodeURIComponent(k)}="${encodeURIComponent(oauth[k])}"`).join(", ");
+  return header;
+}
+
+export async function sendXConversion(event) {
+  const accountId = process.env.X_ADS_ACCOUNT_ID;     // {{PLACEHOLDER}}
+  const pixelId = process.env.X_ADS_PIXEL_ID;         // {{PLACEHOLDER}}
+  if (!accountId || !pixelId) throw new Error("X_ADS_ACCOUNT_ID and X_ADS_PIXEL_ID must be set");
+
+  const url = `${API_BASE}/measurement/conversions/${pixelId}`;
+  const body = {
+    conversions: [{
+      conversion_time: new Date(event.conversionTime || Date.now()).toISOString(),
+      event_id: event.eventId,
+      identifiers: [
+        event.email ? { hashed_email: sha256(event.email) } : null,
+        event.phone ? { hashed_phone_number: sha256(event.phone) } : null,
+        event.twclid ? { twclid: event.twclid } : null
+      ].filter(Boolean),
+      number_items: event.quantity,
+      price_micro: event.value ? Math.round(event.value * 1_000_000) : undefined,
+      currency: event.currency,
+      conversion_id: event.eventId,
+      description: event.description
+    }]
+  };
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Authorization": oauth1Header("POST", url, {}),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) {
+    const text = await r.text();
+    throw new Error(`X Ads CAPI failed ${r.status}: ${text}`);
+  }
+  return await r.json();
+}
+
+export async function handleConversion(req, res) {
+  try {
+    const r = await sendXConversion({
+      eventId: req.body.event_id,
+      conversionTime: req.body.conversion_time,
+      email: req.body.email,
+      phone: req.body.phone,
+      twclid: req.body.twclid,
+      value: req.body.value,
+      currency: req.body.currency,
+      quantity: req.body.quantity,
+      description: req.body.description
+    });
+    return res.status(200).json({ ok: true, result: r });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+}

@@ -1,0 +1,92 @@
+# Snap Conversions API v3 — Python stub.
+# Hashes PII with SHA-256, posts to https://tr.snapchat.com/v3/<pixel_id>/events.
+#
+# Env vars (NEVER commit):
+#   SNAPCHAT_ADS_ACCESS_TOKEN
+#   SNAPCHAT_ADS_PIXEL_ID
+
+import hashlib
+import os
+import time
+from typing import Any
+
+import requests
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def send_snap_conversion(
+    *,
+    event_name: str,
+    event_id: str | None,
+    email: str | None = None,
+    phone: str | None = None,
+    external_id: str | None = None,
+    ip: str | None = None,
+    user_agent: str | None = None,
+    scid: str | None = None,
+    url: str | None = None,
+    currency: str | None = None,
+    value: float | None = None,
+    order_id: str | None = None,
+    content_ids: list | None = None,
+    num_items: int | None = None,
+) -> dict[str, Any]:
+    access_token = os.environ["SNAPCHAT_ADS_ACCESS_TOKEN"]   # {{PLACEHOLDER}}
+    pixel_id = os.environ["SNAPCHAT_ADS_PIXEL_ID"]           # {{PLACEHOLDER}}
+
+    user_data = {
+        "em": [sha256(email)] if email else None,
+        "ph": [sha256(phone)] if phone else None,
+        "external_id": [sha256(external_id)] if external_id else None,
+        "client_ip_address": ip,
+        "client_user_agent": user_agent,
+        "sc_click_id": scid,
+    }
+    body = {
+        "data": [{
+            "event_name": event_name,
+            "event_time": int(time.time()),
+            "action_source": "WEB",
+            "event_source_url": url,
+            "event_id": event_id,
+            "user_data": {k: v for k, v in user_data.items() if v is not None},
+            "custom_data": {
+                "currency": currency,
+                "value": value,
+                "order_id": order_id,
+                "content_ids": content_ids,
+                "num_items": num_items,
+            },
+        }]
+    }
+
+    r = requests.post(
+        f"https://tr.snapchat.com/v3/{pixel_id}/events",
+        headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+        json=body,
+        timeout=5,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def handle_conversion(payload: dict) -> dict:
+    return send_snap_conversion(
+        event_name=payload.get("event", "PURCHASE"),
+        event_id=payload.get("event_id"),
+        email=payload.get("email"),
+        phone=payload.get("phone"),
+        external_id=payload.get("external_id"),
+        ip=payload.get("ip"),
+        user_agent=payload.get("user_agent"),
+        scid=payload.get("scid"),
+        url=payload.get("url"),
+        currency=payload.get("currency"),
+        value=payload.get("value"),
+        order_id=payload.get("order_id"),
+        content_ids=payload.get("content_ids"),
+        num_items=payload.get("num_items"),
+    )

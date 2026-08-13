@@ -1,0 +1,96 @@
+# Reddit Conversions API — Python stub.
+# Hashes PII with SHA-256, posts to /api/v2.0/conversions/events/<account_id>.
+#
+# Env vars (NEVER commit):
+#   REDDIT_ADS_ACCESS_TOKEN
+#   REDDIT_ADS_ACCOUNT_ID
+#   REDDIT_ADS_PIXEL_ID
+
+import hashlib
+import os
+from datetime import datetime, timezone
+from typing import Any
+
+import requests
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def send_reddit_conversion(
+    *,
+    event_type: str,
+    event_id: str | None,
+    event_time=None,
+    email: str | None = None,
+    external_id: str | None = None,
+    rdt_cid: str | None = None,
+    ip: str | None = None,
+    user_agent: str | None = None,
+    currency: str | None = None,
+    value: float | None = None,
+    quantity: int | None = None,
+    products: list | None = None,
+) -> dict[str, Any]:
+    access_token = os.environ["REDDIT_ADS_ACCESS_TOKEN"]   # {{PLACEHOLDER}}
+    account_id = os.environ["REDDIT_ADS_ACCOUNT_ID"]       # {{PLACEHOLDER}}
+    pixel_id = os.environ["REDDIT_ADS_PIXEL_ID"]           # {{PLACEHOLDER}}
+
+    if event_time is None:
+        event_time_iso = datetime.now(tz=timezone.utc).isoformat()
+    elif isinstance(event_time, (int, float)):
+        event_time_iso = datetime.fromtimestamp(event_time, tz=timezone.utc).isoformat()
+    else:
+        event_time_iso = event_time
+
+    user = {
+        "email": sha256(email) if email else None,
+        "external_id": sha256(external_id) if external_id else None,
+        "ip_address": ip,
+        "user_agent": user_agent,
+    }
+
+    body = {
+        "test_mode": os.environ.get("REDDIT_TEST_MODE") == "true",
+        "events": [{
+            "event_at": event_time_iso,
+            "event_type": {"tracking_type": event_type},
+            "click_id": rdt_cid,
+            "event_metadata": {
+                "currency": currency,
+                "item_count": quantity,
+                "value_decimal": value,
+                "conversion_id": event_id,
+                "products": products,
+            },
+            "user": {k: v for k, v in user.items() if v is not None},
+            "pixel_id": pixel_id,
+        }],
+    }
+
+    r = requests.post(
+        f"https://ads-api.reddit.com/api/v2.0/conversions/events/{account_id}",
+        headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+        json=body,
+        timeout=5,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def handle_conversion(payload: dict) -> dict:
+    return send_reddit_conversion(
+        event_type=payload.get("event_type", "Purchase"),
+        event_id=payload.get("event_id"),
+        event_time=payload.get("conversion_time"),
+        email=payload.get("email"),
+        external_id=payload.get("external_id"),
+        rdt_cid=payload.get("rdt_cid"),
+        ip=payload.get("ip"),
+        user_agent=payload.get("user_agent"),
+        currency=payload.get("currency"),
+        value=payload.get("value"),
+        quantity=payload.get("quantity"),
+        products=payload.get("products"),
+    )

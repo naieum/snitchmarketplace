@@ -1,0 +1,25 @@
+<!-- Google tag (gtag.js) — https://developers.google.com/tag-platform/gtagjs/install -->
+<!-- Replace {{GA4_MEASUREMENT_ID}} (GA4 = G-XXXXXXXXXX) and optionally {{GOOGLE_ADS_ID}} (AW-XXXXXXXXXX). -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{GA4_MEASUREMENT_ID}}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // Consent Mode v2 — set defaults BEFORE config so the first hit honors consent.
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+
+  gtag('js', new Date());
+  gtag('config', '{{GA4_MEASUREMENT_ID}}', {
+    send_page_view: true,
+    anonymize_ip: true
+  });
+
+  // Optional: Google Ads conversion linker.
+  // gtag('config', '{{GOOGLE_ADS_ID}}');
+</script>
