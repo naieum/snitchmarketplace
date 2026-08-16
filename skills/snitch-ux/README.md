@@ -1,4 +1,4 @@
-# snitch-ux v0.5.0
+# snitch-ux v0.6.0
 
 Behavioral-design / UX-psychology skill — clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.
 

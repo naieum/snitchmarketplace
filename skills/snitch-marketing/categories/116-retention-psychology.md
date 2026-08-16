@@ -44,6 +44,12 @@ Product onboarding flow + product cancellation flow + product retention surfaces
 - Trial signups that immediately let the user "own" something
 - Save-state mechanisms that increase the cost of leaving
 
+**Post-purchase dissonance (reassuring the decision after payment):**
+- Order / signup confirmation surface: bare receipt vs value restated ("here's what you now have")
+- What-happens-next clarity immediately after payment (timeline, first step, who to contact)
+- Social proof placed after purchase ("join 4,000 teams who...") to validate the choice just made
+- Welcome email tone: reassures the decision vs transaction summary only
+
 **Peak-end moments:**
 - Celebration animations on first success (confetti, "you did it!" screens)
 - Surprise upgrades or unexpected value moments
@@ -98,6 +104,10 @@ Product onboarding flow + product cancellation flow + product retention surfaces
 - **Cancellation = dead exit.** Customer clicks Cancel → success page → done. No pause, no downgrade, no support outreach.
   Evidence required: cancellation flow walked + recovery options absent.
   Severity: High.
+
+- **Post-purchase surface is a bare receipt.** Confirmation page and welcome email confirm the transaction but do nothing to reassure the decision: no value restated, no what-happens-next, no social proof. Post-purchase dissonance left unresolved becomes refunds and early churn.
+  Evidence required: confirmation surface + welcome email described (or noted absent).
+  Severity: Medium (High when the product has a refund window or trial-to-paid step).
 
 - **No peak-end design on first success.** First successful action is met with a plain confirmation (no celebration, no "what's next"). Misses the cheapest possible memorable moment.
   Evidence required: first-action flow + post-action screen description.

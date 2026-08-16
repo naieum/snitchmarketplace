@@ -74,11 +74,18 @@ Does the channel produce ICP-qualified intent? (signups match the ICP scoring fr
             │
             └── Does CAC payback work at current price + margin?
                 (channel CAC ≤ LTV / payback target — both numbers come from the
-                 customer; the audit cannot observe CAC or LTV. Ask, don't estimate.)
+                 customer; the audit cannot observe CAC or LTV. Ask, don't estimate.
+                 Ask which CAC: blended, all marketing cost over all new customers,
+                 not paid-only CAC, which flatters the channel when organic is
+                 quietly assisting.)
                 ├── No → Do not scale. Raise price (Cat 91 / 112), improve
                 │        conversion (Cat 60), reduce channel cost, or stop.
                 └── Yes → Scale gradually with kill-rule guardrails pre-committed.
                           Stop scaling if CAC payback degrades by >25% over 30 days.
+                          Judge each budget increment on its marginal return (did
+                          the last increase still clear target ROAS?), not the
+                          campaign's average, which hides the point of diminishing
+                          returns.
 ```
 
 ## Tree 3: Should we test paid acquisition yet?

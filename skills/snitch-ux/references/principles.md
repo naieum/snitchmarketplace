@@ -225,6 +225,18 @@ second of hesitation converts.
   element; preempt the #1 objection right by the CTA.
 - **Don't:** stack more persuasion where a reassurance would do.
 
+### Reassure after the yes (post-purchase dissonance)
+**Rule:** Treat the confirmation screen and welcome email as decision-reassurance surfaces,
+not receipts.
+*Why:* the moment someone commits, doubt returns — people re-litigate a purchase right
+after making it, and unresolved doubt becomes refunds, disputes, and day-one churn. The
+persuasion job isn't over at the click.
+- **Do:** restate what they now have ("Your team plan is active — here's what unlocked"),
+  show the concrete next step, and validate the choice ("you're in good company" social
+  proof placed *after* payment).
+- **Don't:** end the flow on a bare transaction summary, or worse, use the confirmation
+  screen to immediately upsell before the decision they just made feels safe.
+
 ---
 
 ## D. Direct attention (visual hierarchy)

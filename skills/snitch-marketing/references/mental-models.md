@@ -86,10 +86,20 @@ Every yes is a no to something else.
 **Application:** Time on a low-ROI channel is time not on a high-ROI one. Compare against the alternative.
 **Relevant categories:** 70
 
+### Contribution Margin
+Revenue minus the variable costs of delivering it. The money each sale actually contributes toward fixed costs and profit.
+**Application:** Sanity-check pricing, discount, and paid-spend recommendations against contribution margin, not revenue. A promo that lifts revenue can be underwater on margin. The audit cannot observe margin. Ask, don't estimate.
+**Relevant categories:** 115, 66
+
 ### Law of Diminishing Returns
 After a point, additional investment yields progressively smaller gains.
 **Application:** The 10th blog post won't have the impact of the first. Diversify before doubling down past the diminishing point.
 **Relevant categories:** 70
+
+### Marginal ROAS
+The return on the *next* dollar of ad spend, not the average across all spend. Average ROAS hides where a scaled campaign is past its peak.
+**Application:** When recommending "scale what works", frame the guardrail as marginal: track whether each budget increment still clears the target, and stop at the increment that doesn't. This is Diminishing Returns applied to paid media.
+**Relevant categories:** 66
 
 ### Second-Order Thinking
 Consider the effects of the effects.
@@ -100,6 +110,11 @@ Consider the effects of the effects.
 Models represent reality but aren't reality. Don't confuse the dashboard with the customer experience.
 **Application:** A persona is a model. Real customers are messier. Stay in touch with actual users.
 **Relevant categories:** 110 (ICP), 74
+
+### Blended vs Paid CAC
+Paid CAC divides ad spend by customers from ads. Blended CAC divides *all* marketing cost (spend, tools, content, people) by *all* new customers. Paid-only CAC flatters the numbers, especially when organic is doing quiet work in the background.
+**Application:** When a brand cites CAC to justify scaling a channel, ask which one it is. Attribution decisions made on paid-only CAC are Map ≠ Territory in metric form.
+**Relevant categories:** 66, 99
 
 ### Probabilistic Thinking
 Think in probabilities, not certainties.
@@ -221,6 +236,11 @@ People treat money differently based on its source or intended use, even though 
 People avoid actions that might cause regret, even if the expected outcome is positive.
 **Application:** Address regret directly. Money-back guarantees, free trials, no-commitment messaging reduce regret fear.
 **Relevant categories:** 111 (trust artifacts), 60
+
+### Post-Purchase Dissonance
+After paying, people re-litigate the decision. The bigger or less reversible the purchase, the stronger the doubt. Unresolved, it becomes refunds, returns, and early churn.
+**Application:** The moments right after payment should reassure the decision, not just confirm the transaction. Restate the value chosen, show what happens next, surface social proof of people who made the same choice. Confirmation pages and welcome emails are retention surfaces, not receipts.
+**Relevant categories:** 116, 71, 60
 
 ### Social Proof / Bandwagon Effect
 People follow what others do. Popularity signals quality and safety.
@@ -494,6 +514,8 @@ Example: "From abandoned-cart users not returning, to abandoned-cart users compl
 | "Everyone" hero / no ICP focus | JTBD, ICP + anti-persona (Cat 110), Curse of Knowledge |
 | No risk reversal near CTA | Regret Aversion, Loss Aversion, Status-Quo Bias |
 | Hesitation to switch | JTBD Four Forces (Push/Pull/Habit/**Anxiety**), Switching Costs |
+| Scaling paid spend | Marginal ROAS, Diminishing Returns, Blended vs Paid CAC, Contribution Margin |
+| Refunds / buyer's remorse / early churn | Post-Purchase Dissonance, Peak-End, Regret Aversion |
 
 **Using this in an audit (not just for recommending).** Read the column right-to-left:
 when a finding names a site problem, the model column is the **diagnostic lens you

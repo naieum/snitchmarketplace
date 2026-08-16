@@ -139,10 +139,10 @@ demanding System 2 that users won't spend.
   more "theirs." → Powerful for retention, and the single place to be most honest: a loop
   built on an internal trigger of anxiety, aimed at time-on-app rather than the user's goal,
   is the definition of a manipulative design.
-- **Open loops nag until closed.** An unfinished task or an unclaimed, almost-complete
-  reward stays active in the mind and creates a small tension to resolve it. → "1 step
-  left," a half-finished profile, or a started-but-incomplete state pulls people back — use
-  it toward *their* goal, not busywork.
+- **Open loops nag until closed (the Zeigarnik effect).** An unfinished task or an
+  unclaimed, almost-complete reward stays active in the mind and creates a small tension to
+  resolve it. → "1 step left," a half-finished profile, or a started-but-incomplete state
+  pulls people back — use it toward *their* goal, not busywork.
 
 ## When behavior actually happens — the convergence model
 
@@ -206,6 +206,12 @@ willpower, which is where it crosses into manipulation.
 - **Peak–end rule.** People judge an experience by its most intense moment and
   its ending, not the average. → Engineer a strong peak and a clean, positive ending
   (confirmation, success state) rather than smoothing everything to bland.
+- **Doubt returns right after the yes (post-purchase dissonance).** The moment someone
+  commits — pays, subscribes, signs up — the mind starts re-litigating the decision, and
+  the bigger or less reversible the commitment, the louder the second-guessing. →
+  Confirmation and welcome screens must *reassure the decision*, not just log the
+  transaction: restate what they now have, show the concrete next step, and let them feel
+  in good company. A bare receipt leaves the doubt to fester into refunds and regret.
 - **Anecdotes move people; statistics don't.** One vivid, specific case outweighs a big
   number emotionally.
 - **Mood colors everything.** A positive mood broadens thinking and raises tolerance for

@@ -1,11 +1,11 @@
 ---
 name: snitch-ux
 description: Apply behavioral-design / UX-psychology and usability principles when designing, building, or reviewing any user-facing interface — landing pages, onboarding, sign-up, paywalls & pricing, forms, checkout, dashboards, empty states, navigation, mobile nav — or when asked to improve conversion, retention, engagement, reduce drop-off, 'make this clearer / feel premium / more polished', or write UI copy, CTAs, taglines, value props, or brand messaging. Encodes two lenses — clarity (self-evident pages, scanning, conventions) and persuasion (defaults, anchoring, social proof, loss aversion, friction reduction, visual hierarchy) — as checkable moves, behind a blocking ethics gate that reports dark patterns instead of optimising them. Do NOT use for security review (use snitch-security) or SEO / marketing audits (use snitch-marketing) — the split is what the finding is judged against — marketing owns what is evidenced against search and traffic, ux owns what is evaluated against the user's decision path.
-license: MIT
+license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.5.0
+  version: 0.6.0
   homepage: https://snitchplugin.com
 ---
 
@@ -490,6 +490,7 @@ say which happened.
 - **Transparency bias** — proactively revealing a downside (upcoming charge, reminder before trial ends) *increases* trust and conversion.
 - **Specificity = trust** — exact numbers kill doubt ("start in 2 taps," "23 min") better than adjectives ("quick," "fast"). Doubt is the most expensive thing in your UI.
 - **Sell safety, not the pitch** — people convert from a safety net (free cancellation, money-back, "cancel anytime") placed *at the moment of hesitation*, not from harder selling.
+- **Reassure after the yes** — doubt returns right after commitment (post-purchase dissonance). Confirmation and welcome surfaces must reassure the decision — restate what they got, show the next step, validate the choice — never end on a bare receipt or an instant upsell.
 
 **Message the brand as a story (brand-level surfaces: hero, tagline, value prop, pitch)** — see `references/brand-messaging.md`
 - **Customer is the hero, you are the guide** — never open with the company, category, or backstory. A product is a rope, and a rope is only valuable to someone in a hole: lead with the customer's problem or the product has no value.

@@ -1,11 +1,11 @@
 ---
 name: snitch-marketing
 description: Audit a site's SEO and marketing with evidence-based findings. Reads site source or crawls a URL and reports issues a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS-prevention; true field CWV LCP/INP/CLS via optional free CrUX/PSI fetch when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads or pixel readiness (use ads-ready), security review (use snitch-security), UX / interface critique judged against the user's decision path (use snitch-ux), or generic content writing.
-license: MIT
+license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). LLM-backed audits use the user's existing model; no separate server required. Exports the report as markdown, JSON, CSV, and (when python3 is present) HTML on its own. Optional Playwright MCP for screenshot evidence in crawl mode.
 metadata:
   author: Snitch
-  version: 1.11.0
+  version: 1.12.0
   homepage: https://snitchplugin.com
 ---
 
