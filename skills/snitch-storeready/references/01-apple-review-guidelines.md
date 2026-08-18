@@ -64,14 +64,17 @@ Exempt: apps using only their own account system; education/enterprise apps; gov
 
 Static check: `GIDSignIn` / `FBSDKLoginKit` present without `ASAuthorizationAppleIDProvider` or the Sign in with Apple entitlement — see references/09-static-checks.md.
 
+If the app also supports account deletion, Sign in with Apple brings a second obligation — token revocation on delete. See 5.1.1(v) below.
+
 ### 5.1.1 Privacy — collection and storage
 
 - 5.1.1(i) — a working privacy policy link in App Store Connect and inside the app, covering what is collected, how it is used, third-party access, retention, and deletion.
 - 5.1.1(ii) — permission purpose strings must be specific. "This app needs your location" gets rejected; "Shows pharmacies near you" passes. Every `NS*UsageDescription` you ship is read by a human.
 - 5.1.1(iv) — permission requests cannot be a condition of unrelated functionality; no consent-gating or bribing.
 - 5.1.1(v) — **account deletion**: any app that supports account creation must offer in-app account deletion (real deletion, not deactivation), working during review, with no forced phone call. Heavily enforced since mid-2022.
+- 5.1.1(v) corollary — **Sign in with Apple token revocation**: an app that offers Sign in with Apple must revoke the user's tokens through the Sign in with Apple REST API when the account is deleted. Deleting the server-side rows without calling the revocation endpoint is a documented rejection, and it is commonly missed because the deletion flow "works" without it — https://developer.apple.com/support/offering-account-deletion-in-your-app
 
-Static check: sign-up flow detected without a delete-account code path; vague or missing usage-description strings — see references/09-static-checks.md.
+Static check: sign-up flow detected without a delete-account code path; Sign in with Apple plus a deletion path with no token-revocation call in the backend; vague or missing usage-description strings — see references/09-static-checks.md.
 
 ### 5.1.2(i) Sharing with third-party AI — added Nov 2025
 

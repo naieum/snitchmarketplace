@@ -1,7 +1,7 @@
 {
   "name": "snitch-storeready",
-  "description": "App store submission readiness audit for Apple App Store and Google Play — review guidelines, privacy manifests and Data safety, SDK/API floors, permissions and declarations, billing rules, metadata — with file:line evidence for everything checkable from code.",
-  "version": "0.1.0",
+  "description": "App store submission readiness audit for Apple App Store and Google Play \u2014 review guidelines, privacy manifests and Data safety, SDK/API floors, permissions and declarations, billing rules, metadata \u2014 with file:line evidence for everything checkable from code.",
+  "version": "0.2.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

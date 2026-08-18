@@ -73,8 +73,8 @@
   {
    "name": "snitch-storeready",
    "source": "./skills/snitch-storeready",
-   "description": "App store submission readiness for Apple App Store and Google Play — review guidelines, privacy manifests / Data safety, SDK floors, permissions, billing, metadata; file:line evidence for every code-checkable item, honest checklist for the rest.",
-   "version": "0.1.0",
+   "description": "App store submission readiness for Apple App Store and Google Play — review guidelines, privacy manifests / Data safety, SDK floors, permissions, billing, metadata; file:line evidence for every code-checkable item, honest checklist for the rest. Web apps get a store-path feasibility assessment (Capacitor / TWA / React Native).",
+   "version": "0.2.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },

@@ -1,11 +1,11 @@
 ---
 name: snitch-storeready
-description: Audit whether a mobile app is ready for Apple App Store and Google Play submission — review-guideline compliance, privacy manifests and Data safety alignment, target SDK / API floors, permissions and store declarations, metadata and asset rules, monetization and billing rules, and release-track requirements — with file:line evidence for everything checkable from code and an interactive checklist for store-console items. Triggers on is my app ready for the App Store, app store readiness audit, why was my app rejected, prepare for Play Store submission, pre-submission checklist, App Review guidelines check, Play policy check, privacy nutrition labels, privacy manifest check, data safety form help, target API level check, will this pass review, App Store rejection, Google Play rejection. Do NOT use for security vulnerability audits (use snitch-security), ASO or store-listing copy persuasion (use snitch-marketing / snitch-focusedcopy), or paid-media pixel and SKAdNetwork-for-ads readiness (use snitch-adsready).
+description: Audit whether a mobile app is ready for Apple App Store and Google Play submission — review-guideline compliance, privacy manifests and Data safety alignment, target SDK / API floors, permissions and store declarations, metadata and asset rules, monetization and billing rules, and release-track requirements — with file:line evidence for everything checkable from code and an interactive checklist for store-console items. Triggers on is my app ready for the App Store, app store readiness audit, why was my app rejected, prepare for Play Store submission, pre-submission checklist, App Review guidelines check, Play policy check, privacy nutrition labels, privacy manifest check, data safety form help, target API level check, will this pass review, App Store rejection, Google Play rejection, can I put my web app in the App Store, turn my website into an app, publish my PWA to the Play Store, Capacitor or React Native for the stores. For a web app with no native target it does not stop — it assesses store feasibility and recommends a packaging path. Do NOT use for security vulnerability audits (use snitch-security), ASO or store-listing copy persuasion (use snitch-marketing / snitch-focusedcopy), or paid-media pixel and SKAdNetwork-for-ads readiness (use snitch-adsready).
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server or bundled tools required. LLM-backed work uses the user's existing model.
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.2.0
   homepage: https://snitchplugin.com
 ---
 
@@ -51,7 +51,7 @@ Identify what the project ships to before reading anything else:
 | `app.json` / `app.config.*` with `expo` | Expo (config generates both native projects) |
 | `capacitor.config.*` | Capacitor |
 
-The full detection table, including where each framework hides its native config, is in references/09-static-checks.md. If no mobile project is found, say so and stop — do not audit a web app against store rules.
+The full detection table, including where each framework hides its native config, is in references/09-static-checks.md. If only a web project is found, do not audit it against store rules — run the store-path feasibility mode instead (references/11-web-to-store.md): detect the web stack, compare the packaging paths (Capacitor / TWA / React Native), recommend one with evidence, and preview what the full audit will check once a native target exists.
 
 ### Step 1 — Scan selection
 
@@ -61,6 +61,7 @@ Ask the user which scan they want (or infer it from their words):
 2. **Apple only** / **Play only** — other store's checks become ⚪ N/A.
 3. **Rejection triage** — they have a rejection in hand; verify and fix only that. See the triage map in references/30-recipes.md.
 4. **Pre-flight** — audit only a change set (new permission, new SDK) for store impact.
+5. **Store-path feasibility** — auto-selected when Step 0 finds only a web project; recommends how it could ship to the stores. See references/11-web-to-store.md.
 
 ### Step 2 — Static checks
 
@@ -78,6 +79,7 @@ Write the report in the mandatory format from references/30-recipes.md to `{work
 
 | Phase | Condition | Read |
 |---|---|---|
+| Step 0–1 | only a web project detected (no native target) | references/11-web-to-store.md |
 | Step 2 | always (workhorse) | references/09-static-checks.md |
 | Step 2–4 | Apple guideline detail needed (rejection hotspots, UGC, kids) | references/01-apple-review-guidelines.md |
 | Step 2–4 | Apple technical/privacy detail (SDK floor, ATS, privacy manifest, ATT) | references/02-apple-technical.md |

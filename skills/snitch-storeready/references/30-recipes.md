@@ -12,6 +12,7 @@ When to read this: before writing any storeready report, and whenever the user's
 | "What do I need before my first submission?" | Skip static checks; walk references/10-store-checklists.md interactively, then report checklist state. |
 | "Check my permissions / privacy setup" | Static checks limited to the privacy sections of references/09-static-checks.md plus the Data safety / nutrition-label checklist items. |
 | "Will this pass review?" (pre-flight on a diff or feature) | Audit only the files in the change set against references/09-static-checks.md; flag any new permission, background mode, or SDK that triggers a store declaration. |
+| "Can I put my web app in the stores?" / only a web project detected | Store-path feasibility mode: references/11-web-to-store.md. Recommendation report, not an audit — detect the web stack with evidence, compare packaging paths, recommend one, preview what the full audit will check once a native target exists. |
 | "Fix finding N" | Show the proposed diff first, apply only after confirmation. Never batch-apply fixes. |
 
 ## Rejection triage — mapping rejection text to references
