@@ -63,6 +63,14 @@
    "homepage": "https://snitchplugin.com"
   },
   {
+   "name": "snitch-blueprint",
+   "source": "./skills/snitch-blueprint",
+   "description": "Build-time product decisions — one interview, six buying-shape archetypes, a checked-in BLUEPRINT.md with conversion action, build order, and deferred list that the build follows and the audits grade against.",
+   "version": "0.1.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
    "name": "snitch-cloudflare",
    "source": "./skills/snitch-cloudflare",
    "description": "Cloudflare security + readiness — zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",
