@@ -79,6 +79,14 @@
    "homepage": "https://snitchplugin.com"
   },
   {
+   "name": "snitch-cmo",
+   "source": "./skills/snitch-cmo",
+   "description": "Marketing foundation + channel drafting — six strategy docs built from the product's real source with every claim evidenced, then channel-ready drafts (blog, X, LinkedIn, Reddit, HN, outreach, UGC briefs) citing the foundation. Never auto-publishes.",
+   "version": "0.1.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
    "name": "snitch-cloudflare",
    "source": "./skills/snitch-cloudflare",
    "description": "Cloudflare security + readiness — zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",

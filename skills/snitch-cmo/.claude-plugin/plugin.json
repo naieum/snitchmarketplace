@@ -1,0 +1,20 @@
+{
+  "name": "snitch-cmo",
+  "description": "Marketing foundation generator + channel drafting — six evidence-traced strategy docs in marketing/ (product truth, positioning, competitors, brand voice, content strategy, channel plan), then blog/X/LinkedIn/Reddit/HN drafts, outreach shortlists, and UGC briefs with provenance headers. Drafts only — the human publishes.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "marketing-strategy",
+    "positioning",
+    "brand-voice",
+    "content-strategy",
+    "ai-cmo",
+    "drafting",
+    "snitch"
+  ]
+}
