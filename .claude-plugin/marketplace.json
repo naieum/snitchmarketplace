@@ -71,6 +71,14 @@
    "homepage": "https://snitchplugin.com"
   },
   {
+   "name": "snitch-storeready",
+   "source": "./skills/snitch-storeready",
+   "description": "App store submission readiness for Apple App Store and Google Play — review guidelines, privacy manifests / Data safety, SDK floors, permissions, billing, metadata; file:line evidence for every code-checkable item, honest checklist for the rest.",
+   "version": "0.1.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
    "name": "snitch-cloudflare",
    "source": "./skills/snitch-cloudflare",
    "description": "Cloudflare security + readiness — zone/account/Workers/Pages/Tunnel/Access posture, idempotent hardening, migration guidance.",
