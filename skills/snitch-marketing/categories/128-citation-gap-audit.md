@@ -145,7 +145,7 @@ names Trust the most important member of the family): https://developers.google.
 
 Cross-ref `references/eeat-assessment.md` (trust scoring), `references/citability-scoring.md`
 (statistic-density dimension, rubric item 4), Cat 59 (AI-content tells, invented-stat
-detection), Cat 93 (Person / author schema: who is making the claim), Cat 82 (AI-search
+detection), Cat 32 (the Person / author row: who is making the claim), Cat 82 (AI-search
 citation: why sourced claims get cited).
 
 **Severity tagging:**
@@ -157,9 +157,9 @@ citation: why sourced claims get cited).
 - A few gaps on otherwise-sourced content → Low.
 - References exist but in-body claims don't link to them → Low (wiring fix).
 
-**Fix voice:** `mike-monteiro` (primary) | `frank-chimero` (backup).
+**Fix voice:** `honest-design-critic` (primary) | `content-shape-editor` (backup).
 
-Read `souls/mike-monteiro.json` before writing the Fix.
+Read `souls/honest-design-critic.json` before writing the Fix.
 
 Worked fix example:
 

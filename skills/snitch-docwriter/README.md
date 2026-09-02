@@ -1,4 +1,4 @@
-# snitch-docwriter v0.2.0
+# snitch-docwriter v0.4.1
 
 Controlled technical writing (ASD-STE100-derived) plus a deterministic anti-slop linter — rewrite docs, READMEs, error messages, and runbooks so they cannot be misread.
 

@@ -22,7 +22,13 @@ silent state.
 |---|---|
 | **scanned — pass** | Reached and analyzed; no finding. Carries Rule 7 Pass-evidence per sink. |
 | **scanned — finding** | Reached and analyzed; produced ≥1 finding. |
+| **scanned — unreachable** | Reached and analyzed; the defect is real in the code but not reachable in this configuration (the sink sits behind a feature flag that is off, an unregistered route, a build target that is not shipped, or a dependency's code path this project never calls). Carries the same trace evidence as a finding **plus** the evidence for the unreachability claim, and the finding is reported at Informational severity — never dropped. This is the honest middle between "we found nothing" and "you are exploitable today". |
 | **deferred — reason** | Deliberately not analyzed this run; the reason is stated (out of scope, time/scope budget, needs a tool not present, generated/vendored, requires human verification). |
+
+**"Unreachable" is a claim that needs evidence, exactly like a finding.** Name the gate you read and
+where it is set: the flag and its default, the router that never registers the handler, the build
+config that excludes the file. "I could not find a caller" is not unreachability — that is a
+partial trace, which Rule 7 caps at Low confidence and keeps at full severity.
 
 A surface that is silently skipped — scanned partially, sampled without saying so, or dropped
 because the budget ran out — is a Rule 1 / Rule 6 violation. If you sample instead of enumerate,
@@ -36,8 +42,8 @@ claim; "scanned N of N reachable sinks in these files, all pass with trace evide
 2. **Inventory strategy** — how the surface list was built (route map, entrypoint enumeration,
    grep of sink patterns, changed-files for diff mode). Name it so the reader can judge blind spots.
 3. **Completeness** — one of:
-   - **complete** — every reachable in-scope surface for the selected categories was scanned-pass
-     or scanned-finding; zero deferrals.
+   - **complete** — every reachable in-scope surface for the selected categories was scanned-pass,
+     scanned-finding, or scanned-unreachable; zero deferrals.
    - **partial** — some surfaces deferred; each deferral is listed with a reason.
    - **unknown** — the inventory itself couldn't be fully established (e.g., dynamic dispatch /
      reflection / un-openable imports the scan couldn't follow). Say what blocked it.

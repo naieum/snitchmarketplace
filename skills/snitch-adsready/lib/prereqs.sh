@@ -24,13 +24,10 @@ _prereqs_env_present() {
 run_prereqs() {
   local ts; ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-  local curl_present jq_present lighthouse_present pup_present htmlq_present gh_present openssl_present
+  local curl_present jq_present lighthouse_present openssl_present
   curl_present="$(_prereqs_have curl)"
   jq_present="$(_prereqs_have jq)"
   lighthouse_present="$(_prereqs_have lighthouse)"
-  pup_present="$(_prereqs_have pup)"
-  htmlq_present="$(_prereqs_have htmlq)"
-  gh_present="$(_prereqs_have gh)"
   openssl_present="$(_prereqs_have openssl)"
 
   local psi_key_present ga4_auth_present gsc_auth_present
@@ -49,16 +46,13 @@ run_prereqs() {
   pinterest_present="$(_prereqs_env_present PINTEREST_ADS_ACCESS_TOKEN PINTEREST_ADS_ADVERTISER_ID)"
   reddit_present="$(_prereqs_env_present REDDIT_ADS_ACCESS_TOKEN REDDIT_ADS_ACCOUNT_ID)"
   snapchat_present="$(_prereqs_env_present SNAPCHAT_ADS_ACCESS_TOKEN SNAPCHAT_ADS_AD_ACCOUNT_ID)"
-  apple_present="$(_prereqs_env_present APPLE_SEARCH_ADS_PRIVATE_KEY APPLE_SEARCH_ADS_TEAM_ID APPLE_SEARCH_ADS_KEY_ID APPLE_SEARCH_ADS_CLIENT_ID)"
+  apple_present="$(_prereqs_env_present APPLE_SEARCH_ADS_PRIVATE_KEY APPLE_SEARCH_ADS_TEAM_ID APPLE_SEARCH_ADS_KEY_ID APPLE_SEARCH_ADS_ORG_ID)"
 
   jq -n \
     --arg ts "$ts" \
     --argjson curl_present "$curl_present" \
     --argjson jq_present "$jq_present" \
     --argjson lighthouse_present "$lighthouse_present" \
-    --argjson pup_present "$pup_present" \
-    --argjson htmlq_present "$htmlq_present" \
-    --argjson gh_present "$gh_present" \
     --argjson openssl_present "$openssl_present" \
     --argjson psi_key_present "$psi_key_present" \
     --argjson ga4_auth_present "$ga4_auth_present" \
@@ -94,21 +88,6 @@ run_prereqs() {
                           linux: "npm i -g lighthouse",
                           windows: "npm i -g lighthouse" },
           unlocks: ["state lighthouse <url> (full audit JSON instead of PSI fallback)"] },
-        { tool: "pup", present: $pup_present,
-          install_hint: { macos: "brew install pup",
-                          linux: "go install github.com/ericchiang/pup@latest",
-                          windows: "go install github.com/ericchiang/pup@latest" },
-          unlocks: ["state site <url> richer HTML parsing for pixel signature detection"] },
-        { tool: "htmlq", present: $htmlq_present,
-          install_hint: { macos: "brew install htmlq",
-                          linux: "cargo install htmlq",
-                          windows: "cargo install htmlq" },
-          unlocks: ["state site <url> CSS-selector parsing alongside pup"] },
-        { tool: "gh", present: $gh_present,
-          install_hint: { macos: "brew install gh",
-                          linux: "see https://github.com/cli/cli/blob/trunk/docs/install_linux.md",
-                          windows: "winget install GitHub.cli" },
-          unlocks: ["fix gha (drop-in GitHub Actions workflow)"] },
         { tool: "openssl", present: $openssl_present,
           install_hint: { macos: "preinstalled (/usr/bin/openssl) or brew install openssl",
                           linux: "preinstalled or apt-get install openssl",
@@ -136,11 +115,11 @@ run_prereqs() {
         { platform: "microsoft", env_vars: ["MICROSOFT_ADS_DEVELOPER_TOKEN","MICROSOFT_ADS_REFRESH_TOKEN","MICROSOFT_ADS_CLIENT_ID","MICROSOFT_ADS_CUSTOMER_ID","MICROSOFT_ADS_ACCOUNT_ID"], present: $microsoft_present, signup_url: "https://learn.microsoft.com/en-us/advertising/guides/get-started" },
         { platform: "linkedin", env_vars: ["LINKEDIN_ADS_ACCESS_TOKEN","LINKEDIN_ADS_ACCOUNT_ID"], present: $linkedin_present, signup_url: "https://learn.microsoft.com/en-us/linkedin/marketing/getting-access" },
         { platform: "tiktok", env_vars: ["TIKTOK_ADS_ACCESS_TOKEN","TIKTOK_ADS_ADVERTISER_ID"], present: $tiktok_present, signup_url: "https://business-api.tiktok.com/portal/docs?id=1738373141733378" },
-        { platform: "x", env_vars: ["X_ADS_CONSUMER_KEY","X_ADS_CONSUMER_SECRET","X_ADS_ACCESS_TOKEN","X_ADS_ACCESS_TOKEN_SECRET","X_ADS_ACCOUNT_ID"], present: $x_present, signup_url: "https://developer.twitter.com/en/docs/twitter-ads-api/getting-started" },
+        { platform: "x", env_vars: ["X_ADS_CONSUMER_KEY","X_ADS_CONSUMER_SECRET","X_ADS_ACCESS_TOKEN","X_ADS_ACCESS_TOKEN_SECRET","X_ADS_ACCOUNT_ID"], present: $x_present, signup_url: "https://developer.x.com/en/docs/x-ads-api/getting-started" },
         { platform: "pinterest", env_vars: ["PINTEREST_ADS_ACCESS_TOKEN","PINTEREST_ADS_ADVERTISER_ID"], present: $pinterest_present, signup_url: "https://developers.pinterest.com/docs/api/v5/" },
         { platform: "reddit", env_vars: ["REDDIT_ADS_ACCESS_TOKEN","REDDIT_ADS_ACCOUNT_ID"], present: $reddit_present, signup_url: "https://ads-api.reddit.com/docs/v3/" },
         { platform: "snapchat", env_vars: ["SNAPCHAT_ADS_ACCESS_TOKEN","SNAPCHAT_ADS_AD_ACCOUNT_ID"], present: $snapchat_present, signup_url: "https://marketingapi.snapchat.com/docs/" },
-        { platform: "apple", env_vars: ["APPLE_SEARCH_ADS_PRIVATE_KEY","APPLE_SEARCH_ADS_TEAM_ID","APPLE_SEARCH_ADS_KEY_ID","APPLE_SEARCH_ADS_CLIENT_ID","APPLE_SEARCH_ADS_ORG_ID"], present: $apple_present, signup_url: "https://developer.apple.com/documentation/apple_search_ads" }
+        { platform: "apple", env_vars: ["APPLE_SEARCH_ADS_PRIVATE_KEY","APPLE_SEARCH_ADS_TEAM_ID","APPLE_SEARCH_ADS_KEY_ID","APPLE_SEARCH_ADS_ORG_ID"], present: $apple_present, signup_url: "https://developer.apple.com/documentation/apple_search_ads" }
       ]
     }'
 }

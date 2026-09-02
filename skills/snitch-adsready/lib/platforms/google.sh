@@ -9,7 +9,8 @@
 ADSSEC_GOOGLE_API_BASE="${ADSSEC_GOOGLE_API_BASE:-https://googleads.googleapis.com/v25}"
 ADSSEC_GOOGLE_OAUTH_BASE="${ADSSEC_GOOGLE_OAUTH_BASE:-https://oauth2.googleapis.com}"
 
-# Inline minimal HTTP helper (in case agent A's api.sh isn't loaded).
+# Inline HTTP helper: this platform needs three extra headers, so it does not
+# use the generic wrappers in api.sh.
 _google_http_get() {
   local url="$1" auth="$2" dev_token="$3" login_cust="${4:-}"
   local tmp; tmp="$(mktemp)"

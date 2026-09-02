@@ -1,7 +1,12 @@
 ## CATEGORY 33: Unused Dependencies, Dead Code & Package Bloat
 > Type: posture · Groups: infra-supply-chain · CWE: CWE-1104
 
-The "unused surface area" problem: every dep that installs and every line that ships is something an attacker can study, exploit, or compromise via supply chain — and reviewers don't audit dead code. Covers unused packages, dead files/exports, and package bloat.
+The "unused surface area" problem: every dep that installs and every line that ships is something an attacker can study, exploit, or compromise via supply chain — and reviewers don't audit dead code. Covers unused packages, dead files/exports, and vendored copies.
+
+> **Scope — attack surface only.** A finding here has to name what an attacker gains: code that
+> installs or ships without being reviewed, install hooks that run anyway, or sensitive logic
+> reachable by a path nobody audits. Bundle size, load time, and "a smaller library exists" are
+> performance opinions, not attacker impact, and this skill does not report them.
 
 ### Detection
 - Manifests: `package.json` (`dependencies` / `devDependencies`), `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `Gemfile`, `pom.xml`, `composer.json`, `*.csproj`, `go.mod`
@@ -25,13 +30,7 @@ If zero hits are found in source files (excluding `node_modules/`), the package 
 - **Dead exports**: top-level exported functions/classes/consts whose names appear nowhere else in the codebase (framework-convention exports excepted — see NOT Vulnerable)
 - **Commented-out code blocks** left as "documentation" — they go stale, mislead readers, and may contain leaked secrets or vulnerable patterns
 - **Vendored copies** of upstream packages in `vendor/` or `third_party/` no longer referenced by the build system
-- Large packages with lightweight alternatives:
-  - `moment` (330KB) → `date-fns`, `dayjs`, or native `Intl.DateTimeFormat`
-  - `lodash` → individual `lodash/function` imports or native JS equivalents
-  - `request` (deprecated) → `fetch` (built into Node 18+) or `axios`
-  - `node-fetch` → native `fetch` (Node 18+ has it built in)
-  - `bluebird` → native `Promise`
-- Duplicate functionality packages (e.g., both `axios` AND `node-fetch` installed)
+- **Formally deprecated packages** still installed — a package the registry marks deprecated receives no security fixes, so an advisory against it never gets a patched version. Read the `deprecated` field rather than judging by age
 - Build/dev tools listed under `dependencies` instead of `devDependencies`: `eslint`, `prettier`, `typescript`, `jest`, `vitest`, `webpack`, `vite`, `esbuild`, `@types/*`, linting configs, test frameworks, build plugins
 
 ### Actually Vulnerable
@@ -39,10 +38,8 @@ If zero hits are found in source files (excluding `node_modules/`), the package 
 - Postinstall / preinstall hooks on unused packages — they still run on `npm install` even if never imported (see also Category 66)
 - A file containing sensitive logic (auth, payment, crypto) no longer reachable from any entry point — it ships unaudited and is exploitable via a forgotten import path
 - A vendored fork of a popular library, unmaintained and unreferenced — feeds dependency-confusion attacks if a name collision is later introduced
-- Deprecated packages (`request`, `node-fetch` on Node 18+, `unirest`)
-- Dev tools accidentally placed under `dependencies`
-- Both `axios` and `node-fetch` (or similar duplicates) installed — pick one
-- `moment` used for simple date formatting when native `Intl` would work; full-library `lodash` import for 1-2 functions
+- A package the registry marks `deprecated`, still in `dependencies` — no upstream maintainer means no patched version when an advisory lands (quote the `deprecated` field, not a version heuristic)
+- Dev tools placed under `dependencies` — a test runner or bundler installed into the production image widens the runtime's reachable code for no shipped feature
 
 ### NOT Vulnerable
 - Packages legitimately imported somewhere in source code
@@ -69,8 +66,8 @@ If zero hits are found in source files (excluding `node_modules/`), the package 
 - The impact link: why this entry is attack surface — known CVEs (Category 27), install hooks that still run (Category 66), or unaudited sensitive logic shipping in a dead file
 
 ### Confidence Scoring
-- **High**: zero references after searching source files, config files, and npm scripts; no dynamic-import patterns or monorepo cross-package imports in play. Also High: a dev tool unambiguously listed under `dependencies`, or a deprecated/duplicate package visible in the manifest itself.
-- **Medium**: zero source imports found, but framework path-based discovery or config-file loading could not be fully ruled out; large-package-with-lightweight-alternative findings (usage exists, replacement is judgment).
+- **High**: zero references after searching source files, config files, and npm scripts; no dynamic-import patterns or monorepo cross-package imports in play. Also High: a dev tool unambiguously listed under `dependencies`, or a registry-deprecated package quoted from its own metadata.
+- **Medium**: zero source imports found, but framework path-based discovery or config-file loading could not be fully ruled out.
 - **Low**: dynamic imports (`import()`, `require(varName)`, `__import__`), monorepo boundaries, or runtime plugin loading make the import graph unresolvable — tag `needs human verification`.
 
 ### Files to Check

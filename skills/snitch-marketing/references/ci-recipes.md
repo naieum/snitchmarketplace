@@ -1,68 +1,52 @@
-# CI/CD Integration Recipes
+# Running the audit from automation — the prompt contract
 
-Snitch: Marketing's diff-mode is most useful when it runs automatically on every PR, surfacing SEO regressions before they ship. This reference is the concrete patterns for integrating the audit into common CI/CD platforms. Each recipe covers: trigger event, scoped run, comment posting, blocking vs advisory mode.
+There is no Snitch CLI, no hosted Action, and no exit code to gate a build on. This skill is a
+prompt: something in CI has to run an AI coding agent that loads `SKILL.md` and does the audit.
+This file is the contract for that — what the automation passes in, what it gets back, and what
+it does with the result. The CI platform, the agent, and the model are the customer's choice and
+are out of scope here.
 
-## Why diff-mode in CI
+## What automation passes in
 
-A full audit on every PR is wasteful (90+ minutes per run). Diff-mode runs only on the files that changed AND their declared route layouts / heads. This typically scans 5-30 files in 2-5 minutes, catching regressions like:
+One instruction, in plain language, naming four things:
 
-- Canonical accidentally removed from a route head
-- Title / description regressed below recommended length
-- Schema.org JSON-LD lost in a refactor
-- A new page added without alt text on its hero image
-- `noindex` accidentally shipped to a route
+1. **The skill** — load `snitch-marketing` (however the host agent loads a skill).
+2. **The mode and scope** — diff mode against a base ref (source), or crawl mode against a
+   deployed URL. Scope is what makes CI runs cheap; an unscoped full audit does not belong on a
+   pull request.
+3. **The non-interactive flags** — automation cannot answer a menu. Set
+   `confirm-categories: false` in `snitch-marketing.config.md` (or say so in the prompt) so
+   STEP 1.7 does not block, and name the preset or category list explicitly so the STEP 1 menu is
+   bypassed (`references/scan-selection.md`, "When the menu MUST fire vs MAY be bypassed").
+4. **Where the report goes** — the default is
+   `snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md`, relative to the working directory. Upload
+   that path as the build artifact.
 
-## Recipe 1: GitHub Actions (most common)
+A pull-request run reads roughly:
 
-```yaml
-# .github/workflows/snitch-marketing.yml
-name: SEO Audit (diff mode)
+> Run the snitch-marketing skill in diff mode against `$BASE_REF`. Scope to the changed files and
+> their route layouts / head builders. Do not show the scan menu; do not ask for confirmation.
+> Write the report to its default path and print the executive snapshot.
 
-on:
-  pull_request:
-    paths:
-      - 'src/routes/**'
-      - 'src/pages/**'
-      - 'app/**'
-      - 'content/**'
-      - '**/*.tsx'
-      - '**/*.mdx'
+A preview-deploy run reads roughly:
 
-jobs:
-  seo-audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # needed for diff against base ref
+> Run the snitch-marketing skill in crawl mode against `$PREVIEW_URL` with the Quick Audit preset.
+> Do not show the scan menu. Write the report to its default path.
 
-      # The skill runs inside an AI coding CLI — there is no Snitch-hosted Action.
-      # Swap the CLI and the key for whichever provider you already use.
-      - name: Run Snitch Marketing diff audit
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          npm install -g @anthropic-ai/claude-code
-          claude --print "Read ./skills/snitch-marketing/SKILL.md and run a diff-mode
-            SEO audit against ${{ github.base_ref }}. Write SEO_AUDIT_REPORT.md."
+## What automation gets back
 
-      - name: Upload audit report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: seo-audit-report
-          path: SEO_AUDIT_REPORT.md
-```
+- `snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md` — the canonical artifact, plus any secondary
+  outputs beside it (`references/report-pipeline.md` owns the save contract).
+- The executive snapshot on stdout, if the prompt asked for it.
+- **No exit code that encodes severity.** The agent's process exits 0 for "the audit ran". If a
+  build gate is wanted, the automation parses the saved report's severity counts itself and
+  decides — that policy lives in the customer's pipeline, not in this skill. Nothing in this skill
+  reads a `fail-on` setting, because no such setting exists.
 
-### Variants
+## PR comment shape
 
-- **Block on critical only**: `fail-on: critical` — PR can't merge if any Critical finding.
-- **Advisory mode**: `fail-on: never` — always succeeds; comment is informational.
-- **Block on high+**: `fail-on: high` — fails if any High or Critical.
-
-### PR comment format
-
-The action posts (or updates) one comment per PR:
+When automation posts the result to a pull request, one comment, updated in place rather than
+appended per push:
 
 ```markdown
 ## Snitch: Marketing — Diff Audit
@@ -86,152 +70,37 @@ Re-run after fixing: `git push`.
 [Full report](link to artifact)
 ```
 
-## Recipe 2: GitLab CI
+Evidence lines only, no fix prose — the full report is the artifact. Redaction (Rule 5) applies to
+the comment exactly as it applies to the report.
 
-```yaml
-# .gitlab-ci.yml
-seo_audit:
-  stage: test
-  image: node:22  # any image with your AI CLI installable — there is no Snitch-hosted runner
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-      changes:
-        - 'src/routes/**'
-        - 'src/pages/**'
-        - 'content/**'
-        - '**/*.{tsx,mdx}'
-  script:
-    - npm install -g @anthropic-ai/claude-code
-    - claude --print "Read ./skills/snitch-marketing/SKILL.md and run a diff-mode SEO audit
-      against $CI_MERGE_REQUEST_TARGET_BRANCH_NAME. Write SEO_AUDIT_REPORT.md."
-  artifacts:
-    when: always
-    paths:
-      - SEO_AUDIT_REPORT.md
-    expire_in: 30 days
-  allow_failure: false  # set to true for advisory-only
-```
+## Which mode fits which trigger
 
-GitLab equivalent of GitHub's PR comment is the MR Discussion API. The runner can POST findings as a discussion via `$CI_PROJECT_ID` + the merge-request IID.
-
-## Recipe 3: Vercel build hook
-
-Vercel previews are the canonical "see the change before merging" surface. Run the audit against the preview URL:
-
-```yaml
-# vercel.json (in repo root)
-{
-  "github": {
-    "silent": false
-  },
-  "buildCommand": "npm run build && npm run seo:audit:preview"
-}
-```
-
-```json
-// package.json
-{
-  "scripts": {
-    "seo:audit:preview": "snitch-marketing audit --url=$VERCEL_URL --mode=crawl"
-  }
-}
-```
-
-Vercel populates `$VERCEL_URL` for preview builds. The audit runs in crawl mode against the live preview, catches runtime-only regressions (post-hydration content, client-side schema), and uploads results.
-
-For PR comments on Vercel previews: install the `vercel-output-format` plugin OR use the Vercel REST API to post a comment via a follow-up GitHub Actions step.
-
-## Recipe 4: Cloudflare Pages preview deploy
-
-```bash
-# .github/workflows/cloudflare-preview-audit.yml
-name: SEO Audit on CF Pages preview
-
-on:
-  deployment_status:
-
-jobs:
-  audit-preview:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'preview'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          PREVIEW_URL="${{ github.event.deployment_status.target_url }}"
-          snitch-marketing audit --url="$PREVIEW_URL" --mode=crawl --comment-on-pr
-```
-
-## Recipe 5: Pre-commit hook (git)
-
-Pre-commit catches regressions before they're even pushed. Use `husky` + custom script:
-
-```json
-// package.json
-{
-  "scripts": {
-    "seo:audit:precommit": "snitch-marketing audit --mode=diff --base-ref=HEAD~1 --fail-on=critical"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run seo:audit:precommit"
-    }
-  }
-}
-```
-
-Pre-commit is best for advisory: blocking commits on every Medium finding will be too noisy. Tune `--fail-on=critical` and let the team triage High/Medium in the PR review.
-
-## Recipe 6: Post-deploy production audit (canary)
-
-After production deploy, run a full audit (not diff) to catch any production-specific issues a preview-deploy didn't surface:
-
-```yaml
-# .github/workflows/post-deploy-audit.yml
-name: Post-deploy SEO audit
-
-on:
-  workflow_run:
-    workflows: ['Deploy production']
-    types: [completed]
-
-jobs:
-  audit:
-    if: github.event.workflow_run.conclusion == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: snitch-marketing audit --url=https://example.com --mode=crawl --preset=quick
-      - if: failure()
-        uses: actions/setup-node@v4
-        # post to Slack via webhook — alert team to production regression
-```
-
-## Mode selection per CI scenario
-
-| Scenario | Mode | Preset | Why |
+| Trigger | Mode | Scope | Why |
 |---|---|---|---|
-| PR diff audit | diff (source) | derived from changed files | Fast, scoped, advisory |
-| Preview deploy | crawl | quick | Catches runtime issues SSR diff misses |
-| Pre-commit | diff (source) | critical-only | Blocks regressions but doesn't slow commits |
-| Post-production deploy | crawl | quick or technical | Catches production-only issues |
-| Quarterly full audit | source + crawl | full | Comprehensive review for stakeholder reporting |
+| Pull request | diff (source) | changed files + their route heads | Fast, scoped, advisory |
+| Preview deploy | crawl | Quick Audit | Catches runtime issues a source diff cannot see |
+| Post-production deploy | crawl | Quick or Technical SEO | Catches production-only regressions |
+| Scheduled (weekly / monthly) | source + crawl | Full | Trend and stakeholder reporting; never per-PR |
 
-## Token cost considerations
-
-Diff-mode on a typical 5-30 file change runs in 2-5 minutes and is cheap to run on every PR. Full audits run 90-180 minutes and should be scheduled (weekly / monthly) rather than per-PR. Crawl-mode is bound by network latency more than token count and is reasonable per PR.
+A full audit is expensive in tokens and minutes. Schedule it; do not attach it to every push.
 
 ## Triage state in CI
 
-The `.snitch-marketing-triage.json` and `.snitch-marketing-ignore` files (see `triage-workflow.md`) should be committed to the repo. CI audits read these and suppress already-triaged findings. This keeps PR comments focused on NEW findings, not re-flags of accepted ones.
+Commit `.snitch-marketing-triage.json` and `.snitch-marketing-ignore` (`triage-workflow.md`).
+Automated runs read both and suppress already-triaged findings, which is what keeps a PR comment
+focused on what this change introduced rather than re-flagging what the team already accepted.
+Triage is keyed by fingerprint, so it survives the line-number churn a diff produces.
 
-## Output artifacts
+## Artifacts and trend tracking
 
-CI audits should always upload `SEO_AUDIT_REPORT.md` as an artifact, even on success — historical reports are useful for trend analysis and post-mortem after a regression.
-
-For long-term trend tracking, consider piping the report's metadata to a metrics endpoint (Datadog, custom analytics, internal dashboard) capturing finding count + severity distribution over time.
+Upload the report on every run, including clean ones — the history is what makes a regression
+diagnosable later. For trend tracking, pipe the report's metadata (finding count and severity
+distribution) to whatever the team already uses; the JSON export
+(`references/output-formats.md`) is the machine-readable shape.
 
 ## Cross-references
 
-- SKILL.md STEP 1 (Scan Selection Menu — Option 12 Diff Mode)
+- `references/scan-selection.md` — Diff Mode behavior and the menu-bypass rule
+- `references/report-pipeline.md` — the save path and the report's required sections
 - `triage-workflow.md` — `.snitch-marketing-ignore` and `.snitch-marketing-triage.json` formats
-- `category-groups.md` — preset definitions used by `--preset=quick / technical / etc.`
+- `category-groups.md` — preset definitions, when a run names a preset

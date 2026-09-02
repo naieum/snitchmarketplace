@@ -59,7 +59,10 @@ You don't need to roll your own — Shopify's Marketing apps include CAPI. For c
 
 Shopify hosts `ads.txt` natively — Settings → Domains → Manage ads.txt. Drop entries from `templates/ads-txt-entries.template.txt`.
 
-Themes ship Product schema by default; use `theme.liquid` snippets to inject Organization + WebSite + BreadcrumbList. Verify with Rich Results Test.
+Themes ship `Product` + `Offer` schema by default — that is the block a shopping feed reads, so
+confirm it renders real price and availability on the product template. Organization, WebSite,
+BreadcrumbList, and the rest of the schema surface are evidenced against search, not against an
+ad platform: **call the Skill tool with "snitch-marketing"** for those.
 
 ## Verification
 

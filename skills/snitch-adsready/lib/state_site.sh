@@ -1,31 +1,20 @@
 # lib/state_site.sh — universal site-side audit.
 # Fetches a URL once, parses it for ALL 10 platforms' pixel signals + consent +
 # structured data + companion files (robots.txt, sitemap.xml, ads.txt,
-# app-ads.txt, security.txt, llms.txt). Slices: digest|html|headers|pixels|
+# app-ads.txt, security.txt). Slices: digest|html|headers|pixels|
 # consent|structured-data|robots|sitemap|ads-txt|full
 #
 # Exports: run_state_site <url> [slice]
 
-# --- low-level fetchers (cached per-call in $STATE_DIR) ---
+# --- low-level fetchers (no on-disk cache; every call re-fetches) ---
 
-# Cache key for a url.
-_ss_cache_key() {
-  local url="$1"
-  # Filesystem-safe slug, includes a short hash for uniqueness.
-  local hash
-  if command -v shasum >/dev/null 2>&1; then
-    hash="$(printf '%s' "$url" | shasum -a 256 | awk '{print substr($1,1,12)}')"
-  elif command -v sha256sum >/dev/null 2>&1; then
-    hash="$(printf '%s' "$url" | sha256sum | awk '{print substr($1,1,12)}')"
-  else
-    hash="nohash"
-  fi
-  printf '%s' "$hash"
-}
+# Status-code side channel. A status set inside $(…) does not propagate back to
+# the parent shell, so the fetchers write the code to this file and callers read
+# it via _ss_last_status(). Removed on exit.
+ADSEC_STATUS_FILE="${TMPDIR:-/tmp}/adsec_fetch_status_$$"
+adsec_tmp_register "$ADSEC_STATUS_FILE"
 
-# _ss_fetch_html <url>  -> echoes HTML body; writes status code to a tempfile.
-# Note: ADSEC_LAST_STATUS set inside $(…) doesn't propagate back to the parent shell.
-# Callers read the status via _ss_last_status() which reads /tmp/adsec_fetch_status_$$.
+# _ss_fetch_html <url>  -> echoes HTML body; writes status code to $ADSEC_STATUS_FILE.
 _ss_fetch_html() {
   local url="$1"
   local tmp; tmp="$(mktemp)"
@@ -36,14 +25,14 @@ _ss_fetch_html() {
     -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
     -o "$tmp" -w '%{http_code}' \
     "$url" 2>/dev/null || echo "000")
-  printf '%s' "$code" > "/tmp/adsec_fetch_status_$$"
+  printf '%s' "$code" > "$ADSEC_STATUS_FILE"
   if [[ "$code" != "000" ]]; then
     cat "$tmp"
   fi
   rm -f "$tmp"
 }
 
-# _ss_fetch_headers <url> -> echoes raw header text; writes status to tempfile.
+# _ss_fetch_headers <url> -> echoes raw header text; writes status to $ADSEC_STATUS_FILE.
 _ss_fetch_headers() {
   local url="$1"
   local tmp; tmp="$(mktemp)"
@@ -54,14 +43,14 @@ _ss_fetch_headers() {
     -I \
     -o "$tmp" -w '%{http_code}' \
     "$url" 2>/dev/null || echo "000")
-  printf '%s' "$code" > "/tmp/adsec_fetch_status_$$"
+  printf '%s' "$code" > "$ADSEC_STATUS_FILE"
   cat "$tmp"
   rm -f "$tmp"
 }
 
 # Read the status code captured by the most recent _ss_fetch_* call.
 _ss_last_status() {
-  cat "/tmp/adsec_fetch_status_$$" 2>/dev/null || printf '000'
+  cat "$ADSEC_STATUS_FILE" 2>/dev/null || printf '000'
 }
 
 # Build "<scheme>://<host>" from a full URL.
@@ -430,7 +419,7 @@ _ss_fetch_text() {
     -A "${ADSEC_USER_AGENT:-ads-ready-skill/1}" \
     -o "$tmp" -w '%{http_code}' \
     "$url" 2>/dev/null || echo "000")
-  printf '%s' "$code" > "/tmp/adsec_fetch_status_$$"
+  printf '%s' "$code" > "$ADSEC_STATUS_FILE"
   if [[ "$code" != "000" ]]; then
     cat "$tmp"
   fi
@@ -549,16 +538,6 @@ _ss_companion_app_ads_txt() {
 _ss_companion_security_txt() {
   local origin="$1"
   http_get "${origin}/.well-known/security.txt" >/dev/null 2>&1
-  local code="$(_ss_last_status)"
-  local present="false"
-  [[ "$code" =~ ^2 ]] && present="true"
-  jq -n --argjson present "$present" --arg status "$code" \
-    '{present:$present, status:($status|tonumber? // 0)}'
-}
-
-_ss_companion_llms_txt() {
-  local origin="$1"
-  http_get "${origin}/llms.txt" >/dev/null 2>&1
   local code="$(_ss_last_status)"
   local present="false"
   [[ "$code" =~ ^2 ]] && present="true"
@@ -782,7 +761,7 @@ run_state_site() {
         }'
       ;;
     digest)
-      local pixels consent sd hdrs sec robots sitemap ads_txt app_ads sec_txt llms_txt lc
+      local pixels consent sd hdrs sec robots sitemap ads_txt app_ads sec_txt lc
       pixels="$(_ss_build_pixel_matrix "$html")"
       consent="$(_ss_extract_consent "$html")"
       lc="$(_ss_extract_lead_capture "$html")"
@@ -794,7 +773,6 @@ run_state_site() {
       ads_txt="$(_ss_companion_ads_txt "$origin")"
       app_ads="$(_ss_companion_app_ads_txt "$origin")"
       sec_txt="$(_ss_companion_security_txt "$origin")"
-      llms_txt="$(_ss_companion_llms_txt "$origin")"
       # Strip the heavy ads_txt body in digest mode (kept in ads-txt slice).
       ads_txt="$(jq 'del(.body)' <<<"$ads_txt")"
       jq -n \
@@ -808,7 +786,6 @@ run_state_site() {
         --argjson ads_txt "$ads_txt" \
         --argjson app_ads_txt "$app_ads" \
         --argjson security_txt "$sec_txt" \
-        --argjson llms_txt "$llms_txt" \
         --argjson lead_capture "$lc" \
         '{
           schema: "adssec.state-site.digest",
@@ -829,12 +806,11 @@ run_state_site() {
           ads_txt: $ads_txt,
           app_ads_txt: $app_ads_txt,
           security_txt: $security_txt,
-          llms_txt: $llms_txt,
           hint: "for the HTML body, run: state site <url> html  |  for ads.txt body: state site <url> ads-txt"
         }'
       ;;
     full)
-      local pixels consent sd hdrs sec robots sitemap ads_txt app_ads sec_txt llms_txt lc
+      local pixels consent sd hdrs sec robots sitemap ads_txt app_ads sec_txt lc
       pixels="$(_ss_build_pixel_matrix "$html")"
       consent="$(_ss_extract_consent "$html")"
       lc="$(_ss_extract_lead_capture "$html")"
@@ -846,7 +822,6 @@ run_state_site() {
       ads_txt="$(_ss_companion_ads_txt "$origin")"
       app_ads="$(_ss_companion_app_ads_txt "$origin")"
       sec_txt="$(_ss_companion_security_txt "$origin")"
-      llms_txt="$(_ss_companion_llms_txt "$origin")"
       jq -n \
         --arg ts "$ts" --arg url "$url" --arg origin "$origin" --arg status "$html_status" \
         --arg html "$html" --arg headers_raw "$hdrs" \
@@ -859,7 +834,6 @@ run_state_site() {
         --argjson ads_txt "$ads_txt" \
         --argjson app_ads_txt "$app_ads" \
         --argjson security_txt "$sec_txt" \
-        --argjson llms_txt "$llms_txt" \
         --argjson lead_capture "$lc" \
         '{
           schema: "adssec.state-site.full",
@@ -881,8 +855,7 @@ run_state_site() {
           sitemap: $sitemap,
           ads_txt: $ads_txt,
           app_ads_txt: $app_ads_txt,
-          security_txt: $security_txt,
-          llms_txt: $llms_txt
+          security_txt: $security_txt
         }'
       ;;
   esac

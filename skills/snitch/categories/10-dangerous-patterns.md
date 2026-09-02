@@ -1,28 +1,30 @@
 ## CATEGORY 10: Dangerous Code Patterns
 > Type: sink-pattern · Groups: web · CWE: CWE-94
 
-**Data flow tracing required (SKILL.md Rule 7).** For every dynamic-code-execution sink this category surfaces (eval-family functions, `new Function(string)`, `vm.runInContext`, `child_process.exec` with shell string, dynamic `import()` of user-controlled paths), trace the argument back to its source. Literal strings and known-safe values are Passes. Arguments built from `req.*` / `params.*` / file content / message payloads / agent output are findings. Sinks reachable only through trusted internal code paths (config loaders, build scripts) get downgraded confidence, never auto-Passed without trace evidence.
+**Data flow tracing required (SKILL.md Rule 7).** For every dynamic-code-execution sink this category surfaces (eval-family functions, `new Function(string)`, `vm.runInContext`, `child_process.exec` with shell string, dynamic `import()` of user-controlled paths, and template *sources* compiled at runtime), trace the argument back to its source. Literal strings and known-safe values are Passes. Arguments built from `req.*` / `params.*` / file content / message payloads / agent output are findings. Sinks reachable only through trusted internal code paths (config loaders, build scripts) get downgraded confidence, never auto-Passed without trace evidence.
 
 ### Detection
 - Dynamic code evaluation functions (JS eval, dynamic Function constructor, VM context runners)
 - Shell/process execution modules (Node process spawning, shell command runners, sync variants)
 - Unsafe deserialization (JSON.parse with untrusted input, YAML unsafe load, Python serialization modules)
+- Template engines compiled at runtime: `nunjucks.renderString`, `handlebars.compile`, `ejs.render` / `ejs.compile`, `lodash.template`, Jinja2 `Template(...)` / `from_string`, Twig `createTemplate`, Liquid `parse`
 
 ### What to Search For
 - Dynamic code evaluation patterns
 - Shell command execution with user input
 - Unsafe deserialization
 - Unsafe YAML loading
-- GraphQL introspection enabled in production: `introspection: true` in Apollo/GraphQL Yoga server config (leaks full schema)
-- GraphQL server missing query depth and complexity limits (DoS vector)
+- **Server-side template injection (SSTI)**: user input reaching the *template string* rather than the template's data. `nunjucks.renderString(userInput)`, `handlebars.compile(req.body.tpl)`, `ejs.render(userTemplate, data)`, Jinja2 `Template(user_input).render()`, `lodash.template(userStr)`. The distinction is the whole finding: `render(template, {name: userInput})` passes user data into a fixed template and is a Pass; `render(userInput, data)` lets the user write template syntax, and every one of these engines exposes enough of the host language from template syntax to reach code execution. Trace which argument position the user value lands in and quote it
 
 ### Actually Vulnerable
 - User input in code evaluation
 - Shell commands with concatenated user input
 - Deserializing untrusted data
 - YAML load without safe loader
-- Apollo Server with `introspection: true` and no NODE_ENV guard (schema fully exposed)
-- GraphQL server with no `depthLimit` or `queryComplexity` plugin (unbounded query cost)
+- `nunjucks.renderString(req.body.content)` or `handlebars.compile(userTemplate)` — the user supplies template syntax, not template data
+- Jinja2 `Template(request.args["msg"]).render()` in a Flask or Django view
+
+GraphQL configuration (introspection, depth, complexity) is Category 57 — note the detection and report it there.
 
 ### NOT Vulnerable
 - Build tool configurations

@@ -47,6 +47,10 @@ Programmatic SEO problems decompose into five layers. Audit each in order.
 - "Crawl budget is probably wasted." Show sitemap URL count + an approximate index-coverage estimate from GSC if available.
 - "Google may have demoted these." Quote the date the templated surface was launched + any traffic-shape evidence.
 
+### Detection
+
+Route-template and data-source read across the generated page set, then per-layer scoring of the sampled pages.
+
 ### What to Search For
 
 - Route patterns with dynamic params + a data source feeding many records
@@ -86,7 +90,7 @@ Programmatic SEO problems decompose into five layers. Audit each in order.
 ### Context Check
 
 1. What's the data source per record? Live data, original research, structured database, strong. Variable swap with no record-specific data, weak.
-2. What's the unique-content-per-page floor? <300 words of unique content per page is too thin in 2026.
+2. What's the unique-content-per-page floor? <300 words of unique content per page is too thin.
 3. Is there a quality gate before publishing? Records below the quality bar should not generate a page.
 4. Is the sitemap selective? Only pages worth indexing should be in the sitemap.
 5. Is there a pruning workflow? Programmatic surfaces decay; pages that earn no impressions after 90+ days are crawl-budget waste.
@@ -108,7 +112,7 @@ Google's Helpful Content Update guidance (often demotes programmatic-thin): http
 - AI-content tells across templated pages → High.
 - Canonical conflicts on variant URLs → Medium.
 
-**Fix voice:** `solutions-architect` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `solutions-architect` (primary) | `honest-design-critic` (backup).
 
 Read `souls/solutions-architect.json` before writing the Fix.
 

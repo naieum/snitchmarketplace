@@ -1,6 +1,9 @@
 ## CATEGORY 63: JWT Algorithm & Key Attacks
 > Type: posture · Groups: secrets-auth · CWE: CWE-347
 
+> **Owns the JWT algorithm and key class** — `none`, unpinned `algorithms`, HS/RS confusion, `kid`
+> and `jku` handling. Category 4 defers here; it keeps weak *secret material* and session config.
+
 ### Detection
 - JWT libraries: `jsonwebtoken`, `jose`, `jwt-decode`, `pyjwt`, `python-jose`, `jjwt`, `golang-jwt/jwt`, `@fastify/jwt`
 - Custom JWT verification code (base64-decoding header, manually checking signature)

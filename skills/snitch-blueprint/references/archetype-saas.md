@@ -45,12 +45,11 @@ instrumented in-product from day one; it is the number every later decision tree
 1. **The product's first-run flow** — the 60-second proof. Highest-leverage surface in the
    archetype; specced first, built first.
 2. **Homepage** — job: a qualified visitor knows in 5 seconds what this does, who it's
-   for, and what changes if they use it. CLOSER order: hero states the wedge in customer
-   language (no "supercharge your workflow" — the claim inventory rule bans it anyway);
-   Label the right visitor early ("built for X" qualifies traffic and politely sheds the
-   rest); show the product doing the thing (real screenshot/recording — never a mockup of
-   features that don't exist); outcome before mechanism; honest objection handling
-   (security, migration, lock-in); signup CTA repeated.
+   for, and what changes if they use it. Section order: CLOSER (snitch-focusedcopy), with
+   two SaaS-only parameters — the hero states the wedge in customer language (no
+   "supercharge your workflow"; the claim inventory rule bans it anyway), and wherever the
+   product is shown doing the thing, it's a real screenshot or recording, never a mockup of
+   features that don't exist.
 3. **Signup → onboarding** — every field and step justified; each setup step removed
    compounds. OAuth if the audience has it.
 4. **Pricing page** (if posture decided) — snitch-ux paywall defaults: real tiers, one
@@ -76,7 +75,7 @@ instrumented in-product from day one; it is the number every later decision tree
 
 ## Handoffs
 
-snitch-cmo Foundation mode inherits the wedge/audience sections verbatim; snitch-focusedcopy
-for the homepage once real traffic shows where it leaks; snitch-ux for onboarding and
-paywall depth; snitch-marketing to grade the launched site; ads-ready only when the
-DEFERRED paid trigger fires.
+snitch-cmo Foundation mode inherits the wedge/audience sections as recorded Decisions, never
+re-interviewed; snitch-focusedcopy for the homepage once real traffic shows where it leaks;
+snitch-ux for onboarding and paywall depth; snitch-marketing to grade the launched site;
+snitch-adsready only when the DEFERRED paid trigger fires.

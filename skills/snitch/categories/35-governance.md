@@ -3,7 +3,7 @@
 
 Covers ISO 27001 / FedRAMP / CMMC certification gaps.
 
-> **Cross-reference:** Overlaps with Category 21 (SOC 2) for audit logs and Category 11 (Cloud Security) for IAM/cloud config. Only flag here for ISO 27001 / FedRAMP / CMMC specific gaps — not for general cloud or logging issues already covered by those categories.
+> **Cross-reference:** Overlaps with Category 21 (SOC 2) for audit logs and Category 43 (IaC Security) for IAM/cloud config. Only flag here for ISO 27001 / FedRAMP / CMMC specific gaps — not for general cloud or logging issues already covered by those categories.
 
 ### Detection
 - Keywords in code/config: `iso27001`, `fedramp`, `cmmc`, `govcloud`, `cui`, `nist800`, `ato`

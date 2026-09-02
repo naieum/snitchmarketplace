@@ -1,7 +1,7 @@
 # lib/plan.sh — capability matrix and gating helper for ads-ready.
-# Replaces the plan-tier model from cloud-secure with a capability model:
-# each subcommand requires zero or more capabilities (env vars / installed CLIs).
-# `requires_capability` mirrors `requires_tier` from cloud-secure.
+# Gating is by capability, not by paid tier: each subcommand requires zero or
+# more capabilities (env vars / installed CLIs). A missing capability locks the
+# subcommand and the JSON says which one and how to unlock it.
 
 # Mapping of subcommand area -> required capability names (space-separated).
 # An empty value means: no capability required (works with curl + jq alone).

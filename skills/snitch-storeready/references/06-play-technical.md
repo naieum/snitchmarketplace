@@ -2,15 +2,17 @@
 
 When to read this: verifying an Android project's build configuration, packaging, and runtime quality against Play's hard technical gates.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 ## Target API level
 
-Deadlines run on a yearly cadence: every August 31, new apps and updates must target the previous year's Android release. Current cycle (current as of 2026-08 — verify at https://support.google.com/googleplay/android-developer/answer/11926878):
+Deadlines run on a yearly cadence: every August 31, new apps and updates must target the previous year's Android release. Current cycle (verify at https://support.google.com/googleplay/android-developer/answer/11926878):
 
 | App class | Requirement |
 |---|---|
-| New apps and updates, by 2026-08-31 | target Android 16 (API 36); extension to 2026-11-01 available via the Play Console Policy Status page |
-| Wear OS / Android Automotive | API 35 |
-| Android TV / Android XR | API 34 |
+| New apps and updates, since 2026-08-31 | target Android 16 (API 36); extension to 2026-11-01 available via the Play Console Policy Status page |
+| Wear OS / Android Automotive, since 2026-08-31 | API 35 |
+| Android TV / Android XR, since 2026-08-31 | API 34 |
 | Existing apps (not updated) | must target at least API 35 or they stop surfacing to new users on devices running newer Android; existing installs keep working |
 
 A release targeting a lower API than the floor is rejected at upload.
@@ -25,7 +27,7 @@ Static check: `targetSdk` (and lagging `compileSdk`) in build.gradle / build.gra
 
 ## Android Vitals bad-behavior thresholds
 
-Exceeding these reduces discoverability; exceeding the per-device thresholds can additionally put a warning on your store listing on affected devices. Figures current as of 2026-08 — verify at https://developer.android.com/topic/performance/vitals:
+Exceeding these reduces discoverability; exceeding the per-device thresholds can additionally put a warning on your store listing on affected devices. Verify current figures at https://developer.android.com/topic/performance/vitals:
 
 | Metric | Overall threshold | Per-device-model threshold |
 |---|---|---|

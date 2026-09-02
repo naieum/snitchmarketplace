@@ -60,9 +60,9 @@ Web.dev on lazy loading: https://web.dev/articles/browser-level-image-lazy-loadi
 - Many below-fold images without lazy → Medium.
 - Iframe without lazy → Medium.
 
-**Fix voice:** `sarah-drasner` (primary) | `performance-engineer` (backup).
+**Fix voice:** `motion-engineer` (primary) | `performance-engineer` (backup).
 
-Read `souls/sarah-drasner.json` before writing the Fix. Sarah's animation/perf POV: lazy doesn't mean janky; properly-configured lazy is invisible to the user and saves bandwidth.
+Read `souls/motion-engineer.json` before writing the Fix. The motion-and-perf position: lazy does not mean janky; properly configured lazy loading is invisible to the user and saves bandwidth.
 
 Worked fix example:
 

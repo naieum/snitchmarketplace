@@ -1,7 +1,7 @@
 {
   "name": "snitch-devready",
-  "description": "Bootstrap a repo for AI-assisted development \u2014 greenfield/brownfield-aware CLAUDE.md, slash commands, feedback loop, permissions allowlist, and a two-tier coding standard (enforced vs advisory) wired to the repo's real gates.",
-  "version": "0.4.0",
+  "description": "Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs.",
+  "version": "0.5.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

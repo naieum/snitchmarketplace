@@ -2,6 +2,8 @@
 
 When to read this: auditing an Android app against Play Developer Program Policies, or triaging a Play rejection/removal notice.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 Canonical source: https://play.google/developer-content-policy/ (the Policy Center). Play Help answer-page IDs churn with every policy refresh, so cite the Policy Center root and category names, not answer URLs.
 
 ## Policy taxonomy

@@ -1,10 +1,8 @@
 ## CATEGORY 70: Content marketing strategy
 
-In 2026 the content game changed. AI overviews zero-click most informational queries, generic "what is X" / "how to X" content rarely earns the visit even when it ranks. Baseline assumption: Google optimizes for satisfying searchers on-platform (featured snippets, AI overviews, meta descriptions rewritten to answer the query) — any strategy premised on "good content gets rewarded with traffic" is built on a false premise. The strategies that work now:
+The content game changed. AI overviews zero-click a large share of informational queries, and generic "what is X" / "how to X" content rarely earns the visit even when it ranks. Baseline assumption: Google optimizes for satisfying searchers on-platform (featured snippets, AI overviews, meta descriptions rewritten to answer the query) — any strategy premised on "good content gets rewarded with traffic" is built on a false premise. The strategies that work now:
 
-- **Business-potential scoring**: score every candidate topic 0-3 by how indispensable the product is to solving the problem the topic covers. 3 = the product is an irreplaceable solution; 2 = it helps but isn't essential; 1 = it can only be mentioned fleetingly (purely educational, nobody's ready to buy); 0 = no way to mention it. Prioritize by traffic potential × business potential. Traffic that can't move the business is a traffic source, not a strategy. Prerequisite: deep product knowledge — the hardest part of product-led content.
-- **Product-led weaving, never hard-selling**: in posts on 2-3-scored topics, place the product inside the step where it's actually used, framed as why that step gets easier. The mention must survive the removal-of-brand test (the advice stays complete without it). E-commerce variant: the product link sits adjacent to the specific advice that implies it, so need and purchase are seconds apart.
-- **Distribution-first, not ranking-first**: assume Google won't send you the visitor; plan distribution (newsletter, LinkedIn, X, podcast, community) on day one of writing. The post that lives only on your blog reaches no one in 2026. Checkable form — the promotion-before-creation gate: before a piece is written, three questions need answers: (1) who can we share this with? (2) who's going to link to it? (3) how will it rank, step by step? No answers → the piece gets deferred. Content doesn't rank itself, especially on low-backlink sites.
+- **Business-potential scoring** — the definition the findings below are scored against: every candidate topic rates 0-3 for how indispensable the product is to solving the problem the topic covers (3 = the product is the solution, 2 = it helps but isn't essential, 1 = it can only be mentioned in passing, 0 = it can't be mentioned at all), and a product mention passes the removal-of-brand test when the advice stays complete with the brand name deleted. This category audits the *skew* of the published set and whether 2-3 posts weave the product and link onward. Building the topic roadmap, the product-led weave and the distribution plan is generation work, not a site finding: call the Skill tool with "snitch-cmo".
 - **AI-extraction-aware**: write content that LLMs can lift cleanly (clear definitions in opening paragraph, structured tables, explicit Q+A). Cross-reference Cat 82.
 - **Commercial-intent + comparison content** still earns clicks (queries with high commercial intent: `<competitor> alternative`, `best X for Y`, `X vs Y`, AI overviews don't fully displace these).
 - **Original data + research** earns links and citations the AI can't fabricate.
@@ -15,7 +13,7 @@ Audit covers: cadence, topic coverage, distribution surfaces, capture infrastruc
 
 ### Pre-flight: content presence check
 
-If the site has zero blog/article/post content (no `/blog/`, no `/posts/`, no `/articles/` route, no MDX files in `content/`), **Skip** with reason `no published content yet; content strategy is a build-from-scratch question, see STEP 5 recommendations`. Don't run Evidence Required.
+If the site has zero blog/article/post content (no `/blog/`, no `/posts/`, no `/articles/` route, no MDX files in `content/`), **Skip** with reason `no published content yet; content strategy is a build-from-scratch question, see STEP 4 recommendations`. Don't run Evidence Required.
 
 ### Evidence required (do not skip, only when content exists)
 
@@ -133,9 +131,9 @@ Animalz on content frameworks: https://www.animalz.co/blog/
 - No distribution beyond own site → Medium.
 - Topic concentration too narrow → Medium.
 
-**Fix voice:** `frank-chimero` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `content-shape-editor` (primary) | `honest-design-critic` (backup).
 
-Read `souls/frank-chimero.json` before writing the Fix.
+Read `souls/content-shape-editor.json` before writing the Fix.
 
 Worked fix example:
 
@@ -143,14 +141,6 @@ Worked fix example:
 >
 > Topics: cluster around 4-6 themes the audience cares about, not 20. Each post earns its place in one cluster. Over a year you build authority on those clusters; Google rewards depth.
 >
-> Then score every candidate topic 0-3: can the product be the natural hero of the solution (3), a helper (2), a footnote (1), or nothing at all (0)? Order the roadmap by traffic potential × business potential, and let the 0s go. When you write a 2 or a 3, put the product inside the step where it's actually used — the advice must stay complete if the brand name were deleted. And no post ends at a dead end: the conclusion links somewhere, and posts on scored topics get a path to commercial content, directly or through a comparison piece.
->
-> Before any piece gets written, make it pass the gate: who will you share it with, who will link to it, how will it rank — step by step. If nobody can answer, the piece isn't ready to exist yet. "If you build it, they will come" fails hardest on low-backlink sites.
->
 > If you're a low-authority site in a competitive niche, don't swing at head terms owned by big-brand sites — the problem isn't your content, it's the battlefield. Ladder in: target low-difficulty keywords that still score on business potential, compete only where the currently-ranking sites are your authority peers, and re-tier upward as authority grows. Fresh keyword spaces come from unusual seed terms (an LLM will list 20-40 niche-adjacent phrases the obvious seeds miss), from enumerating structural patterns in keywords you've already found, and from harvesting the top pages of low-authority competitors who already win those terms. A page stuck around position 30+ for months despite tweaks usually means wrong battlefield, not bad content.
 >
-> Distribution: every post gets cross-posted somewhere. LinkedIn, X thread, newsletter at minimum. The post that lives only on your blog reaches your existing readership; the post that exists across three surfaces compounds. Include places where traffic already flows: forum and Reddit threads that already rank for your niche keywords carry proven, recurring traffic — a helpful answer there (especially in ranking threads with few comments, or early in new threads) compounds into recognition.
->
-> Capture: every post has a newsletter signup mid-page or at the bottom. The casual reader who liked the post becomes a recurring reader.
->
-> Run two layers on purpose: broad attention content that keeps opening the top of the funnel, and deep tactical content that serves the person who will actually pay. And point everything at one lead generator — the reader who has seen the same asset offered six times downloads it; the reader offered six different assets downloads none.
+> Distribution, product weave and topic selection are strategy: to build the roadmap, the promotion plan and the lead-generator ladder behind it, call the Skill tool with "snitch-cmo".

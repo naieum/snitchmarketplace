@@ -8,8 +8,25 @@
 #   - log_section prints a single H2-ish separator.
 #   - Stderr is for human chatter / fail lines; stdout is the report.
 
-ADSEC_FINDINGS_FILE="${STATE_DIR:-/tmp}/findings.tsv"
-: > "$ADSEC_FINDINGS_FILE" 2>/dev/null || true
+# Findings go to the runtime state dir. If that path is not writable (read-only
+# install, unwritable HOME), fall back to the temp dir rather than erroring.
+ADSEC_FINDINGS_FILE="${STATE_DIR:-${TMPDIR:-/tmp}}/findings.tsv"
+if ! (: > "$ADSEC_FINDINGS_FILE") 2>/dev/null; then
+  ADSEC_FINDINGS_FILE="${TMPDIR:-/tmp}/adsec-findings-$$.tsv"
+  (: > "$ADSEC_FINDINGS_FILE") 2>/dev/null || true
+fi
+
+# Temp files any lib creates for a whole run. One EXIT trap owns them all, so
+# no lib installs its own (a second `trap ... EXIT` would silently replace it).
+ADSEC_TMPFILES=()
+adsec_tmp_register() { ADSEC_TMPFILES+=("$1"); }
+_adsec_cleanup_tmp() {
+  local f
+  for f in "${ADSEC_TMPFILES[@]:-}"; do
+    [[ -n "$f" ]] && rm -f "$f"
+  done
+}
+trap _adsec_cleanup_tmp EXIT
 
 _color() {
   if [[ -t 1 ]]; then
@@ -63,7 +80,7 @@ log_info() {
 # log_locked <area> <key> <message> <required_capability> [docs_url]
 log_locked() {
   local area="$1" key="$2" msg="$3" cap="$4" url="${5:-}"
-  printf '%s⚪ [N/A]%s  [%s/%s] %s [locked: %s]' "$(_color cyan)" "$(_color reset)" "$area" "$key" "$msg" "$cap"
+  printf '%s⚪ [SKIP]%s [%s/%s] %s [locked: %s]' "$(_color cyan)" "$(_color reset)" "$area" "$key" "$msg" "$cap"
   [[ -n "$url" ]] && printf ' → %s' "$url"
   printf '\n'
   printf 'LOCKED\t%s\t%s\t%s\t%s\t%s\n' "$area" "$key" "$msg" "$cap" "$url" >> "$ADSEC_FINDINGS_FILE" 2>/dev/null || true

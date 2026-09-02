@@ -78,4 +78,4 @@ For a SaaS marketing site or small ecommerce shop, the free path is fine.
 ## See also
 
 - `06-core-web-vitals.md` — CWV targets + fixes.
-- `templates/github-actions/ads-ready-on-pr.yml` — drop-in CI step running `score`.
+- `30-recipes.md`, "Run `score` in CI" — the three-line step, for a runner that already has the skill.

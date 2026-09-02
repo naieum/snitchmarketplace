@@ -74,7 +74,7 @@ substitute a different CWE for a category here, since the two are cross-checked 
 |---|---|---|
 | Injection attacks — SQL, LDAP, XPath, command, parameter, object, fault | Category 1 (SQL Injection) | CWE-89 |
 | Injection attacks — code and command execution | Category 10 (Dangerous Code Patterns) | CWE-94 |
-| Attacks on data and data structures — input manipulation | Category 30 (Input Validation & ReDoS) | CWE-20 |
+| Attacks on data and data structures — input manipulation | Category 30 (Input Validation) | CWE-20 |
 | Attacks on data and data structures — object manipulation | Category 65 (Insecure Deserialization) | CWE-502 |
 | Attacks on data and data structures — XML entity processing | Category 49 (XXE & XML Attacks) | CWE-611 |
 | Attacks on cryptography usage — weak algorithms, modes, cipher suites | Category 9 (Cryptography) | CWE-327 |
@@ -117,8 +117,8 @@ information … vulnerabilities are assigned a risk ranking …"
 components incorporated into bespoke and custom software is maintained to facilitate vulnerability
 and patch management."
 
-**Mapped Snitch categories:** 27 (Dependency Vulnerabilities / Supply Chain), 69 (Vulnerable
-Dependencies / SCA), 33 (Unused Dependencies, Dead Code & Package Bloat)
+**Mapped Snitch categories:** 27 (Dependency Vulnerabilities / Supply Chain), 33 (Unused
+Dependencies, Dead Code & Package Bloat), 66 (Typosquatting & Malicious Install Scripts)
 
 **Snitch cannot evidence:** 6.3.3 (installing applicable security patches within the required
 timeframe) — that is a patch-management record, not a code property.

@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server or bundled tools required. LLM-backed work uses the user's existing model.
 metadata:
   author: Snitch
-  version: 0.2.0
+  version: 0.3.1
   homepage: https://snitchplugin.com
 ---
 
@@ -22,6 +22,8 @@ You are an app-store submission expert auditing a mobile app for store readiness
 
 ## When NOT to use this skill
 
+Hand off by calling the Skill tool with the named skill (one skill per call):
+
 - Security vulnerabilities in the code → snitch-security. The split: storeready judges against store policy and upload gates; snitch-security judges against attacker impact. `debuggable=true` appears in both, for different reasons.
 - Store-listing copywriting and conversion → snitch-marketing or snitch-focusedcopy. storeready checks that metadata *complies* (lengths, banned terms, truthful screenshots), not that it *sells*.
 - ATT / SKAdNetwork wiring for ad measurement → snitch-adsready. storeready only checks that tracking code has the consent surface the stores require.
@@ -30,7 +32,7 @@ You are an app-store submission expert auditing a mobile app for store readiness
 
 1. **No finding without evidence.** Static findings cite `file:line` with the exact snippet. Checklist findings cite what the user told you ("user-confirmed", "user-unsure").
 2. **No invented rule citations.** Cite Apple guideline numbers (e.g. 5.1.1(v)) and Play policy names only when the reference files carry them. If you cannot cite the rule, downgrade to a plain-language WARN.
-3. **Volatile facts get hedges.** Fee percentages, tester counts, review times, yearly SDK/API floors, and EU fee structures all move. State them with "current as of 2026-08 — verify in App Store Connect / Play Console" and the official URL from the reference file.
+3. **Volatile facts get hedges.** Fee percentages, tester counts, review times, yearly SDK/API floors, and EU fee structures all move. State them with the reference file's "Facts verified" date, "verify in App Store Connect / Play Console", and the official URL from the reference file.
 4. **Never promise approval.** Review has human discretion. The ceiling is "no known blockers found".
 5. **Absence of a feature is not a finding.** An app with no account system does not need account deletion; mark ⚪ N/A with the reason. An Android-only app skips every Apple check as N/A, and vice versa.
 6. **Three outcomes only** per check: Finding (with evidence), Pass (with evidence), or Skip (with the reason and what would unblock it). Never "partially audited".

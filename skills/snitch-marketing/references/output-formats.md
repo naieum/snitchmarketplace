@@ -2,11 +2,15 @@
 
 The default report (`SEO_AUDIT_REPORT.md`) is comprehensive markdown — the format that reads well in chat, in IDEs, and in PR comments. Different consumers need different shapes. This reference documents the alternate output formats and when to use each.
 
+The post-scan menu that offers these formats lives in `SKILL.md` (STEP 5) and is the single
+source of truth for the option numbers. This file describes the formats themselves. The markdown
+report is always written; every other format is derived from it.
+
 ## Format 1: Default — full markdown report
 
 **Audience**: technical lead, SEO consultant, the team executing fixes.
 
-**Shape**: full report per `report-template.md`. Site context, executive summary, findings grouped by category, evidence per finding, fix prose, passed checks, voice metadata.
+**Shape**: full report per `report-template.md`. Site context, executive summary, findings grouped by category, evidence per finding, fix prose, and passed checks.
 
 **File**: `SEO_AUDIT_REPORT.md`
 
@@ -20,9 +24,9 @@ The default report (`SEO_AUDIT_REPORT.md`) is comprehensive markdown — the for
 
 **File**: `SEO_EXECUTIVE_SUMMARY.md`
 
-**Generation**: STEP 4 Option (new) — "Generate executive summary." Derived from the full report by selecting:
+**Generation**: STEP 5 Option 11, "Generate executive summary." Derived from the full report by selecting:
 - Top 5 findings by severity
-- The top 3 strategic recommendations from STEP 4.5 (if STEP 4.5 ran)
+- The top 3 strategic recommendations from STEP 4 (if STEP 4 ran)
 - Quick wins (Low-effort, High-leverage findings)
 - One-paragraph site-context summary
 
@@ -75,8 +79,7 @@ See `SEO_AUDIT_REPORT.md` for evidence, file:line references, and fix code.
     "target": "https://snitchplugin.com",
     "mode": "source",
     "stack": "TanStack Start + Vite + Cloudflare Workers",
-    "categoriesScanned": [1, 2, 3, 9, 10, 31, 86, 87],
-    "voiceReadsCompleted": ["frank-chimero", "dieter-rams", "jen-simmons"],
+    "categoriesScanned": [1, 2, 3, 9, 10, 31, 32, 86],
     "siteContext": {
       "purpose": "Security audit plugin for AI-generated code",
       "businessModel": "subscription + one-time",
@@ -108,7 +111,6 @@ See `SEO_AUDIT_REPORT.md` for evidence, file:line references, and fix code.
       },
       "risk": "Without canonical, utm-tagged duplicate URLs compete with the original; ranking dilution.",
       "fix": {
-        "voice": "dieter-rams",
         "prose": "Add one canonical, absolute, self-referencing...",
         "code": "head: () => ({ links: [{ rel: 'canonical', href: ... }] })"
       },
@@ -121,7 +123,7 @@ See `SEO_AUDIT_REPORT.md` for evidence, file:line references, and fix code.
     { "category": 1, "evidence": "robots.txt at /robots.txt; allows GPTBot, ClaudeBot..." }
   ],
   "skippedCategories": [
-    { "category": 38, "reason": "no <video> elements found" }
+    { "category": 30, "reason": "no <video> elements found" }
   ]
 }
 ```
@@ -158,13 +160,9 @@ finding-001,3,"Canonical URL","Canonical missing on blog route",High,High,source
 
 **File**: `seo_audit.html`
 
-**Generation**: STEP 4 Option — "Generate client-deliverable HTML." Renders the markdown report through a styled template with:
-- Brand colors per `snitch-marketing.config.md` (or default Snitch palette: red, white, black)
-- Sticky TOC with category jumps
-- Severity-color-coded finding cards
-- Code blocks with Prism.js syntax highlighting
-- Print-friendly CSS for PDF export
-- Embedded screenshot evidence (if crawl mode captured screenshots)
+**Generation**: rendered from the markdown report by `scripts/render-report.py`. The template,
+its styling contract, and the `confidential` behaviour live in `references/html-template.md` —
+read that file when producing HTML; it is the owner of the render spec.
 
 **When to use**: agency engagements where the deliverable is a polished report; sharing with clients who don't read markdown.
 
@@ -180,47 +178,6 @@ finding-001,3,"Canonical URL","Canonical missing on blog route",High,High,source
 
 **When to use**: CI/CD diff-mode runs (Recipe 1 in `ci-recipes.md`).
 
-## Format 7: Slack / chat-tool digest
-
-**Audience**: team notification channel.
-
-**Shape**: 3-5 line summary with link to full report.
-
-**Generation**: post-audit webhook to a Slack channel.
-
-**Template**:
-
-```
-:mag: SEO Audit complete for {brand}
-:warning: 3 Critical, 8 High, 12 Medium, 5 Low
-:trophy: 4 quick wins identified — see report
-:link: Full report: {artifact link}
-```
-
-**When to use**: scheduled audit runs (weekly cron); post-deploy production audits.
-
-## Selection logic
-
-When the user reaches STEP 4 (Post-Scan Actions), present format options:
-
-```
-[1] Run another audit
-[2] Fix one by one
-[3] Fix all
-[4] Triage findings
-[5] Generate PR-ready fix branch
-[6] Re-audit after fixes
-[7] Compare to previous audit
-[8] Export as JSON (seo_audit.json)
-[9] Export as CSV (seo_audit.csv)
-[10] Export as HTML (seo_audit.html)
-[11] Generate executive summary (SEO_EXECUTIVE_SUMMARY.md)
-[12] Send digest to Slack/chat (configure webhook in snitch-marketing.config.md)
-[13] Done
-```
-
-Default formats always written: `SEO_AUDIT_REPORT.md` (markdown) — the canonical artifact.
-
 ## Format-specific considerations
 
 ### Redaction across formats
@@ -233,11 +190,19 @@ The JSON schema is versioned (`"version": 1`). Future versions may add fields; e
 
 ### Confidentiality settings
 
-For HTML format especially: `snitch-marketing.config.md` may include `confidential: true`, which adds a "Confidential — do not distribute" footer to the HTML and disables the print/share buttons. Useful for agency reports under NDA.
+`snitch-marketing.config.md` may set `confidential: true`, which adds a "Confidential — do not
+distribute" footer to the rendered HTML. See `references/html-template.md`.
+
+### No voice metadata in any export
+
+No emitted artifact — markdown, JSON, CSV, HTML, executive summary — carries a soul slug, a
+`voice` field, or a list of voices read. The voice mechanism is internal
+(`references/voiced-remediations.md`).
 
 ## Cross-references
 
 - `report-template.md` — canonical full markdown report structure
-- `ci-recipes.md` — PR comment + Slack/chat patterns
+- `html-template.md` — the HTML render spec
+- `ci-recipes.md` — the CI prompt contract and PR comment shape
 - `triage-workflow.md` — triage state values referenced in JSON output
-- `snitch-marketing.config.md` — brand styling + webhook configuration
+- `snitch-marketing.config.md` — slug, confidentiality, and lint thresholds

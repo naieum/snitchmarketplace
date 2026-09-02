@@ -1,9 +1,9 @@
-# lib/refresh_docs.sh — refresh authoritative docs into ${REF_DIR}/_cache/.
+# lib/refresh_docs.sh — refresh authoritative docs into ${CACHE_DIR}.
 # Pulls per-platform developer docs + Consent Mode v2 + ads.txt + CWV thresholds.
 #
 # Exposes: run_refresh_docs
 # Side effects:
-#   - Writes ONLY inside ${REF_DIR}/_cache/ and ${REF_DIR}/_refresh-log.json.
+#   - Writes ONLY inside ${CACHE_DIR} (runtime state, outside the skill folder).
 #   - Does NOT touch the user's project.
 
 # _refresh_default_sources -> emits one URL per line.
@@ -34,13 +34,15 @@ https://searchads.apple.com/help
 https://developer.apple.com/documentation/storekit/skadnetwork
 https://web.dev/articles/vitals
 https://iabtechlab.com/wp-content/uploads/2017/09/IABOpenRTB_Ads.txt_Public_Spec_V1-0-2.pdf
-https://llmstxt.org/
+https://platform.openai.com/docs/bots
 EOF
 }
 
+# The source list is _refresh_default_sources above. Set ADSEC_DOC_SOURCES to a
+# JSON array file to override it.
 _refresh_load_sources() {
-  local f="${REF_DIR:-}/_doc-sources.json"
-  if [[ -f "$f" ]]; then
+  local f="${ADSEC_DOC_SOURCES:-}"
+  if [[ -n "$f" && -f "$f" ]]; then
     jq -r '.[]?' "$f" 2>/dev/null
     return 0
   fi
@@ -111,12 +113,15 @@ _refresh_log_append() {
 
 run_refresh_docs() {
   log_section "refresh-docs"
-  if [[ -z "${REF_DIR:-}" ]]; then
-    log_fail "refresh-docs" "ref-dir" "REF_DIR not set in env. ads-ready.sh should export it."
+  if [[ -z "${CACHE_DIR:-}" ]]; then
+    log_fail "refresh-docs" "cache-dir" "CACHE_DIR not set in env. ads-ready.sh should export it."
     return 2
   fi
-  mkdir -p "${REF_DIR}/_cache"
-  local log="${REF_DIR}/_refresh-log.json"
+  if ! mkdir -p "${CACHE_DIR}"; then
+    log_fail "refresh-docs" "cache-dir" "cannot create ${CACHE_DIR}. Set ADSEC_STATE_DIR to a writable path."
+    return 2
+  fi
+  local log="${CACHE_DIR}/_refresh-log.json"
 
   local ok=0 fail=0
   local url
@@ -125,7 +130,7 @@ run_refresh_docs() {
     [[ "$url" =~ ^# ]] && continue
     local slug out
     slug="$(_refresh_slug "$url")"
-    out="${REF_DIR}/_cache/${slug}.md"
+    out="${CACHE_DIR}/${slug}.md"
     if _refresh_save "$url" "$out"; then
       _refresh_log_append "$log" "$url" "$out"
       log_ok "refresh-docs" "fetch" "${url} -> ${out}"

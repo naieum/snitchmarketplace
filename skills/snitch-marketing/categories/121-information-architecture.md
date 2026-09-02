@@ -1,7 +1,8 @@
 ## CATEGORY 121: Information architecture & site structure
 
 The whole-site structure view. Cat 19 finds orphan pages, Cat 20 finds broken
-links, Cat 95 audits programmatic templates, Cat 22/33 cover breadcrumbs. This
+links, Cat 95 audits programmatic templates, Cat 22 and Cat 32's BreadcrumbList row
+cover breadcrumbs. This
 category audits how the site is **organized**: can a user (and a crawler) get from
 the homepage to any money page in a few clicks, do related pages cluster into
 hubs, and does faceted navigation create crawl traps? A site can pass every
@@ -104,9 +105,9 @@ Faceted navigation & crawl budget (Google Search Central): https://developers.go
 - Flat architecture on a large site → Medium.
 - Inconsistent breadcrumbs / over-broad nav → Medium.
 
-**Fix voice:** `brad-frost` (primary) | `solutions-architect` (backup).
+**Fix voice:** `systems-designer` (primary) | `solutions-architect` (backup).
 
-Read `souls/brad-frost.json` before writing the Fix.
+Read `souls/systems-designer.json` before writing the Fix.
 
 Worked fix example:
 

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Snitch Router"
+  short_description: "Which Snitch skill fits your situation"
+policy:
+  allow_implicit_invocation: false

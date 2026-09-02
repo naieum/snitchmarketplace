@@ -112,9 +112,9 @@ Google's note on title rewrites (Google sometimes overrides your title in SERP):
 - Brand-first ordering on non-homepage → Medium.
 - Suboptimal length 60-70 chars with keyword at front → Low.
 
-**Fix voice:** `aaron-draplin` (primary) | `mike-monteiro` (backup, for "you shipped a default title to prod, what are you doing" energy).
+**Fix voice:** `plain-language-designer` (primary) | `honest-design-critic` (backup, for "you shipped a default title to prod, what are you doing" energy).
 
-Read `souls/aaron-draplin.json` before writing the Fix. Draplin's whole DDC ethos is plain-language commercial design, say what the thing is, in the voice of a person who actually buys things. SERP titles are the closest the web gets to a billboard you have 60 chars to write.
+Read `souls/plain-language-designer.json` before writing the Fix. Plain-language commercial design says what the thing is, in the words of a person who actually buys things. SERP titles are the closest the web gets to a billboard you have 60 characters to write.
 
 Worked fix example:
 

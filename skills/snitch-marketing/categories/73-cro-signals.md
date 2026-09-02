@@ -1,6 +1,6 @@
 ## CATEGORY 73: CRO (conversion-rate optimization) signals
 
-Is the team measuring funnel performance, running A/B tests **with statistical rigor**, gathering qualitative data (heatmaps, session recordings, surveys), prioritizing tests, and iterating? Cat 60 covers point-in-time conversion *design*; Cat 99 covers the funnel *journey*; Cat 55 covers *event taxonomy*; Cat 74 covers *voice-of-customer / social proof*. This category covers the team's CRO **discipline**.
+Is the team measuring funnel performance, running A/B tests **with statistical rigor**, gathering qualitative data (heatmaps, session recordings, surveys), prioritizing tests, and iterating? Cat 60 covers point-in-time conversion *design*; Cat 99 covers the funnel *journey*; Cat 53 covers *event taxonomy*; Cat 74 covers *voice-of-customer / social proof*. This category covers the team's CRO **discipline**.
 
 Two layers are assessable, and they have different evidence rules — do not conflate them:
 
@@ -9,7 +9,7 @@ Two layers are assessable, and they have different evidence rules — do not con
 
 ### Pre-flight: traffic + tooling check
 
-If the site has <100 visitors/day (estimable from analytics if accessible, or assumed for new domains <90d old per STEP 0.6), CRO is premature — A/B tests can't reach statistical significance. **Skip** with reason `traffic too low for meaningful CRO; revisit after sustained 100+ daily visitors, see STEP 5 recommendations`. Don't run Evidence Required. (Layer-A tooling-integrity findings like a leftover anti-flicker snippet still apply even on low traffic, because they tax performance regardless.)
+If the site has <100 visitors/day (estimable from analytics if accessible, or assumed for new domains <90d old per STEP 0.6), CRO is premature — A/B tests can't reach statistical significance. **Skip** with reason `traffic too low for meaningful CRO; revisit after sustained 100+ daily visitors, see STEP 4 recommendations`. Don't run Evidence Required. (Layer-A tooling-integrity findings like a leftover anti-flicker snippet still apply even on low traffic, because they tax performance regardless.)
 
 ### Evidence required (do not skip, only when traffic is meaningful)
 
@@ -19,8 +19,8 @@ If the site has <100 visitors/day (estimable from analytics if accessible, or as
 2. `Grep` for **anti-flicker / page-hiding snippets** (the highest-value source-detectable signal — see What to Search For). These hide the page until a client-side test mutates the DOM and directly delay LCP.
 3. `Grep` for session-replay / heatmap tools: Hotjar, Microsoft Clarity, FullStory, LogRocket, Contentsquare, Smartlook, PostHog replay, Mouseflow.
 4. `Grep` for on-site survey / VoC tools: Hotjar surveys, Sprig (legacy alias `UserLeap`), Qualaroo, Survicate, Typeform embeds, Refiner.
-5. `Grep` for consent CMP + Consent Mode (gating that biases CRO data): OneTrust/Optanon, Cookiebot, Osano, `gtag('consent', ...)`. Cross-reference Cat 100.
-6. `Grep` for funnel-event tracking (cross-reference Cat 55): per-step signup/checkout events, drop-off measurement.
+5. `Grep` for consent CMP + Consent Mode (gating that biases CRO data): OneTrust/Optanon, Cookiebot, Osano, `gtag('consent', ...)`. Presence or absence is what this category needs; whether the consent wiring is correct is not audited here — call the Skill tool with "snitch-adsready".
+6. `Grep` for funnel-event tracking (cross-reference Cat 53): per-step signup/checkout events, drop-off measurement.
 7. `Grep` for the healthy modern substrate: GA4 (`G-`) + signs of warehouse export / server-side assignment (see NOT a Problem — absence of a client tester is not automatically a gap).
 8. `Read` analytics setup for funnel definitions / dashboard names.
 
@@ -70,10 +70,10 @@ Source/crawl-detectable tooling + measurement integrity (Layer A); process disci
 **Survey / VoC:**
 - `cdn.sprig.com` / `window.Sprig` / `UserLeap` (legacy), `_kiq` (Qualaroo), `survicate` / `_sva`, `embed.typeform.com` / `data-tf-`, `refiner.io`
 
-**Consent gating (cross-ref Cat 100):**
+**Consent gating (presence only; correctness belongs to snitch-adsready):**
 - `cookielaw.org` / `OneTrust` / `Optanon`, `consent.cookiebot.com` / `data-cookieconsent`, `osano`, `type="text/plain"` category-gated tags, `gtag('consent', ...)`, `ad_user_data` / `ad_personalization`
 
-**Funnel events (cross-ref Cat 55):**
+**Funnel events (cross-ref Cat 53):**
 - `signup_started`, `signup_completed`, `step_1`, `checkout_started`, `checkout_completed`, `drop_off_step_X`
 
 ### Actually Hurts the Marketing Surface
@@ -88,13 +88,13 @@ Source/crawl-detectable tooling + measurement integrity (Layer A); process disci
   Evidence required: ≥2 distinct tester signatures in rendered HTML/network.
 - **Stacked session-replay tools** (≥2 of Hotjar/Clarity/FullStory) — redundant payload weight and multiplied privacy exposure.
   Evidence required: ≥2 replay signatures.
-- **Replay / experiment tag firing *before* consent** — privacy + legal exposure (session-replay-before-consent has driven a wave of CIPA "wiretap" suits on checkout pages). Cross-ref Cat 100 / Cat 107.
+- **Replay / experiment tag firing *before* consent** — privacy + legal exposure (session-replay-before-consent has driven a wave of CIPA "wiretap" suits on checkout pages). The ad-pixel side of the same order problem is not audited here: call the Skill tool with "snitch-adsready".
   Evidence required: tag fires pre-consent in the rendered consent order.
 - **Experiment / replay tool gated *behind* consent on a low-traffic site** — the sample is selection-biased toward consenters and under-powered, quietly invalidating the A/B math.
   Evidence required: `text/plain`-gated tester/replay tag + low traffic.
 - **No experiment / CRO tool at all when traffic warrants it** — analytics tells *what*, CRO tells *why*. (First verify it isn't server-side/warehouse-native — see NOT a Problem.)
   Evidence required: full source + rendered scan, no client tester AND no server-side/warehouse signal.
-- **Funnel events not defined** (analytics fires pageviews only). Cross-ref Cat 55.
+- **Funnel events not defined** (analytics fires pageviews only). Cross-ref Cat 53.
   Evidence required: analytics install + no custom funnel events.
 - **Heatmap / session-recording installed but never reviewed** (recordings pile up; no rage-click / dead-click / u-turn analysis feeding the backlog).
   Evidence required: tool install + no review cadence in shared docs.
@@ -151,13 +151,11 @@ Items 2–10 are the experimentation-rigor checklist. Per the Layer-B trigger ab
 
 ### Reference
 
-A/B testing rigor (the canonical text), Kohavi/Tang/Xu — *Trustworthy Online Controlled Experiments*: https://experimentguide.com/
-
-The peeking problem, Evan Miller — *How Not To Run an A/B Test*: https://www.evanmiller.org/how-not-to-run-an-ab-test.html
-
-Sample Ratio Mismatch taxonomy (KDD 2019): https://www.microsoft.com/en-us/research/publication/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments-a-taxonomy-and-rules-of-thumb/
-
-Test prioritization (PXL framework), CXL: https://cxl.com/blog/better-way-prioritize-ab-tests/
+The experiment-rigor rules in this category — fixed sample sizes computed before the test, no
+peeking at running results, sample-ratio-mismatch checks, and a written prioritization rubric —
+are the settled consensus of the online-controlled-experiments literature and of a large body of
+published CRO practice. The rules that matter are stated inline above; no external read is
+required to apply them.
 
 Holdouts / cumulative impact, Eppo: https://www.geteppo.com/blog/holdouts-measuring-experiment-impact-accurately
 
@@ -179,7 +177,7 @@ PostHog product analytics: https://posthog.com/docs · CXL Institute on CRO: htt
 - No CRO tool at all → Medium (depends on traffic; verify not server-side).
 - Implausible win rate (>50%) → Medium (signal, not proof).
 
-**Fix voice:** `analytics-engineer` (primary) | `sahil-lavingia` (backup).
+**Fix voice:** `analytics-engineer` (primary) | `indie-commerce-founder` (backup).
 
 Read `souls/analytics-engineer.json` before writing the Fix.
 

@@ -59,7 +59,7 @@ _det_src_has() {
   fi
 }
 
-# --- stacks (mirror cloud-secure logic, omit cf-specific bits) ---
+# --- stacks ---
 
 _det_stacks() {
   local out=()

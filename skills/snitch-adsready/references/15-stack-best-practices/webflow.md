@@ -31,24 +31,33 @@ Per-page tracking via Page Settings → Inside `<head>` tag.
 | Limited control over response headers | CSP / HSTS hard to set | Place site behind Cloudflare; Transform Rules at proxy |
 | No GTM Server-side support | Client-side only | Bridge via Worker pattern above |
 
-## CMS bindings for structured data
+## CMS bindings for Product / Offer markup
 
-Webflow CMS can interpolate field values into Custom Code:
+Webflow CMS can interpolate field values into Custom Code — the way to keep feed markup bound to
+the product record instead of typed by hand (field slugs vary by collection):
 
 ```html
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{{ wf {&quot;path&quot;:&quot;name&quot;,&quot;type&quot;:&quot;PlainText&quot;} }}",
-    "datePublished": "{{ wf {&quot;path&quot;:&quot;published-on&quot;,&quot;type&quot;:&quot;DateTime&quot;} }}",
-    "image": "{{ wf {&quot;path&quot;:&quot;hero-image&quot;,&quot;type&quot;:&quot;Image&quot;} }}",
-    "author": { "@type": "Person", "name": "{{ wf {&quot;path&quot;:&quot;author&quot;,&quot;type&quot;:&quot;PlainText&quot;} }}" }
+    "@type": "Product",
+    "name": "{{ wf {&quot;path&quot;:&quot;name&quot;,&quot;type&quot;:&quot;PlainText&quot;} }}",
+    "sku": "{{ wf {&quot;path&quot;:&quot;sku&quot;,&quot;type&quot;:&quot;PlainText&quot;} }}",
+    "image": "{{ wf {&quot;path&quot;:&quot;main-image&quot;,&quot;type&quot;:&quot;Image&quot;} }}",
+    "offers": {
+      "@type": "Offer",
+      "price": "{{ wf {&quot;path&quot;:&quot;price&quot;,&quot;type&quot;:&quot;Number&quot;} }}",
+      "priceCurrency": "{{CURRENCY_ISO}}",
+      "availability": "https://schema.org/InStock"
+    }
   }
 </script>
 ```
 
-Tedious but functional. Validate every CMS template via Rich Results Test.
+Tedious but functional. Bind price to the same field checkout charges from — a literal drifts from
+the feed and gets the item disapproved. Article, Person, Organization, and the rest of the schema
+surface are evidenced against search, not against an ad platform: **call the Skill tool with
+"snitch-marketing"** for those.
 
 ## CWV
 

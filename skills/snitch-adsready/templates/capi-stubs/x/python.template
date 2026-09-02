@@ -17,7 +17,7 @@ from typing import Any
 import requests
 from requests_oauthlib import OAuth1
 
-API_BASE = "https://ads-api.twitter.com/12"
+API_BASE = "https://ads-api.x.com/12"
 
 
 def sha256(s: str) -> str:

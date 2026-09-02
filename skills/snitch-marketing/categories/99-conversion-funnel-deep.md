@@ -38,7 +38,7 @@ For each named journey, walk the path step-by-step. At each step, capture:
 - **The CTA's destination**
 - **The page's first impression** (above-the-fold value prop, trust signals, social proof, Cat 60 cross-reference)
 - **The friction inserted** (forms, fields, login wall, payment, etc.)
-- **The instrumentation** (analytics events firing per step, Cat 55 cross-reference)
+- **The instrumentation** (analytics events firing per step, Cat 53 cross-reference)
 
 Walking the journey live (incognito browser) catches what static-page audits miss.
 
@@ -66,7 +66,7 @@ A 5% improvement in the leakiest transition typically beats a 40% improvement in
 
 1. Read homepage, pricing, signup, checkout, demo, contact route files. Quote CTAs, destinations, form fields.
 2. Map the click path for each named journey. Quote each CTA's `to=` / `href=` value.
-3. Cross-reference event taxonomy (Cat 55), does each step in each journey fire an analytics event? Quote.
+3. Cross-reference the event taxonomy (Cat 53), does each step in each journey fire an analytics event? Quote.
 4. Check for known dead-ends: forms with no error handling, signup buttons that 404, pricing CTA pointing at `/contact-us` when the page has a self-serve signup.
 
 **Crawl mode, required tool calls:**
@@ -80,6 +80,10 @@ A 5% improvement in the leakiest transition typically beats a 40% improvement in
 - "The funnel is probably leaking somewhere." Walk the journey and quote each step.
 - "Conversion may be hurt by friction." Identify the specific friction (form fields, login wall, etc.) and quote it.
 - "Pricing may be confusing." Quote the pricing copy + the CTA + the alternative paths.
+
+### Detection
+
+Journey trace: name the 3-5 highest-volume paths, walk each route in order, read the instrumentation at every step.
 
 ### What to Search For
 
@@ -99,43 +103,33 @@ A 5% improvement in the leakiest transition typically beats a 40% improvement in
 - **No funnel instrumentation at all** — the funnel literally cannot be measured (no GA4/GTM/`dataLayer`, or no named funnel events anywhere). This is the precondition finding: report it *before* any leak claim, because without it nobody — not the team, not the auditor — can know where users drop.
   Evidence required: source scan showing no analytics tag and/or no funnel events.
 - **Funnel step with no analytics event** (the team can't see drop-off because the step isn't instrumented).
-  Evidence required: missing event from event taxonomy (Cat 55).
+  Evidence required: missing event from the event taxonomy (Cat 53).
 - **Form with >5 fields on a signup that should be email-only** (each additional field costs ~10% completion in benchmark data).
   Evidence required: form field count.
 - **Trust signal absent at conversion moment** (no testimonial / logo / guarantee on the signup or checkout page).
   Evidence required: page content + missing trust elements.
-- **Mobile journey broken** (CTAs invisible on mobile, form unusable, payment fails). Cross-reference Cat 45-49.
+- **Mobile journey broken** (CTAs invisible on mobile, form unusable, payment fails). Cross-reference Cat 45 (viewport) and Cat 103 (target size, contrast, labels).
   Evidence required: mobile-walked journey + specific failure point.
 - **Post-conversion empty state with no onboarding** (user signs up, lands in product, sees a blank dashboard, churns).
   Evidence required: post-signup screen content.
 - **Pricing CTA dead-ends to a contact form** when self-serve signup exists (forces every prospect through sales).
   Evidence required: pricing CTA destination + visible self-serve option that's not the default.
 
-### E-commerce checkout extension (cart-tier thresholds + order-bump + popup timing)
+### E-commerce checkout psychology
 
-E-commerce funnels have three structural surfaces that go beyond the "is the form usable?" pass above:
+Cart-tier incentive ladders, order-bump placement and popup timing are choice-architecture calls judged against the shopper's decision path, not against the funnel's structure — **call the Skill tool with "snitch-ux"** for that pass. This category keeps the structural half of the checkout: how many steps it takes, which fields it requires, whether trust sits at the payment moment, and where the path dead-ends.
 
-**Cart-tier thresholds.** Single-threshold free shipping ("free shipping over $50") under-leverages the cart psychology. Multi-tier thresholds — free shipping at 1.25× AOV, 10% off at 1.5× AOV, free gift at 2× AOV — give the buyer multiple incentive ladders to climb. Audit application: capture the brand's current free-shipping threshold and AOV (from analytics or industry-standard estimate). Findings: single-threshold-only structures get a "test multi-tier" recommendation. Threshold set below current AOV ("free shipping over $40" when AOV is $55) gets a "raise the bar; the threshold should pull buyers up, not reward existing behavior" recommendation. Threshold set wildly above AOV (>2× current AOV) gets a "buyers ignore it; lower to 1.25-1.5×" recommendation.
-
-**Order-bump pricing.** A single-line offer at the cart for a complementary item priced at 30-50% of the primary order, with one-click add. Common pattern: the buyer's primary purchase is $80; the order bump is $25-40 for an accessory / extended warranty / digital companion. Take-rates in the 15-25% range are typical. Audit application: capture the brand's cart page. Findings: no order bump on a brand with multiple SKUs is a Medium finding ("test it"). Order bump priced too high (>60% of primary) or priced too low (<20%) tests poorly; adjust toward the 30-50% band.
-
-**Exit-intent vs time-delayed popup distinction.** Popups are not categorically bad — but the implementation determines whether they help or hurt conversion.
-
-- **Exit-intent popups** (triggered on cursor leaving the viewport / browser tab) are acceptable: the buyer was leaving anyway; the popup is a recovery attempt, not an interruption.
-- **Time-delayed popups** on high-intent pages (pricing, product detail, checkout) at 10-30 seconds are user-hostile: the buyer is actively reading the page; the popup interrupts the conversion flow.
-- **Time-delayed popups** on top-of-funnel pages (homepage, blog post) at 30-60 seconds are debatable: lower-intent visitor, the email capture has higher trade-off value, but the buyer may still find it intrusive.
-
-Audit application: walk the brand's high-intent pages with timing. Findings: time-delayed popups on pricing / product-detail / checkout pages are High findings. Time-delayed popups elsewhere are Low/Medium advisory. Exit-intent popups everywhere are not findings.
+One structural note stays here because it is a funnel defect rather than a psychology call: a **time-delayed popup on a high-intent page** (pricing, product detail, checkout) interrupts a buyer who is actively converting — a High finding, evidenced by the popup component and its trigger. An exit-intent popup is not a finding anywhere; the buyer was already leaving.
 
 ### Dimensions the single-session funnel misses
 
 A "home → pricing → signup" trace is one slice. These dimensions change the picture — note which are source-detectable vs analytics-gated:
 
 - **New vs returning** — materially different funnels (first-timers can show ~80% add-to-cart drop vs ~50% for returners; payment-step trust hits new visitors hardest). *Detectable:* does the site differentiate (saved progress, trust at commitment)? *Gated:* the segment split. Cross-ref Cat 73.
-- **Mobile vs desktop** — mobile is the majority of traffic but converts ~half (Baymard cart abandonment ≈ 80% mobile vs 66% desktop). The same form/payment friction hurts mobile disproportionately; an aggregate funnel hides a mobile cliff. *Detectable:* mobile field count, wallet/Apple-Pay support, responsive form behavior. *Gated:* the device split. Cross-ref Cat 45-49.
+- **Mobile vs desktop** — mobile is the majority of traffic but converts ~half (in a large published body of cart-abandonment research, roughly 80% on mobile vs 66% on desktop). The same form/payment friction hurts mobile disproportionately; an aggregate funnel hides a mobile cliff. *Detectable:* mobile field count, wallet/Apple-Pay support, responsive form behavior. *Gated:* the device split. Cross-ref Cat 45 and Cat 103.
 - **Cross-device / multi-session** — the journey spans devices and visits; the conversion isn't one session. *Detectable:* whether login / persistent user-ID enables stitching. *Gated:* the stitched path.
 - **Attribution sanity** — last-click misreads multi-touch journeys (GA4's default is data-driven since Jan 2024; B2B averages 6-8 touchpoints). Flag reliance on last-click. *Analytics-gated entirely.*
-- **Micro-conversions / leading indicators** — only ~2.9% complete the macro conversion, so email-capture / pricing-view / doc-view are faster diagnostic signal. *Detectable:* are they instrumented as events (Cat 55)? *Gated:* their rates.
+- **Micro-conversions / leading indicators** — only ~2.9% complete the macro conversion, so email-capture / pricing-view / doc-view are faster diagnostic signal. *Detectable:* are they instrumented as events (Cat 53)? *Gated:* their rates.
 - **B2B buying group / dark funnel** — the form-filler is rarely the economic buyer; ~73% of B2B buying is unattributable and ~61% of the journey happens before first contact. *Detectable:* presence of champion-enablement assets (ROI calculator, business case, comparison pages). A single-visit form-submit funnel structurally under-measures B2B.
 - **Scroll depth as a fallback proxy** — when step events are missing, scroll depth (a proxy for attention, not reading) + time-on-page is a weak substitute. *Detectable:* whether scroll tracking exists at all.
 - **Post-conversion = Setup → Aha → Habit** — activation isn't "signup completed." Measure to the first *habit loop*, not setup. The Aha moment is the first time the user grasps core value; Time-to-Value is the median time to reach it. The common mistake is stopping activation work at setup. *Detectable:* onboarding steps, empty-state quality. *Gated:* activation rate, TTV.
@@ -159,13 +153,13 @@ A "home → pricing → signup" trace is one slice. These dimensions change the 
 
 1. What's the named primary conversion? Without naming it, every page CTA conflicts.
 2. Are the named journeys documented somewhere a designer / engineer / marketer can read?
-3. Is event taxonomy (Cat 55) covering every step?
+3. Is the event taxonomy (Cat 53) covering every step?
 4. Is the leakiest transition known? If not, fix the instrumentation first; you can't optimize what you can't see.
 5. Has the team prioritized fixing the leakiest transition vs spreading effort across all steps?
 6. Does the journey follow the AIDA arc (Attention → Interest → Desire → Action)? Map each step to a stage and flag stages without dedicated surfaces.
 7. Are Goal-Gradient signals (progress bars, completion percentages) present on multi-step paths?
 8. Are Zeigarnik recovery hooks (abandoned-cart, half-completed-profile follow-ups) in place?
-9. Cross-reference Cat 114 §4 (Friction) and §7 (Follow-Through) for the holistic score, and `references/mental-models.md` for the model definitions.
+9. Cross-reference Cat 114 §4 (Friction) and §7 (Follow-Through) for the holistic read, and `references/mental-models.md` for the model definitions.
 
 ### Reference
 
@@ -173,7 +167,7 @@ Funnel analysis fundamentals (Reforge): https://www.reforge.com/blog
 
 GA4 Funnel Exploration: https://support.google.com/analytics/answer/9327974 · GA4 Path Exploration: https://support.google.com/analytics/answer/9317498
 
-Form field count + cart abandonment (Baymard Institute): https://baymard.com/research · https://baymard.com/lists/cart-abandonment-rate
+The field-count and cart-abandonment figures above come from a large published body of checkout-usability research; the numbers this category uses are stated inline.
 
 Micro-conversions (Nielsen Norman): https://www.nngroup.com/articles/micro-conversions/ · Activation / Aha moment (Amplitude): https://amplitude.com/blog/aha-moment
 
@@ -190,9 +184,9 @@ CRO discipline + measurement integrity (Cat 73 cross-ref).
 - Post-conversion empty state without onboarding → High.
 - Self-serve dead-ended into sales contact → High.
 
-**Fix voice:** `sahil-lavingia` (primary) | `analytics-engineer` (backup).
+**Fix voice:** `indie-commerce-founder` (primary) | `analytics-engineer` (backup).
 
-Read `souls/sahil-lavingia.json` before writing the Fix.
+Read `souls/indie-commerce-founder.json` before writing the Fix.
 
 Worked fix example:
 

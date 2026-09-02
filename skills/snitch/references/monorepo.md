@@ -50,4 +50,4 @@ When scanning specific packages, also check:
 
 ## Changed Packages Detection
 
-Run `git diff HEAD --name-only` and map changed files to their owning package based on directory structure.
+Run the diff-mode command from SKILL.md (`git diff --cached --name-only` in a pre-commit context, `git diff HEAD --name-only` otherwise) and map changed files to their owning package based on directory structure.

@@ -74,12 +74,7 @@ Digest should now report `present: true` + expected line count.
 
 ## Common mistakes
 
-- Wrong path (sub-directory or sub-domain — must be apex).
-- Wrong TAG-ID (40-char hex must match seller's certification ID exactly).
-- Missing newline at EOF (some parsers truncate the last line).
-- Mixing DIRECT and RESELLER for same seller (only one).
-- Adding lines for SSPs you don't actually monetize through.
-- Forgetting subdomain inheritance.
+`08-ads-txt.md` carries the mistake list — one copy, read it there before you write the file.
 
 ## When NOT to run this setup
 
@@ -87,7 +82,7 @@ Digest should now report `present: true` + expected line count.
 - No programmatic monetization.
 - Hosting platform that doesn't allow root-level static file (rare).
 
-Mark `ads-txt` as ⚪ N/A.
+Mark `ads-txt` as ⚪ SKIP with the reason ("advertiser, not publisher").
 
 ## See also
 

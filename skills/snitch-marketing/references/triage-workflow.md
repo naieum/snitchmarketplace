@@ -15,7 +15,14 @@ After the report is delivered, every finding moves into one of four states:
 
 ## File: `.snitch-marketing-triage.json`
 
-Lives at project root (source mode) or in the audit working directory (crawl mode). One JSON file. Each entry is keyed by a finding fingerprint (file:line+CAT for source, url+CAT for crawl).
+Lives at project root (source mode) or in the audit working directory (crawl mode). One JSON file.
+Each entry is keyed by the finding **fingerprint** defined in `references/finding-identity.md`:
+`hash(targetId + ruleId + anchor + instance)`. The anchor carries no line number and no concrete
+URL, which is what lets triage state survive a line shift, a re-render, or a URL change. Never key
+a triage entry on `file:line` or on a concrete URL.
+
+Each entry also stores its `ruleId`, `anchor`, and `instance` in readable form, so a human can tell
+what a fingerprint refers to without recomputing the hash.
 
 ### Schema
 
@@ -24,39 +31,49 @@ Lives at project root (source mode) or in the audit working directory (crawl mod
   "version": 1,
   "lastAudit": "2026-04-30T14:22:11Z",
   "findings": {
-    "src/routes/blog.tsx:18:CAT-3": {
+    "f3a91c7e0b42": {
+      "ruleId": "CAT-3.canonical-missing",
+      "anchor": "src/routes/blog.tsx::Route",
       "state": "confirmed",
       "category": 3,
       "title": "Canonical missing",
       "evidence": "src/routes/blog.tsx:18 — head: () => ({}) without links: [{ rel: 'canonical', ... }]",
       "severity": "High",
-      "triagedBy": "ian.muench@gmail.com",
+      "triagedBy": "maintainer@example.com",
       "triagedAt": "2026-04-30T14:30:00Z",
-      "note": "Will fix in next sprint; tracked in JIRA-1234"
+      "note": "Will fix in next sprint; tracked in TICKET-1234"
     },
-    "src/routes/admin/dashboard.tsx:42:CAT-25": {
+    "9d20b6114fae": {
+      "ruleId": "CAT-25.alt-missing",
+      "anchor": "src/routes/admin/dashboard.tsx::Dashboard",
       "state": "accepted",
       "category": 25,
       "title": "Image alt missing",
       "evidence": "src/routes/admin/dashboard.tsx:42 — <img src=... /> without alt",
       "severity": "Medium",
-      "triagedBy": "ian.muench@gmail.com",
+      "triagedBy": "maintainer@example.com",
       "triagedAt": "2026-04-30T14:32:00Z",
       "note": "Admin dashboard, noindex'd, internal-only — not a public SEO surface"
     },
-    "src/routes/dev-preview.tsx:9:CAT-9": {
+    "5c7e88a0d331": {
+      "ruleId": "CAT-9.title-too-long",
+      "anchor": "src/routes/dev-preview.tsx::Route",
+      "instance": "/dev-preview",
       "state": "false_positive",
       "category": 9,
       "title": "Title too long (>60 chars)",
       "evidence": "src/routes/dev-preview.tsx:9 — title: 'Internal preview tool — only available to staff users with admin role'",
       "severity": "Low",
-      "triagedBy": "ian.muench@gmail.com",
+      "triagedBy": "maintainer@example.com",
       "triagedAt": "2026-04-30T14:35:00Z",
       "note": "Dev preview route; should have been excluded by auto-exclude path rules"
     }
   }
 }
 ```
+
+Equal fingerprints across runs mean "very likely the same finding", not proof — re-read the
+evidence before carrying a suppression forward (`references/finding-identity.md`).
 
 ### State transitions
 
@@ -198,7 +215,7 @@ This delta is the team's progress signal — what's been fixed, what's been adde
 
 ## Cross-references
 
-- SKILL.md STEP 4 (Post-scan Actions) — where triage lives in the user flow
+- SKILL.md STEP 5 (Post-scan Actions) — where triage lives in the user flow
 - SKILL.md "False Positive Prevention" — auto-exclusions baked into the audit
 - `category-groups.md` — preset to category mapping (triage works per-finding within categories)
 

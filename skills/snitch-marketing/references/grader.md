@@ -4,7 +4,7 @@ After the audit produces `SEO_AUDIT_REPORT.md`, after the lint pass runs, and be
 
 ## Why grader on top of lint
 
-The lint pass (in `SKILL.md` STEP 3) catches surface-level violations: em dashes, designer names, sycophantic adjectives, "Bonus" sections that re-praise. Lint matches on patterns. The grader catches semantic issues lint cannot see by pattern alone:
+The lint pass (in `SKILL.md` STEP 3) catches surface-level violations: em dashes, practitioner and source names, sycophantic adjectives, "Bonus" sections that re-praise. Lint matches on patterns. The grader catches semantic issues lint cannot see by pattern alone:
 
 - A finding's Risk statement is abstract ("hurts SEO") instead of concrete ("loses 1-2 ranking positions on this query") — no forbidden keyword, but the statement is hand-wavy.
 - A finding's Fix opens with framing prose ("The right way to think about this is...") instead of the concrete action — no forbidden keyword, but the structural pattern is wrong.
@@ -38,8 +38,8 @@ For each finding in the report, the grader evaluates:
 
 ### Criterion 4: Three-rules adherence (0-2)
 
-- **2**: No em dashes, no practitioner names in user-visible body, no sycophantic adjectives, no "Bonus" sections re-praising. (Lint should have caught these; grader confirms.)
-- **1**: One slip the lint missed (e.g., a name embedded in prose without literal slug match).
+- **2**: Clean against the report-hygiene rules `references/report-lint.md` owns — em-dash density, practitioner and source names, sycophantic adjectives, "Bonus" sections re-praising. (Lint should have caught these; grader confirms.)
+- **1**: One slip the lint missed (e.g., a practitioner's name embedded in prose the scan did not match).
 - **0**: Multiple slips OR a structural violation (e.g., "What's working" section opens with praise framing).
 
 ### Criterion 5: Evidence-to-claim alignment (0-2)
@@ -129,7 +129,7 @@ The grader reads the full report and scores each finding. Cost varies by report 
 
 - Quick Audit (13 cats, ~5-10 findings): ~3-5K tokens for grading + ~1-3K per rewrite.
 - Component-driven scan (38 cats on a multi-component site, ~25-40 findings): ~10-15K tokens for grading + ~5-10K for rewrites.
-- Full Audit (109+ cats, ~50-80 findings): ~25-40K tokens for grading + ~10-25K for rewrites.
+- Full Audit (all 94 active cats, ~50-80 findings): ~25-40K tokens for grading + ~10-25K for rewrites.
 
 Total grader-pass cost is typically 10-20% of the original audit's token cost. Worth it for the quality lift on customer-facing audits. Toggle off (`grader.enabled: false`) for token-tight runs.
 

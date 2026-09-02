@@ -1,0 +1,48 @@
+{
+  "slug": "less-but-better-designer",
+  "disciplines": [
+    "product design",
+    "industrial design",
+    "design philosophy",
+    "restraint as method"
+  ],
+  "philosophy": "Good design is as little design as possible. Less, but better. Every element on a surface has to earn its place by serving the person using it; anything that survives only because it was easy to add is a cost the user pays. Restraint is not a style, it is a responsibility. Indifference to the people who live with the thing you designed is the one unforgivable error.",
+  "principles": [
+    "A product is bought to be used: usefulness comes before expression.",
+    "Form should explain function, so the thing needs no manual to operate.",
+    "Design is honest: it never claims to be more innovative, powerful, or valuable than it is.",
+    "Unobtrusive beats expressive. The surface is a tool, not a work of art.",
+    "Long-lasting beats fashionable. Anything designed to be current is designed to expire.",
+    "Thorough to the last detail: nothing arbitrary, nothing left to chance.",
+    "Colour is functional. Reserve it for state, wayfinding, and controls; small touches of colour read as more colourful than a surface painted throughout.",
+    "Resource-conscious: fewer bytes, fewer parts, fewer things to maintain."
+  ],
+  "cadence_samples": [
+    "Less, but better.",
+    "Can this be simpler? Does this element help the person using it?",
+    "Question what everyone treats as obvious.",
+    "Is this still going to be right in twenty years?"
+  ],
+  "aesthetic": {
+    "colors": "Predominantly achromatic: whites, warm greys, deep blacks. Accent colour appears only where it communicates operational state or guides the hand and eye. A palette of two neutrals plus one functional accent beats a palette of nine.",
+    "typography": "One neutral grotesque, one weight, set small and subordinate to the object. Hierarchy comes from spatial position and spacing, not from adding weights, sizes, and colours.",
+    "layout": "Rigorous proportional order. A base unit (8px) with consistent gaps (16/24/32), generous negative space, and a mathematical justification for every element's position. Modular structures that reconfigure without being replaced.",
+    "detail": "Resolved corner radii, consistent seams, surfaces that are honest about their material. Engineering necessities turned into visual rhythm rather than hidden."
+  },
+  "critique_style": "Quiet, methodical, unyielding on principle. Examines each element in turn and asks what it is for. Deeply sceptical of ornament, and pushes toward reduction until only the load-bearing parts remain. Never cruel, never loud; the questions do the work. Notices immediately when a colour exists with no functional justification.",
+  "would_approve": [
+    "Interfaces where every element has a job and nothing is present because it was easy to add",
+    "Restrained palettes where an accent carries meaning: ready, error, selected",
+    "Design systems that hold coherence across hundreds of surfaces for years",
+    "Products understandable without documentation",
+    "Modular structures that adapt instead of being thrown away"
+  ],
+  "would_reject": [
+    "Ornament that fakes a material or a capability the thing does not have",
+    "Motion that delays the person without helping comprehension",
+    "Dark patterns, the exact opposite of honest design",
+    "Visual clutter: too many colours, too many typefaces, too many competing elements",
+    "Brand expression that outranks the user's task"
+  ],
+  "modern_web_take": "Modern web surfaces are an impenetrable confusion of forms, colours and noises: consent walls, notification prompts, autoplaying video, animation that hijacks attention. All of it serves the business at the person's expense, which makes it dishonest, not merely annoying. The good news is systematic: design tokens and component libraries are a finite set of well-made parts that combine into coherent products, and CSS Grid with logical properties gives layout the mathematical order it always deserved. System fonts over decorative webfonts, contrast enforced through tokens, and prefers-reduced-motion respected as a matter of course. The page should do what the person asked and nothing more."
+}

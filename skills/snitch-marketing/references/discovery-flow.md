@@ -21,7 +21,7 @@ Pick the ones that apply; surface each one explicitly in the unknowns block.
 |---|---|---|
 | **Rendering mode** | The site's primary deploy renders content the audit can see (SSR/SSG/MPA, or crawl mode has a JS renderer) | Half the on-page cats fire false negatives; any "missing X" finding is unsafe |
 | **Indexable population** | Search Console / GSC inclusion of the surfaces being audited | A site can be technically perfect and still excluded from index; SEO recommendations are moot |
-| **Brand maturity vs audit shape** | Site has been live long enough for off-site presence to exist | Cats 66-81 produce 16 redundant "no presence" findings; off-site recommendations become "build, don't optimize" |
+| **Brand maturity vs audit shape** | Site has been live long enough for off-site presence to exist | Every `off-site`-typed cat produces the same redundant "no presence" finding; off-site recommendations become "build, don't optimize" |
 | **Domain reputation** | Domain isn't penalized, sanctioned, or freshly registered | Optimization recommendations on a sandboxed or penalized domain don't move rankings |
 | **Indexable language** | The site's content language matches the audit's analytical language | Misreading translated content for the original loses meaning; review benchmarks may apply to the wrong locale |
 | **Audit-vs-test calendar** | The audit isn't running during a structural traffic event (Black Friday, conference week, post-launch spike) | Traffic numbers and Core Web Vitals fluctuate in ways the audit can't attribute |
@@ -80,6 +80,22 @@ How to derive this:
 
 Write this captured context to the report under a `## Site context` section — every finding's severity tier draws on these facts. If you can't determine one of the fields confidently, write `unknown` and explain why; don't make it up.
 
+### Declared intent (read-only, when the files exist)
+
+Some projects already wrote their intent down. When they did, the audit grades against it instead
+of against generic best practice. This step reads; it never writes.
+
+**The rule is CONTEXT.md's *Declared intent* entry** — which sections of `BLUEPRINT.md` and
+`marketing/positioning.md` are read, the Decision-tension Finding capped at Medium citing
+`BLUEPRINT.md:line`, the unsupported-claim Finding against the *Claim inventory*, and the **Skip**
+when neither file exists. Apply it as written; do not restate it here.
+
+This skill's step: run the read here, inside STEP 0.5, before any severity is calibrated — a
+`Decision` line changes the tier a later category assigns, so it has to be captured alongside the
+site context. Carry what it produced into `## Site context` and into `.snitch-marketing-context.md`
+(STEP 0.8), cited, never copied as if the audit had derived it. Never write to `BLUEPRINT.md` or to
+anything under `marketing/`.
+
 **Why this matters:** a "missing canonical" finding on a homepage is High for an e-commerce site (every utm-tagged duplicate competes with the original), Critical for a content site (entire articles re-rank as duplicates), and Medium for a free-OSS docs site (lower commercial stakes). Same finding, three severities, depending on context. The discovery step is what makes that calibration honest.
 
 ## STEP 0.5.1: Assumptions Capture (Required)
@@ -102,7 +118,7 @@ How to derive these:
 1. **Read the source / about / team page first.** Some assumptions are observable (founder name, "Built by [team]" language, careers page presence). Mark these as `observed`.
 2. **Default the rest to the most common case for the brand's stage and shape**, mark them as `assumed`. For an indie SaaS detected via STEP 0.5, default to: solo or 2-person team, founder full-time, $0 paid budget, technical founder, profitable indie goal, no compliance posture. For an established commercial brand, default to: 6-20 person team, mixed roles, modest paid budget, mixed compliance.
 3. **Surface the assumptions explicitly** in the report under a `## Assumptions — confirm before acting` section. Display the table above with each row marked `observed` or `assumed` and the `risk if wrong` column populated.
-4. **Action for the customer**: before executing any STEP 4.5 strategic recommendation, the team confirms or corrects each assumption. A recommendation grounded in a wrong assumption gets re-scoped before execution.
+4. **Action for the customer**: before executing any STEP 4 strategic recommendation, the team confirms or corrects each assumption. A recommendation grounded in a wrong assumption gets re-scoped before execution.
 
 The report's recommendations must be CONDITIONAL on the assumptions: "If team size is solo and budget is $0 (assumed), the wedge recommendation is X. If budget is actually >$500/mo, the wedge recommendation shifts to Y." Never silently assume; always show the conditional.
 
@@ -110,13 +126,13 @@ The report's recommendations must be CONDITIONAL on the assumptions: "If team si
 
 A new brand with no online presence yet does not benefit from a paid-search audit, a paid-social audit, a backlink audit, or a community audit. Running those wastes tokens AND produces a report full of "no presence detected, recommend establishing one" lines that don't help the customer.
 
-Before running any category in the **66-81 range** (off-site / channel / strategy), do this check:
+Before running any category whose `categories/_index.md` row is typed **`off-site`**, do this check. The manifest is the authority for which cats those are; never work from a number range.
 
 For each surface below, classify presence as `none`, `minimal`, or `established`:
 
 - **Domain age**: `Bash whois <domain> 2>/dev/null | grep -iE "creat|registered" | head -1`. Brand <90 days old → likely `none` everywhere.
 - **Search presence**: search the brand name in Google. 0 third-party results besides the brand's own site → `none` for organic. Mentions on industry sites / press / forums → at least `minimal`.
-- **Paid ads presence**: check Google Ads Transparency Center for the brand. No ads ever → `none` for Cat 66. Check Meta Ad Library for paid social → `none` for Cat 67.
+- **Paid ads presence**: check Google Ads Transparency Center for the brand. No ads ever → `none` for the search side of Cat 66. Check the Meta Ad Library for paid social → `none` for its social side; Cat 66 Skips only when both sides are `none`.
 - **Social profiles**: from the site's footer / `Organization.sameAs` schema, list claimed profiles. None present → `none` for Cat 68. Profiles present but stale (>90d) → `minimal`. Active (post in last 30d) → `established`.
 - **Backlinks**: without paid SEO data, partial. Branded-name search returning zero third-party mentions → `none` for Cat 69.
 - **Community**: search site for `discord.gg`, `slack.com`, `/community`, `/forum`, `github.com/<org>/discussions`. None → `none` for Cat 72.
@@ -125,30 +141,30 @@ For each surface below, classify presence as `none`, `minimal`, or `established`
 
 Write the result to the report's `## Site context` under a `### Brand maturity` subsection. Include the `Bash whois` output snippet, the SERP search count, the social profile + last-post dates, etc. — evidence per claim.
 
-**Skipping rule for off-site categories:** for any cat in the 66-81 range where the corresponding surface scored `none`:
+**Skipping rule for off-site categories:** for any `off-site`-typed cat whose corresponding surface scored `none`:
 
 - **Skip the full Evidence Required pass**, don't waste tokens running detection on a surface with nothing to detect.
-- Mark category as **Skip** with reason `no detected presence on this channel; recommendation pending in Strategic Recommendations (STEP 5)`.
-- The Strategic Recommendations step (STEP 5) will turn these Skips into prioritized "start here" recommendations rather than findings, since "you don't have X yet" is a strategic question, not an audit finding.
+- Mark category as **Skip** with reason `no detected presence on this channel; recommendation pending in Strategic Recommendations (STEP 4)`.
+- The Strategic Recommendations step (STEP 4) will turn these Skips into prioritized "start here" recommendations rather than findings, since "you don't have X yet" is a strategic question, not an audit finding.
 
-**If brand maturity is `none` across all 16 off-site surfaces:** display this message and recommend the customer skip the off-site audit entirely:
+**If brand maturity is `none` across every off-site surface:** display this message and recommend the customer skip the off-site audit entirely:
 
 ```
 Brand maturity check: this brand has no detected off-site presence yet.
 
-Running the off-site audit (cats 66-81) on a brand with no off-site
-presence wastes tokens — every category would skip with the same reason.
+Running the off-site categories on a brand with no off-site presence
+wastes tokens — every one of them would skip with the same reason.
 
-Recommended: run the on-site audit (cats 1-65) now. Re-run the off-site
-audit in 90+ days, after the brand has been live with active marketing.
+Recommended: run the on-site categories now. Re-run the off-site set in
+90+ days, after the brand has been live with active marketing.
 
 What would you like to do?
-[1] Continue with on-site audit only (cats 1-65)
+[1] Continue with the on-site categories only
 [2] Run off-site anyway (will skip most cats; useful for an explicit "what should I build first" baseline)
 [0] Cancel
 ```
 
-**Why this matters:** an audit that says "no Discord, no LinkedIn, no paid ads, no backlinks, no PR" 16 times for a 3-week-old indie launch is condescending. The customer knows they don't have those things. The valuable output is "here's the order to build them in" — which lives in the recommendation synthesis (STEP 5), not in 16 redundant skips.
+**Why this matters:** an audit that says "no Discord, no LinkedIn, no paid ads, no backlinks, no PR" once per off-site cat for a 3-week-old indie launch is condescending. The customer knows they don't have those things. The valuable output is "here's the order to build them in" — which lives in the recommendation synthesis (STEP 4), not in a screen of redundant skips.
 
 ## STEP 0.7: Niche & Competitor Research (Required for off-site categories + Strategic Recommendations)
 
@@ -173,11 +189,11 @@ Capture:
    - **Feature / product gap**: a use-case, integration, workflow, or audience-specific feature competitors don't address. Quote: competitor positioning + the missing capability.
    - **Audience gap**: a segment (geography, company size, role, vertical, skill level, language) that competitors don't speak to specifically. Quote: competitor messaging + the unaddressed audience signal.
 
-   Each gap is a candidate for a STEP 4.5 Strategic Recommendation. Gaps without one of these four labels are too vague to act on; tighten or drop them.
+   Each gap is a candidate for a STEP 4 Strategic Recommendation. Gaps without one of these four labels are too vague to act on; tighten or drop them.
 
 6. **Differentiation deltas**: what does THIS brand do that competitors don't? Pull from STEP 0.5 + homepage. The wedge.
 
-Write all this to the report under a `## Competitive landscape` section. Every recommendation in STEP 5 cites this section.
+Write all this to the report under a `## Competitive landscape` section. Every recommendation in STEP 4 cites this section.
 
 **Tooling note:** without paid SEO data (Ahrefs / Semrush / Similarweb API), competitor rank/traffic data is approximate. Using SERP inspection (`Bash curl -s "https://www.google.com/search?q=..."`) gives partial visibility. Mark approximations as such; don't claim "competitor X gets 100K monthly visits" without the data source.
 
@@ -237,13 +253,13 @@ Run these checks in source mode (or crawl mode equivalent). Each check is a yes/
 
 **Infrastructure components:**
 
-- GA4 / GTM installed (analytics-installed signal, drives Cats 53-56, 100, 107)
-- Ad pixels installed (Meta / LinkedIn / TikTok / X / Reddit / Pinterest) (paid-channel signal, drives Cats 67, 107, 108, 109)
-- Email infrastructure (Resend, Postmark, SendGrid, etc.) (email-program signal, drives Cats 61-65)
-- Stripe integration (commerce signal, drives Cats 91 if SaaS, 99, 60)
+- GA4 / GTM installed (analytics-installed signal, drives Cat 53; for consent and pixel wiring, call the Skill tool with "snitch-adsready")
+- Ad pixels installed (Meta / LinkedIn / TikTok / X / Reddit / Pinterest) (paid-channel signal, drives Cats 66, 109 and Cat 53's UTM pass)
+- Email infrastructure (Resend, Postmark, SendGrid, etc.) (email-program signal, drives the `email`-typed cats)
+- Stripe integration (commerce signal, drives Cat 32's SoftwareApplication row if SaaS, plus 99, 60)
 - Auth library (Clerk, Better Auth, NextAuth) (account-system signal, affects Cat 99 funnel-deep)
 - Multi-locale routing (i18n config or `/{locale}/` URL pattern) (i18n signal, drives Cats 50-52)
-- `llms.txt` at site root (LLM-discoverability signal, drives Cat 106; affects Cat 82)
+- `llms.txt` at site root (LLM-discoverability signal, feeds Cat 82's Layer 1)
 - Sitemap.xml (sitemap signal, drives Cat 2)
 - Robots.txt (robots signal, drives Cat 1)
 
@@ -300,8 +316,23 @@ Produce a structured list under a `## Components detected` section in the audit 
 - no paid social detected (no FB / LinkedIn / TikTok pixels)
 ```
 
+### Write the context file (required)
+
+At the end of STEP 0.8, write **`.snitch-marketing-context.md`** to the working directory — the
+persisted ICP / positioning artifact the persuasion, CRO, copy, and positioning cats read before
+they score. The schema, the provenance frontmatter, the path-search order, and the
+reuse-or-regenerate rule are all in `references/context-file.md`; follow that file exactly. Its
+content comes from what discovery just produced: STEP 0.5's purpose / model / conversion /
+audience, STEP 0.5.1's assumptions, STEP 0.7's competitors and gaps, and any declared intent read
+in STEP 0.5 (cited as `BLUEPRINT.md:line` or `marketing/positioning.md:line`, never copied as if
+the audit had derived it).
+
+If a context file already exists, offer to reuse or update it rather than overwriting. If the user
+declines the write, note that in the report and let the dependent cats fall back to on-page
+inference with the assumption stated — never silently proceed as though the file existed.
+
 ### Why this matters
 
-The component inventory is the GROUND TRUTH the recommended scan is built from. Every cat that runs is justified by a detected component; every cat that's skipped is justified by an absent component. The customer can audit the audit: "we ran Cat 91 SoftwareApplication because /pricing was detected with tiered offers".
+The component inventory is the GROUND TRUTH the recommended scan is built from. Every cat that runs is justified by a detected component; every cat that's skipped is justified by an absent component. The customer can audit the audit: "we ran Cat 32's SoftwareApplication row because /pricing was detected with tiered offers".
 
 This replaces the previous business-model-based decision table with observable evidence. A site that defies easy categorization (personal brand + SaaS founder, publisher + e-commerce, etc.) gets the cats relevant to ALL its detected components.

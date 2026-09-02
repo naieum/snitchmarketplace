@@ -122,9 +122,9 @@ Reciprocity + value-first (see `references/mental-models.md`).
 - Capture with no nurture → Medium.
 - Off-ICP magnet → Low/Medium.
 
-**Fix voice:** `sahil-lavingia` (primary) | `josh-spector` (backup).
+**Fix voice:** `indie-commerce-founder` (primary) | `newsletter-operator` (backup).
 
-Read `souls/sahil-lavingia.json` before writing the Fix.
+Read `souls/indie-commerce-founder.json` before writing the Fix.
 
 Worked fix example:
 
@@ -146,5 +146,5 @@ Worked fix example:
 > first-time-buyer checklist), so one-shot tool traffic becomes a list you own.
 >
 > Verify: track the new asset's capture rate and the capture→activation→paid path as
-> micro-conversions (Cat 55/99); A/B the offer (Cat 73). The lift is a hypothesis until
+> micro-conversions (Cat 53/99); A/B the offer (Cat 73). The lift is a hypothesis until
 > the funnel reads.

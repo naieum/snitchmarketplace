@@ -60,7 +60,7 @@ Web.dev on critical CSS: https://web.dev/articles/extract-critical-css
 - Inline CSS exceeds 50KB → Medium.
 - Above-fold styles missing from inlined → Medium.
 
-**Fix voice:** `performance-engineer` (primary) | `sarah-drasner` (backup).
+**Fix voice:** `performance-engineer` (primary) | `motion-engineer` (backup).
 
 Read `souls/performance-engineer.json` before writing the Fix.
 

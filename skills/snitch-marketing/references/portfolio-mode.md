@@ -100,12 +100,12 @@ Brand A has Cat 50 (hreflang) configured correctly across all locales. Brand B h
 
 ### Best practice on Brand A docs: Article schema with Person author
 
-Brand A docs uses Cat 32 (Article schema) with structured `author` referencing a canonical Person profile (Cat 93). Brand A's blog uses string authors. Lift the docs pattern to the blog.
+Brand A docs passes Cat 32's Article row with a structured `author` referencing a canonical Person profile (Cat 32's Person row). Brand A's blog uses string authors. Lift the docs pattern to the blog.
 
 ## Cross-target trends
 
 - Brands using Next.js (Brand A) consistently score better on Cat 28 (CLS) than the WordPress brand (Brand B). Likely correlation with the framework's image component.
-- All three targets have Cat 56 (consent mode v2) gaps. Coordinated fix across the portfolio recommended.
+- All three targets load ad pixels with no visible consent gate in the source. Consent wiring is not audited here: call the Skill tool with "snitch-adsready" for a coordinated fix across the portfolio.
 
 ## Recommendations (cross-portfolio)
 
@@ -122,7 +122,7 @@ Brand A docs uses Cat 32 (Article schema) with structured `author` referencing a
 
 ### Phase 4: Strategic Recommendations across portfolio (optional)
 
-If STEP 4.5 is enabled, produce a portfolio-level `STRATEGIC_RECOMMENDATIONS.md` that addresses cross-portfolio strategy:
+If STEP 4 is enabled, produce a portfolio-level `STRATEGIC_RECOMMENDATIONS.md` that addresses cross-portfolio strategy:
 
 - "Standardize on shared components for cross-property surfaces (OG, Article schema, consent mode)"
 - "Consolidate marketing efforts on the strongest property; don't dilute across all three equally"
@@ -148,7 +148,7 @@ working-directory/
 └── PORTFOLIO_AUDIT_REPORT.md      # the synthesis
 ```
 
-If the user wants STEP 4.5 strategic recommendations:
+If the user wants STEP 4 strategic recommendations:
 
 ```
 └── STRATEGIC_RECOMMENDATIONS.md   # cross-portfolio version
@@ -157,6 +157,6 @@ If the user wants STEP 4.5 strategic recommendations:
 ## Cross-references
 
 - SKILL.md STEP 1.5 (Audit Mode) — entry point
-- SKILL.md STEP 4.5 — strategic recommendations apply at portfolio level too
+- SKILL.md STEP 4 — strategic recommendations apply at portfolio level too
 - `comparative-mode.md` — for site-vs-competitor (different mode)
 - `output-formats.md` — for portfolio report format variants

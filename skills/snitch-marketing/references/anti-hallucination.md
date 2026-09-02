@@ -55,13 +55,13 @@ Every category produces exactly one of these outcomes:
 
 - **Finding(s)** with full evidence per the category's Finding Format.
 - **Pass** with at least one quoted evidence line proving the check actually ran (e.g., "Verified canonical declared on `src/routes/blog.tsx:18`: `links: [{ rel: 'canonical', href: ... }]`"). A bare "Pass" with no quoted evidence is invalid.
-- **Skip** with a one-line reason (e.g., "Cat 38 VideoObject, skipped, no `<video>` elements or video embeds found on audited pages").
+- **Skip** with a one-line reason (e.g., "Cat 32's VideoObject row, skipped, no `<video>` elements or video embeds found on audited pages").
 
 "Partially audited", "spot-checked but unsure", "couldn't fully verify" are NOT valid outcomes. If the audit ran out of scope or token budget, mark the category as **Skip** with reason `abbreviated for time/scope; re-run with full enumeration to complete`. Do not ship a Pass without evidence and do not invent a fourth state.
 
 ## Rule 8: Severity Is Single-Valued
 
-Every finding carries exactly one SEO Impact tier (Critical / High / Medium / Low). "Medium → High", "High-or-Critical depending on context", or any range is forbidden:
+Every finding carries exactly one Impact tier (Critical / High / Medium / Low). "Medium → High", "High-or-Critical depending on context", or any range is forbidden:
 
 - If a finding could be either of two adjacent tiers depending on context, **escalate to the higher one**.
 - If a finding could be two non-adjacent tiers depending on which sub-case applies, **split it into two distinct findings**, each with its own tier.
@@ -72,7 +72,7 @@ The severity must be defensible from the evidence alone; if you can't pick a sin
 
 - NEVER edit, patch, or modify any file during the scan or while generating the report
 - NEVER apply any fix (even an obvious one like missing alt text or missing meta description) before the complete report has been displayed
-- ONLY offer fix options AFTER the full report is shown (STEP 4: Post-Scan Actions)
+- ONLY offer fix options AFTER the full report is shown (STEP 5: Post-Scan Actions)
 - ONLY apply a fix when the user explicitly selects Option 2 (fix one by one) or Option 3 (fix all) AND confirms each fix
 - If the user says "scan and fix everything", complete the FULL scan and report FIRST, then present the post-scan menu; never skip to fixing
 - Scanning and fixing are ALWAYS two separate phases
@@ -83,7 +83,7 @@ The report's authority comes from evidence, not from praise. Apply the following
 
 **Forbidden language patterns:**
 
-- Evaluative adjectives describing the customer's choices: "best", "best-in-class", "excellent", "great", "amazing", "world-class", "textbook", "textbook-correct", "reference example", "comprehensive", "strong", "solid foundation", "strong foundation", "well-architected", "thoughtful".
+- Evaluative adjectives describing the customer's choices. `references/report-lint.md` owns the enumerated list and scans for it before the report can be saved; this rule is why the list exists.
 - Praise framing in passing-check evidence: "Pass: textbook canonical setup" is wrong. "Pass: canonical declared on src/routes/blog.tsx:18 as link rel='canonical' href='...'" is right.
 - Praise framing in worked-fix examples: do not open the fix prose with "Every blog post deserves..." or "The right way to think about this is..." style flourishes that flatter the reader before the substance.
 - Bonus / Highlight sections that re-praise something already in the Pass list. If a passing check is meaningful, keep it in the symmetric "What's working" section at the same depth as findings.
@@ -146,12 +146,12 @@ At crawl-mode scan start, detect SPA signals from the initial fetch. If detected
 - **Cat 25, 26** (image alt presence + quality) — when fewer than 3 `<img>` tags appear in the initial HTML body (gallery / hero images often hydrate after).
 - **Cat 28** (image dimensions / CLS) — same condition as Cat 25.
 - **Cat 31** (JSON-LD presence) — when no `application/ld+json` script tags appear in the initial HTML.
-- **Cat 48** (ARIA labels) — same as Cat 25.
+- **Cat 103** (accessibility conformance, the accessible-name criteria) — same as Cat 25.
 - **Cat 22** (breadcrumbs visible) — when no breadcrumb markup appears in the initial HTML.
 
 **Auto-skip exception:** when the SPA emits the relevant content INTO the SSR'd HTML (react-helmet emitting `<title>` / `<meta>` / `<script type=application/ld+json>`, Next App Router emitting metadata via `generateMetadata`, Astro emitting fully-rendered output), the cat proceeds normally with full evidence. The auto-skip fires only when the initial HTML genuinely lacks the content the cat checks.
 
-**Skip reason text (use verbatim):** `crawl mode without JS rendering can't verify post-hydration DOM; re-run with Plugin mode (in-editor source) or a JS-rendering crawler (Playwright / headless Chrome) for full coverage.`
+**Skip reason text (use verbatim):** `crawl mode without JS rendering can't verify post-hydration DOM; re-run in source mode (point the audit at the repo) or with a JS-rendering crawler (Playwright / headless Chrome) for full coverage.`
 
 **Recommendation when SPA detected:** surface a one-line note in the report's Site context block: `Stack detected: <framework> SPA. Cats X, Y, Z auto-skipped pending JS-rendered crawl.` This gives the customer transparent context for why the report is incomplete on those cats rather than over-claiming what crawl mode could see.
 
@@ -173,7 +173,7 @@ Before reporting, check: Is this a Next.js metadata API call (`generateMetadata`
 
 ### Confidence threshold
 
-Assign High / Medium / Low confidence to each finding. If `snitch-marketing.config.md` has `min-confidence: high`, only include high-confidence findings in the main report. Lower-confidence findings go to a separate "Needs Review" section.
+Assign High / Medium / Low confidence to each finding. The render-time filter is `confidence-floor` in `snitch-marketing.config.md` (also settable per scan via the menu's `[c]` toggle): `all` renders everything, `medium+` moves Low-confidence and Low-severity findings to a "Needs Review" section, `high+only` suppresses them and records the filtered count in metadata. Detection always runs at every setting; the floor changes what is rendered, not what is scanned.
 
 ### Inline ignores
 

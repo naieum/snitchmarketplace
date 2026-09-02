@@ -1,7 +1,7 @@
 {
   "name": "snitch-cmo",
-  "description": "Marketing foundation generator + channel drafting — six evidence-traced strategy docs in marketing/ (product truth, positioning, competitors, brand voice, content strategy, channel plan), then blog/X/LinkedIn/Reddit/HN drafts, outreach shortlists, and UGC briefs with provenance headers. Drafts only — the human publishes.",
-  "version": "0.1.0",
+  "description": "Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish.",
+  "version": "0.3.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

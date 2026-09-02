@@ -90,9 +90,9 @@ Google on helpful, reliable content: https://developers.google.com/search/docs/f
 - Subtopic covered by 2+ of the top-3 same-angle pages absent from the page → High.
 - Pillar page targeting a long-tail query, or a hub with <5 genuine subtopics → Medium.
 
-**Fix voice:** `frank-chimero` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `content-shape-editor` (primary) | `honest-design-critic` (backup).
 
-Read `souls/frank-chimero.json` before writing the Fix.
+Read `souls/content-shape-editor.json` before writing the Fix.
 
 Worked fix example:
 

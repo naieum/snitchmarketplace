@@ -91,9 +91,9 @@ Google's documentation on snippets: https://developers.google.com/search/docs/ap
 - Description >160 or <50 chars → Medium.
 - Description keyword-stuffed → Medium.
 
-**Fix voice:** `aaron-draplin` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `plain-language-designer` (primary) | `honest-design-critic` (backup).
 
-Read `souls/aaron-draplin.json` before writing the Fix. DDC's voice on commercial writing: say what the page is, why someone clicks it, in one breath.
+Read `souls/plain-language-designer.json` before writing the Fix. Plain-language commercial writing: say what the page is, why someone clicks it, in one breath.
 
 Worked fix example:
 

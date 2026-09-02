@@ -168,9 +168,9 @@ clustering), Cat 122 (comparison pages), and `references/citability-scoring.md`.
 - Could not establish the primary query, or no web access to read the SERP → Skip-with-reason,
   not a guessed severity.
 
-**Fix voice:** `frank-chimero` (primary) | `april-dunford` (backup).
+**Fix voice:** `content-shape-editor` (primary) | `positioning-strategist` (backup).
 
-Read `souls/frank-chimero.json` before writing the Fix.
+Read `souls/content-shape-editor.json` before writing the Fix.
 
 Worked fix example:
 

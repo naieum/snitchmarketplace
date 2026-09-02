@@ -1,6 +1,12 @@
 ## CATEGORY 54: OAuth/OIDC Deep Security
 > Type: posture · Groups: — · CWE: CWE-287
 
+> **Owns:** the OAuth/OIDC protocol surface — PKCE, `state`, `nonce`, grant type, the registered
+> `redirect_uri` and how the server matches it, refresh-token rotation, scopes, and client-secret
+> placement. **Does not own:** where the resulting session token is stored, or a generic
+> post-login `res.redirect(userInput)` — both are Category 4. The JWT verification algorithm is
+> Category 63; provider-specific config is Category 14.
+
 ### Detection
 - OAuth 2.0 or OpenID Connect implementation in the application
 - Authorization code flow, implicit flow, or client credentials flow usage
@@ -33,17 +39,13 @@
 - `response_type=id_token token` without code flow fallback
 - SPA using implicit flow instead of authorization code flow with PKCE
 
-**Token Storage Issues:**
-- Access tokens stored in `localStorage` -- vulnerable to XSS exfiltration
-- Refresh tokens stored in `localStorage` or `sessionStorage`
-- Tokens stored in cookies without `HttpOnly`, `Secure`, and `SameSite` attributes
-- Tokens stored in `window.__STATE__` or global JavaScript variables
-- JWT stored in URL query parameters or fragments
+**Token Storage** — owned by Category 4. If tokens land in `localStorage`, a global, a URL fragment,
+or a cookie missing `HttpOnly` / `Secure` / `SameSite`, note the detection and report it there.
 
-**Redirect URI Validation:**
+**Redirect URI Validation (the registered `redirect_uri`, not a generic redirect):**
 - Redirect URI not strictly matched (e.g., prefix matching allows `https://example.com.evil.com`)
 - Wildcard redirect URIs: `redirect_uri=https://*.example.com`
-- Open redirect via OAuth: callback accepts arbitrary `redirect_uri` values
+- Callback accepting an arbitrary `redirect_uri` value not in the registered set
 - `redirect_uri` validated on the client side but not on the authorization server
 - Path traversal in redirect URI: `redirect_uri=https://example.com/../evil`
 - Redirect URI with different port or path accepted (e.g., `https://example.com:8080`)
@@ -70,8 +72,7 @@
 **JavaScript/TypeScript (NextAuth, Passport.js):**
 - NextAuth custom provider without PKCE: `providers: [{ id: 'custom', ...options }]` missing `checks: ['pkce']`
 - Passport OAuth2 callback not validating `state`: `passport.authenticate('oauth2')` without state check
-- Access token stored in `localStorage.setItem('token', accessToken)` in SPA
-- OAuth callback accepting any `redirect_uri` parameter without validation against allowlist
+- OAuth callback accepting any `redirect_uri` parameter without validation against the registered allowlist
 - Client secret in Next.js client-side code: `process.env.NEXT_PUBLIC_OAUTH_SECRET`
 
 **Python (Django OAuth Toolkit, Authlib):**
@@ -88,11 +89,10 @@
 
 **Go:**
 - `golang.org/x/oauth2` authorization URL without `oauth2.SetAuthURLParam("state", state)`
-- Token stored in cookie without `HttpOnly` flag: `http.SetCookie(w, &http.Cookie{Name: "token", Value: token})`
 - Redirect URI validated with `strings.HasPrefix()` instead of exact match
 
 **Ruby (OmniAuth, Doorkeeper):**
-- OmniAuth without CSRF protection: `provider :oauth2, ... ` without `provider_ignores_state: false`
+- OmniAuth with state checking turned **off**: `provider :oauth2, ..., provider_ignores_state: true`. The option defaults to `false` (state is validated), so its *absence* is the secure configuration and is never the finding — the finding is an explicit `true`, and the fix is to remove the option or get the provider to return `state`
 - Doorkeeper with `force_ssl_in_redirect_uri false` in production
 - Implicit grant enabled in Doorkeeper: `grant_flows %w[implicit]`
 
@@ -100,20 +100,26 @@
 - Authorization code flow with PKCE (`code_challenge_method=S256`) enforced
 - State parameter generated, stored in session, and validated on callback
 - Nonce sent in OIDC authentication request and verified in ID token
-- Tokens stored in `HttpOnly`, `Secure`, `SameSite=Lax` cookies (not accessible to JavaScript)
 - Redirect URIs validated with exact string match against a registered allowlist
 - Refresh token rotation enabled (new refresh token issued on each use, old one invalidated)
 - Scopes minimized to only what the application requires
 - Client secrets stored server-side only, never exposed to frontend code
-- Backend-only OAuth flows (confidential clients) where PKCE is optional per OAuth 2.1 spec
+- A **confidential** client that omits PKCE but validates the OIDC `nonce` claim in the ID token
+  obtained from the token endpoint, and disregards every token until that check succeeds. Current
+  best-current-practice recommends PKCE for confidential clients too, and names the OIDC nonce as
+  the one sanctioned alternative — so nonce-with-validation is a Pass, and "it's a backend client"
+  on its own is not. Record which of the two you found, quoted. (Nonce does not protect a *public*
+  client: an attacker can call the token endpoint with the stolen code directly.)
 - Proper client secret management in a secrets manager for confidential clients
 - Implicit flow disabled; authorization code flow with PKCE used for SPAs and mobile apps
+- `provider_ignores_state` absent from an OmniAuth provider block — the default is `false`, so state
+  is being validated
 
 ### Context Check
 1. Is PKCE used for public clients (SPAs, mobile apps, CLI tools)?
 2. Is the `state` parameter generated, stored in session, and validated on callback?
 3. Is the `nonce` claim verified in OIDC ID tokens?
-4. Are tokens stored securely (HttpOnly cookies, not localStorage)?
+4. For a confidential client without PKCE: is the OIDC `nonce` claim verified in the ID token, with tokens disregarded until it passes?
 5. Are redirect URIs strictly validated with exact match against a registered allowlist?
 6. Is refresh token rotation enabled with reuse detection?
 7. Are OAuth scopes minimized to the least privilege needed?
@@ -125,16 +131,17 @@ Before reporting, verify ALL of these:
 1. [ ] Determined if the OAuth client is public (SPA, mobile, CLI) or confidential (server-side)
 2. [ ] Checked authorization request for `code_challenge` and `code_challenge_method` parameters (PKCE)
 3. [ ] Verified `state` parameter is generated, stored in session, and validated on callback
-4. [ ] Checked token storage location (localStorage, sessionStorage, HttpOnly cookies)
+4. [ ] For a confidential client without PKCE, checked whether the OIDC `nonce` is sent AND verified in the ID token
 5. [ ] Verified redirect URI validation uses exact string match against a registered allowlist
 6. [ ] Confirmed client secret is not exposed in frontend code or client-side configuration
 7. [ ] Checked if refresh token rotation is enabled with reuse detection
 
 ### Confidence Scoring
-- **HIGH**: Authorization code flow without PKCE for a public client (SPA, mobile app). Or access tokens stored in `localStorage`. Or redirect URI validation uses prefix matching instead of exact match. Or client secret exposed in frontend code.
+- **HIGH**: Authorization code flow without PKCE for a public client (SPA, mobile app). Or redirect URI validation uses prefix matching instead of exact match. Or `provider_ignores_state: true`. Or client secret exposed in frontend code.
 - **MEDIUM**: State parameter is generated but not validated on callback. Or refresh token rotation is not enforced. Or implicit flow is used but the application is being migrated.
-- **LOW**: PKCE is not used but the client is confidential (server-side) where PKCE is optional per OAuth 2.1. Or tokens are stored in cookies that are missing one of the three attributes (`HttpOnly`, `Secure`, `SameSite`).
-- **SKIP**: Authorization code flow with PKCE, state validation, nonce verification. Tokens in HttpOnly/Secure/SameSite cookies. Redirect URIs with exact string match. Client secrets server-side only. Auth managed by a provider (Clerk, Auth0) with secure defaults.
+- **MEDIUM (not Low)**: PKCE is absent on a confidential client **and** no verified OIDC `nonce` covers it — best current practice recommends PKCE here too, so this is a real gap, not an exemption.
+- **LOW**: PKCE is absent on a confidential client but a `nonce` is sent and its verification could not be traced to a specific line — tag `needs human verification`.
+- **SKIP**: Authorization code flow with PKCE, state validation, nonce verification. Redirect URIs with exact string match. Client secrets server-side only. Auth managed by a provider (Clerk, Auth0) with secure defaults.
 
 ### Files to Check
 - `**/auth*`, `**/oauth*`, `**/oidc*`, `**/login*`, `**/callback*`

@@ -11,8 +11,9 @@ question**. Prose that is none of these doesn't belong in the file.
 ```markdown
 # Blueprint — <project name>
 
-<!-- snitch-blueprint v0.1.0 — decisions doc. Records: Fact / Decision / Default / Open.
-     Re-run the blueprint interview after a pivot; let git diffs show strategy changes. -->
+<!-- snitch-blueprint v<current metadata.version from SKILL.md> — decisions doc. Records:
+     Fact / Decision / Default / Open. Re-run the blueprint interview after a pivot; let
+     git diffs show strategy changes. -->
 
 ## Identity
 Archetype (primary + secondary), business/product name, domain, locale(s), stack.
@@ -78,6 +79,6 @@ questions; it is not usable with silent guesses.
   writing its code. The spec-then-code order is the whole point of the skill.
 - Pivot / new service line / re-platform → re-run the interview delta, update, commit. The
   git history of BLUEPRINT.md is the strategy changelog.
-- Audit skills, when run later, should be pointed at this file: findings that contradict a
+- snitch-marketing and snitch-ux, when run later, read this file: findings that contradict a
   recorded Decision are surfaced as "decision vs. best practice" tensions for the user, not
-  auto-fixes.
+  auto-fixes. snitch-security audits the code directly and doesn't need this file to do it.

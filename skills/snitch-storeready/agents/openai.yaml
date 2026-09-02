@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch StoreReady"
+  short_description: "App Store and Google Play submission readiness"

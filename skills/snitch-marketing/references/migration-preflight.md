@@ -1,4 +1,4 @@
-# Migration / Replatform Pre-flight (STEP 4.8)
+# Migration / Replatform Pre-flight (on-demand lane, outside the numbered audit flow)
 
 The single largest source of self-inflicted organic-traffic loss is a poorly executed migration. Replatforming (WordPress → Headless), framework changes (Pages Router → App Router; Gatsby → Astro), domain changes, URL structure changes, design system rewrites, CMS changes — every one of these has lost millions of dollars of organic traffic for brands that didn't pre-flight the SEO impact.
 
@@ -43,7 +43,7 @@ Run this checklist on the staging / preview deploy at minimum 2 weeks before pro
 
 1. **Title, description, canonical** (Cats 9, 10, 3) — confirm each migrated URL retains its title + description (or has a deliberate, well-considered new one).
 2. **Open Graph + Twitter Card** (Cats 11, 12) — confirm preserved.
-3. **Schema.org markup** (Cats 31-38, 87-94) — confirm each schema type continues to render. Common failure: the new framework's head builder doesn't include the JSON-LD that the old one did.
+3. **Schema.org markup** (Cats 31, 32, 94) — confirm each schema type continues to render. Common failure: the new framework's head builder doesn't include the JSON-LD that the old one did.
 4. **hreflang** (Cat 50) — confirm hreflang continuity for international.
 
 ### D. Performance baseline
@@ -91,7 +91,7 @@ Migrations dip traffic for 2-6 weeks even when done well. The monitoring is to d
 
 ## Failure modes — and which one you're hitting
 
-When traffic drops post-migration, these are the most common causes in approximate frequency order. Use `traffic-diagnosis.md` STEP 4.7 framework to narrow down.
+When traffic drops post-migration, these are the most common causes in approximate frequency order. Use the `traffic-diagnosis.md` framework to narrow down.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
@@ -99,7 +99,7 @@ When traffic drops post-migration, these are the most common causes in approxima
 | Drop in 7-14 days after launch | Redirect map incomplete; old URLs returning 404 instead of 301 | Cross-reference GSC's old URLs vs your redirect map; add missing redirects |
 | Slow decay over 4-8 weeks | Internal link graph still references old URLs (creating redirect chains); content depth lost in migration | Update internal links to canonical destinations; restore lost content |
 | Drop concentrated on one segment (mobile only / one country) | Framework regression on a specific render path (mobile-specific JS bug; locale-specific routing) | Re-test the affected segment in production |
-| Slow recovery + position drop | Schema markup lost; Core Web Vitals regressed; rendering changed (SSR → CSR) | Audit schema (Cats 31-94); audit performance (Cats 39-44); audit rendering |
+| Slow recovery + position drop | Schema markup lost; Core Web Vitals regressed; rendering changed (SSR → CSR) | Audit schema (Cats 31, 32, 94); audit performance (Cats 39-44); audit rendering |
 
 ## Red flags during pre-flight (escalate before launch)
 
@@ -181,7 +181,7 @@ Save migration audit to `MIGRATION_PREFLIGHT_REPORT.md` in the working directory
 
 ## Cross-references
 
-- `traffic-diagnosis.md` — STEP 4.7 diagnostic framework for post-launch regression
+- `traffic-diagnosis.md` — the diagnostic framework for post-launch regression
 - Cat 1 (robots.txt), Cat 2 (sitemap), Cat 3 (canonical), Cat 4 (indexability), Cat 6 (redirect chains)
-- Cat 9-14 (metadata), Cat 31-94 (schema)
+- Cat 9-14 (metadata), Cats 31, 32, 94 (schema)
 - Cat 39-44 (performance baselines)

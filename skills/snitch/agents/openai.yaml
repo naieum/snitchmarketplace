@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch Security"
+  short_description: "Evidence-based security audit for AI-written code"

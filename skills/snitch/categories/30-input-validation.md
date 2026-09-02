@@ -1,19 +1,20 @@
-## CATEGORY 30: Input Validation & ReDoS
+## CATEGORY 30: Input Validation
 > Type: sink-pattern · Groups: infra-supply-chain · CWE: CWE-20
 
-**Data flow tracing required (SKILL.md Rule 7).** Trace each user-supplied value to its sink before reporting: a path joined from `req.*` (traversal), an object merge whose source is `req.body` / user config (prototype pollution), or a backtracking regex applied to user input (ReDoS). Literals, `path.resolve` + allow-list checks, explicit field-picking, and upstream schema validation are Passes — a flagged regex or merge with a hardcoded / internal source is not a finding. Un-traceable sources downgrade to Low confidence + `needs human verification`.
+> **Scope.** Path traversal, prototype pollution, and body-size posture. Catastrophic regex
+> backtracking is Category 61 (ReDoS) — report it there, not here.
+
+**Data flow tracing required (SKILL.md Rule 7).** Trace each user-supplied value to its sink before reporting: a path joined from `req.*` (traversal), or an object merge whose source is `req.body` / user config (prototype pollution). Literals, `path.resolve` + allow-list checks, explicit field-picking, and upstream schema validation are Passes — a flagged merge with a hardcoded / internal source is not a finding. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
 ### Detection
 - File system operations with user input
 - Object merge/assign patterns with external data
-- Regular expressions in validation or parsing
 - Request body handling configuration
 - Template literals with dynamic content
 
 ### What to Search For
 - Path traversal: `../` in user input passed to file system operations (`fs.readFile`, `path.join`)
 - Prototype pollution: `__proto__`, `constructor.prototype` in object merge/spread/assign
-- ReDoS: Regex with nested quantifiers (e.g., `(a+)+`, `(a|a)*`, `(.*a){x}`)
 - Missing request body size limits on Express/Fastify
 - `Object.assign` or spread with untrusted input without property filtering
 - Template literal injection in non-SQL contexts (log forging, header injection)
@@ -21,25 +22,22 @@
 ### Actually Vulnerable
 - `fs.readFile(path.join(baseDir, req.query.file))` without sanitizing `../` sequences
 - `Object.assign(config, req.body)` allowing `__proto__` pollution
-- Regex like `/^(a+)+$/` used to validate user input (catastrophic backtracking)
 - A body parser whose cap is **explicitly raised** far beyond what the route consumes. The finding is the disproportion, not the presence or absence of the option — compare the configured cap against the largest field the handler actually reads. Severity Medium (CWE-770 / CWE-400, resource exhaustion), High when the route is unauthenticated and unthrottled
 - `lodash.merge(defaults, userInput)` with unsanitized user input
 
 ### NOT Vulnerable
 - File paths validated against an allowlist or using `path.resolve` with base dir check
 - Object merge with explicit property picking (`{ name, email } = req.body`)
-- Simple regex without nested quantifiers
 - **Any body parser left at its framework default** — a cap is configured, it simply isn't spelled out. This covers every parser in the family, not only the ones named here: `express.json()`, `express.urlencoded()`, `express.raw()`, `express.text()` all default to **100kb** whether or not other options (`extended`, `type`, `inflate`) are passed; Fastify's `bodyLimit` defaults to **1 MiB**. An options object without a `limit` key is still the default. Also a Pass when an explicit limit is *proportionate* to the payload the route accepts
 - Input validated through schema validation (Zod, Joi, Yup)
 
 ### Context Check
 1. Does user input flow into file system operations?
 2. Is object merging done with explicit property selection or raw input?
-3. Does the regex have nested quantifiers that could cause backtracking?
-4. Is there a body size limit configured on the HTTP framework?
+3. Is there a body size limit configured on the HTTP framework?
 
 **Body-limit findings are posture, not taint.** This category is `Type: sink-pattern` and its
-tracing banner governs the traversal / prototype-pollution / ReDoS findings. A body-cap
+tracing banner governs the traversal / prototype-pollution findings. A body-cap
 misconfiguration has no source and no sink, so the source→sink Evidence Chain below does not apply
 to it. Its evidence is: the parser call with its configured cap, the handler's largest consumed
 field, and whether the route is authenticated or rate-limited. Confidence is High when you read both
@@ -47,16 +45,15 @@ the parser config and the handler, Medium when the route chain crosses a file yo
 
 ### Evidence Chain
 A finding's Evidence block must show:
-- The sink file:line — the file system operation, object merge/assign, regex application, or template literal receiving the value
+- The sink file:line — the file system operation, object merge/assign, or template literal receiving the value
 - The traced variable path from source to sink, hop by hop (e.g., `req.query.file` → `path.join` → `fs.readFile`)
 - Sanitizers checked along the path and shown absent: `path.resolve` + base-dir/allow-list check, explicit property picking, schema validation (Zod/Joi/Yup), body size limits
 - Source classification: user-controlled (`req.*`, params, user config) vs. hardcoded/internal — an internal source is not a finding
-- For ReDoS: the regex pattern quoted with its nested quantifier, plus the file:line where user input reaches it
 
 ### Confidence Scoring
-- **High**: complete source→sink trace from user input with no sanitizer on the path (e.g., `req.query.file` into `path.join` into `fs.readFile`; `Object.assign(config, req.body)`; backtracking regex validating request input)
+- **High**: complete source→sink trace from user input with no sanitizer on the path (e.g., `req.query.file` into `path.join` into `fs.readFile`; `Object.assign(config, req.body)`)
 - **Medium**: sink and pattern present but one hop of the trace is indirect (helper function, middleware), or validation may occur upstream but is not confirmed at the call site
-- **Low**: the source cannot be classified (dynamic dispatch, external caller) or the regex's input origin is un-traceable — tag `needs human verification`
+- **Low**: the source cannot be classified (dynamic dispatch, external caller) — tag `needs human verification`
 
 ### Files to Check
 - `**/api/**/*.ts`, `**/routes/**/*.ts`

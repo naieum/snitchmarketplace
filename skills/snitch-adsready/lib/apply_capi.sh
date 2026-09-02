@@ -11,8 +11,7 @@ ADSSEC_CAPI_PLATFORMS=(google meta microsoft linkedin tiktok x pinterest reddit 
 # _capi_template <platform> <lang> -> path or empty
 _capi_template() {
   local platform="$1" lang="$2"
-  local skill_dir="${ADSSEC_SKILL_DIR:-${HOME}/.claude/skills/ads-ready}"
-  local p="${skill_dir}/templates/capi-stubs/${platform}/${lang}.template"
+  local p="${TPL_DIR}/capi-stubs/${platform}/${lang}.template"
   if [[ -f "$p" ]]; then
     printf '%s' "$p"
     return 0
@@ -90,7 +89,7 @@ _capi_signature() {
     microsoft) printf 'bingads.*offline|bingads.*conversion' ;;
     linkedin)  printf 'api\\.linkedin\\.com.*conversion|conversionEvents' ;;
     tiktok)    printf 'business-api\\.tiktok\\.com/open_api/[v0-9.]+/event' ;;
-    x)         printf 'ads-api\\.twitter\\.com.*measurement|twitter.*capi' ;;
+    x)         printf 'ads-api\\.(x|twitter)\\.com.*(measurement|conversion)|(x|twitter).*capi' ;;
     pinterest) printf 'api\\.pinterest\\.com.*events|conversion_events' ;;
     reddit)    printf 'ads-api\\.reddit\\.com.*conversion' ;;
     snapchat)  printf 'tr\\.snapchat\\.com/v[0-9]+/conversion|snap.*capi' ;;

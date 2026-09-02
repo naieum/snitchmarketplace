@@ -1,14 +1,14 @@
 # AI crawler registry
 
 The current set of AI crawler user-agents a 2026 site should account for in `robots.txt` (Cat 1)
-and in the discoverability layer of AI-search citation (Cat 82) and llms.txt (Cat 106). Where
+and in the discoverability layer of AI-search citation (Cat 82), which also audits llms.txt. Where
 `robots.txt` checks historically meant Googlebot/Bingbot, the AI-citation surface depends on a
 separate, faster-moving fleet — and the directives that govern them are not interchangeable.
 
 ## When surfaced
 
 Loaded when Cat 1 (robots.txt) parses user-agent groups, when Cat 82 layer 1 (discoverability)
-checks AI-crawler access, or when Cat 106 (llms.txt) checks whether the advisory file is even
+checks AI-crawler access, or when Cat 82's Layer 1 checks whether the advisory file is even
 reachable by the crawlers it targets.
 
 ## The registry
@@ -19,8 +19,9 @@ reachable by the crawlers it targets.
 | `OAI-SearchBot` | OpenAI | ChatGPT Search index | `User-agent: OAI-SearchBot` |
 | `ChatGPT-User` | OpenAI | Live user-triggered fetch (browsing) | `User-agent: ChatGPT-User` |
 | `ClaudeBot` | Anthropic | Training-data crawl | `User-agent: ClaudeBot` |
-| `Claude-Web` | Anthropic | Live user-triggered fetch | `User-agent: Claude-Web` |
-| `anthropic-ai` | Anthropic | Legacy/general Anthropic crawl | `User-agent: anthropic-ai` |
+| `Claude-User` | Anthropic | Live user-triggered fetch (Claude answering a question) | `User-agent: Claude-User` |
+| `Claude-SearchBot` | Anthropic | Search index for Claude's search results | `User-agent: Claude-SearchBot` |
+| `anthropic-ai` / `Claude-Web` | Anthropic | Legacy tokens still seen in older `robots.txt` files | `User-agent: anthropic-ai` |
 | `PerplexityBot` | Perplexity | Index crawl | `User-agent: PerplexityBot` |
 | `Perplexity-User` | Perplexity | Live user-triggered fetch | `User-agent: Perplexity-User` |
 | `Google-Extended` | Google | Gemini / Vertex training opt-out token (does NOT affect Search indexing) | `User-agent: Google-Extended` |
@@ -43,8 +44,9 @@ Blocking is not a single decision. The consequences differ by crawler role:
   `Applebot-Extended`) keeps content out of future model corpora but does NOT stop live-retrieval
   citation.
 - **Blocking a live-retrieval / search bot** (`OAI-SearchBot`, `ChatGPT-User`, `PerplexityBot`,
-  `Perplexity-User`, `Claude-Web`) directly removes the site from the assistant's ability to fetch
-  and cite it in an answer right now.
+  `Perplexity-User`, `Claude-User`, `Claude-SearchBot`) directly removes the site from the assistant's
+  ability to fetch and cite it in an answer right now. Each vendor's tokens are independent:
+  blocking a training bot does not block that vendor's retrieval or search bot, and vice versa.
 - `Google-Extended` and `Applebot-Extended` are opt-out tokens for AI training only; they do not
   govern classic Search indexing. A site can allow Search while opting out of training.
 
@@ -92,5 +94,6 @@ logs nor a bot-analytics source is available; never infer bot behavior.
 
 ---
 
-*Crawler set compiled from the MIT-licensed geo-seo-claude, claude-seo, and claude-rank projects
-plus current published crawler docs. Internal reference only; not surfaced in reports.*
+*Crawler set compiled from a handful of open-source AI-search rule sets plus the operators'
+current published crawler docs, which are the authority. Internal reference only; not surfaced
+in reports.*

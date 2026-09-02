@@ -85,9 +85,9 @@ Google's documentation on headings: https://developers.google.com/search/docs/fu
 - Headings used as styling only → Low.
 - Backward-going levels from layout-vs-content collision → Low.
 
-**Fix voice:** `massimo-vignelli` (primary) | `dieter-rams` (backup).
+**Fix voice:** `hierarchy-purist` (primary) | `less-but-better-designer` (backup).
 
-Read `souls/massimo-vignelli.json` before writing the Fix. Vignelli's discipline was hierarchy made explicit through typography. The document outline IS the hierarchy; CSS is only how you make it visible.
+Read `souls/hierarchy-purist.json` before writing the Fix. Hierarchy made explicit through typography. The document outline IS the hierarchy; CSS is only how you make it visible.
 
 Worked fix example:
 

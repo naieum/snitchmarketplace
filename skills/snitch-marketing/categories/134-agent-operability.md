@@ -1,6 +1,6 @@
 ## CATEGORY 134: Agent operability (accessibility-tree / machine-actionability)
 
-In 2026 a page is no longer used only by people. Browsing, shopping, booking, and research
+A page is no longer used only by people. Browsing, shopping, booking, and research
 agents act on web pages on a user's behalf, and to do that they must *operate* the page, not
 just read it. Operating means perceiving the primary action and completing it: clicking the
 real control that submits a signup, adds to cart, books a slot, or runs a search. The channel
@@ -14,7 +14,7 @@ Scope note: this is distinct from Cat 101 (AI-agent commerce signals), which ask
 *product data* is extractable and structured for agents. Cat 134 asks whether the page is
 *operable*, whether a machine can take the action, regardless of how well the product is
 described. It also overlaps heavily with the human-accessibility categories: Cat 17 (semantic
-HTML), Cat 48 (ARIA labels / accessible names), and Cat 104 (keyboard navigation). Strong
+HTML) and Cat 103 (accessible names and keyboard operability, SC 4.1.2 / 2.1.1). Strong
 human a11y and agent operability rise and fall together, and a page that passes those three
 usually passes this one. The lens here is narrower and action-first: "can a machine agent
 complete the job," framed around the page's primary action. Cross-ref those categories rather
@@ -151,8 +151,8 @@ regions: https://web.dev/learn/accessibility/
 MDN, the accessibility tree and accessible names:
 https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA
 
-Cross-ref Cat 101 (agent-readable product data), Cat 17 (semantic HTML), Cat 48 (ARIA labels),
-Cat 104 (keyboard navigation), Cat 82 (AI-search citation).
+Cross-ref Cat 101 (agent-readable product data), Cat 17 (semantic HTML), Cat 103 (accessible names
+and keyboard operability), Cat 82 (AI-search citation).
 
 **Severity tagging:**
 - Primary conversion action (checkout, signup, book, primary search) implemented as a
@@ -165,9 +165,9 @@ Cat 104 (keyboard navigation), Cat 82 (AI-search citation).
 - A secondary (non-primary) action that is non-operable → Medium.
 - Minor unlabeled non-critical controls → Low.
 
-**Fix voice:** `jen-simmons` (primary) | `solutions-architect` (backup).
+**Fix voice:** `intrinsic-web-engineer` (primary) | `solutions-architect` (backup).
 
-Read `souls/jen-simmons.json` before writing the Fix.
+Read `souls/intrinsic-web-engineer.json` before writing the Fix.
 
 Worked fix example:
 

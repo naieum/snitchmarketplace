@@ -31,7 +31,7 @@ Output: a list of 10-20 verbatim quotes that go into hero candidates, FAQ candid
 Resistance language is the FAQ reorganization input. Most FAQ pages lead with the vendor's framing ("How accurate is it?"). The buyer's actual question is something else. Listen for:
 
 - "I'd want to try it for a few days first" → free-trial / no-card signup is the right structure; if absent, that's the conversion bottleneck.
-- "I don't trust cloud transcription" / "I don't want my data sent to a server" → privacy gap, requires a specific privacy page (Cat 111 trust artifact #4).
+- "I don't trust cloud transcription" / "I don't want my data sent to a server" → privacy gap, requires a specific privacy page (Cat 60 trust artifact #4).
 - "I'd buy it if my company paid" → wrong segment for indie SaaS; not a problem to solve, but signals B2B / enterprise procurement requirements that don't apply to the indie wedge.
 - "It seems too good for $X" / "what's the catch" → pricing perception gap; the page needs an explicit "why we can charge this little" answer.
 - "I'd need to talk to IT" → switching-cost gap; segment is wrong-fit for self-serve.
@@ -65,9 +65,9 @@ This is the highest-leverage signal in the four. The way the customer reflexivel
 
 Output: a one-sentence positioning conclusion. Substitute / demand-creation / analogy / category-creation. Each routes to a different homepage strategy.
 
-### Cross-reference: comparison signal vs positioning workshop
+### Cross-reference: comparison signal vs the competitive frame
 
-The customer's reflexive comparison is the input data for step 1 of the positioning workshop in Cat 81 ("list true competitive alternatives"). If the brand's positioning frame implies one set of competitive alternatives but customers reflexively compare the brand to a different set, the positioning frame is wrong. Examples of the misalignment:
+The customer's reflexive comparison is the evidence Cat 81 grades the site's competitive frame against, and the input the positioning workshop needs when one gets run (call the Skill tool with "snitch-cmo"). If the brand's positioning frame implies one set of competitive alternatives but customers reflexively compare the brand to a different set, the positioning frame is wrong. Examples of the misalignment:
 
 - The brand positions itself "vs Wispr Flow" (treating Wispr as the alternative). Customers reflexively compare it to "Win+H, which I tried and gave up on" (treating built-in OS dictation as the alternative). Misalignment: the brand is fighting the wrong fight; the actual buyer is in demand-creation territory, not switching territory.
 - The brand positions itself as a "team collaboration tool" (treating Notion / Asana / Slack as alternatives). Customers reflexively compare it to "Excel and a Google Doc, which is what we use today." Misalignment: the brand is fighting tools the buyer isn't using; the real switching cost is from spreadsheet inertia, not tool-to-tool migration.
@@ -106,12 +106,12 @@ For each of the 20 calls, classify the customer's most distinctive quotes into t
 - **Comparison patterns** dominant across calls → positioning conclusion (substitute vs demand-creation).
 - **Use-case ratio** (job:feature) across calls → positioning posture (lead with job vs lead with feature).
 
-Then rewrite the hero, FAQ, and trust strip using only the verbatim customer language. Ship the rewrite. Measure with the events from Cat 55.
+Then rewrite the hero, FAQ, and trust strip using only the verbatim customer language. Ship the rewrite. Measure with the events from Cat 53.
 
 ## Cross-references
 
 - `references/customer-discovery-script.md`, the script that produces the input.
 - Cat 81 (positioning), the framework for translating these signals into positioning statements.
-- Cat 110 (ICP wedge scoring), the segment-selection logic that depends on customer-language confirmation.
-- Cat 111 (trust artifact audit), the resistance language directly feeds the trust artifacts.
+- Wedge scoring, which lives in the CMO skill (call the Skill tool with "snitch-cmo"): the segment-selection logic depends on customer-language confirmation.
+- Cat 60 (conversion & trust, trust-artifact half), the resistance language directly feeds the trust artifacts.
 - `references/copy-bank-templates.md`, where verbatim activation language gets re-rendered as deployable templates.

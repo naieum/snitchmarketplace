@@ -1,12 +1,12 @@
 ---
 name: snitch-devready
-description: "Bootstrap a repository for effective AI-assisted development. Auto-detects whether the repo is greenfield (no code yet), thin-greenfield (scaffold only), or brownfield (real code), then leaves behind the checked-in artifacts that make an AI coding agent smarter for the whole team: a short CLAUDE.md, slash commands, a screenshot/test feedback loop, an .mcp.json, a permissions allowlist — and a two-tier coding standard (enforced vs advisory) wired to the repo's real gates (linters, hooks, CI) so the agent's code is machine-checked, not just advised. Use when asked to make this repo Claude-ready / dev-ready, onboard a codebase for Claude Code, set up Claude Code for a team/project, bootstrap a new project for AI development, set up coding standards for the agent, or wire lint/test enforcement for AI-written code."
-license: MIT
+description: "Bootstrap a repository for effective AI-assisted development. Auto-detects whether the repo is greenfield (no code yet), thin-greenfield (scaffold only), or brownfield (real code), then leaves behind the checked-in artifacts that make an AI coding agent smarter for the whole team: a short CLAUDE.md, slash commands, a screenshot/test feedback loop, an .mcp.json, a permissions allowlist — and a two-tier coding standard (enforced vs advisory) wired to the repo's real gates (linters, hooks, CI) so the agent's code is machine-checked, not just advised. Use when asked to make this repo Claude-ready / dev-ready, onboard a codebase for Claude Code, set up Claude Code for a team/project, bootstrap a new project for AI development, set up coding standards for the agent, or wire lint/test enforcement for AI-written code. Do NOT use for product or marketing decisions (use snitch-blueprint) or for writing the app itself."
+license: MIT with Commons Clause
 compatibility: Standalone skill — the bundled shell tools need bash + jq; artifacts target Claude Code but the CLAUDE.md and standards artifacts serve any AI coding tool that reads repo context files.
-allowed-tools: Bash(${CLAUDE_SKILL_DIR}/devready.sh:*), Bash(/Users/ianmuench/.claude/skills/snitch-devready/devready.sh:*)
+allowed-tools: Bash(${CLAUDE_SKILL_DIR}/devready.sh:*)
 metadata:
   author: Snitch
-  version: 0.4.0
+  version: 0.5.0
   homepage: https://snitchplugin.com
 ---
 
@@ -65,27 +65,15 @@ permissions, the hooks template) are Claude Code's; equivalents for other tools 
 aren't bundled — say so rather than improvising one, and note that the *commit gate and
 CI gate from Recipe E are tool-agnostic by nature* and cover every agent the team runs.
 
-## The modes (summary — details in references/30-recipes.md)
+## The modes (branch here — full playbooks in references/30-recipes.md)
 
-- **brownfield** → *extract-inward*: codebase Q&A + git history → a SHORT CLAUDE.md
-  describing reality, document the test runner as the feedback loop, propose
-  permissions/commands/MCP — and run the **standards move** (Recipe E) so the CLAUDE.md
-  carries the enforced/advisory split. (Recipe A)
-- **greenfield** → *establish-forward* via the **intent cascade**:
-  1. read a spec if `.spec_files` is non-empty,
-  2. infer stack/commands from any partial scaffolding,
-  3. interview (AskUserQuestion) only for the gaps,
-  then write a north-star CLAUDE.md (with `<!-- INTENDED -->` tags), commands, a
-  feedback-loop MCP if `.ui`, and a stack-seeded permissions allowlist. **Delegate
-  the actual app build to the agent** — never scaffold or write product code. (Recipe B)
-- **thin-greenfield** → hybrid: infer stack from the scaffold, interview for *domain*
-  intent only, then write the same artifacts. (Recipe C)
-- **reconciliation** → if a repo is now `brownfield` but CLAUDE.md still has
-  `<!-- INTENDED -->` tags, reconcile each section (realized / diverged / dropped).
-  (Recipe D)
-- **standards** → the enforcement move, runnable standalone ("set up coding standards")
-  or as the last step of Recipe A/C: scan what the repo defines vs what it gates, close
-  the gap, and write the two-tier standards section. (Recipe E)
+| `.mode` (or trigger) | Approach | Recipe |
+|---|---|---|
+| `brownfield` | extract-inward: codebase Q&A + git history | A |
+| `greenfield` | establish-forward via the intent cascade (spec → scaffold → interview the gaps) | B |
+| `thin-greenfield` | hybrid: infer stack, interview for domain intent only | C |
+| brownfield repo, CLAUDE.md still has `<!-- INTENDED -->` tags | reconciliation | D |
+| "set up coding standards" (standalone, or chained after A/C) | the standards move | E |
 
 ## Plan before you write (show this first)
 
@@ -130,10 +118,10 @@ repo would benefit from its own checked-in skill — don't write one unprompted.
 - **.claude/commands/** — `/plan-then-build`, `/build-feature` (feedback-loop-first),
   `/commit-push-pr`, `/what-did-i-ship`.
 - **Feedback loop** — the highest-leverage artifact. Document the test runner; for UI
-  projects propose a Playwright/Puppeteer `.mcp.json` so the agent can *see* its output
+  projects propose a Playwright `.mcp.json` so the agent can *see* its output
   and iterate. Establish it from feature #1.
-- **.claude/settings.local.json** — a stack-appropriate `perms` allowlist + a conservative
-  deny list, so common commands aren't re-prompted.
+- **.claude/settings.local.json** — a stack-appropriate `perms` allowlist + an illustrative
+  deny/ask list, so common commands aren't re-prompted.
 
 ## Hard rules
 - **Never write product code or scaffold the app** (no `npm create`, no source/tests) —

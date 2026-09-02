@@ -6,7 +6,7 @@
 | Identifiers | Partner ID (numeric), Sponsored Account URN (`urn:li:sponsoredAccount:<id>`) |
 | Server-side | **LinkedIn Conversions API** — `api.linkedin.com/rest/conversionEvents` |
 | Account model | Org → ad account → campaign group → campaign → creative |
-| Marketing API | `api.linkedin.com/rest` (`LinkedIn-Version: 202411`, `X-Restli-Protocol-Version: 2.0.0`) |
+| Marketing API | `api.linkedin.com/rest` (`LinkedIn-Version: ${ADSSEC_LI_VERSION}`, `X-Restli-Protocol-Version: 2.0.0`) |
 | Auth | OAuth2; scopes `r_ads`, `r_ads_reporting`, `rw_ads`, `r_organization_social` |
 | Consent | NOT a Consent Mode v2 partner — gate Insight Tag via CMP |
 
@@ -32,7 +32,8 @@ Post-click + view-through windows: `1`, `7`, `30`, or `90` days.
 ## CAPI
 
 - Endpoint: `POST https://api.linkedin.com/rest/conversionEvents`
-- Required headers: `Authorization: Bearer <token>`, `LinkedIn-Version: 202411`, `X-Restli-Protocol-Version: 2.0.0`, `Content-Type: application/json`.
+- Required headers: `Authorization: Bearer <token>`, `LinkedIn-Version: ${ADSSEC_LI_VERSION}`, `X-Restli-Protocol-Version: 2.0.0`, `Content-Type: application/json`.
+- The version header is pinned in one place — `ADSSEC_LI_VERSION` in `lib/platforms/linkedin.sh` (`202608` as of 2026-09-01). LinkedIn supports each monthly version for at least 12 months and rejects a call with a missing or sunset header, so re-pin it yearly.
 - Body: `{ "conversion": "urn:lla:llaPartnerConversion:<id>", "conversionHappenedAt": <epoch_ms>, "conversionValue": { "currencyCode": "USD", "amount": "99" }, "user": { "userIds": [{ "idType": "SHA256_EMAIL", "idValue": "<hash>" }, { "idType": "LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID", "idValue": "<li_fat_id>" }] } }`
 - `idType`: `SHA256_EMAIL`, `SHA256_PHONE`, `LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID` (li_fat_id), `ACXIOM_ID`, `ORACLE_MOAT_ID`.
 - **Match rate**: combine email + phone + li_fat_id. Aim ≥40%.

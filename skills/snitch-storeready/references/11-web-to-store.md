@@ -2,6 +2,8 @@
 
 When to read this: Step 0 found a web project with **no native target**. Do not audit a web app against store rules — every manifest and plist check would be a meaningless N/A. This mode answers the question the user is actually asking: *can this ship to the stores, by which path, at what cost* — then hands back to the full audit once a native project exists.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 The output is a recommendation with evidence, not an audit. Effort figures are estimates and say so; the no-approval-promises rule applies here too.
 
 ## Web-stack detection (record with file:line evidence)
@@ -13,7 +15,7 @@ The output is a recommendation with evidence, not an audit. Effort figures are e
 | `manifest.webmanifest` / `manifest.json` with `start_url` + icons | PWA manifest present — TWA prerequisite half-met |
 | `navigator.serviceWorker.register`, `workbox`, `vite-plugin-pwa`, `next-pwa` | Service worker — offline capability exists; TWA prerequisite and an Apple 4.2 talking point |
 | `@stripe/stripe-js`, `stripe`, checkout/payment links, `paypal` | Web payments — if these sell **digital** goods, the in-app version must move to Apple IAP / Play Billing (3.1.1 / Play Payments policy). Often the largest hidden migration cost; flag it now, not at submission |
-| `supabase`, `firebase/auth`, `next-auth`, `auth0`, `signInWithOAuth`, provider names (`google`, `facebook`, `apple`) | Accounts exist — in-app deletion (5.1.1(v)) and Play's web deletion URL become mandatory; any social login triggers Sign in with Apple (4.8), including built-but-disabled providers the client may enable later — report that as a conditional finding with its trigger, not a question |
+| `supabase`, `firebase/auth`, `next-auth`, `auth0`, `signInWithOAuth`, provider names (`google`, `facebook`, `apple`) | Accounts exist — in-app deletion (5.1.1(v)) and Play's web deletion URL become mandatory; any social login triggers the 4.8 equivalent-login requirement (Sign in with Apple or an equivalent service — see references/01-apple-review-guidelines.md §4.8), including built-but-disabled providers the client may enable later — report that as a conditional finding with its trigger, not a question |
 | Web push (`PushManager`, `firebase/messaging` web SDK) | Push must be re-wired through APNs/FCM in the native shell — web push does not carry over on iOS wrappers |
 
 ## Path matrix
@@ -32,8 +34,8 @@ Default for an existing SPA targeting both stores: **Capacitor** — lowest effo
 - **Apple 4.2 minimum functionality / Play webview-spam:** the shell must do something Safari cannot — working push, offline behavior, device integration, native navigation. A single view hosting one remote URL is the rejection signature on both stores (references/09-static-checks.md, references/01-apple-review-guidelines.md §4.2).
 - **Offline is not optional:** reviewers test with degraded connectivity; a blank webview offline reads as an incomplete app (2.1). Bundle the web assets in the shell rather than loading only a live URL, and ship a real offline state.
 - **Payments:** digital goods or subscriptions unlocked in-app must use Apple IAP and Play Billing; web checkout stays legal on the website only. If Stripe-for-digital-goods was detected above, this is the headline item in the recommendation.
-- **Accounts cascade:** account creation → in-app deletion + Play web deletion URL; social login → Sign in with Apple with token revocation on delete (references/01-apple-review-guidelines.md §4.8, §5.1.1).
-- **Store admin:** Apple Developer Program US $99/yr; Play US $25 one-time plus the new-personal-account closed-testing gate (12 testers / 14 days) before production access (current as of 2026-08 — verify in the consoles; references/10-store-checklists.md).
+- **Accounts cascade:** account creation → in-app deletion + Play web deletion URL; social login → the 4.8 equivalent-login requirement (Sign in with Apple or an equivalent service — see references/01-apple-review-guidelines.md §4.8), and if Sign in with Apple is the one shipped, token revocation on delete (§5.1.1).
+- **Store admin:** Apple Developer Program US $99/yr; Play US $25 one-time plus the new-personal-account closed-testing gate before production access (figures in references/08-play-account-release.md; verify in the consoles).
 
 ## Report format for this mode
 

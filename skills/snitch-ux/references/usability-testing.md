@@ -37,7 +37,7 @@ people not.
 
 - **"Get it" testing.** Show the page and ask what it is, what you'd do here, what you'd
   click first. Reveals whether the big picture / value proposition / labels land. (See the
-  home-page and parachute-test material in `clarity.md`.)
+  home-page and parachute-test material in `navigation.md`.)
 - **Key-task testing.** Give a realistic task and watch them do it — let them finish, get
   stuck, or stop teaching you anything new. Let the user pick a task they actually care
   about ("find a book *you'd* buy") over a contrived one.
@@ -73,6 +73,13 @@ everything:
   de-emphasized — check you didn't trade one problem for another.
 
 ## Measure honestly — did it actually work?
+
+**The honest-measurement question lives here, not in the ethics gate:** if you'll judge this
+surface by a metric, does that metric only improve when the *user* is better off — not a vanity
+number a dark pattern could lift while goodwill drains? It is a real question and worth raising
+with the team, but it asks about the team's metric choice rather than about anything on the
+surface, so it cannot be evidenced the way a gate check must be (`ethics-gate.md`). Raise it as
+a recommendation, never as a gate failure.
 
 Watching people tells you *why* something fails; numbers tell you *whether* a change helped.
 But a number can lie, and the techniques in this skill are very good at moving numbers in

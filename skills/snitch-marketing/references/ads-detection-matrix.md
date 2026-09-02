@@ -118,7 +118,7 @@ The audit, working with no paid tools, can:
 3. **Walk visible ad creatives** from public ad libraries to their landing pages and audit the message match (Cat 109)
 4. **Verify CAPI / Conversions API** backends exist alongside browser pixels (Source-checkable, requires backend code access)
 5. **Detect pre-consent pixel fires** by sampling network tab (Crawl mode runtime check)
-6. **Detect UTM hygiene problems** in source code and runtime navigation (Cat 108)
+6. **Detect UTM hygiene problems** in source code and runtime navigation (Cat 53)
 7. **Detect missing defensive brand-name bid** by SERP-searching the brand and seeing competitor ads above no brand ad (Publicly visible)
 8. **Detect message mismatches** between visible ads and their landing pages (Cat 109)
 
@@ -144,13 +144,13 @@ The audit cannot, without authenticated access to the brand's own platform accou
 - Quality score / relevance score / health metrics
 - Account-level fraud / invalid traffic exposure
 
-For these, the audit recommends pulling the data from the platform itself and including it as input for STEP 4.5 Strategic Recommendations.
+For these, the audit recommends pulling the data from the platform itself and including it as input for STEP 4 Strategic Recommendations.
 
 ## Practical methodology — 4 phases, every ads cat
 
-This is the canonical pattern every ads-related cat (66, 67, 100, 107, 108, 109) follows:
+This is the canonical pattern every ads-related cat (66, 109, and Cat 53's UTM pass) follows:
 
-1. **Brand-maturity gate (STEP 0.6)**. If no presence on the channel, Skip and route to "start here" recommendation in STEP 4.5.
+1. **Brand-maturity gate (STEP 0.6)**. If no presence on the channel, Skip and route to "start here" recommendation in STEP 4.
 2. **Public-visibility scan**. Fetch the relevant ad library / Transparency Center / SERP. Quote what's visible (or quote the absence + the search performed).
 3. **Source-side scan**. Read pixel installations, conversion code, UTM handling, landing pages from the brand's own source. Quote evidence with file:line.
 4. **Cross-reference**. Match what's visible publicly with what's installed on-site. Findings live in the gap between them: ads visible but no pixel; pixel installed but no ads; ads going to homepage instead of landing page; landing page that doesn't match the ad.
@@ -159,9 +159,6 @@ The methodology is the same; the platform-specific knowledge is the matrix above
 
 ## Cross-references
 
-- Cat 66 (Paid search) — uses this matrix's Google + Bing rows
-- Cat 67 (Paid social) — uses Meta + LinkedIn + TikTok + X + Reddit + Pinterest rows
-- Cat 100 (Cookieless analytics) — uses every row's CAPI / server-side column
-- Cat 107 (Pixel install completeness) — produces the cross-platform inventory described above
-- Cat 108 (UTM hygiene) — applies to every platform's UTM-handling
+- Cat 66 (Paid channel presence) — its search side uses this matrix's Google + Bing rows, its social side the Meta + LinkedIn + TikTok + X + Reddit + Pinterest rows
+- Cat 53 (Analytics instrumentation) — its UTM pass applies to every platform's UTM-handling
 - Cat 109 (Message match audit) — the cross-reference step in phase 4 above

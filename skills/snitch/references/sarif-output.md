@@ -4,7 +4,11 @@ Generate `SECURITY_AUDIT_REPORT.sarif` in the project root.
 
 ## Schema
 - `$schema`: `https://json.schemastore.org/sarif-2.1.0.json`
-- `version`: `2.1.0`
+- `version`: `2.1.0` — the SARIF spec version, not the skill's
+- `tool.driver.version`: read `metadata.version` from this skill's `SKILL.md` frontmatter and copy it
+  verbatim. Never hardcode it here; a stale driver version makes every exported result look like it
+  came from a build that no longer exists
+- `tool.driver.informationUri`: `metadata.homepage` from the same frontmatter
 
 ## Structure
 
@@ -16,8 +20,8 @@ Generate `SECURITY_AUDIT_REPORT.sarif` in the project root.
     "tool": {
       "driver": {
         "name": "snitch",
-        "version": "1.0.0",
-        "informationUri": "",
+        "version": "<metadata.version from SKILL.md>",
+        "informationUri": "https://snitchplugin.com",
         "rules": []
       }
     },

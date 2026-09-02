@@ -12,8 +12,8 @@ prediction of a citation outcome. Never claim a passage "will be cited" or "will
 
 ## When surfaced
 
-Loaded when Cat 82 (AI-search citation, extractability layer) or Cat 102 (multi-LLM) runs, and
-for the answer-fitness table when Cat 35 (FAQ) or Cat 57 (topical depth) evaluates answer blocks.
+Loaded when Cat 82 (AI-search citation, extractability layer) runs, and
+for the answer-fitness table when Cat 32's FAQPage row or Cat 57 (topical depth) evaluates answer blocks.
 Cat 70 (content marketing) loads it when judging whether new content is built to be extracted.
 
 ## Target length by answer surface
@@ -48,7 +48,7 @@ and any FAQ entries). For each, evaluate:
 | 3 | **Self-containment** | Low pronoun density (the passage reads standalone, few unresolved `it`/`they`/`this`); ≥3 named entities (proper nouns, products, standards) anchoring the claim. |
 | 4 | **Statistic density** | Percentages, dollar amounts, dates/years, or measured quantities — each with a visible source or "as of" date. |
 | 5 | **Expert attribution** | A named author / credential / first-hand signal (pairs with `references/eeat-assessment.md`). |
-| 6 | **Schema presence** | The passage is backed by relevant JSON-LD (FAQPage, Article, Organization) per Cats 31–37. |
+| 6 | **Schema presence** | The passage is backed by relevant JSON-LD (FAQPage, Article, Organization) per Cat 31 (JSON-LD presence) and the matching row of Cat 32's per-type table. |
 | 7 | **Structure** | Question-style heading, list or table where the content is enumerable, clear paragraph breaks — extractable shape, not a prose wall. |
 
 Report each scored passage with: the quoted passage, the measured length vs its surface band, the
@@ -90,6 +90,6 @@ each dimension from the quoted text.
 
 ---
 
-*Methodology adapted from concepts in the MIT-licensed geo-seo-claude, claude-seo, and claude-rank
-projects, reimplemented under Snitch's evidence-first constraints. The 134–167 word citation band
-is sourced to Google's AI Optimization Guide. Internal reference only; not surfaced in reports.*
+*Methodology adapted from concepts common to several open-source AI-search rule sets and
+reimplemented under Snitch's evidence-first constraints. The 134–167 word citation band is sourced
+to Google's AI Optimization Guide. Internal reference only; not surfaced in reports.*

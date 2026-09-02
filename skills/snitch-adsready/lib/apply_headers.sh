@@ -1,12 +1,20 @@
-# lib/apply_headers.sh — emits a CSP allowlist covering all 10 platforms' domains.
+# lib/apply_headers.sh — emits the ads-aware security header set for the
+# detected stack. The header values come from
+# templates/security-headers-for-ads.template.txt (the single source of truth
+# for the CSP allowlist); the inline builder below is only a fallback for a
+# broken install.
+#
 # The format depends on the detected stack:
 #   - Next.js → next.config.js / next.config.ts patch
-#   - Cloudflare Pages → _headers
+#   - Cloudflare Pages / Netlify → _headers
 #   - Vercel → vercel.json `headers`
 #   - Nginx → add_header snippet
 #   - Static / unknown → an _headers-style file
 #
-# Generates the ads-aware header set inline per detected stack format.
+# This is a PROPOSAL, not a merge: it emits a fresh snippet in the
+# `=== FILE/DIFF/CONTENT ===` contract and the caller merges it. It never reads
+# or rewrites an existing CSP, so it cannot lower an existing posture — but it
+# also cannot combine with one for you.
 #
 # Exports: apply_headers [format]
 
@@ -83,6 +91,38 @@ _apply_headers_build_csp() {
   printf '%s' "$csp" | tr -s ' '
 }
 
+# Emit "Name<TAB>Value" for each header in the template. Comments, blank lines,
+# and Cache-Control (a caching decision, not a security one — a blanket
+# no-cache would hurt the CWV this skill also grades) are dropped.
+_apply_headers_from_template() {
+  local tpl="${TPL_DIR}/security-headers-for-ads.template.txt"
+  [[ -f "$tpl" ]] || return 1
+  local line name value
+  local emitted=0
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    [[ "$line" != *:* ]] && continue
+    name="${line%%:*}"
+    value="${line#*:}"
+    value="${value# }"
+    [[ "$name" == "Cache-Control" ]] && continue
+    printf '%s\t%s\n' "$name" "$value"
+    emitted=$((emitted+1))
+  done <"$tpl"
+  [[ "$emitted" -gt 0 ]]
+}
+
+# Fallback header set, used only when the template is missing.
+_apply_headers_fallback() {
+  printf 'Content-Security-Policy\t%s\n' "$(_apply_headers_build_csp)"
+  printf 'Strict-Transport-Security\tmax-age=31536000; includeSubDomains; preload\n'
+  printf 'X-Content-Type-Options\tnosniff\n'
+  printf 'X-Frame-Options\tDENY\n'
+  printf 'Referrer-Policy\tstrict-origin-when-cross-origin\n'
+  printf 'Permissions-Policy\tgeolocation=(), microphone=(), camera=()\n'
+}
+
 # Detect stack/format by reading detect.sh output.
 _apply_headers_detect_format() {
   if ! declare -f run_detect >/dev/null 2>&1; then
@@ -107,50 +147,56 @@ apply_headers() {
     fmt="$(_apply_headers_detect_format)"
   fi
 
-  local csp; csp="$(_apply_headers_build_csp)"
-  local rel_path content
+  local headers source_note
+  if headers="$(_apply_headers_from_template)"; then
+    source_note="templates/security-headers-for-ads.template.txt"
+  else
+    headers="$(_apply_headers_fallback)"
+    source_note="built-in fallback (template not found)"
+    log_warn "security-headers" "template" "templates/security-headers-for-ads.template.txt not found; using the built-in header set. Reinstall the skill to get the nonce-based CSP."
+  fi
 
+  local uses_nonce=0
+  printf '%s' "$headers" | grep -q '{{NONCE}}' && uses_nonce=1
+
+  local rel_path content name value
   case "$fmt" in
     nextjs)
       rel_path="next.config.security-headers.snippet.js"
       content=$'// Add to next.config.js -> headers() function.\nmodule.exports = {\n  async headers() {\n    return [\n      {\n        source: "/(.*)",\n        headers: [\n'
-      content+="          { key: \"Content-Security-Policy\", value: \"${csp}\" },"$'\n'
-      content+=$'          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },\n'
-      content+=$'          { key: "X-Content-Type-Options", value: "nosniff" },\n'
-      content+=$'          { key: "X-Frame-Options", value: "DENY" },\n'
-      content+=$'          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },\n'
-      content+=$'          { key: "Permissions-Policy", value: "geolocation=(), microphone=(), camera=()" },\n'
+      while IFS=$'\t' read -r name value; do
+        [[ -z "$name" ]] && continue
+        content+="          { key: \"${name}\", value: \"${value//\"/\\\"}\" },"$'\n'
+      done <<<"$headers"
       content+=$'        ],\n      },\n    ];\n  },\n};\n'
       ;;
     vercel)
       rel_path="vercel.headers.snippet.json"
       content=$'{\n  "headers": [\n    {\n      "source": "/(.*)",\n      "headers": [\n'
-      content+="        { \"key\": \"Content-Security-Policy\", \"value\": \"${csp}\" },"$'\n'
-      content+=$'        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },\n'
-      content+=$'        { "key": "X-Content-Type-Options", "value": "nosniff" },\n'
-      content+=$'        { "key": "X-Frame-Options", "value": "DENY" },\n'
-      content+=$'        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },\n'
-      content+=$'        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }\n'
-      content+=$'      ]\n    }\n  ]\n}\n'
+      local first=1
+      while IFS=$'\t' read -r name value; do
+        [[ -z "$name" ]] && continue
+        [[ "$first" == 1 ]] || content+=$',\n'
+        first=0
+        content+="        { \"key\": \"${name}\", \"value\": \"${value//\"/\\\"}\" }"
+      done <<<"$headers"
+      content+=$'\n      ]\n    }\n  ]\n}\n'
       ;;
     pages-headers|netlify-headers)
       rel_path="_headers"
       content="/*"$'\n'
-      content+="  Content-Security-Policy: ${csp}"$'\n'
-      content+=$'  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload\n'
-      content+=$'  X-Content-Type-Options: nosniff\n'
-      content+=$'  X-Frame-Options: DENY\n'
-      content+=$'  Referrer-Policy: strict-origin-when-cross-origin\n'
-      content+=$'  Permissions-Policy: geolocation=(), microphone=(), camera=()\n'
+      while IFS=$'\t' read -r name value; do
+        [[ -z "$name" ]] && continue
+        content+="  ${name}: ${value}"$'\n'
+      done <<<"$headers"
       ;;
     nginx)
       rel_path="nginx.security-headers.snippet.conf"
-      content="add_header Content-Security-Policy \"${csp}\" always;"$'\n'
-      content+=$'add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;\n'
-      content+=$'add_header X-Content-Type-Options "nosniff" always;\n'
-      content+=$'add_header X-Frame-Options "DENY" always;\n'
-      content+=$'add_header Referrer-Policy "strict-origin-when-cross-origin" always;\n'
-      content+=$'add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;\n'
+      content=""
+      while IFS=$'\t' read -r name value; do
+        [[ -z "$name" ]] && continue
+        content+="add_header ${name} \"${value//\"/\\\"}\" always;"$'\n'
+      done <<<"$headers"
       ;;
     *)
       log_fail "security-headers" "format" "Unknown format: ${fmt}. Valid: nextjs|vercel|pages-headers|netlify-headers|nginx."
@@ -158,12 +204,15 @@ apply_headers() {
       ;;
   esac
 
-  log_info "Proposing security-headers in ${fmt} format."
+  log_info "Proposing security-headers in ${fmt} format, from ${source_note}."
   printf '\n=== FILE: %s ===\n' "$rel_path"
   printf '=== DIFF ===\n'
-  printf '(new snippet — merge with existing config)\n'
+  printf '(new snippet — merge with the existing config; this tool does not read or merge an existing CSP)\n'
   printf '=== CONTENT ===\n'
   printf '%s' "$content"
   printf '\n=== END ===\n'
-  log_warn "security-headers" "apply" "Proposed CSP + security headers for ${fmt} format. Merge with existing config; do not blindly overwrite."
+  if [[ "$uses_nonce" == 1 ]]; then
+    log_warn "security-headers" "nonce" "The CSP allows scripts by nonce, not 'unsafe-inline'. Replace {{NONCE}} with a per-request value from your edge layer (Next middleware, a Worker, a Pages Function) and stamp the same value on every inline script tag. Without that the inline pixel snippets will be blocked."
+  fi
+  log_warn "security-headers" "apply" "Proposed CSP + security headers for ${fmt} format. Merge with the existing config; never overwrite a stricter policy with this one."
 }

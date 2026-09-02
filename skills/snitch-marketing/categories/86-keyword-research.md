@@ -81,7 +81,7 @@ Group queries that should target the same page. Two methods:
 
 A typical cluster: 1 primary query (highest volume in cluster), 3-8 secondary queries (long-tail variants), targeting one page that comprehensively addresses all of them.
 
-In 2026, AI overviews complicate this, many informational queries get answered by the overview, no click needed. Clustering still matters because the overview cites sources; the source it cites is your page IF your page is the best target for the cluster. Cross-reference Cat 82.
+AI overviews complicate this: many informational queries get answered by the overview, no click needed. Clustering still matters because the overview cites sources; the source it cites is your page IF your page is the best target for the cluster. Cross-reference Cat 82.
 
 #### Stage 4: Prioritize by leverage
 
@@ -111,6 +111,26 @@ Keyword-difficulty scores are typically a weighted average of referring domains 
 5. **Top page's link quality** — count the #1 page's referring domains, then check their quality: authority of the linking sites, followed vs nofollow. A page held up by a handful of low-authority, mostly-nofollow links is beatable on content.
 
 Portfolio guardrail: low-competition targets suit new/low-authority sites but shouldn't be the whole strategy — competitive topics carry more traffic, links, and commercial value; take them with a realistic time horizon.
+
+### Detection
+
+Four-stage read: capture demand from the sources above, classify intent, cluster by SERP overlap, prioritize by leverage.
+
+### What to Search For
+
+**In source (the auditable half — this is where a Finding gets its `file:line`):**
+- A checked-in keyword or topic map: `keywords.json`, `keywords.csv`, `topics.*`, `content-plan.*`, `editorial-calendar.*`, or a `keywords:` / `targetKeyword:` field in post frontmatter
+- Frontmatter fields that record intent or a target query per post (`intent:`, `query:`, `primaryKeyword:`, `searchIntent:`)
+- Titles and H1s across `content/`, `posts/`, `blog/`, `docs/` — the implied target query of each page, and repeats across pages (the cannibalization input)
+- Slugs that collide or near-collide (`/best-x`, `/x-best`, `/top-x`) targeting one query with several pages
+- Internal-link anchor text pointing at those pages, which reveals which page the site itself treats as canonical for the query
+- Linkable-asset shapes already present: calculators, comparison tables, datasets, glossaries, free tools under `/tools/`, `/calculator/`, `/compare/`
+
+**Off-site (needs a keyword tool, `WebSearch`, or user-pasted exports — else Skip-with-reason):**
+- Volume, difficulty and SERP composition for each implied target query
+- Which of the site's own pages currently rank for the same query (the cannibalization confirmation)
+
+Never assert a volume, a difficulty score, or a SERP composition that was not captured this run.
 
 ### Actually Hurts the Marketing Surface
 
@@ -153,7 +173,7 @@ The audit checks whether the brand has any of these. The pattern that earns link
 
 Audit application:
 
-1. Inventory the brand's site for linkable assets. URLs like `/tools/`, `/calculator/`, `/template/`, `/research/`, `/benchmark/`, `/compare/` are candidates; also check Cat 95 (Comparison pages) output.
+1. Inventory the brand's site for linkable assets. URLs like `/tools/`, `/calculator/`, `/template/`, `/research/`, `/benchmark/`, `/compare/` are candidates; also check Cat 122 (Comparison / alternatives pages) output.
 2. Findings: a brand with no linkable asset and active "we want to rank for {category} keyword" goals is structurally hard to grow. High-leverage recommendation: build one linkable asset before another six months of blog posts.
 3. The recommendation specifies the asset type, not just "build something" — pick the asset type whose audience matches the brand's ICP, with the lowest production cost the brand can deliver in 90 days.
 
@@ -193,9 +213,9 @@ Semrush Keyword Magic Tool (paid): https://www.semrush.com/
 - Targeting another brand's navigational queries the site cannot serve → Medium.
 - Branded query bidding not in place (with paid budget) → Low (cross-reference Cat 66).
 
-**Fix voice:** `frank-chimero` (primary) | `aaron-draplin` (backup, when the fix is "use the words customers actually use, not the words you wish they did").
+**Fix voice:** `content-shape-editor` (primary) | `plain-language-designer` (backup, when the fix is "use the words customers actually use, not the words you wish they did").
 
-Read `souls/frank-chimero.json` before writing the Fix.
+Read `souls/content-shape-editor.json` before writing the Fix.
 
 Worked fix example:
 

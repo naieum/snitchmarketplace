@@ -63,7 +63,7 @@ onLCP(send); onINP(send); onCLS(send); onFCP(send); onTTFB(send);
 
 - **Pricing**: ~$26/mo (Team) up; transactions priced per-volume.
 - **URL**: https://sentry.io/for/performance/
-- **Install**: `npm i @sentry/browser @sentry/tracing`.
+- **Install**: `npm i @sentry/browser` (tracing ships inside the browser SDK; the separate `@sentry/tracing` package was folded in and is no longer published).
 - **Pros**: Errors + performance combined. Trace-level INP attribution.
 - **Cons**: Cost climbs with traffic. Heavier client JS than web-vitals alone.
 - **Best for**: Teams already on Sentry for errors.

@@ -8,7 +8,7 @@ Fill in the [Evidence] placeholders with findings and passed checks from your Sn
 
 ## Section 302 -- Financial Reporting Controls
 
-**Mapped Snitch Categories:** 37 (Logging and Monitoring), 60 (Audit Logging)
+**Mapped Snitch Categories:** 37 (Infrastructure Monitoring & Observability), 60 (Audit Log Integrity)
 
 ### Control Description
 
@@ -16,13 +16,13 @@ Corporate officers must personally certify that financial reports are accurate a
 
 ### Snitch Evidence
 
-**Category 37 -- Logging and Monitoring**
+**Category 37 -- Infrastructure Monitoring & Observability**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 - Log completeness: [Evidence]
 - Tamper-resistance of logs: [Evidence]
 
-**Category 60 -- Audit Logging**
+**Category 60 -- Audit Log Integrity**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 - Financial transaction audit trail: [Evidence]
@@ -42,7 +42,7 @@ Corporate officers must personally certify that financial reports are accurate a
 
 ## Section 404 -- Internal Controls
 
-**Mapped Snitch Categories:** 31 (CI/CD Pipeline Security), 28 (Authorization Flaws)
+**Mapped Snitch Categories:** 28 (Authorization & Access Control (IDOR)), 31 (CI/CD Pipeline Security)
 
 ### Control Description
 
@@ -56,7 +56,7 @@ Management must establish and maintain an adequate internal control structure an
 - Deployment approval workflow: [Evidence]
 - Pipeline integrity controls: [Evidence]
 
-**Category 28 -- Authorization Flaws**
+**Category 28 -- Authorization & Access Control (IDOR)**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 - Role-based access controls: [Evidence]
@@ -105,7 +105,7 @@ All changes to systems involved in financial reporting must be authorized, teste
 
 ## Segregation of Duties
 
-**Mapped Snitch Categories:** 28 (Authorization Flaws)
+**Mapped Snitch Categories:** 28 (Authorization & Access Control (IDOR))
 
 ### Control Description
 
@@ -113,7 +113,7 @@ No single individual should have control over all phases of a financial transact
 
 ### Snitch Evidence
 
-**Category 28 -- Authorization Flaws**
+**Category 28 -- Authorization & Access Control (IDOR)**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 - Role separation enforcement: [Evidence]

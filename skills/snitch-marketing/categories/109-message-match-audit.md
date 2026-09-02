@@ -87,7 +87,7 @@ Public-ad-library inventory + landing-page audit per ad creative + 4-dimension s
 
 Cat 66 (Paid search), channel-level audit; this category is the per-ad detail
 
-Cat 67 (Paid social), same relationship for social ads
+Cat 66 (Paid channel presence), the channel-level posture behind both the search and social ads scored here
 
 Cat 60 (Conversion & trust), trust signals at conversion moment
 
@@ -108,9 +108,9 @@ Unbounce / Instapage / Webflow LP best-practice guides: established CRO-flavored
 - LP mobile-broken from mobile ad → Critical.
 - No trust signals at LP conversion moment → Medium.
 
-**Fix voice:** `aaron-draplin` (primary, plain-language headline discipline) | `frank-chimero` (backup).
+**Fix voice:** `plain-language-designer` (primary, plain-language headline discipline) | `content-shape-editor` (backup).
 
-Read `souls/aaron-draplin.json` before writing the Fix.
+Read `souls/plain-language-designer.json` before writing the Fix.
 
 Worked fix example:
 

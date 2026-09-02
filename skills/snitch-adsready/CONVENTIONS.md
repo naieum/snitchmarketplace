@@ -1,6 +1,6 @@
-# ads-ready — internal conventions (for code authors / agents)
+# snitch-adsready — internal conventions (for code authors / agents)
 
-This file is **not** part of the user-facing skill. It is the contract every `lib/*.sh` author follows so the assembled skill behaves consistently.
+This file is a **contributor contract**: the rules every `lib/*.sh` author follows so the assembled skill behaves consistently. It ships inside the skill folder for transparency — anyone auditing the bundled tools can read what they were built to — but nothing loads it at runtime, so no rule that governs a run may live only here. Blocking rules belong in the Guardrails section of `SKILL.md` (the one the agent actually reads) and in the code that enforces them; this file only points at them.
 
 ## Bash style
 
@@ -15,7 +15,12 @@ This file is **not** part of the user-facing skill. It is the contract every `li
 ## Source layout
 
 - `lib/api.sh`, `lib/log.sh`, `lib/plan.sh` are pre-sourced by `ads-ready.sh` before any subcommand fires. Don't re-source them.
-- All other lib files are sourced on demand by the dispatcher in `ads-ready.sh`. Don't source siblings — add the function call to `ads-ready.sh` instead.
+- All other lib files are sourced on demand by the dispatcher in `ads-ready.sh`. Prefer adding the
+  call to the dispatcher over sourcing a sibling. A lib may source a sibling when it genuinely
+  composes it — `score.sh` needs `state_site` and `state_crux`, `state_lighthouse.sh` needs
+  `state_crux`, `apply_headers.sh` and `apply_structured_data.sh` need `detect` — but it must
+  guard with `declare -f <fn> >/dev/null || . "$LIB_DIR/<lib>.sh"` so a second source is free,
+  and it must never source `log.sh`, `api.sh`, or `plan.sh` (already loaded).
 - `lib/platforms/<name>.sh` files each export a single `platform_state` function, called from `lib/state_platform.sh::run_state_platform`.
 - Each universal lib defines a small set of exported functions:
   - `run_<command>` — the read-only entrypoint, called from the matching subcommand.
@@ -36,14 +41,19 @@ Read tools (digest mode by default):
   ```
 
 - Errors → stderr as JSON `{ "error": "...", "code": "E_*", "remediation": "...", ...context }`. Non-zero exit.
+- Never write `--argjson x "${var:-{}}"`. Bash closes the expansion at the first `}`, so a
+  non-empty `var` gets a stray `}` appended and `jq` rejects the whole document. Normalize
+  first: `[[ -z "$var" ]] && var='{}'`.
+- Building an object from `to_entries | map(...) | from_entries` only works when each element
+  keeps a `value` key. Use `with_entries(.value |= …)` to reshape values.
 
 Mutating tools — use these and only these:
 
 - `log_ok    <area> <key> <message> [docs_url]` — desired state met.
 - `log_warn  <area> <key> <message> [docs_url]` — fix recommended, not critical.
 - `log_fail  <area> <key> <message> [docs_url]` — fix required.
-- `log_locked <area> <key> <message> <required_capability> [docs_url]` — feature is gated by missing API auth.
-- `log_info  <message>` — chatter.
+- `log_locked <area> <key> <message> <required_capability> [docs_url]` — feature is gated by missing API auth. Renders `⚪ [SKIP]`: a Skip carries the reason and what would unblock it.
+- `log_info  <message>` — chatter. It prints to **stdout**, so a JSON-emitting tool must redirect it (`log_info "…" >&2`) or it corrupts the document.
 - `log_section <title>` / `log_subsection <title>` — separators.
 
 `<area>` values (keep these stable; they're used for grouping):
@@ -51,7 +61,10 @@ Mutating tools — use these and only these:
 
 ## API helpers (`lib/api.sh`)
 
-- `http_get <url>` — generic GET, prints body, rc=3 on non-2xx. Sets `ADSEC_LAST_STATUS`, `ADSEC_LAST_BODY`.
+- `http_get <url>` — generic GET, prints body, rc=3 on non-2xx.
+- `http_last_status` — the status of the most recent `http_*` call. Use this, not
+  `$ADSEC_LAST_STATUS`: the wrappers usually run inside `$(…)`, and a variable assigned in a
+  subshell never reaches the caller. The wrappers write the status to a file for this reason.
 - `http_post_json <url> <json>` — generic POST.
 - `fetch_url_html <url>` — used by `state_site`; follows redirects (≤5), returns body + headers.
 - `fetch_url_headers <url>` — HEAD + headers via `-I -L`.
@@ -99,13 +112,24 @@ Never mutate without the read-first compare. Never emit `[FAIL]` from an `apply_
   === END ===
   ```
 
-- The skill freely writes inside `~/.claude/skills/ads-ready/.state/` (snapshots, caches, drift state) and `~/.claude/skills/ads-ready/references/_cache/` (refreshed docs).
+- Library code **never** writes inside the skill folder either — the folder is distributed and
+  may be read-only. All runtime state goes to `$STATE_DIR`
+  (`${XDG_STATE_HOME:-$HOME/.local/state}/snitch-adsready`, overridable with `ADSEC_STATE_DIR`):
+  `findings.tsv`, `api-calls.log`, `snapshot-*.tsv`, and `$CACHE_DIR` (`$STATE_DIR/doc-cache`)
+  for `refresh-docs`. Both are exported by `ads-ready.sh`. When `$STATE_DIR` is not writable,
+  `log.sh` falls back to the temp dir rather than erroring.
+- Temp files live for one run and are registered with `adsec_tmp_register <path>`; the single
+  `EXIT` trap in `log.sh` removes them. Never install a second `trap ... EXIT` — it silently
+  replaces the first.
 
 ## Refusing dangerous defaults
 
-- Refuse to operate when a generic `API_KEY` (with no platform prefix) is in scope — every platform's auth must be scoped.
-- Refuse to write tracking pixels into a page when no consent banner / CMP is detected and the user is in scope of GDPR / ePrivacy / CCPA — surface it as a FAIL and offer `recommend cmp`.
-- Refuse to lower posture in any `apply_*` (e.g., never remove an existing CSP, never overwrite an existing `ads.txt` with fewer lines).
+The blocking rules themselves live in the Guardrails section of `SKILL.md` — one owner, and
+the one the agent actually reads. Implement them there and enforce them in code:
+
+- the generic-`API_KEY` refusal (`ads-ready.sh::_refuse_legacy_global_key_json`),
+- the consent precondition on pixel writes (`lib/apply_pixel.sh::_pixel_consent_signal`),
+- never lowering posture in an `apply_*`.
 
 ## Stack detection
 

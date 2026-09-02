@@ -17,11 +17,16 @@
 
 #### Critical
 - `console.log`, `logger.*` with patient data, diagnosis, prescription, or medical records
-- Health data stored without `encrypt`, `cipher`, or `aes` protection
 - Patient IDs or MRNs in URL path segments or query parameters
 - Patient data leaked in catch blocks or error responses
 
 #### High
+- Health data written to a storage layer you located and read, with no encryption on the path: the
+  column/collection/bucket definition quoted, and the table's or bucket's encryption setting quoted
+  as absent or disabled. **Keyword absence is not evidence** — encryption at rest is usually a
+  database, disk, or bucket property, not an `aes` call in application code, so "no `encrypt` string
+  in the repo" proves nothing. Find the storage definition (migration, schema, Terraform, ORM model)
+  or record a Skip saying which one you could not reach
 - Health endpoints without audit log decorators or middleware
 - HTTP (non-HTTPS) endpoints handling health data
 - Health data endpoints without role-based access control checks

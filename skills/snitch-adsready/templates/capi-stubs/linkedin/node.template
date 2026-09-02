@@ -11,6 +11,11 @@
 
 import crypto from "node:crypto";
 
+// LinkedIn rejects a call with a missing or sunset version header. Override with
+// LINKEDIN_VERSION; each monthly version is supported for at least 12 months.
+// https://learn.microsoft.com/en-us/linkedin/marketing/versioning
+const LINKEDIN_VERSION = process.env.LINKEDIN_VERSION || "202608";
+
 const sha256 = (s) =>
   crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");
 
@@ -46,7 +51,7 @@ export async function sendLinkedInConversion(event) {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${accessToken}`,
-      "LinkedIn-Version": "202410",
+      "LinkedIn-Version": LINKEDIN_VERSION,
       "X-Restli-Protocol-Version": "2.0.0",
       "Content-Type": "application/json"
     },

@@ -53,7 +53,7 @@ Triggers:
 - Quebec law 25 (2024)
 - Brazil LGPD, India DPDP, Japan APPI
 
-Any of the above + no CMP signal = 🔴 FAIL. Refuse to write tracking pixels into a page when no consent banner / CMP is detected (per CONVENTIONS.md).
+Any of the above + no CMP signal = 🔴 FAIL. Never write tracking pixels into a page when no consent banner / CMP is detected — `fix pixel-install` enforces this and points at `recommend cmp` (SKILL.md, Guardrails).
 
 ## Per-platform consent integration
 
@@ -71,6 +71,50 @@ Any of the above + no CMP signal = 🔴 FAIL. Refuse to write tracking pixels in
 | Apple Search Ads | iOS App Tracking Transparency — OS-handled, not web |
 
 The CMP does most of this glue automatically. Sanity-check by clicking "decline all" and watching DevTools → Network: no platform domains should fire.
+
+## Regional consent defaults
+
+| Region | Consent default behavior |
+|---|---|
+| EU + UK + EEA | denied (must opt in) — Consent Mode v2 enforced |
+| Switzerland (FADP) | denied (aligned with GDPR) |
+| Brazil (LGPD) | similar to GDPR |
+| California (CCPA / CPRA) | granted by default; honor opt-out + GPC signal |
+| Other US states (CO, CT, VA, etc.) | similar to California |
+| Canada (PIPEDA / Quebec L25) | denied for Quebec; granted elsewhere |
+| Australia, NZ, Asia (most) | granted, with opt-out support |
+
+Most CMPs auto-detect region by IP and apply the right default. Verify the CMP in use does
+this rather than assuming it — a single global default is the common failure.
+
+## Audit checks
+
+Each one is a Finding only with the quoted call or the network record behind it. "Consent may
+not be wired" is not a finding; the `gtag('consent', ...)` line at `file:line`, or its absence
+across the whole tree, is.
+
+| Check | Finding when | Evidence to quote |
+|---|---|---|
+| Banner present | site serves a regulated region and no CMP / consent library loads | absence across the tree, plus the region signal (locale routes, currency, `hreflang`, stated market) |
+| Default state | `gtag('consent','default', ...)` sets any signal to `granted` | the default call and the granted key |
+| Default ordering | the default call runs after `gtag.js` / a pixel init | both `file:line`s and their order in `<head>` |
+| Banner actually blocks | tags fire on first load regardless of the choice | the pre-consent network requests to platform domains after "decline all" |
+| Tag manager wiring | a GTM container loads pixels and consent state is not bound to the firing rules | container snippet + missing consent trigger/variable |
+| Choice persistence | the saved choice is not replayed before tags on a return visit | the storage read (or its absence) relative to the first tag |
+| Signal completeness | v1-shaped default with no `ad_user_data` / `ad_personalization` | the default call's key set |
+
+Sanity path: load with a clean profile, decline all, and record every request to a platform
+domain. Zero requests is the Pass; quote the recorded list either way.
+
+## Not a finding
+
+- A US-only site with no EU/UK traffic can skip full Consent Mode; state privacy laws still
+  apply through opt-out and GPC, so check that path instead of reporting a missing banner.
+- Cookieless, no-ad-pixel analytics (the privacy-first hosted kind that sets no cross-site
+  identifier) does not need Consent Mode v2. Confirm no ad pixel is also installed before
+  granting this.
+- A CMP that ships TCF only, on a site running no Google ad products, is a deliberate choice —
+  Skip with that reason, not a Finding.
 
 ## Verifying consent reaches the platforms
 

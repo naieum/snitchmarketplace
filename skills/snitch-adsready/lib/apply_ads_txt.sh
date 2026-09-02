@@ -10,7 +10,7 @@ apply_ads_txt() {
 
   local tpl="${TPL_DIR}/ads-txt-entries.template.txt"
   if [[ ! -f "$tpl" ]]; then
-    log_fail "ads-txt" "template" "ads-txt-entries template missing at ${tpl}. Run ads-ready.sh refresh-docs or reinstall the skill."
+    log_fail "ads-txt" "template" "ads-txt-entries template missing at ${tpl}. Reinstall the skill — the templates/ directory beside ads-ready.sh is incomplete."
     return 4
   fi
 
@@ -62,9 +62,9 @@ apply_ads_txt() {
 
   local merged
   if [[ -n "$existing" ]]; then
-    merged="${existing}"$'\n'"# === added by ads-ready ($(date -u +%Y-%m-%d)) ==="$'\n'"${missing}"
+    merged="${existing}"$'\n'"# === added by snitch-adsready ($(date -u +%Y-%m-%d)) ==="$'\n'"${missing}"
   else
-    merged="# ads.txt — managed by ads-ready ($(date -u +%Y-%m-%d))"$'\n'"${missing}"
+    merged="# ads.txt — managed by snitch-adsready ($(date -u +%Y-%m-%d))"$'\n'"${missing}"
   fi
 
   log_info "Proposing ads.txt update with $(printf '%s' "$missing" | grep -c '^[^[:space:]]') new line(s)."

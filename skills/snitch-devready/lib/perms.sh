@@ -108,13 +108,19 @@ EOF
 }
 
 _perms_deny() {
-  # Conservative blocklist — destructive / exfiltration-prone commands.
+  # Illustrative deny list — real permission-matcher prefix rules only, not a
+  # complete guard against destructive commands (a Bash matcher can't catch a
+  # piped command or a fork bomb; that needs a hook, not a permission rule).
   cat <<'EOF'
-Bash(rm -rf /:*)
 Bash(git push --force:*)
 Bash(git push -f:*)
-Bash(curl:* | sh)
-Bash(:(){ :|:& };:)
+EOF
+}
+
+_perms_ask() {
+  # Prefix rules broad enough to want a confirmation, not an outright block.
+  cat <<'EOF'
+Bash(rm -rf:*)
 EOF
 }
 
@@ -130,11 +136,13 @@ _perms_lines_to_json_array() {
 
 run_perms() {
   local kind="${1:-unknown}"
-  local allow_json deny_json
+  local allow_json deny_json ask_json
   allow_json="$( { _perms_base_allow; _perms_for_kind "$kind"; } | _perms_lines_to_json_array)"
   deny_json="$(_perms_deny | _perms_lines_to_json_array)"
+  ask_json="$(_perms_ask | _perms_lines_to_json_array)"
   jq -n \
     --argjson allow "$allow_json" \
     --argjson deny "$deny_json" \
-    '{ permissions: { allow: $allow, deny: $deny, ask: [] } }'
+    --argjson ask "$ask_json" \
+    '{ permissions: { allow: $allow, deny: $deny, ask: $ask } }'
 }

@@ -34,7 +34,7 @@
 - Sensitive data (PII, credentials, payment info) sent as plaintext message payloads
 
 **No Dead Letter Queue Configuration:**
-- SQS queues without `RedrivePolicy` (no DLQ)
+- SQS queues without `RedrivePolicy` (no DLQ) — availability posture; caps at Medium
 - BullMQ jobs without `attempts` and `backoff` configuration and no failed job handling
 - RabbitMQ queues without `x-dead-letter-exchange` argument
 - Kafka consumers without error topic or DLQ pattern for failed messages
@@ -73,10 +73,9 @@
 ### Actually Vulnerable
 - KafkaJS configuration with `brokers: ['kafka:9092']` and no `ssl` or `sasl` options -- plaintext connection with no authentication
 - RabbitMQ connection: `amqp://guest:guest@rabbitmq:5672` -- default credentials over unencrypted connection
-- SQS queue created without `RedrivePolicy` and no DLQ -- failed messages silently lost
 - Consumer handler: `const data = JSON.parse(msg.content); exec(data.command)` -- arbitrary command execution from queue message
 - Kafka ACL granting `Allow` on `Topic:*` to `User:*` -- any authenticated user can read/write all topics
-- BullMQ worker with no `concurrency` limit processing CPU-intensive jobs -- server resource exhaustion
+- BullMQ worker with no `concurrency` limit on a queue an unauthenticated endpoint can enqueue to -- attacker-controlled resource exhaustion
 - SNS topic without `KmsMasterKeyId` publishing PII in plaintext -- data at rest not encrypted
 - RabbitMQ consumer with no `prefetch` count -- broker can flood consumer, causing OOM
 
@@ -110,8 +109,8 @@ Before reporting, verify ALL of these:
 7. [ ] Verified this is a production broker (not a local development docker-compose service)
 
 ### Confidence Scoring
-- **HIGH**: Broker connection uses plaintext protocol with default credentials (`guest:guest`, no SASL). Or consumer processes message content directly in shell commands or SQL queries. Or no dead letter queue and no error handling on message processing.
-- **MEDIUM**: Broker uses TLS but credentials are hardcoded in source. Or DLQ exists but there is no alerting or monitoring on it. Or consumers lack schema validation but the message payloads are simple and from trusted producers.
+- **HIGH**: Broker connection uses plaintext protocol with default credentials (`guest:guest`, no SASL). Or consumer processes message content directly in shell commands or SQL queries. Or a consumer that fails open — an error path that acknowledges and drops a message it never authorized or validated.
+- **MEDIUM**: Broker uses TLS but credentials are hardcoded in source. Or a missing DLQ / retry policy, which is availability posture and caps here — a silently dropped message is a reliability defect, not attacker impact. Or consumers lack schema validation but the message payloads are simple and from trusted producers.
 - **LOW**: Broker connection lacks TLS but runs within the same VPC with network-level isolation. Or message broker is local development only (docker-compose). Or ACLs are broad but the cluster is internal.
 - **SKIP**: Broker with TLS, SASL authentication from secrets manager, DLQ configured, consumers validating messages against Avro/Protobuf schemas, per-topic ACLs, and appropriate message TTLs.
 

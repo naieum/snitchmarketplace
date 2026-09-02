@@ -2,6 +2,8 @@
 
 When to read this: auditing App Store Connect listing fields, screenshots, icons, previews, the age-rating questionnaire, or preparing Review Notes.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 Specs source: https://developer.apple.com/help/app-store-connect/reference/app-information/ and https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/ (sizes change with new device classes — verify before pixel-perfect work).
 
 ## Field limits
@@ -37,7 +39,7 @@ URLs: support URL is required and must work; privacy policy URL is required and 
 
 ## Age rating — the new system
 
-The tiers are now 4+, 9+, 13+, 16+, 18+ (the old 12+/17+ tiers are retired). The questionnaire expanded: in-app controls, capabilities, medical/wellness content, violent themes. Apps that had not answered the updated questions were blocked from submitting updates after January 31, 2026 (current as of 2026-08 — verify at https://developer.apple.com/news/). Answer honestly: understating triggers a 2.3.6 metadata rejection, and 18+ apps must hook regional age-verification where local law mandates it. The rating must also account for ads shown in the app.
+The tiers are now 4+, 9+, 13+, 16+, 18+ (the old 12+/17+ tiers are retired). The questionnaire expanded: in-app controls, capabilities, medical/wellness content, violent themes. Apps that had not answered the updated questions were blocked from submitting updates after January 31, 2026 (verify at https://developer.apple.com/news/). Answer honestly: understating triggers a 2.3.6 metadata rejection, and 18+ apps must hook regional age-verification where local law mandates it. The rating must also account for ads shown in the app.
 
 Accessibility Nutrition Labels launched in 2025 and remain voluntary; Apple has signaled an eventual mandate with no confirmed deadline (verify at https://developer.apple.com/help/app-store-connect/manage-app-accessibility/manage-accessibility-nutrition-labels).
 

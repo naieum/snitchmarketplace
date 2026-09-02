@@ -2,7 +2,7 @@
 
 Schema.org structured data via `<script type="application/ld+json">` is what unlocks rich results in Google: star ratings under products, FAQ accordions in SERP, breadcrumb paths replacing the URL, recipe cards, event listings, video previews. No JSON-LD = no rich results = lower CTR vs competitors who do declare it.
 
-This category is the **gateway**: does the page have ANY structured data at all? Per-type validation (Article, Product, FAQ, etc.) lives in categories 32-38.
+This category is the **gateway**: does the page have ANY structured data at all? Per-type validation (Article, Product, FAQ, and every other type) is Cat 32, driven by the per-type table in `references/standards-table.md`; rating honesty is Cat 94.
 
 JSON-LD is the format Google strongly recommends (over Microdata or RDFa). It can sit anywhere in `<head>` or `<body>`; the JSON object inside the script tag is what matters.
 
@@ -40,7 +40,7 @@ Find every place the project emits a `<script type="application/ld+json">` block
 - **Next.js Pages Router**: same, inside `next/head` or directly in component JSX.
 - **TanStack Start**: `head: () => ({ scripts: [{ type: 'application/ld+json', children: JSON.stringify(schema) }] })`.
 - **Astro**: `<script type="application/ld+json" set:html={JSON.stringify(schema)} />` in the layout or page.
-- **Remix**: handled via `links` (no, that's just `<link>`); use `meta` for JSON-LD blocks via the `tagName: 'script'` shape (Remix v2+ supports this).
+- **Remix**: `meta` returns the JSON-LD block via the `tagName: 'script'` shape (Remix v2+); `links` only emits `<link>`, so JSON-LD never lives there.
 - **WordPress**: Yoast SEO emits Article + Organization + WebSite schema by default; RankMath similar; manual via `wp_head` action.
 - **Shopify**: `{% render 'product-json' %}` snippet in modern themes.
 - **Static HTML**: literal `<script type="application/ld+json">{...}</script>` in `<head>` or end-of-`<body>`.
@@ -57,7 +57,7 @@ Fetch the URL. Find every `<script type="application/ld+json">` element. Parse t
 For each:
 - Validate it parses as JSON (no trailing commas, unterminated strings, etc.).
 - Check the `@context` and `@type` are present and valid.
-- Note the `@type` value for downstream per-type categories (32-38) to consume.
+- Note the `@type` value for Cat 32 to consume; it decides which per-type rows to validate.
 
 ### What to Search For
 
@@ -113,9 +113,9 @@ Before recommending any `@type` "to win a rich result," check `references/schema
 - Conflicting blocks for same `@type` → Medium.
 - `@context` is `http://` instead of `https://` → Low.
 
-**Fix voice:** `jen-simmons` (primary) | `solutions-architect` (backup, for cases that require multi-block coordination).
+**Fix voice:** `intrinsic-web-engineer` (primary) | `solutions-architect` (backup, for cases that require multi-block coordination).
 
-Read `souls/jen-simmons.json` before writing the Fix. Jen's been at the center of the semantic-web push for over a decade, schema.org JSON-LD is the most pragmatic survivor of that effort, and her POV is that getting the structure right is how you make the web work for both humans and machines without compromising either.
+Read `souls/intrinsic-web-engineer.json` before writing the Fix. Structured data is the pragmatic survivor of the semantic-web effort, and the position is that getting the structure right is how you make the web work for both humans and machines without compromising either.
 
 Worked fix example:
 

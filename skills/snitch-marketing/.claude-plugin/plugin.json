@@ -1,7 +1,7 @@
 {
   "name": "snitch-marketing",
-  "description": "SEO + marketing audit with evidence-based findings \u2014 technical SEO, on-page, schema, GEO / AI-search citation, Open Graph, and Core Web Vitals contributors, with file:line or URL+selector evidence per finding.",
-  "version": "1.12.0",
+  "description": "Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, accessibility, and how well the pages persuade, with evidence for every finding.",
+  "version": "1.15.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

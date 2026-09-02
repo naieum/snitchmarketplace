@@ -17,7 +17,7 @@ Every major ad platform discounts your bid based on landing-page quality. A 10% 
 | LinkedIn | Quality Score (relative) | bid + relevance from member responses | Performance Forecast |
 | TikTok | Ad Score | engagement + completion + retention | Ad-set reporting |
 | Pinterest | Pin score | engagement (saves, clicks), CTR | Pin Analytics |
-| X | Tweet engagement quality | engagement vs similar audiences | Twitter Ads UI |
+| X | Post engagement quality | engagement vs similar audiences | X Ads Manager |
 | Snap | Snap DR score | swipe-up rate vs benchmark | Ads Manager → Insights |
 | Apple Search Ads | Match score | metadata + query relevance | Campaigns → Insights |
 
@@ -57,5 +57,5 @@ The signal name varies; the checklist is the same:
 ## See also
 
 - `06-core-web-vitals.md` — LCP/INP/CLS targets and fixes.
-- `12-migration.md` — UA→GA4 transition.
+- `03-conversion-tracking.md` — GA4 events and conversion imports.
 - `references/platforms/<name>.md` — per-platform interpretation.

@@ -23,6 +23,11 @@ alongside pages — a beautiful site with 3 reviews loses to an ugly one with 80
 
 ## Decisions this archetype forces (from the interview)
 
+The specific numbers below (drive-time radius, tier sizes, review-ask timing and cadence)
+are owned by snitch-marketing's local-services playbook, not duplicated from memory here —
+call the Skill tool with "snitch-marketing" if a number below looks stale, and update both
+places together.
+
 - **Service area, then tiers.** Default radius: 30-minute drive time, adjusted by
   cost-to-serve (one-truck-roll repairs tolerate 45 min; daily-maintenance routes need 20).
   Tier the cities: **Tier 1 prove-out** (1-3 cities, most jobs and reviews — everything
@@ -91,7 +96,7 @@ findings are most common — build them in.
 
 ## Handoffs
 
-ads-ready before any paid spend (LSA/Google Ads readiness, call tracking, consent);
+snitch-adsready before any paid spend (LSA/Google Ads readiness, call tracking, consent);
 snitch-marketing after launch to grade against this blueprint (its local categories and
 GBP-depth checks are the verification pass for everything above); snitch-focusedcopy if a
 service page underconverts.

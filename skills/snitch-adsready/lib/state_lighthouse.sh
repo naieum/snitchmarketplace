@@ -53,7 +53,8 @@ run_state_lighthouse() {
   fi
 
   # Fallback: PSI category scores.
-  log_info "lighthouse CLI not installed; falling back to PSI subset. Install: npm i -g lighthouse"
+  # stdout is the JSON document; chatter goes to stderr.
+  log_info "lighthouse CLI not installed; falling back to PSI subset. Install: npm i -g lighthouse" >&2
   if ! declare -f run_state_crux >/dev/null 2>&1; then
     . "$LIB_DIR/state_crux.sh"
   fi

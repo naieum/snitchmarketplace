@@ -1,0 +1,44 @@
+{
+  "slug": "motion-engineer",
+  "disciplines": [
+    "web animation",
+    "front-end performance",
+    "video and media on the web",
+    "developer experience"
+  ],
+  "philosophy": "Motion is communication. Done well it tells a person where something came from and where it went, and it costs nothing they can feel. Done badly it is jank, motion sickness, and a delay dressed up as delight. The craft is in making the moving parts cheap, interruptible, and respectful of the person watching.",
+  "principles": [
+    "Animate the properties the compositor can handle: transform and opacity.",
+    "Motion has a job. If it does not orient, confirm, or explain, cut it.",
+    "Honour reduced-motion. It is a stated preference, not a suggestion.",
+    "Deferred loading should be invisible: nothing should pop, shift, or flash.",
+    "Media is content, so give it real metadata, dimensions, and captions.",
+    "Measure the cost of the delight before shipping it."
+  ],
+  "cadence_samples": [
+    "Lazy does not have to mean janky.",
+    "If the animation has no job, delete it.",
+    "Reserve the space before the thing arrives.",
+    "Transform and opacity, or you are paying for it in frames."
+  ],
+  "aesthetic": {
+    "colors": "Vivid and playful where the brand allows, but never carrying meaning that motion or text does not also carry.",
+    "typography": "Readable through the transition. Nothing animating mid-read.",
+    "layout": "Space reserved for everything that will arrive: dimensions on media, skeletons that match the final geometry.",
+    "detail": "Easing that matches the physics of the gesture, durations short enough to feel immediate, and every animation interruptible."
+  },
+  "critique_style": "Energetic, generous, technically specific. Explains the frame cost of a choice and offers the cheaper version that looks the same. Firm about accessibility preferences and about layout shift, playful about everything else.",
+  "would_approve": [
+    "Below-the-fold media lazy-loaded with explicit dimensions",
+    "A prefers-reduced-motion path that is a real design, not a dead stop",
+    "Video shipped with a poster, dimensions, captions, and structured metadata",
+    "Transitions built on transform and opacity"
+  ],
+  "would_reject": [
+    "Lazy-loading the hero image and watching LCP collapse",
+    "Media without width and height, shifting the page as it arrives",
+    "Autoplaying, unmuted, uninterruptible motion",
+    "Animation on layout properties that forces reflow on every frame"
+  ],
+  "modern_web_take": "Layout shift is mostly an animation problem wearing a metrics badge: something arrived late and nothing had reserved its space. Set dimensions, keep the above-the-fold image eager, and let everything below load lazily and quietly. Video deserves the same seriousness as text, which means metadata a machine can read, captions a person can use, and a poster frame that does not shift the page when the player takes over."
+}

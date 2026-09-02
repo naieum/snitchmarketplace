@@ -1,9 +1,11 @@
 ## CATEGORY 15: AI API Security
-> Type: sink-pattern · Groups: modern-stack · CWE: CWE-798
+> Type: sink-pattern · Groups: modern-stack · CWE: CWE-1427
 
-> **OWASP references:** LLM01 (Prompt Injection), LLM02 (Sensitive Information Disclosure), LLM05 (Improper Output Handling), LLM06 (Excessive Agency), LLM07 (System Prompt Leakage), LLM10 (Unbounded Consumption). Also covers ASI01–ASI06 from the OWASP Top 10 for Agentic Applications (2026).
+> **OWASP references:** LLM01 (Prompt Injection), LLM02 (Sensitive Information Disclosure), LLM05 (Improper Output Handling), LLM07 (System Prompt Leakage), LLM10 (Unbounded Consumption).
 >
-> **Cross-reference:** Category 3 (Hardcoded Secrets) covers key exposure in general. This category focuses on AI-specific risks: prompt injection, output handling, agent permissions, conversation security, and cost controls.
+> **Scope — this category owns the LLM-API boundary.** Direct prompt injection at the chat input, improper output handling, system-prompt leakage, PII in prompts, RAG tenancy, and cost/consumption controls. Category 46 was merged into this one.
+>
+> **Cross-reference:** Category 3 (Hardcoded Secrets) covers key exposure in general. Category 68 (Agent & Indirect Prompt Injection) owns indirect injection through retrieval and tool output, and the agent tool surface (excessive agency, human-in-the-loop, tool-call caps). Category 45 (AI Tool Supply Chain) owns MCP servers, skills, and plugins as supply chain. Report those findings under their owning category, not here.
 
 **Data flow tracing required (SKILL.md Rule 7).** Two traces apply. (1) Prompt injection: trace user / external / retrieved content to the prompt — content reaching the `system` role or concatenated into instructions is a finding; content confined to a `user`-role message with structural separation is a Pass. (2) Improper output handling: treat the model's own output as tainted and trace it forward — output reaching SQL, shell, `eval` / `Function`, raw HTML, or a redirect without escaping or validation is a finding; output used only as escaped display text is a Pass. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
@@ -11,7 +13,7 @@
 - AI SDK imports — npm and PyPI names are mixed below; match either. `openai`, `@anthropic-ai/sdk` (npm) / `anthropic` (PyPI), `ai`, `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@langchain/core`, `langchain`, `llamaindex` (npm) / `llama-index` (PyPI), `@google/genai` (npm) / `google-genai` (PyPI), `cohere-ai` (npm) / `cohere` (PyPI)
 - Superseded Google SDKs still widely deployed — keep matching them: `@google/generative-ai` (npm) and `google-generativeai` (PyPI). Both are deprecated in favour of the `genai` packages; their own package metadata says so
 - Environment variables: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_AI_API_KEY`, `GEMINI_API_KEY`, `COHERE_API_KEY`
-- Agent/tool frameworks: `@anthropic-ai/claude-agent-sdk` (npm) / `claude-agent-sdk` (PyPI), `@openai/agents` (npm) / `openai-agents` (PyPI), `pydantic-ai`, `@modelcontextprotocol/sdk` (npm) / `mcp` (PyPI — a short, generic token; confirm against the manifest rather than a bare grep), `autogen`, `crewai`, `langchain/agents`
+- Agent/tool frameworks (`@anthropic-ai/claude-agent-sdk`, `@openai/agents`, `pydantic-ai`, `autogen`, `crewai`, `langchain/agents`) and MCP SDKs (`@modelcontextprotocol/sdk` / `mcp`) detect this category's *sibling* scope — the tool surface is Category 68 and the server/plugin supply chain is Category 45. Note the detection and route it there
 - RAG patterns: vector store imports (`@pinecone-database/pinecone`, `chromadb`, `weaviate-client`, `@qdrant/js-client-rest`, `pgvector`)
 - Chat/conversation handlers with message history accumulation
 
@@ -23,10 +25,7 @@
 - System prompts that contain secrets, API keys, internal URLs, or authorization logic
 - Reliance on "never reveal your instructions" as a security control
 
-**Prompt injection (indirect):**
-- External content (web scraping, file uploads, database rows, emails) fed into LLM context without sanitization
-- RAG pipelines where retrieved document chunks are inserted directly into prompts
-- Tool results passed back to the model without sanitization
+**Prompt injection (indirect)** — owned by Category 68. When external content (scraped pages, uploaded files, database rows, emails), retrieved RAG chunks, or tool results reach the prompt, scan Category 68 and report the finding there.
 
 **Multi-turn jailbreaks (Crescendo, Many-Shot, Skeleton Key, Bad Likert Judge):**
 - Full conversation history passed to the model without per-turn content filtering
@@ -52,11 +51,7 @@
 - No CSP restricting image sources in chat UI
 - No URL allowlisting on rendered LLM content
 
-**Excessive agency / over-permissioned agents:**
-- Agent tools registered with more permissions than needed (write/delete when only read is required)
-- Database credentials with admin access passed to agent tool functions
-- No human-in-the-loop confirmation for destructive actions
-- Shell/command execution tools available to the agent
+**Excessive agency / over-permissioned agents** — owned by Category 68. Tool permission scope, human-in-the-loop confirmation, shell tools on an agent, and agent-loop caps belong there.
 
 **Sensitive data in prompts:**
 - User PII (names, emails, medical data) included in prompts sent to external LLM APIs
@@ -67,25 +62,21 @@
 - No `max_tokens` on API calls
 - No per-user rate limiting on AI endpoints
 - No per-user or per-session token budget
-- Agent loops without iteration limits (`while (!done)` with no max)
-- No timeout on LLM API calls
+- No timeout on LLM API calls (agent-loop iteration caps are Category 68)
 
-**RAG poisoning:**
-- User-submitted content automatically indexed into vector stores without validation
+**RAG tenancy:**
 - No per-user isolation of vector store data (user A can retrieve user B's documents)
-- Web-scraped content fed directly into knowledge base
+- No access-control metadata on vector queries
+- (Poisoning of the index itself — untrusted content indexed and later read back as instructions — is Category 68.)
 
-**MCP / tool supply chain:**
-- MCP server packages installed from unvetted sources without pinned versions
-- Tool descriptions containing hidden instruction-like text (tool poisoning)
-- Multiple MCP servers connected to the same agent without isolation
+**MCP / tool supply chain** — owned by Category 45. Unpinned or unvetted MCP server packages, tool-description poisoning, and multi-server isolation belong there.
 
 ### Actually Vulnerable
 
 #### Critical
 - AI API key (`sk-*`, `sk-ant-*`) in client-side code, `NEXT_PUBLIC_*` variables, or frontend bundles
 - LLM output passed directly to `eval()`, `exec()`, `Function()`, shell execution, or raw SQL execution without parameterization
-- Agent with shell/command execution tool + network access + no human approval gate
+- LLM output used as a filesystem path (`fs.writeFile(aiPath, …)`) or as the target of `res.redirect()` with no allowlist or path validation
 - No expiration or budget cap on API key — a leaked key has unlimited spend
 - User input concatenated directly into system prompt that contains API keys, database URLs, or authorization rules
 
@@ -97,18 +88,17 @@
 - No rate limiting on AI endpoints (denial-of-wallet — attacker can burn through your API budget)
 - No `max_tokens` set on any API call (single request can generate maximum-length response at full cost)
 - System prompt contains secrets, internal URLs, or authorization logic (extractable via prompt leakage techniques)
-- Agent tools with write/delete permissions when only read is needed (excessive agency)
+- System prompt returned in an API response body or error message — full instruction extraction
+- LLM output inserted into an email, notification, or other outbound message template without validation
 - User PII sent to external LLM API with no redaction and no data processing agreement
 - RAG pipeline with no per-user isolation — any user can retrieve any document
-- User uploads automatically indexed into shared vector store without review
 
 #### Medium
 - Prompt/completion pairs logged to console, files, or third-party observability tools (Langfuse, LangSmith, Helicone) without PII redaction
 - No input length cap at all, or a cap wildly disproportionate to the endpoint's stated purpose (context-window stuffing). Advisory — never flag on an absolute character threshold; 8 000+ character inputs are routine for pasted logs, documents, and code
 - No jailbreak-pattern detection on user text before the LLM call. Advisory — a pattern list is defense-in-depth, not a primary control, and is bypassed by paraphrase; report the missing pre-model gate instead
 - Raw API error messages exposed to users (may leak model config, internal URLs, or prompt fragments)
-- Agent loops without explicit iteration limits (could run indefinitely on bad input)
-- MCP servers installed from npm/pip without pinned versions or integrity checks
+- No timeout configured on LLM API calls, and no fallback path when the API returns an error or an unexpected shape
 - System prompt relies on "never reveal these instructions" as a security mechanism (trivially bypassed)
 - No relevance score threshold on RAG retrieval (low-quality matches included in context)
 - AI API keys in `.env` files that are not in `.gitignore` (may end up in git history)
@@ -125,13 +115,11 @@
 - Any input length cap proportionate to the endpoint's purpose — Pass, whatever the number. A cap above 8 000 chars is not a finding; pasted logs, documents, and code make large inputs routine. Only an endpoint with no cap at all, or one absurdly larger than its stated purpose, is worth an advisory note
 - Blocked/suspicious requests written to an abuse log (IP, user ID, timestamp, matched pattern) for incident response
 - Conversation length bounded with sliding window or summarization
-- Agent tools scoped to minimum necessary permissions with human approval for destructive actions
 - PII redacted before prompt assembly; logging excludes or redacts prompt content
 - `max_tokens` set on all API calls; per-user rate limits enforced; API spend alerts configured
 - RAG with per-user namespaces and access control metadata on vector queries
-- System prompt contains no secrets — authorization enforced at the application layer
+- System prompt stored server-side only and containing no secrets — authorization enforced at the application layer
 - Strict CSP blocking external image sources in chat UI (prevents markdown exfiltration)
-- MCP server versions pinned with integrity hashes; tool descriptions reviewed
 
 ### Context Check
 1. Is the AI endpoint server-only or reachable from client code?
@@ -139,13 +127,12 @@
 3. Does the app filter or validate LLM output before using it in downstream operations (SQL, HTML, shell, file paths)?
 4. For chat apps: is conversation history re-evaluated for safety on each turn, or passed through blindly?
 5. Does the app render LLM output as markdown/HTML? If so, are external images blocked?
-6. For agents: what tools are registered, and do they follow least-privilege? Is there a human approval step for destructive actions?
-7. Is user PII included in prompts? Are prompts/completions logged?
-8. Are there cost controls: `max_tokens`, rate limits, per-user budgets, agent loop limits?
-9. For RAG apps: is the vector store per-user, or shared? Can users contribute content to the knowledge base?
-10. Is there a pre-model input gate (synchronous regex or cheap classifier) that checks topic/intent before invoking the primary LLM, or is scope enforcement delegated entirely to the system prompt?
-11. Does the application scan incoming user messages for persona-override or jailbreak-pattern signals before the LLM call?
-12. Are blocked or suspicious requests logged (IP, user ID, timestamp, matched pattern) for incident response?
+6. Is user PII included in prompts? Are prompts/completions logged?
+7. Are there cost controls: `max_tokens`, rate limits, per-user budgets?
+8. For RAG apps: is the vector store per-user, or shared, and do queries carry access-control metadata?
+9. Is there a pre-model input gate (synchronous regex or cheap classifier) that checks topic/intent before invoking the primary LLM, or is scope enforcement delegated entirely to the system prompt?
+10. Does the application scan incoming user messages for persona-override or jailbreak-pattern signals before the LLM call?
+11. Are blocked or suspicious requests logged (IP, user ID, timestamp, matched pattern) for incident response?
 
 ### Evidence Chain
 - Sink or exposure file:line (the prompt-assembly call, the LLM-output consumer — SQL/shell/eval/HTML render — the key reference, or the missing-control config)
@@ -160,10 +147,9 @@
 - **Low**: AI SDK usage detected but prompt sources or output consumers are un-traceable within the audited files — tag `needs human verification`.
 
 ### Files to Check
-- `**/ai/**`, `**/chat/**`, `**/llm/**`, `**/agent/**`, `**/rag/**`
+- `**/ai/**`, `**/chat/**`, `**/llm/**`, `**/rag/**`
 - `**/openai*.{ts,js}`, `**/anthropic*.{ts,js}`, `**/completion*.{ts,js}`
 - `pages/api/ai*`, `pages/api/chat*`, `app/api/ai*`, `app/api/chat*`
-- `**/tools/**`, `**/functions/**`, `**/plugins/**` (agent tool definitions)
+- `**/prompts/**`, `**/prompt*.ts`, `**/system-prompt*` (system-prompt construction and storage)
 - `**/embed*.{ts,js}`, `**/vector*.{ts,js}`, `**/index*.{ts,js}` (RAG pipelines)
-- `**/mcp*.{ts,js}`, `.cursor/mcp.json`, `claude_desktop_config.json`, `mcp.json`
 - `.env*`, `**/config/**`

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch Blueprint"
+  short_description: "Build-time product decisions in BLUEPRINT.md"

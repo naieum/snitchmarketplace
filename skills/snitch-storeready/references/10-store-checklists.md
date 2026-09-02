@@ -2,6 +2,8 @@
 
 When to read this: the static audit (references/09-static-checks.md) is done and you are walking the user through the App Store Connect / Play Console items that only they can verify. Ask each question, record the answer as 🟢 OK / 🔴 FAIL / 🟡 WARN / ⚪ N/A, and fold the results into the same report — these items cause more first-submission rejections than code does.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 Ask in order; skip N/A rows aloud ("no accounts in this app, so account-deletion items are N/A"). Where the user is unsure, treat as WARN with the verification step as the remediation. Policy details behind each item: references/01-apple-review-guidelines.md through references/08-play-account-release.md.
 
 ## App Store Connect checklist
@@ -32,7 +34,7 @@ Ask in order; skip N/A rows aloud ("no accounts in this app, so account-deletion
 | P7 | Content rating (IARC) | "Questionnaire answered, including for the ads shown in-app?" | Unrated apps are removed; misrating = enforcement | Rating issued; re-submitted after any content change |
 | P8 | Target audience declaration | "Which age groups did you declare? If any child group: are you meeting Families policy (certified ads SDKs, neutral age screen for mixed audiences)?" | Families policy enforcement | TAD matches the real audience; no accidental child-appeal in listing assets |
 | P9 | Store listing assets | "Title ≤30 chars with no emoji/ALL CAPS/'#1'/'free'/CTAs; short description ≤80; icon 512×512; feature graphic 1024×500; 2–8 screenshots per device class (≥4 phone at 1080px+ for featuring); video is a public/unlisted YouTube URL?" | Metadata policy rejection; featuring ineligibility | All limits met; screenshots show real in-app experience |
-| P10 | New-account testing gate | "Personal account created after 2023-11-13? Then: has the closed test run with ≥12 testers opted in continuously for ≥14 days (current as of 2026-08 — verify in Play Console)?" | Production access denied | Gate passed or org account; production-access application answers drafted honestly |
+| P10 | New-account testing gate | "Personal account created after 2023-11-13? Then: has the closed test met the tester-count / day-count gate in references/08-play-account-release.md (verify current figures in Play Console)?" | Production access denied | Gate passed or org account; production-access application answers drafted honestly |
 | P11 | Developer verification | "Identity/D-U-N-S verification complete? If the app has payments: are you aware your legal address and phone become public on the listing?" | Publishing blocked; listing takedown | Verification green in Console; user accepts the disclosure |
 | P12 | Release plan | "Which tracks (internal → closed → open → production), staged rollout percentages, managed publishing on?" | — (process hygiene; Vitals protection) | First production rollout staged (e.g. 1→5→10→20→50→100) with halt criteria tied to crash/ANR rates; managed publishing chosen deliberately |
 | P13 | Country availability | "Do track country lists match the store-listing languages and any licensing constraints (gambling, finance, crypto)?" | Regulatory removal | Availability reviewed against licensed territories |

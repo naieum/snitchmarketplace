@@ -15,7 +15,7 @@ doesn't read it. Put it in the blessed location from the first page:
   `opengraph-image.tsx` route files; `app/sitemap.ts` and `app/robots.ts` from day one.
 - **Next.js Pages Router:** `<Head>` from `next/head` per page; `public/sitemap.xml`,
   `public/robots.txt`.
-- **Astro / SvelteKit / Nuxt / Remix:** the layout-level head component or route `meta`
+- **Astro / SvelteKit / Nuxt / React Router 7:** the layout-level head component or route `meta`
   export, one shared helper so titles/descriptions are per-page parameters, not copy-paste.
 - **Plain HTML / static:** one shared head partial or template block.
 - **Hosted platforms (Wix, Shopify, Squarespace):** the platform's per-page SEO fields —
@@ -36,7 +36,7 @@ launch beats twelve bespoke ones never made.
 - **Consent before tags in consent jurisdictions.** If the audience includes EU/UK (or the
   user is unsure), tags load behind a consent state from the start — Consent Mode v2
   defaults denied until granted. Bolting consent onto a live tag stack is the single most
-  error-prone retrofit ads-ready sees; wiring it first is a template choice.
+  error-prone retrofit snitch-adsready sees; wiring it first is a template choice.
 - What NOT to install yet: heatmaps, session replay, A/B frameworks, tag managers, a
   second analytics tool. Each is a later decision with a trigger, recorded in DEFERRED.
   Day-one tag stacks accrete; blueprint builds start minimal.
@@ -75,7 +75,7 @@ Pick the entity type at blueprint time and emit JSON-LD from a single shared com
   (the "staging site indexed for eight months" finding is a template default).
 - 404 page with navigation back; trailing-slash and www/apex redirects decided once.
 - HTTPS-only, security headers via the host's config (fuller pass belongs to
-  snitch-security / the platform-secure skills — don't duplicate it here).
+  snitch-security — don't duplicate it here).
 - No secrets or tracking IDs hardcoded into committed templates; IDs live in env/config.
 - Favicon + app icons + web manifest generated at launch, not as a launch-week scramble.
 

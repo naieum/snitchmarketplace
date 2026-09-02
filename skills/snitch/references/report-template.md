@@ -14,11 +14,11 @@
 - **Mode:** [repository | scoped-path | diff | commit | working-tree]
 - **Inventory strategy:** [how the surface list was built — route map / entrypoint enum / sink grep / changed-files]
 - **Completeness:** [complete | partial | unknown]
-- **Surfaces:** scanned-pass [N] / scanned-finding [N] / deferred [N] — list each deferred surface + reason
+- **Surfaces:** scanned-pass [N] / scanned-finding [N] / scanned-unreachable [N] / deferred [N] — list each deferred surface + reason, and each unreachable one with the gate that makes it unreachable
 - **Exclusions:** [paths excluded by rule — tests / vendored / generated / .snitch-ignore — and the rule]
 
 <!-- Render per references/coverage-accounting.md. Hard rule: every in-scope surface ends with a
-disposition (scanned-pass / scanned-finding / deferred-with-reason) — no silent sampling. A
+disposition (scanned-pass / scanned-finding / scanned-unreachable / deferred-with-reason) — no silent sampling. A
 "complete" label requires zero deferrals; if any surface was sampled or time-boxed, it is "partial". -->
 
 ## Critical Findings
@@ -53,71 +53,29 @@ disposition (scanned-pass / scanned-finding / deferred-with-reason) — no silen
 - **Confidence:** high | medium | low
 
 ## Passed Checks
-- [ ] No SQL injection found (Category 1)
-- [ ] Proper password hashing (Category 9)
-- [ ] RLS enabled on all Supabase tables (Category 6)
-- [ ] Stripe webhook signatures verified (Category 13)
-- [ ] AI API keys server-only, prompts sanitized, output treated as untrusted, agents least-privilege (Category 15 - AI API Security)
-- [ ] Database connections use parameterized queries (Category 17)
-- [ ] PHI encrypted at rest (Category 20 - HIPAA)
-- [ ] Audit logging on sensitive routes (Category 21 - SOC 2)
-- [ ] No raw card data stored (Category 22 - PCI-DSS)
-- [ ] Data deletion endpoints exist (Category 23 - GDPR)
-- [ ] Event listeners properly cleaned up (Category 24 - Memory Leaks)
-- [ ] No database queries inside loops (Category 25 - N+1 Queries)
-- [ ] No synchronous file I/O in request handlers (Category 26 - Performance)
-- [ ] Lockfile present and committed (Category 27 - Dependencies)
-- [ ] Resource ownership verified on all endpoints (Category 28 - Authorization)
-- [ ] File uploads validated and sanitized (Category 29 - File Uploads)
-- [ ] Input validation with schema library (Category 30 - Input Validation)
-- [ ] CI/CD secrets use proper references (Category 31 - CI/CD Security)
-- [ ] Security headers configured (Category 32 - Security Headers)
-- [ ] No unused or bloated dependencies found (Category 33 - Unused Dependencies)
-- [ ] FIPS-approved algorithms and key sizes in use (Category 34 - FIPS 140-3)
-- [ ] Governance certification controls implemented (Category 35 - ISO 27001/FedRAMP/CMMC)
-- [ ] Health checks, graceful shutdown, and circuit breakers in place (Category 36 - BC/DR)
-- [ ] APM, structured logging, and alerting configured (Category 37 - Monitoring)
-- [ ] Data classification, retention, and deletion lifecycle defined (Category 38 - Data Classification)
-- [ ] Token lifetimes appropriate for app type, refresh flow implemented, logout invalidates tokens (Category 39 - Token Lifetimes)
-- [ ] No tunnel credentials in git, no dev tunnels in production, DNS resolvers configurable (Category 40 - Tunnels & DNS)
-- [ ] All dependency licenses compatible with project license, no copyleft contamination (Category 41 - License Compliance)
-- [ ] Container runs as non-root, images pinned, no secrets in Dockerfile (Category 42 - Container & Docker)
-- [ ] IaC resources encrypted, least-privilege IAM, no hardcoded credentials (Category 43 - IaC Security)
-- [ ] API endpoints authenticated, request validated, responses paginated (Category 44 - API Security)
-- [ ] No malicious MCP tools, no prompt injection, AI tool permissions scoped (Category 45 - AI Tool Supply Chain)
-- [ ] No prompt injection vectors, PII properly guarded, RAG inputs validated, LLM guardrails in place (Category 46 - AI/LLM App Security)
-- [ ] CSRF tokens validated on all state-changing endpoints (Category 47 - CSRF)
-- [ ] No race conditions in payment, inventory, or concurrent write operations (Category 48 - Race Conditions)
-- [ ] XML parsing configured to disable external entities (Category 49 - XXE / XML)
-- [ ] Constant-time comparison used for secrets and tokens (Category 50 - Timing Attacks)
-- [ ] No debug or profiling endpoints exposed in production (Category 51 - Debug Endpoints)
-- [ ] Secrets rotation policy enforced, no stale credentials (Category 52 - Secrets Rotation)
-- [ ] CCPA consumer rights and SOX financial controls implemented (Category 53 - CCPA & SOX)
-- [ ] OAuth/OIDC flows use PKCE, state parameter, and proper token validation (Category 54 - OAuth/OIDC)
-- [ ] Service-to-service auth enforced, network policies defined (Category 55 - Microservices)
-- [ ] WebSocket connections authenticated, input validated, rate-limited (Category 56 - WebSocket Security)
-- [ ] GraphQL depth/complexity limits set, introspection disabled in production (Category 57 - GraphQL Deep)
-- [ ] Message queue connections authenticated, messages validated, DLQ configured (Category 58 - Message Queues)
-- [ ] Backups encrypted, access-controlled, and tested for restoration (Category 59 - Backup Security)
-- [ ] Audit logs tamper-proof, centralized, and retention policy enforced (Category 60 - Audit Log Integrity)
+- [ ] <what the check confirmed, in the category's own terms> (Category <ID> - <manifest Title>)
+```
+
+## Passed Checks
+
+One line per **scanned** category, generated from `categories/_index.md` — never a fixed list, and
+never a category that was not in scope this run (SKILL.md SCOPE RULE). Each line has to be a real
+Pass with evidence behind it (SKILL.md Rule 7): the sweep that ran and what came back clean. A
+category that was skipped is listed under Skipped with its reason, not here.
+
+Worked examples of the shape:
+
+```
+- [ ] No SQL injection found — 14 query sites traced, all parameterized (Category 1 - SQL Injection)
+- [ ] Stripe webhook signatures verified at api/webhooks/stripe.ts:31 (Category 13 - Stripe Security)
+- [ ] Resource ownership verified on all 9 mutating endpoints (Category 28 - Authorization & Access Control (IDOR))
 ```
 
 ## Report Footer
 
 Append this line at the very end of the report, after Passed Checks:
 
-`*Scanned by Snitch -- 69 built-in categories. Get the latest version at https://snitchplugin.com.*`
-
-## License Information
-
-If a license key is available (check for `snitch-security.config.md` or a `.snitch-license` file in the project root), include at the end of the report:
-
-```
----
-Licensed to: [email from config]
-License: [token from config]
-Verify: https://snitchplugin.com/license/[token]
-```
+`*Scanned by Snitch -- 62 built-in categories. Get the latest version at https://snitchplugin.com.*`
 
 ## Secret Redaction in Reports
 

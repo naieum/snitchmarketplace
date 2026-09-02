@@ -7,9 +7,8 @@
 //
 // Env vars (NEVER commit):
 //   APPLE_SEARCH_ADS_PRIVATE_KEY  PEM-encoded ECDSA P-256 private key (multi-line; base64 fine).
-//   APPLE_SEARCH_ADS_TEAM_ID
+//   APPLE_SEARCH_ADS_TEAM_ID          also the OAuth client_id.
 //   APPLE_SEARCH_ADS_KEY_ID
-//   APPLE_SEARCH_ADS_CLIENT_ID
 //   APPLE_SEARCH_ADS_ORG_ID
 //
 // Reference: https://developer.apple.com/documentation/apple_search_ads/implementing_oauth_for_the_apple_search_ads_api
@@ -21,16 +20,15 @@ import { SignJWT, importPKCS8, jwtVerify, importJWK } from "jose";
 async function mintClientAssertion() {
   const teamId = process.env.APPLE_SEARCH_ADS_TEAM_ID;
   const keyId = process.env.APPLE_SEARCH_ADS_KEY_ID;
-  const clientId = process.env.APPLE_SEARCH_ADS_CLIENT_ID;
   const pem = process.env.APPLE_SEARCH_ADS_PRIVATE_KEY;
-  if (!teamId || !keyId || !clientId || !pem) {
+  if (!teamId || !keyId || !pem) {
     throw new Error("Apple Search Ads env vars must be set");
   }
   const key = await importPKCS8(pem, "ES256");
   return await new SignJWT({})
     .setProtectedHeader({ alg: "ES256", kid: keyId })
     .setIssuer(teamId)
-    .setSubject(clientId)
+    .setSubject(teamId)
     .setAudience("https://appleid.apple.com")
     .setIssuedAt()
     .setExpirationTime("180d")
@@ -44,7 +42,7 @@ async function exchangeForAccessToken(clientAssertion) {
     body: new URLSearchParams({
       grant_type: "client_credentials",
       scope: "searchadsorg",
-      client_id: process.env.APPLE_SEARCH_ADS_CLIENT_ID,
+      client_id: process.env.APPLE_SEARCH_ADS_TEAM_ID,
       client_secret: clientAssertion
     }).toString()
   });

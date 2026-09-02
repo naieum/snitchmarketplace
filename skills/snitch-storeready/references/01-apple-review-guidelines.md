@@ -2,6 +2,8 @@
 
 When to read this: auditing an iOS/iPadOS/macOS/visionOS app for review-guideline compliance, or triaging an Apple rejection notice by guideline number.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 Canonical source: https://developer.apple.com/app-store/review/guidelines/ (updated several times a year; major revisions landed Nov 2025 and June 2026 — verify the live text before citing a clause verbatim).
 
 ## The five sections
@@ -14,7 +16,7 @@ Canonical source: https://developer.apple.com/app-store/review/guidelines/ (upda
 | 4. Design | Copycats, minimum functionality, spam, extensions, login services | 4.2, 4.3, 4.8 |
 | 5. Legal | Privacy, IP, gambling, VPN/MDM | 5.1.1, 5.1.2, 5.2.1 |
 
-Commonly reported: roughly a quarter of all submissions are rejected, and more than 40% of unresolved review issues trace to Guideline 2.1 alone (current as of 2026-08 — verify at https://developer.apple.com/distribute/app-review/).
+Commonly reported: roughly a quarter of all submissions are rejected, and more than 40% of unresolved review issues trace to Guideline 2.1 alone (verify at https://developer.apple.com/distribute/app-review/).
 
 ## Rejection hotspots
 
@@ -52,7 +54,7 @@ Fix: add native, offline, or device-integrated functionality (push done right, w
 
 ### 4.3 Spam — tightened June 9, 2026
 
-4.3(b) now reads against apps "indistinguishable from what's already widely available": opportunistic variants of popular apps or saturated categories (dating, flashlight, wallpaper, timers, fortune telling, thin AI wrappers). The June 2026 revision responded to a flood of low-effort AI-generated submissions; repeat offenders risk Developer Program removal (current as of 2026-08 — verify at https://developer.apple.com/app-store/review/guidelines/#spam).
+4.3(b) now reads against apps "indistinguishable from what's already widely available": opportunistic variants of popular apps or saturated categories (dating, flashlight, wallpaper, timers, fortune telling, thin AI wrappers). The June 2026 revision responded to a flood of low-effort AI-generated submissions; repeat offenders risk Developer Program removal (verify at https://developer.apple.com/app-store/review/guidelines/#spam).
 
 Check: if the app enters a crowded category, document the meaningfully different experience in the Review Notes; do not submit near-identical binaries under multiple accounts or names.
 
@@ -78,7 +80,7 @@ Static check: sign-up flow detected without a delete-account code path; Sign in 
 
 ### 5.1.2(i) Sharing with third-party AI — added Nov 2025
 
-Apps must obtain explicit user consent and disclose before sharing personal data with third-party AI services. If the app sends user content, identifiers, or profile data to an external model API, ship a consent step and disclose it in the privacy label (current as of 2026-08 — verify the live 5.1.2 text).
+Apps must obtain explicit user consent and disclose before sharing personal data with third-party AI services. If the app sends user content, identifiers, or profile data to an external model API, ship a consent step and disclose it in the privacy label (verify the live 5.1.2 text).
 
 ### 1.2 User-Generated Content
 

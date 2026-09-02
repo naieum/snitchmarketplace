@@ -86,9 +86,9 @@ WAI-ARIA landmark roles: https://www.w3.org/WAI/ARIA/apg/patterns/landmarks/
 - Navigation in `<div>` instead of `<nav>` → Low.
 - `<section>` used as `<div>` substitute (no heading inside) → Low.
 
-**Fix voice:** `jen-simmons` (primary) | `frank-chimero` (backup).
+**Fix voice:** `intrinsic-web-engineer` (primary) | `content-shape-editor` (backup).
 
-Read `souls/jen-simmons.json` before writing the Fix. Jen's intrinsic-web POV: HTML is the structural layer. Use the elements that mean what you mean, then style them however you want.
+Read `souls/intrinsic-web-engineer.json` before writing the Fix. The intrinsic-web position: HTML is the structural layer. Use the elements that mean what you mean, then style them however you want.
 
 Worked fix example:
 

@@ -4,7 +4,7 @@
 This file owns **how the sentences are built** — length, voice, construction, the banned
 lists. A line can pass every swap in `copywriting.md` and still read as slop because the
 sentence itself is bloated, hedged, or passive; that failure is this file's business. The two
-files run together in Workflow Step 1, move 5, and neither substitutes for the other.
+files run together in Workflow Step 1, move 6, and neither substitutes for the other.
 
 The method is adapted from controlled-language systems used in safety-critical technical
 documentation — writing standards built so that a stressed, non-native reader cannot misread
@@ -14,12 +14,9 @@ restrictions do not transfer — those systems ban persuasive writing outright, 
 copy has to persuade — so this file keeps the *method* (checkable rules, a two-mode split,
 a violations-per-100-words score) and rebuilds the rule set for UX copy.
 
-> **The ethics gate outranks every rule in this file.** Run SKILL.md Workflow Step 3.5 and
-> `review-checklist.md` §10 first. A sentence can score 0.0 violations and still be a dark
+> Gate first: `ethics-gate.md`. A sentence can score 0.0 violations and still be a dark
 > pattern — fabricated urgency written in clean active voice is *more* dangerous, not less.
-> A lint-clean dark pattern is still a finding, and this file never launders one: if the gate
-> fails, the finding is the dishonesty, not the mechanics. The `writing-system` config key can
-> narrow this file's scored lens; like `lenses`, it never touches the gate.
+> The `writing-system` config key narrows this file's scored lens; it never touches the gate.
 
 ## The two modes
 
@@ -114,12 +111,23 @@ the bands calibrate severity for copy-mechanics findings:
 Generation side, the bands are a shipping bar, not a rating: strict prose ships under 2.0,
 flavored under 4.0, and every individually-banned phrase is removed regardless of score.
 
+**The bands assume a denominator of at least 50 words.** Below that, a per-100-word rate is
+noise — one em dash in a 25-word line scores 4.0/100w. For any sample under 50 words (a CTA
+block, an empty-state string, an error message, a proposed rewrite), report the raw rule hits
+and the word count instead (`W10 ×1, n=25`), never the rate and never a band. The same floor
+applies when you re-lint a rewrite: verify a short rewrite against **zero hits of the rules the
+finding named**, not against a density threshold the sample is too small to carry.
+
 ## Running the linter
 
+Claude Code sets `${CLAUDE_SKILL_DIR}` to this skill bundle's own directory, the folder that
+contains `SKILL.md`; in other hosts substitute the path where the
+bundle was loaded.
+
 ```
-python3 scripts/copy-lint.py --mode strict extracted-copy.txt
-cat draft.md | python3 scripts/copy-lint.py --mode flavored -
-python3 scripts/copy-lint.py --mode strict --json -        # for embedding the result
+python3 ${CLAUDE_SKILL_DIR}/scripts/copy-lint.py --mode strict extracted-copy.txt
+cat draft.md | python3 ${CLAUDE_SKILL_DIR}/scripts/copy-lint.py --mode flavored -
+python3 ${CLAUDE_SKILL_DIR}/scripts/copy-lint.py --mode strict --json -   # for embedding the result
 ```
 
 The script reads a file or stdin, prints the score and per-rule breakdown to stdout, and
@@ -140,18 +148,33 @@ backticks: the preprocessor strips inline code, so the mention never enters the 
 
 ## How this composes with the rest of the skill
 
-- **Workflow Step 1, move 5** runs this file alongside `copywriting.md`: extract the
+- **Workflow Step 1, move 6** runs this file alongside `copywriting.md`: extract the
   surface's visible copy, lint it (strict or flavored per the surface-type table above),
   and let the score bands calibrate any copy-mechanics finding. The score goes in the
   finding's **Evidence** field: `copy-lint: 6.1 violations/100w (n=214) — top: W8 vague
-  adjectives ×4, W5 hedge stacking ×2`.
+  adjectives ×4, W5 hedge stacking ×2`. **Every rule the run reported gets named somewhere in
+  the finding.** Truncating to "top hits" is fine for readability, but then say how many you
+  cut (`top 3 of 7 rules`) and carry the remainder in a trailing list — a sub-tell you scored
+  and then dropped is a gap a reader cannot see.
 - **Mode by surface type**: microcopy, CTAs, errors, empty states → strict. Hero, tagline,
   brand narrative → flavored, and the *message* on those surfaces still belongs to
-  `brand-messaging.md` and `taglines-and-naming.md` — this file only guards the sentences
-  the message is delivered in.
+  `brand-message.md` — this file only guards the sentences the message is delivered in.
+  **Strict is for functional UI strings only.** Marketing prose on a marketing page is
+  brand narrative and scores flavored — the hero paragraph, the sub-head, the "how it works"
+  or "why we built this" block, the section intros. Length does not make a block strict; the
+  job it does decides. **A surface is usually mixed:** score each block in its own mode
+  rather than picking one for the page, and **name the mode beside every score you report**
+  (`23.6/100w flavored`) so the reader can check the call. Scoring a marketing block strict
+  inflates it against rules flavored mode deliberately relaxes; the disposition may survive,
+  the number does not.
 - **Anything this skill writes passes the linter before it is shown**: a proposed rewrite in
   a Fix field, a suggested error message, a hero-line alternative — strict or flavored per
-  the surface it targets. The review report's own narrative prose passes strict.
+  the surface it targets. The review report's own narrative prose passes strict. **When the
+  request asks for rewrites, a rewrite is the replacement text, not a direction.** "Cut this
+  to two concrete sentences and name what it integrates with" is a brief; the deliverable is
+  the two sentences, scored, in the Fix field. Every prose block you open a finding on gets
+  one — if it is worth flagging, it is worth showing the fix, and the fix is what proves the
+  bar is reachable.
 - **The `writing-system` config key** (`snitch-ux.config.md`): `auto` (default — mode by
   surface type), `strict`, `flavored`, or `off`. `off` skips the scored lens on the user's
   copy; the generation-side bar on this skill's own prose still applies, and the ethics gate

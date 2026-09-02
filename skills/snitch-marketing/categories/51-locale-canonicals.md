@@ -52,7 +52,7 @@ Same as Cat 3 + Cat 50.
 - Locales canonical to single URL → Critical.
 - Locales cross-canonicaling → High.
 
-**Fix voice:** `solutions-architect` (primary) | `jen-simmons` (backup).
+**Fix voice:** `solutions-architect` (primary) | `intrinsic-web-engineer` (backup).
 
 Worked fix example:
 

@@ -2,6 +2,37 @@
 
 Read when recommending sGTM, audit-trailing why client-side tag count is high, or budgeting first-party domain hosting.
 
+## The four measurement layers
+
+sGTM is one layer of the stack that replaces third-party-cookie measurement. Audit the stack as
+four layers so the report says which one is missing instead of "measurement is weak":
+
+| Layer | What it does | Failure looks like |
+|---|---|---|
+| 1. First-party identity | an owned identifier (user id, hashed email) rides every event | anonymous events only; logged-in sessions carry no identifier |
+| 2. Server-side tagging | browser events relay through your server before they reach the platform | pure client-side `gtag` / `fbq`, nothing server-side |
+| 3. Conversion APIs | the server posts conversions straight to each platform | no CAPI; browser pixel is the only source (`03-conversion-tracking.md`) |
+| 4. Consent + signal handling | consent state propagates to every tag; modeled conversions cover the rest | banner present, firing rules never bound to it (`04-consent-and-cmp.md`) |
+
+Layers 1 and 3 pay for themselves first. Layer 2 is the one with a hosting bill — see the
+threshold below before recommending it.
+
+### Layer 1: first-party identity
+
+Once a user authenticates, every downstream event carries the durable identifier rather than
+relying on a cookie surviving:
+
+```js
+gtag('config', 'G-XXXXXXX', {
+  user_id: user.id,
+  user_data: { sha256_email_address: hashEmail(user.email) },
+});
+```
+
+Hash on the server or with a vetted client hash; normalize (trim, lowercase) before hashing or
+the platform's match rate collapses. Audit check: a logged-in event payload with no `user_id`
+and no hashed email, quoted at `file:line`, on a site that has accounts.
+
 ## What sGTM is
 
 GTM ships in two modes:
@@ -38,17 +69,11 @@ GTM ships in two modes:
 - Single-platform setup (just GA4) — direct gtag works.
 - No engineering resources.
 
-## Hosting options (see `references/recommendations/gtm-server.md`)
+## Hosting options
 
-| Host | Vendor | Setup ease | Pricing |
-|---|---|---|---|
-| Google Cloud App Engine | Google | Canonical; deploy script provided | $40-120/mo |
-| Cloudflare Workers | Cloudflare | Community templates; engineer-led | $5/mo + per-request |
-| Stape.io | Stape | One-click; managed | $20-300/mo |
-| Vercel | Vercel | Custom function; manual | $20+/mo |
-| AWS App Runner | AWS | Container deploy | $25-150/mo |
-
-App Engine is Google's reference. Stape is easiest. Workers is cheapest at scale.
+`references/recommendations/gtm-server.md` carries the host-by-host comparison (setup effort,
+pricing, pros and cons) — one copy, read it there, or run `recommend gtm-server` for the same
+catalog as JSON.
 
 ## First-party domain setup
 
@@ -65,6 +90,15 @@ Browsers see this as a first-party request — Safari ITP doesn't cap cookie lif
 ## Audit signal
 
 `state site <url> pixels` reports if sGTM is in use (detected via first-party `sgtm.*` subdomain in pixel script srcs). Absent + high ad spend → 🟡 WARN with `recommend gtm-server`.
+
+In source mode, the server-side layer looks like a relay endpoint (`/api/track`, an edge worker
+forwarding to `/g/collect`, a queue consumer posting to a platform CAPI). Quote it or quote its
+absence. A client-side GTM container with no server-side variant inherits every blocking
+problem the raw pixels have — that is a Medium on its own and a High when it is the only path
+carrying conversions for a paid program.
+
+Not a finding: a site with no paid media at all, or one whose measurement is deliberately
+cookieless with no ad pixels. Skip with that reason.
 
 ## See also
 

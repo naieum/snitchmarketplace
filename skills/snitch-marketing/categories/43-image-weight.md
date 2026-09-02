@@ -60,7 +60,7 @@ Web.dev on image optimization: https://web.dev/articles/optimize-images
 - Page image total >2MB → High.
 - Missing srcset on responsive images → Medium.
 
-**Fix voice:** `performance-engineer` (primary) | `dieter-rams` (backup).
+**Fix voice:** `performance-engineer` (primary) | `less-but-better-designer` (backup).
 
 Read `souls/performance-engineer.json` before writing the Fix.
 

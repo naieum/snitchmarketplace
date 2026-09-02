@@ -34,7 +34,7 @@ Two non-negotiable rules before you cite it:
 
 | Type | What it re-weights | Routes the hypothesis to |
 |---|---|---|
-| **Core update** | Broad relevance + quality reassessment; topical authority; E-E-A-T (trust heaviest) | Content depth/quality (Cat 18, 57, 59), author/trust signals (Cat 93, 111, 128), intent fit (Cat 58, 131) |
+| **Core update** | Broad relevance + quality reassessment; topical authority; E-E-A-T (trust heaviest) | Content depth/quality (Cat 18, 57, 59), author/trust signals (Cat 32's Person row, Cat 60, 128), intent fit (Cat 58, 131) |
 | **Spam update** | Link spam, content spam, policy violations | Backlink toxicity (Cat 69), parasite/site-reputation abuse (Cat 125), expired-domain abuse (Cat 126), scaled/programmatic thin content (Cat 18, 95) |
 | **Reviews** (now folded into core) | First-hand, evidence-backed review content | Review depth + originality + first-hand experience (Cat 59, 74, 128) |
 | **Helpful-content signals** (folded into core, March 2024) | People-first vs search-engine-first content | Thin/derivative content (Cat 18, 57), AI-tells (Cat 59), intent mismatch (Cat 58, 131) |

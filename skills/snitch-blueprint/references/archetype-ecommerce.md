@@ -64,7 +64,7 @@ timed after engagement, never an entry-blocking modal; exit-intent at most).
 
 - `Product` schema with `offers` (price, currency, availability) per product; `Review`
   schema only when reviews are real.
-- The e-commerce event stream named in the blueprint (it is ads-ready's prerequisite —
+- The e-commerce event stream named in the blueprint (it is snitch-adsready's prerequisite —
   every ad platform's ROAS math sits on these events).
 - Product feed hygiene from the start: titles, GTINs/SKUs, image specs — the feed is the
   product page's machine-readable twin and ad platforms read the feed, not the page.
@@ -74,7 +74,7 @@ timed after engagement, never an entry-blocking modal; exit-intent at most).
 
 ## Handoffs
 
-ads-ready before the first ad dollar (pixels, CAPI, consent, feed diagnostics);
+snitch-adsready before the first ad dollar (pixels, CAPI, consent, feed diagnostics);
 snitch-marketing for the launched store (category/product SEO depth); snitch-ux if checkout
 or product-page conversion underperforms; snitch-focusedcopy for landing pages built for
 specific campaigns.

@@ -2,7 +2,9 @@
 
 Audits the parts of the marketing funnel past acquisition. Activation flow, ownership psychology, switching costs, peak-end design, cancellation handling.
 
-Currently the marketing skill heavily weights acquisition (Cat 60, 73, 81, 99). Retention is briefly mentioned in Cat 99 (conversion-funnel-deep) but never gets its own audit. A brand can pass every acquisition category and still leak customers because nothing is built to keep them.
+A brand can pass every acquisition category and still leak customers because nothing is built to keep them.
+
+**Boundary with snitch-ux.** This category audits the retention surfaces as **marketing artifacts**: do they exist, what do they say, is the exit as reachable as the entrance. How the confirmation screen reads to the person who just committed, and how the activation and cancellation screens sit on that user's decision path, is judged against the decision path itself — call the Skill tool with "snitch-ux" for that half. The sibling owns the confirmation screen and the paywall's choice architecture; this category owns whether the surface is there at all and what it claims.
 
 ### Pre-flight: requires a product surface
 
@@ -13,6 +15,9 @@ If the product is a one-time purchase with no ongoing relationship (a digital do
 ### Evidence required (do not skip, when product exists)
 
 **Crawl mode + source mode:**
+
+   - **Tooling caveat:** Steps 1-4 walk authenticated in-product flows. An audit has no account and cannot sign up, activate, or cancel on the user's behalf. Use a browser/Playwright or `WebSearch` tool IF one is present, else ask the user to paste or screenshot the signup, onboarding and cancellation screens (or grant a browser session), else **Skip-with-reason**; do not assert step counts, time-to-first-win, or what a cancellation flow offers you can't see (Rule 1).
+   - Source mode is the fallback that usually works: onboarding, checklist, progress and cancellation surfaces are routes and components in the repo. Read them. Only the timed walk needs the live product.
 
 1. Walk the signup → first-action path. Count steps, measure time-to-first-win.
 2. Identify activation: what is the first moment the user gets value? Time it from signup to that moment.
@@ -151,13 +156,15 @@ Product onboarding flow + product cancellation flow + product retention surfaces
 3. How many steps from signup to that milestone? Time the path.
 4. What's the cancellation flow? Walk it.
 5. Are there ethical-risk patterns (confirmshaming, dark cancellation, punitive streaks)? Flag separately from optimization findings.
-6. Cross-reference Cat 114 §7 (Follow-Through & Retention) section score.
+6. Cross-reference Cat 114 §7 (Follow-Through & Retention) for the holistic read of the same surfaces.
+7. Is the question how the confirmation, onboarding or cancellation screen *reads* to the user in the moment, rather than whether it exists and what it claims? Call the Skill tool with `snitch-ux`.
 
 ### Reference
 
 - `references/mental-models.md` Sections B, E, F (Endowment, IKEA, Peak-End, Activation Energy, BJ Fogg, Switching Costs, Streaks)
-- Cat 114 §7 for the holistic retention score
+- Cat 114 §7 for the holistic retention read
 - Cat 99 (conversion-funnel-deep) for the upstream conversion funnel
+- The decision-path reading of the confirmation, onboarding and cancellation screens → call the Skill tool with "snitch-ux"
 
 ### Severity tagging
 
@@ -172,7 +179,7 @@ Product onboarding flow + product cancellation flow + product retention surfaces
 - No endowment leveraging in trial → Medium
 - Switching cost = zero in retention-relevant category → Low (strategic gap)
 
-**Fix voice:** `tobias-van-schneider` (primary, for peak-end design) | `seth-godin` (backup, for retention strategy).
+**Fix voice:** `brand-surface-designer` (primary, for peak-end design) | `permission-marketer` (backup, for retention strategy).
 
 ### Worked fix example
 

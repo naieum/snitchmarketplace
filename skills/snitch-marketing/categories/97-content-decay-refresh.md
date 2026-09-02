@@ -1,6 +1,6 @@
 ## CATEGORY 97: Content decay & refresh audit
 
-Content decays. A post that ranked #1 in 2024 may sit at position 12 by 2026, not because Google penalized it, but because competitors published better, the topic shifted, the data went stale, or AI overviews zero-clicked the query. Content decay is the silent largest source of organic traffic loss for content-heavy sites. The fix is a disciplined refresh-or-prune cadence: identify decaying posts, decide per-post (update / merge / redirect / delete), and ship the change.
+Content decays. A post that ranked #1 two years ago may sit at position 12 today, not because Google penalized it, but because competitors published better, the topic shifted, the data went stale, or AI overviews zero-clicked the query. Content decay is the silent largest source of organic traffic loss for content-heavy sites. The fix is a disciplined refresh-or-prune cadence: identify decaying posts, decide per-post (update / merge / redirect / delete), and ship the change.
 
 This category audits the discipline (or absence of one) around content decay.
 
@@ -33,7 +33,7 @@ For each decaying piece, decide one of four actions:
 
 | Action | When | What it looks like |
 |---|---|---|
-| **Update** | The topic still matters, the data is stale, the angle is still valid | Refresh stats, add 2026 context, update screenshots, re-publish with new `dateModified` |
+| **Update** | The topic still matters, the data is stale, the angle is still valid | Refresh stats, add current-year context, update screenshots, re-publish with new `dateModified` |
 | **Merge** | Two or more weak posts cover overlapping ground; one strong consolidated post would be better | Pick the canonical URL, merge content, 301 the others to it |
 | **Redirect** | The topic no longer matters but the URL has backlinks | 301 to the closest still-relevant page |
 | **Delete** | The topic doesn't matter AND the URL has no value | 410 (gone), better than 404 for crawl signals |
@@ -81,10 +81,14 @@ Freshness is query-dependent, though: if the top-ranking titles carry the curren
 - "These posts should probably be deleted." Per-post triage with evidence per action.
 - "A refresh will recover this traffic." Only if content is the bottleneck (gate 4): a page that never had referring domains needs links or a merge, not a rewrite.
 
+### Detection
+
+Content inventory by publish and last-modified date, then a per-URL decay read against whatever performance signal is available.
+
 ### What to Search For
 
 - Content files / sitemap entries with `last-modified` >12 months
-- Posts with stale year references in title / H1 / first paragraph (`"Best X for 2023"` in 2026)
+- Posts with stale year references in title / H1 / first paragraph (a `"Best X for <year>"` title two or more years behind the current year)
 - Multiple posts on the same topic with no canonical / merge
 - Posts with prior backlinks (per `referring_domains` in Ahrefs/Semrush) that have decayed
 - Absence of a `redirects.json` / `_redirects` / equivalent, suggests no pruning has happened
@@ -100,7 +104,7 @@ Republish mechanics after a substantive update: change the modification date onl
 
 - **No documented refresh cadence** (no internal record of which posts were last reviewed; no scheduled review process).
   Evidence required: missing process docs, stale `dateModified` distribution.
-- **Posts with stale year references in title / H1** (`"Best React Frameworks for 2023"` still ranking + still listed as 2023 in 2026).
+- **Posts with stale year references in title / H1** (a `"Best React Frameworks for <year>"` post still ranking while its title names a year two or more behind).
   Evidence required: quoted title + current year.
 - **Posts on the same topic competing for the same query** (cannibalization).
   Evidence required: 2+ URLs + the shared query they target.
@@ -128,7 +132,7 @@ Republish mechanics after a substantive update: change the modification date onl
 - Evergreen post (`How to write a resume`) untouched in 24 months and still ranking, the content is genuinely evergreen; updating for the sake of updating may hurt.
 - Recently-published posts (<6 months) not yet decaying, too early to triage.
 - Pruned content with proper 301 redirects to relevant successors, correct.
-- Annually-refreshed posts that include the year in the URL slug (`best-tools-2026/`), common pattern, just ensure year-old slugs are redirected to the current year.
+- Annually-refreshed posts that include the year in the URL slug (`best-tools-<year>/`), common pattern, just ensure year-old slugs are redirected to the current year.
 
 ### Context Check
 
@@ -159,9 +163,9 @@ Animalz's content decay framework: https://www.animalz.co/blog/content-decay/
 - Modification dates bumped without substantive change → Medium.
 - Refresh ledger absent → Low (process gap).
 
-**Fix voice:** `frank-chimero` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `content-shape-editor` (primary) | `honest-design-critic` (backup).
 
-Read `souls/frank-chimero.json` before writing the Fix.
+Read `souls/content-shape-editor.json` before writing the Fix.
 
 Worked fix example:
 

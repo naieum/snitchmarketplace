@@ -19,17 +19,10 @@ For B2B: LinkedIn Lead Gen Forms usually convert higher than custom forms — th
 
 ## Schema.org
 
-Required:
-- `Organization` (or `LocalBusiness` / `ProfessionalService` if local)
-- `WebSite`
-- `Service` per offering
-- `BreadcrumbList`
-- `FAQPage` per service page
-
-For agencies + consulting:
-- `ProfessionalService` with `priceRange`, `areaServed`, `award`, `aggregateRating`
-- `Person` for leadership (use `sameAs` to LinkedIn / X)
-- `Article` for blog posts; mark author with `Person`
+`Organization`, `LocalBusiness`, `ProfessionalService`, `Service`, `FAQPage`, `BreadcrumbList`,
+`Person`, and `Article` are evidenced against search, not against an ad platform: **call the
+Skill tool with "snitch-marketing"**. This skill only emits `Product`/`Offer` as a shopping-feed
+input, which a services site rarely needs — Skip with that reason.
 
 ## Conversion-tracking pattern
 
@@ -71,10 +64,10 @@ After cleanup, conversion counts often drop 20-40% — but ROAS improves corresp
 
 ## Sub-verticals
 
-- **Local services** (plumber, electrician, dentist): LocalBusiness schema + Google Business Profile + Bing Places. Less Meta/TikTok; more Google + Bing.
+- **Local services** (plumber, electrician, dentist): budget skews Google + Bing over Meta/TikTok, and location assets in those accounts are fed by a claimed business profile. Claiming and tuning the profiles themselves is local search — **call the Skill tool with "snitch-marketing"**.
 - **Agency / consultancy**: LinkedIn-heavy. Less Snap / Pinterest unless visual.
 - **Real estate**: per-listing pages need `Place` + `Offer`. Heavy Google + Meta + Pinterest.
-- **Legal / finance / healthcare** (YMYL): higher E-E-A-T standards from Google. Author credentials in schema; cite sources; reduce ad clutter.
+- **Legal / finance / healthcare**: ad platforms restrict these verticals — expect certification requirements, limited audience targeting, and slower ad review. Check the platform's restricted-categories policy before promising a launch date.
 
 ## Honest framing
 

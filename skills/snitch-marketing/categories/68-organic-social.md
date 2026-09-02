@@ -4,7 +4,7 @@ Does the brand have a presence, is it active, what's working, what's not. Organi
 
 ### Pre-flight: brand maturity check
 
-Confirm STEP 0.6 classified social-profile presence as `minimal` or `established`. If `none` (no profiles linked from site footer / `Organization.sameAs` / nav), **Skip** with reason `no social profiles detected; recommendation pending in STEP 5`. Don't run Evidence Required.
+Confirm STEP 0.6 classified social-profile presence as `minimal` or `established`. If `none` (no profiles linked from site footer / `Organization.sameAs` / nav), **Skip** with reason `no social profiles detected; recommendation pending in STEP 4`. Don't run Evidence Required.
 
 ### Evidence required (do not skip, only when maturity is `minimal`+)
 
@@ -13,7 +13,7 @@ Confirm STEP 0.6 classified social-profile presence as `minimal` or `established
 1. Find brand profiles via:
    - Site footer / nav links to social profiles
    - `<link rel="me">` (IndieWeb identity)
-   - JSON-LD `Organization.sameAs` array (cross-reference Cat 37)
+   - JSON-LD `Organization.sameAs` array (cross-reference Cat 32's Organization row)
 2. Quote profile URLs.
 3. **Tooling caveat (Critical — X / Instagram / TikTok / LinkedIn are login-gated and JS-rendered).** A plain `Fetch` of those profiles returns a login wall or an empty app shell, NOT the follower count, post dates, or feed — those render client-side behind auth. To capture follower count / last-post date / 30-day post frequency: use a browser/Playwright or `WebSearch` tool IF one is present this session, and quote what it returns. Otherwise, ask the user to paste the counts/dates. Otherwise, **Skip** the activity-metric capture with reason `follower/post-frequency data is login-gated and JS-rendered; plain Fetch returns a wall`. **Never assert a follower count or post cadence you didn't observe (Rule 1).** What you CAN always verify with Fetch: that the profile link resolves (HTTP status) and that the site links to it. **Exceptions:** `youtube.com/@…` channel pages and `github.com/…` profiles are server-rendered and a plain Fetch often DOES expose subscriber/repo counts and recent activity — capture those when present.
 4. Identify which platform(s) the brand is active on vs absent from. When activity metrics are gated (step 3), reframe findings around the verifiable signal — does the profile link resolve, is it linked from the site, does the bio match positioning — rather than counts you can't see.
@@ -84,9 +84,9 @@ Sprout Social state of social media: https://sproutsocial.com/insights/
 - No presence on critical-audience platform → Medium.
 - Profile activity stale (>90d) → Medium.
 
-**Fix voice:** `tobias-van-schneider` (primary) | `sahil-lavingia` (backup).
+**Fix voice:** `brand-surface-designer` (primary) | `indie-commerce-founder` (backup).
 
-Read `souls/tobias-van-schneider.json` before writing the Fix.
+Read `souls/brand-surface-designer.json` before writing the Fix.
 
 Worked fix example:
 

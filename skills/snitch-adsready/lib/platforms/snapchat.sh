@@ -22,10 +22,13 @@ _snap_http_get() {
 }
 
 platform_state() {
-  local acct_id="${1:-${SNAPCHAT_AD_ACCOUNT_ID:-}}"
+  # Canonical env names are SNAPCHAT_ADS_* (what doctor/prereqs check); the
+  # unprefixed names are accepted as a legacy fallback.
+  local token="${SNAPCHAT_ADS_ACCESS_TOKEN:-${SNAPCHAT_ACCESS_TOKEN:-}}"
+  local acct_id="${1:-${SNAPCHAT_ADS_AD_ACCOUNT_ID:-${SNAPCHAT_AD_ACCOUNT_ID:-}}}"
   local ts; ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-  if [[ -z "${SNAPCHAT_ACCESS_TOKEN:-}" || -z "$acct_id" ]]; then
+  if [[ -z "$token" || -z "$acct_id" ]]; then
     jq -n --arg ts "$ts" '{
       schema: "adssec.state-platform.snapchat",
       schema_version: 1,
@@ -34,13 +37,13 @@ platform_state() {
       platform: "snapchat",
       locked: "snapchat-api",
       reason: "Snap Marketing API auth env not configured.",
-      remediation: "Export SNAPCHAT_ACCESS_TOKEN (OAuth2; scope snapchat-marketing-api) and SNAPCHAT_AD_ACCOUNT_ID. See https://marketingapi.snapchat.com/docs/#authentication",
-      env_required: ["SNAPCHAT_ACCESS_TOKEN","SNAPCHAT_AD_ACCOUNT_ID"]
+      remediation: "Export SNAPCHAT_ADS_ACCESS_TOKEN (OAuth2; scope snapchat-marketing-api) and SNAPCHAT_ADS_AD_ACCOUNT_ID. See https://marketingapi.snapchat.com/docs/#authentication",
+      env_required: ["SNAPCHAT_ADS_ACCESS_TOKEN","SNAPCHAT_ADS_AD_ACCOUNT_ID"]
     }'
     return 0
   fi
 
-  local at="$SNAPCHAT_ACCESS_TOKEN"
+  local at="$token"
   local camp_url="${ADSSEC_SNAP_API_BASE}/adaccounts/${acct_id}/campaigns?limit=100"
   local pixel_url="${ADSSEC_SNAP_API_BASE}/adaccounts/${acct_id}/pixels"
   local aud_url="${ADSSEC_SNAP_API_BASE}/adaccounts/${acct_id}/segments?limit=100"

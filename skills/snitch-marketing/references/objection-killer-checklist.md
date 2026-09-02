@@ -1,6 +1,6 @@
 # Objection-Killer Checklist (5-Point Landing Page Audit)
 
-Cross-cutting checklist for landing-page diagnosis. Loaded by Cat 81 (Market positioning), Cat 114 (Persuasion architecture), Cat 60 (Conversion & Trust), and Cat 111 (Trust artifact audit). Used during STEP 4.5 strategic recommendations when a copy or landing-page rewrite is the load-bearing fix.
+Cross-cutting checklist for landing-page diagnosis. Loaded by Cat 81 (Market positioning), Cat 114 (Persuasion architecture), and Cat 60 (Conversion & Trust, which carries the trust-artifact inventory). Used during STEP 4 strategic recommendations when a copy or landing-page rewrite is the load-bearing fix.
 
 Every landing page that fails to convert is closing on one (or more) of five buyer objections. The fix isn't "rewrite the page from scratch"; the fix is "identify which of the five objections the page failed to close, then close it specifically." Surgical beats sweeping.
 
@@ -38,7 +38,7 @@ Audit application: read each landing page through the lens of the five objection
 - Logo wall with no context (no testimonials, no case studies, no count)
 - Generic "Founded with passion to revolutionize X" mission statement
 
-**Cross-references:** Cat 111 (Trust artifact audit) — full inventory. Cat 117 (Site copy lint) — weak social proof patterns.
+**Cross-references:** Cat 60 (Conversion & Trust) — the full trust-artifact inventory. Cat 117 (Site copy lint) — weak social proof patterns.
 
 ### Complexity — what to look for
 
@@ -78,7 +78,7 @@ Audit application: read each landing page through the lens of the five objection
 - Onboarding only described in marketing language; no actual screenshots of the in-product flow
 - "Get a demo" CTA on a product that should be self-serve
 
-**Cross-references:** Cat 60 (Conversion & Trust — CTA friction), Cat 99 (Conversion funnel deep — Stage 1 entry friction), Cat 55 (North-star metric — activation event proxy).
+**Cross-references:** Cat 60 (Conversion & Trust — CTA friction), Cat 99 (Conversion funnel deep — Stage 1 entry friction), the north-star metric in `references/strategic-recommendations.md` (activation event proxy, instrumented under Cat 53).
 
 ### Doubt — what to look for
 
@@ -98,7 +98,7 @@ Audit application: read each landing page through the lens of the five objection
 - Comparison pages absent (the buyer compares to competitors and the brand provides no help)
 - Support and documentation buried (the buyer wants to know about edge cases)
 
-**Cross-references:** Cat 95 (Comparison pages), Cat 81 (Positioning — buyer specificity), Cat 110 (ICP wedge scoring), Cat 111 (Trust artifact audit — "not for" section as artifact #5).
+**Cross-references:** Cat 122 (Comparison / alternatives pages), Cat 81 (Positioning — buyer specificity), Cat 60 (Conversion & Trust — "not for" section as trust artifact #5), Cat 114 (Persuasion architecture — the site-wide pass this per-page read feeds).
 
 ### Delay / Urgency — what to look for
 
@@ -151,10 +151,10 @@ Some pages serve goals other than direct conversion (brand awareness, recruiting
 ## Pairs with
 
 - Cat 81 (Market positioning — the offer side of the 5 objections; positioning sets up which objections matter most)
-- Cat 114 (Persuasion architecture — holistic 7-section score; the 5 objections are the conversion-specific subset)
+- Cat 114 (Persuasion architecture — the holistic seven-section pass; the 5 objections are the conversion-specific subset)
 - Cat 60 (Conversion & Trust — surface-level CTA + trust signals)
-- Cat 111 (Trust artifact audit — credibility close)
+- Cat 60 (Conversion & Trust — trust artifacts, credibility close)
 - Cat 117 (Site copy lint — language that compounds objections)
 - Cat 99 (Conversion funnel deep — the funnel-stage view of where objections kill conversion)
-- Cat 95 (Comparison pages — closing doubt for buyer-vs-competitor research)
+- Cat 122 (Comparison / alternatives pages — closing doubt for buyer-vs-competitor research)
 - references/decision-trees.md (Tree 4: which test should we run first? — when "hero copy weak" is the answer, this checklist is the diagnostic tool)

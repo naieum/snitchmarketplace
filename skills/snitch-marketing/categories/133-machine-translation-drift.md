@@ -179,9 +179,9 @@ attribute). Those check the locales are wired up; this checks the content is goo
 - A suspected fluency problem you can't verify → not a finding; recommend a native reviewer
   (note, not a severity).
 
-**Fix voice:** `frank-chimero` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `content-shape-editor` (primary) | `honest-design-critic` (backup).
 
-Read `souls/frank-chimero.json` before writing the Fix.
+Read `souls/content-shape-editor.json` before writing the Fix.
 
 Worked fix example:
 

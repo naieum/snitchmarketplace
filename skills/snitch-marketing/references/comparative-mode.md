@@ -33,7 +33,7 @@ If self target is source mode, run source for self and crawl for competitor — 
 
 Comparative mode benefits from a focused audit, not a full one. Recommended subsets:
 
-- **Default**: Group 2 (Technical SEO) + Group 4 (Schema) + Group 9 (2026 Modern Marketing) — ~25 categories. Captures the externally observable structural signals.
+- **Default**: Group 2 (Technical SEO) + Group 4 (Schema) + Group 9 (2026 Modern Marketing) — 22 categories. Captures the externally observable structural signals.
 - **Conversion-focused**: Group 5 (Conversion & Trust) + Cat 99 (Conversion funnel deep-audit) — for sales-prep / pre-launch.
 - **Content-focused**: Group 3 (Content & Structure) + Cat 70 (Content strategy) + Cat 86 (Keyword research) — for editorial competitive analysis.
 - **Custom**: user-selected categories.
@@ -98,7 +98,7 @@ For each category where self has a clean Pass and competitor has a finding:
 - **Competitor**: All CSS render-blocking; LCP score 2.4s.
 - **Action**: Preserve the advantage; don't regress in upcoming refactor.
 
-### Cat 93: Person / Author schema
+### Cat 32: Schema type validation (Person row)
 
 - **Self**: Every blog post has Article schema with structured Person author + canonical profile.
 - **Competitor**: Article schema with author as plain string.
@@ -161,7 +161,7 @@ working-directory/
 └── COMPARATIVE_AUDIT_REPORT.md
 ```
 
-If the user wants STEP 4.5 strategic recommendations:
+If the user wants STEP 4 strategic recommendations:
 
 ```
 └── STRATEGIC_RECOMMENDATIONS.md   # synthesizes both audits + competitive deltas
@@ -171,6 +171,6 @@ If the user wants STEP 4.5 strategic recommendations:
 
 - SKILL.md STEP 1.5 (Audit Mode) — entry point
 - SKILL.md STEP 0.7 — qualitative competitor research (lighter-weight alternative)
-- SKILL.md STEP 4.5 — strategic recommendations from comparative findings
+- SKILL.md STEP 4 — strategic recommendations from comparative findings
 - `portfolio-mode.md` — for multi-property internal audit (different mode)
 - `output-formats.md` — for comparative report format variants

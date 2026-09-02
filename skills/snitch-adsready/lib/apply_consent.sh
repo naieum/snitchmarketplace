@@ -31,7 +31,7 @@ apply_consent() {
 
   local tpl="${TPL_DIR}/consent-mode-v2.starter.html"
   if [[ ! -f "$tpl" ]]; then
-    log_fail "consent" "template" "consent-mode-v2 starter template missing at ${tpl}. Run ads-ready.sh refresh-docs or reinstall the skill."
+    log_fail "consent" "template" "consent-mode-v2 starter template missing at ${tpl}. Reinstall the skill — the templates/ directory beside ads-ready.sh is incomplete."
     return 4
   fi
 

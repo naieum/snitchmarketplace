@@ -80,9 +80,9 @@ Google on rel attributes: https://developers.google.com/search/docs/crawling-ind
 - Sitewide partner spam → High.
 - `_blank` without `noopener` → Medium (security; less critical with modern browsers).
 
-**Fix voice:** `mike-monteiro` (primary) | `security-engineer` (backup).
+**Fix voice:** `honest-design-critic` (primary) | `security-engineer` (backup).
 
-Read `souls/mike-monteiro.json` before writing the Fix. Mike's voice on accountability: be honest about what links are, who paid for what, what your site endorses.
+Read `souls/honest-design-critic.json` before writing the Fix. Accountability: be honest about what links are, who paid for what, what your site endorses.
 
 Worked fix example:
 

@@ -84,7 +84,7 @@ Same format, different file: `/app-ads.txt`. Required for monetizing in-app inve
 - No programmatic monetization.
 - Subdomains that don't serve ads.
 
-Mark `ads-txt` as ⚪ N/A — not 🔴 FAIL.
+Mark `ads-txt` as ⚪ SKIP with the reason ("advertiser, not publisher") — not 🔴 FAIL.
 
 ## See also
 

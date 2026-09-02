@@ -3,16 +3,11 @@
 Words are UX. The same screen converts or stalls on copy alone. Rules of thumb, then a
 swap table. This file is the *line-level* pass; for the *brand-level* message these lines
 serve — hero headline, tagline, value prop, onboarding narrative — see
-`brand-messaging.md` first (problem-first story, five sound bites, controlling idea).
+`brand-message.md` first (problem-first story, five sound bites, controlling idea).
 
-> **The ethics gate outranks every swap in this file.** Run `review-checklist.md` §10 and
-> SKILL.md Workflow Step 3.5 *before* applying anything here. Every rule below assumes the
-> underlying claim is **true** and the cost is **disclosed** — these are techniques for making
-> an honest offer legible, not for making a dishonest one palatable. Applied to a surface with
-> fabricated urgency, a hidden recurring charge, or a buried cancellation, several of these
-> swaps make the page measurably worse: softening a commitment word on a page that hides its
-> price removes the user's last warning. If the gate fails, the finding is the dishonesty, not
-> the wording.
+> Gate first: `ethics-gate.md`. Every rule below assumes the underlying claim is **true** and
+> the cost is **disclosed**; on a surface that failed the gate, several of these swaps make the
+> page worse rather than better.
 
 ## Principles
 
@@ -64,7 +59,15 @@ serve — hero headline, tagline, value prop, onboarding narrative — see
 ## Swap table
 
 **Every row assumes the gate passed.** These swaps lower the perceived stakes of an action, which
-is only honest when the real stakes are stated at the same decision point. On a surface that hides
+is only honest when the real stakes are stated at the same decision point.
+
+**What this table is judged against — and what it is not.** The swaps here are about
+**commitment weight**: whether the verb matches the size of the step the user is actually
+taking. A separate judge asks whether a CTA label is **outcome-specific** enough to be worth
+clicking from a search result or an ad — that one belongs to snitch-marketing, which flags a
+bare "Continue" as a generic label. The two are not in conflict, and one line satisfies both:
+"Continue — start my plan" carries the light verb *and* names the outcome. When you propose a
+swap from this table, prefer the form that also names the outcome. On a surface that hides
 a recurring charge, the commitment word *is* the user's last warning, and softening any of these is
 a dark pattern rather than a swap — that applies to the whole table, not only to the rows where it
 is spelled out.

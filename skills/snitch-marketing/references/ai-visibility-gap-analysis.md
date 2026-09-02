@@ -3,7 +3,7 @@
 A classification-and-prioritization framework for AI-visibility findings. Instead of one
 undifferentiated "brand not visible in AI answers" finding, every observed miss is bucketed into
 one of six gap dimensions, because each dimension routes to a different fix — and every
-remediation is one of three action types. This turns Cat 82 / Cat 102 citation findings into a
+remediation is one of three action types. This turns Cat 82's citation findings into a
 prioritized plan rather than a list of 50 undifferentiated recommendations.
 
 All quantitative claims here trace to correlational industry studies (a 2026 study of 75,000
@@ -12,8 +12,8 @@ Present them as correlations with hedged language, never as guarantees.
 
 ## When surfaced
 
-Loaded when Cat 82 (AI-search citation) or Cat 102 (multi-LLM) produces Layer 3 / per-platform
-findings that need classification and prioritization; when STEP 4.5 strategic recommendations
+Loaded when Cat 82 (AI-search citation) produces Layer 3 / per-assistant
+findings that need classification and prioritization; when STEP 4 strategic recommendations
 synthesize GEO work into a plan; or when the user asks "where do we stand in AI search?" and the
 answer needs more structure than a citation list.
 

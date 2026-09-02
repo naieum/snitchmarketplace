@@ -35,6 +35,9 @@ google.com, pub-{{GOOGLE_ADSENSE_PUB_ID}}, DIRECT, f08c47fec0942fa0
 # microsoftadvertising.com, {{MICROSOFT_PUB_ID}}, DIRECT
 
 # platform: amazon
+# Reference only — amazon is not one of the ten tool-backed platforms, and the
+# entry below is commented out, so no `fix ads-txt` run emits it. If you
+# monetize through APS, uncomment the line and fill in the pub ID by hand.
 # --- Amazon Publisher Services (Transparent Ad Marketplace / UAM) ---
 # Only if APS is wired into your ad stack.
 # aps.amazon.com, {{APS_PUB_ID}}, DIRECT

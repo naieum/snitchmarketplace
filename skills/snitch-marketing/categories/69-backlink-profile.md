@@ -1,12 +1,12 @@
 ## CATEGORY 69: Backlink profile + link-building
 
-In 2026 the value of links has shifted. Google's classic ranking weight on backlinks is reduced (algorithm matured, AI overviews answering many queries). The new primary value of inbound links is **AI-search citation**, LLMs (ChatGPT, Perplexity, Claude, Gemini) weight authoritative inbound links + Wikipedia-tier mentions when deciding which sources to cite in answers. Cross-reference Cat 82.
+The value of links has shifted. Google's classic ranking weight on backlinks is reduced (algorithm matured, AI overviews answering many queries). The new primary value of inbound links is **AI-search citation**, LLMs (ChatGPT, Perplexity, Claude, Gemini) weight authoritative inbound links + Wikipedia-tier mentions when deciding which sources to cite in answers. Cross-reference Cat 82.
 
 Backlinks still matter for commercial-intent SERP ranking (the queries that survive AI-overview displacement) and for AI-citation signal. Audit identifies: who links to the site, anchor diversity, toxic links, competitor gap.
 
 ### Pre-flight: brand maturity check
 
-Confirm STEP 0.6 classified backlink presence as `minimal` or `established`. If `none` (branded-name search returns zero third-party mentions; domain age <90d), **Skip** with reason `no detectable inbound links; brand needs to earn first mentions before backlink audit is meaningful, see STEP 5 recommendations`. Don't run Evidence Required.
+Confirm STEP 0.6 classified backlink presence as `minimal` or `established`. If `none` (branded-name search returns zero third-party mentions; domain age <90d), **Skip** with reason `no detectable inbound links; brand needs to earn first mentions before backlink audit is meaningful, see STEP 4 recommendations`. Don't run Evidence Required.
 
 ### Evidence required (do not skip, only when maturity is `minimal`+)
 
@@ -106,9 +106,9 @@ Free Common Crawl coverage + authority method (no key): `references/backlink-com
 - **Pilot before scaling.** Run the programmatically findable contacts first: an author-finder plus email verification across the vetted list yields valid addresses for roughly 6–12% of prospects in minutes; that blitz batch's conversion rate validates or kills the campaign before anyone invests in manual contact-finding for the remainder. Tracked campaigns report segment-personalized outreach at volume acquiring links at roughly 5–12%; unsegmented blasts burn sender reputation and land links on sites nobody wants. Write the email to one real prospect as if to a friend, then extract the merge fields — under segment personalization, often only the name varies. Frame the value proposition around impact on the prospect *and their audience* (safety, accuracy, freshness of what they published), never around the asker. Never contact a personal address unless it's published on their site.
 - **Warm prospects first.** Unlinked brand mentions and pages embedding the site's owned media (videos, tools, images) have already demonstrated intent — pitch the fuller resource; practitioners report these convert well above cold outreach. Check both canonical and embed URL variants of owned media, they collect separate link pools.
 
-**Fix voice:** `mike-monteiro` (primary) | `sahil-lavingia` (backup, when fix is "stop trying to game; build a thing worth linking to").
+**Fix voice:** `honest-design-critic` (primary) | `indie-commerce-founder` (backup, when fix is "stop trying to game; build a thing worth linking to").
 
-Read `souls/mike-monteiro.json` before writing the Fix.
+Read `souls/honest-design-critic.json` before writing the Fix.
 
 Worked fix example:
 

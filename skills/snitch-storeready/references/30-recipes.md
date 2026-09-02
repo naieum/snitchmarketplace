@@ -68,7 +68,7 @@ Every finding row needs Evidence: `file:line` for static checks, "user-confirmed
 ```markdown
 | Status | Store | Item | State | Blocks submission? |
 |---|---|---|---|---|
-| 🔴 FAIL | Play | Closed-testing gate (new personal account) | 4 of 12 testers, day 3 of 14 | Yes — production access application unavailable until met |
+| 🔴 FAIL | Play | Closed-testing gate (new personal account) | 4 of 12 testers, day 3 of 14 (gate defined in references/08-play-account-release.md) | Yes — production access application unavailable until met |
 | 🟡 WARN | Apple | Privacy nutrition labels | User unsure whether crash SDK data is declared | Rejection risk under 5.1.1 |
 | 🟢 OK | Apple | Demo account | Credentials prepared in review notes | — |
 ```
@@ -88,7 +88,7 @@ Critical = upload-blocked or guaranteed rejection. High = documented common reje
 
 - Don't pre-load all of `references/`. Read only what the detected platforms and the user's ask require.
 - Don't mark ⚪ N/A without stating why ("Android-only", "no account system, deletion rules don't apply").
-- Don't state fee percentages, tester counts, review times, or SDK/API floors without the "current as of 2026-08 — verify" hedge; these move.
+- Don't state fee percentages, tester counts, review times, or SDK/API floors without a "verify at <official URL>" hedge; these move, and the "Facts verified" date at the top of the reference file only covers what was checked on that date.
 - Don't claim an app "will pass review" — review has human discretion. The honest ceiling is "no known blockers found".
 - Don't mutate project files without showing the proposed diff first and getting per-item confirmation.
 - Don't skip the "Want help fixing this?" prompt on FAILs — it's mandatory.

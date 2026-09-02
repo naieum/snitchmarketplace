@@ -1,7 +1,7 @@
 ## CATEGORY 38: Data Classification & Lifecycle
 > Type: posture · Groups: governance · CWE: CWE-200
 
-> **Maps to Upstash Trust Center controls:** "Data classification policy established", "Data retention procedures established", "Customer data deleted upon leaving", "Data encryption utilized"
+> **Maps to common trust-center control language:** data classification policy established, data retention procedures established, customer data deleted on exit, data encryption utilized.
 >
 > **Cross-reference:** Overlaps with Category 23 (GDPR) for data deletion/export and Category 20 (HIPAA) for PHI handling. Only flag here for classification labeling, retention TTLs, and lifecycle management not covered by those categories.
 

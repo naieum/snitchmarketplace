@@ -4,6 +4,26 @@
 
 This is the single highest-leverage SEO tag after the title and meta description, and it's the most commonly broken on AI-built sites because frameworks don't auto-add it and the AI rarely thinks to.
 
+### Evidence required (do not skip)
+
+**Source mode, required tool calls:**
+
+1. `Grep` for the canonical declaration in every shape the project's framework uses (`rel="canonical"`, `alternates.canonical`, `useHead`, `useSeoMeta`, `_yoast_wpseo_canonical`). Quote each match with its `file:line`.
+2. For each indexable route, quote the resolved canonical value — the literal string or the expression that builds it. A route with no match is quoted as an absence, naming the file that should carry it.
+3. `Read` the layout or metadata module that would inherit a site-wide canonical, so a per-page absence is not reported when a layout supplies one.
+
+**Crawl mode, required tool calls:**
+
+1. `Fetch` the URL and quote the `<link rel="canonical">` line from `<head>`, or quote that `<head>` carries none.
+2. `Fetch` the variant set below (trailing slash, `utm`-tagged, `www`, `http`) and quote each variant's canonical. The finding is the disagreement between them, quoted side by side.
+
+### Forbidden claims
+
+- "The canonical is probably missing." Quote the `<head>` or the metadata export. An unquoted absence is not a finding.
+- "The canonical points at the wrong URL." Quote both URLs — the page's own and the one the canonical names — before calling either wrong.
+- "Duplicate content is hurting rankings." This category evidences the tag, not the ranking. Report the variant set that self-canonicalizes; never assert a ranking effect.
+- "The framework adds it automatically." Verify in the source; frameworks differ and defaults change between versions.
+
 ### Detection
 
 #### Source mode
@@ -94,9 +114,9 @@ Google's deprecation of `rel=prev/next` in favor of per-page canonicals (2019): 
 - Canonical relative instead of absolute → Low.
 - Trailing-slash inconsistency without canonical fix → Medium.
 
-**Fix voice:** `dieter-rams` (primary) | `solutions-architect` (backup, for multi-locale or syndication architecture cases where Rams's "less" doesn't fit).
+**Fix voice:** `less-but-better-designer` (primary) | `solutions-architect` (backup, for multi-locale or syndication architecture cases where the "less" framing doesn't fit).
 
-Read `souls/dieter-rams.json` before writing the Fix. Rams's tenth principle, "as little design as possible", maps perfectly to canonical hygiene: one self-referencing canonical, absolute, declared once. The whole category is about removing competing URL signals so search engines have one truth to follow.
+Read `souls/less-but-better-designer.json` before writing the Fix. The restraint discipline maps onto canonical hygiene exactly: one self-referencing canonical, absolute, declared once. The whole category is about removing competing URL signals so search engines have one truth to follow.
 
 Worked fix example:
 

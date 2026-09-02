@@ -22,7 +22,7 @@ one persona and still leave three other committee members blind.
 | **User** (will use it daily) | "Will this fit how I actually work?" | How it works, hands-on proof, a real demo / screenshots / docs, integrations, the workflow it slots into. |
 | **Economic buyer** (owns budget, signs) | "Is the outcome worth the cost and the risk?" | Outcome + ROI framing, honest pricing or a clear path to it, total cost of ownership, the cost of not acting (cross-ref Cat 81 CoI/VoA). |
 | **Champion** (sells it internally) | "Can I make this case to my boss without the vendor?" | A self-contained, forwardable asset: a one-pager, ROI calculator, comparison page (Cat 122), a business-case download (Cat 123) they can send up the chain. |
-| **Skeptic / blocker** (security, legal, IT, procurement) | "Is this safe, compliant, and supportable?" | A reachable answer: security page, SOC 2 / ISO / compliance posture, data-handling / DPA, SSO, status / uptime page, support SLA (cross-ref Cat 111). |
+| **Skeptic / blocker** (security, legal, IT, procurement) | "Is this safe, compliant, and supportable?" | A reachable answer: security page, SOC 2 / ISO / compliance posture, data-handling / DPA, SSO, status / uptime page, support SLA (cross-ref Cat 60). |
 
 The audit maps the site's content to these four roles and reports a finding for any role
 the brand has left blind. The most common failure is a site that is all user-facing feature
@@ -140,9 +140,9 @@ serving page, grounded in the context file's real stakeholders and objections.
 
 ### Reference
 
-Gartner B2B buying-group research: a typical complex B2B purchase involves roughly six to ten
-decision-makers, each arriving with their own information. April Dunford on positioning and
-the sales pitch: https://www.aprildunford.com/
+Published B2B buying-group research consistently puts a complex B2B purchase at roughly six to
+ten decision-makers, each arriving with their own information. The positioning frame each of them
+needs is in `souls/positioning-strategist.json` (internal voice reference).
 
 Loss Aversion + Status-Quo Bias for the skeptic's "do nothing is safest" default (see
 `references/mental-models.md`).
@@ -155,9 +155,9 @@ Loss Aversion + Status-Quo Bias for the skeptic's "do nothing is safest" default
 - Serving page present but undiscoverable → Medium.
 - Single-role hero that the rest of the site compensates for → Low (note, not a break).
 
-**Fix voice:** `april-dunford` (primary) | `sahil-lavingia` (backup).
+**Fix voice:** `positioning-strategist` (primary) | `indie-commerce-founder` (backup).
 
-Read `souls/april-dunford.json` before writing the Fix.
+Read `souls/positioning-strategist.json` before writing the Fix.
 
 Worked fix example:
 
@@ -177,7 +177,7 @@ Worked fix example:
 >    you're not on the call.
 > 4. **The skeptic**: ship a `/security` (or `/trust`) page and link it from the footer. SOC 2
 >    status, where data lives, SSO, a DPA on request. The goal isn't to win this person; it's
->    to not lose the deal in their review (Cat 111).
+>    to not lose the deal in their review (Cat 60).
 >
 > Verify: walk the site once as each of the four roles and ask "could this person get their
 > one question answered without emailing sales?" Every "no" is a stalled deal you can't see in

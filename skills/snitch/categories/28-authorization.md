@@ -16,7 +16,7 @@
 - Sequential/predictable IDs used for resource access without auth checks
 - `findUnique({ where: { id } })` without ownership filter (e.g., no `userId` in where clause)
 - Missing authorization middleware (distinct from authentication)
-- ORM mass assignment: `prisma.*.update({ data: req.body })` or `Model.create(req.body)` without explicit field picking
+- ORM mass assignment: `prisma.*.update({ data: req.body })` or `Model.create(req.body)` without explicit field picking. **This category owns mass assignment** — Category 44 detects the API surface and defers here
 
 #### Frontend Route Authorization (Critical — Often Missed)
 - Admin/privileged layout components that render without checking user role before mounting child routes
@@ -95,15 +95,6 @@ Before reporting, verify ALL of these:
 - **LOW**: Authorization pattern is unclear. Ownership check may exist in a shared utility or middleware not directly visible in the route handler.
 - **SKIP**: Routes with ownership verification (where: { id, userId }). Admin routes with role-checking middleware. Explicit field destructuring before ORM calls. Zod/Yup schema stripping unknown fields. Admin layout verifying role server-side before rendering. Public resources intentionally accessible to all.
 
-### Files to Check
-- `**/api/**/*.ts`, `**/routes/**/*.ts`
-- `**/middleware/**/*.ts`
-- `**/actions/**/*.ts`, `**/server/**/*.ts`
-- `**/controllers/**/*.ts`
-- `**/routes/admin*.tsx`, `**/routes/admin/**/*.tsx` — admin page layouts and route guards
-- `**/routes/__root.tsx`, `**/routes/_layout.tsx` — shared root layouts that may expose admin navigation
-- `**/layouts/**/*.tsx`, `**/components/**/nav*.tsx`, `**/components/**/sidebar*.tsx` — navigation components that may conditionally render admin links
-
 ### Business Logic Abuse (OWASP API6:2023)
 
 Unrestricted access to sensitive business flows allows automated abuse of critical operations.
@@ -128,3 +119,77 @@ Unrestricted access to sensitive business flows allows automated abuse of critic
 - Server-side price lookup from database, ignoring client-sent values
 - State machine library enforcing valid transitions (xstate, robot)
 - Rate limiting on all mutation endpoints, not just auth
+
+#### Evidence Chain
+- The business-flow handler quoted at file:line, and the specific guard checked and found absent
+  (rate limit, idempotency key, server-side price lookup, prior-step assertion, state-transition check)
+- The step or value the caller controls, and how it is supplied (request body field, direct route call
+  that skips a prior route, repeated submission)
+- The concrete gain: money moved at a price the caller chose, an email flood sent from your domain,
+  a subscription reactivated without payment. "Could be abused" with no named gain is not a finding
+- Where a rate limit is the missing control, whether one exists at the infrastructure layer (gateway,
+  Cloudflare rule, ingress annotation) — say what you checked, since it usually is not in the repo
+
+#### Confidence Scoring
+- **HIGH**: the handler reads the trusted value from the caller (`req.body.price`, `req.body.status`)
+  and writes it, or the flow's prerequisite step is provably not asserted anywhere on the path
+- **MEDIUM**: the guard is absent from the handler but a middleware, gateway, or state-machine
+  library could supply it at a layer not in scope — name which
+- **LOW**: the flow's intended sequence cannot be established from the code (no state model, no
+  documentation) — tag `needs human verification`
+
+### Fail-Open Authorization (OWASP A10:2025 — Mishandling of Exceptional Conditions)
+
+Category 28's normal finding is a **missing** ownership filter. This one is worse and reads as
+correct: a filter that is present but degenerate, or an error path that grants instead of denying.
+Nothing else in this skill covers it — CWE-636 (Not Failing Securely) and CWE-754 (Improper Check
+for Unusual or Exceptional Conditions) live here.
+
+#### What to Search For
+- An ownership filter built from a value that can be `undefined` / `null` / empty, where the ORM then
+  drops the condition rather than matching nothing: `where: { id, userId: session?.user?.id }` with no
+  assertion that the session exists
+- A permission helper whose `catch` block returns `true`, returns the resource, or falls through to
+  the next middleware instead of denying
+- `try { await authorize(req) } catch { /* ignore */ }` — the authorization is decorative
+- A role comparison against a value that is absent on the failure path (`user.role !== 'admin'` where
+  `user` may be `{}`), so the check passes by absence
+- Feature-flag or config lookups that default to permissive when the flag store is unreachable
+- A verification call whose result is never inspected (`verifyToken(t)` invoked, return value dropped)
+
+#### Actually Vulnerable
+- `prisma.doc.findFirst({ where: { id, ownerId: userId } })` where `userId` is `undefined` for an
+  unauthenticated caller — the clause is dropped and the query returns any document by id
+- `catch (e) { return next() }` around a permission middleware, so any error in the permission
+  lookup admits the request
+- `const allowed = await checkAcl(...).catch(() => true)`
+
+#### NOT Vulnerable
+- The identifier is asserted before use (`if (!userId) return 401`) and the filter cannot degenerate
+- The `catch` denies: returns 403/500, or rethrows to an error handler that denies
+- The ORM is configured to reject undefined in filters, and you quoted that configuration
+
+#### Evidence Chain
+- The filter or check quoted at file:line, plus the line proving the value can be absent on some path
+  (the optional chain, the nullable type, the branch that skips the assignment)
+- The failure behavior quoted: what the `catch` / default / absent-value case actually returns
+- The resulting access: which records or actions the degenerate path reaches
+- The assertion you looked for and did not find (`if (!userId)`, a schema requiring the field, a
+  framework guard that rejects undefined filters)
+
+#### Confidence Scoring
+- **HIGH**: the absent-value path and the permissive failure behavior are both quoted, on a route
+  reachable without the credential the filter was supposed to enforce
+- **MEDIUM**: the value is nullable by type but every traced caller supplies it, or the permissive
+  `catch` sits on a path whose reachability could not be confirmed
+- **LOW**: the ORM's behavior on an undefined filter value could not be determined for the installed
+  version — tag `needs human verification` and say which version you looked for
+
+### Files to Check
+- `**/api/**/*.ts`, `**/routes/**/*.ts`
+- `**/middleware/**/*.ts`
+- `**/actions/**/*.ts`, `**/server/**/*.ts`
+- `**/controllers/**/*.ts`
+- `**/routes/admin*.tsx`, `**/routes/admin/**/*.tsx` — admin page layouts and route guards
+- `**/routes/__root.tsx`, `**/routes/_layout.tsx` — shared root layouts that may expose admin navigation
+- `**/layouts/**/*.tsx`, `**/components/**/nav*.tsx`, `**/components/**/sidebar*.tsx` — navigation components that may conditionally render admin links

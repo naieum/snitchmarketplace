@@ -46,20 +46,34 @@ Google (gtag/GTM) and Adobe Launch read this. Other platforms have their own tra
 
 The same conversion fires client-side (pixel) and server-side (CAPI) so the platform recovers from ad-blockers, ITP, ETP. Both events ship with a shared dedup ID:
 
-| Platform | Pixel call | CAPI call | Dedup field |
-|---|---|---|---|
-| Google Ads | `gtag('event','conversion',{transaction_id})` | Enhanced Conversions / Offline Adjustments | `transaction_id` + `gclid` |
-| GA4 | `gtag('event', name, {transaction_id})` | Measurement Protocol | `transaction_id` |
-| Meta | `fbq('track','Purchase',{...},{eventID:'evt-123'})` | `event_id: 'evt-123'` | `event_id` |
-| TikTok | `ttq.track('CompletePayment',{...},{event_id:'evt-123'})` | `event_id` | `event_id` |
-| Pinterest | `pintrk('track','checkout',{event_id})` | `event_id` | `event_id` |
-| LinkedIn | `lintrk('track',{conversion_id})` | `eventId` | `eventId` |
-| Snap | `snaptr('track','PURCHASE',{client_dedup_id})` | `event_id` | `event_id` ↔ `client_dedup_id` |
-| Reddit | `rdt('track','Purchase',{conversionId})` | `conversion_id` | `conversion_id` |
-| X | `twq('event','tw-xxx',{conversion_id})` | `event_id` | `event_id` |
-| Apple Search Ads | n/a (SKAdNetwork postbacks) | postback verification | conversion-value bits |
+The per-platform dedup-field table is in `03-conversion-tracking.md` — one copy, read it there.
 
 If reporting shows 2× expected, dedup is broken — usually a different `event_id` between client and server.
+
+## Pixel inventory audit
+
+`state site <url> pixels` returns the installed set per platform; in source mode `detect`'s
+`pixel_snippets[]` plus a grep for each platform's init call gives the same inventory with
+`file:line`. Read the whole inventory once, then run these checks against it — never report
+one platform in isolation.
+
+| Check | Finding when | Evidence to quote |
+|---|---|---|
+| CAPI pair | a browser pixel exists with no server-side counterpart for a platform that offers one | pixel `file:line` + the missing backend POST |
+| Duplicate init | two `init` calls for the same platform | both `file:line`s |
+| Loaded but silent | the library loads and no `track` / `event` call exists anywhere | init `file:line` + the empty grep for that platform's track call |
+| Orphan pixel | a pixel for a platform with no active ad program | pixel `file:line` + the platform's own dashboard or transparency surface showing no activity |
+| Hardcoded ID | the pixel ID is a literal in the client bundle while the codebase uses env vars elsewhere | the literal + a sibling env-var read |
+| Consent gating | the pixel fires before the consent decision | the ordering, per `04-consent-and-cmp.md` |
+| Dedup | client and server both fire with no shared id | the two call sites and the missing id field (`03-conversion-tracking.md` has the per-platform field) |
+
+Redact pixel IDs to a trailing-digits form in anything the user may forward. The ID is not
+secret, but a report that travels does not need it.
+
+An orphan pixel is a Medium at most — it costs third-party script weight, not measurement.
+A browser-only pixel on a platform with a CAPI is the expensive one: a meaningful share of
+browser events never arrives under ITP, ETP, and ad blockers, so the platform optimizes on a
+sample and the reported cost per conversion is wrong in the direction that spends more.
 
 ## Common failure modes
 

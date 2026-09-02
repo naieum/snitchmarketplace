@@ -1,7 +1,7 @@
 {
   "name": "snitch-docwriter",
-  "description": "Write or rewrite technical prose in a controlled style adapted from ASD-STE100 Simplified Technical English, and score any prose for AI slop with a deterministic linter (violations per 100 words).",
-  "version": "0.2.0",
+  "description": "Does your writing sound like AI wrote it? Rewrites docs in plain controlled English and scores the result.",
+  "version": "0.4.1",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

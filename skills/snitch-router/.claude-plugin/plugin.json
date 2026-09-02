@@ -1,0 +1,17 @@
+{
+  "name": "snitch-router",
+  "description": "Not sure which skill you need? Ask this one and it points you to the right skill or flow.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "router",
+    "which-skill",
+    "family-map",
+    "snitch"
+  ]
+}

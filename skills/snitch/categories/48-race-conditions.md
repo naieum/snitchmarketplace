@@ -3,6 +3,7 @@
 
 ### Detection
 - Non-atomic read-modify-write patterns (check-then-act)
+- Module-level mutable state written during request handling (see Cross-Request State Contamination below)
 - Missing database transactions around multi-step operations
 - TOCTOU (time-of-check-time-of-use) in file operations
 - Double-submit patterns in payment or order flows
@@ -26,7 +27,24 @@
 - `asyncio` tasks sharing mutable state without `asyncio.Lock`
 - File TOCTOU: `os.path.exists()` followed by `open()` without atomic operations
 - `check_balance(); debit()` pattern without `@transaction.atomic` in Django
-- Global variables modified in Flask/FastAPI request handlers without locks
+
+**Cross-request state contamination (a confidentiality bug, not a locking bug):**
+Module-level mutable state in a long-lived server process is shared by every concurrent request in
+that process. When a handler writes a *per-user* value into it, the next request can read someone
+else's data — no lock fixes that, because the state should not have been shared in the first place.
+The finding is the scope, not the missing mutex.
+- A module-level `let` / `var` / class static / Python module global / Go package-level variable
+  assigned from request data (`currentUser = req.user`, `let tenantId; app.use(req => tenantId = ...)`)
+- A singleton client, ORM session, or SDK instance reconfigured per request (`client.setAuth(token)`,
+  `db.tenant = req.tenant`) rather than constructed or scoped per request
+- Caches keyed by something that is not the tenant/user (a memo on resource id alone, in a
+  multi-tenant app)
+- Framework context objects stashed in a module-level variable "so helpers can reach them"
+- The Pass: request-scoped storage (`AsyncLocalStorage`, `contextvars`, a Go `context.Context`
+  value, a per-request DI scope), or a value that is genuinely process-wide and identical for every
+  caller (a compiled regex, a config constant, a connection pool)
+- Severity: **High** when the leaked value is user data, a session, or a tenant identifier — that is
+  cross-tenant disclosure reachable by ordinary concurrent traffic, not a rare interleaving
 
 **Go:**
 - Goroutines accessing shared variables without `sync.Mutex`, `sync.RWMutex`, or channels

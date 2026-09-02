@@ -6,7 +6,7 @@ A separate, non-optional redaction hard-fail gate (see below) runs before the gr
 
 ## Why grader on top of the anti-hallucination rules
 
-Rules 1-7 and the False Positive Prevention section in SKILL.md are the existing contract — the analogue of marketing's lint pass. They catch syntactic/structural violations: no file:line means no finding (Rule 1), a real secret value or a literal dangerous-pattern name in the output (Rule 5), a fix applied before the report is shown (Rule 6). Those rules are checkable by pattern or by presence/absence. The grader catches what those rules can't mechanically enforce — semantic and calibration issues:
+Rules 1-7 and the False Positive Prevention section in SKILL.md are the existing contract. They catch syntactic/structural violations: no file:line means no finding (Rule 1), a real secret value or a literal dangerous-pattern name in the output (Rule 5), a fix applied before the report is shown (Rule 6). Those rules are checkable by pattern or by presence/absence. The grader catches what those rules can't mechanically enforce — semantic and calibration issues:
 
 - A finding claims "sink reached, tainted input" without actually walking the Rule 7 chain (current function → caller → middleware/validator) — nothing stops the model from writing a trace-shaped sentence that skipped the actual work.
 - Confidence is marked High or Medium on a trace that only reached the fourth Rule 7 bucket (can't reach a definitive source) — a quiet violation of Rule 7's own hard rule, since nothing else re-checks it after the fact.
@@ -15,7 +15,7 @@ Rules 1-7 and the False Positive Prevention section in SKILL.md are the existing
 - The Fix opens with framing prose ("consider improving input handling") instead of the concrete remediation.
 - A dangerous-pattern name slips into prose in a way that's specific enough to defeat Rule 5's intent without being the exact literal forbidden string.
 
-Rules 1-7 cover the mechanical ~70%. The grader covers the calibration/semantic ~30% — the same split marketing's lint/grader split follows, adapted to a security finding's actual failure modes.
+Rules 1-7 cover the mechanical failures — the ones a pattern or a presence check can catch. The grader covers the rest: calibration and semantics, where a finding is correctly shaped and still wrong.
 
 ## The grading rubric (5 criteria, score 0-2 each, max 10 per finding)
 
@@ -25,8 +25,8 @@ Rules 1-7 cover the mechanical ~70%. The grader covers the calibration/semantic 
 - **0** — No file:line or no verbatim quote (a Rule 1 violation that should have been caught before grading); OR the redaction failure is a live leak (an actual secret value fully or partially recoverable, or a dangerous-pattern name spelled out literally). **A score of 0 here for a live leak also trips the REDACTION HARD-FAIL below and is handled by that gate, not by criterion scoring alone.**
 
 ### Criterion 2: Data-flow trace rigor (0-2)
-This replaces marketing's "risk specificity" — for a security finding, the analogous "did they actually do the work" question is whether Rule 7's trace was genuinely performed.
-- **2** — For sink-pattern findings, the trace names the variable's origin in the current function, the caller/call-site one or two levels up, and any middleware/validator/schema check examined, landing in one of Rule 7's four buckets with a named classification. For non-sink findings (config, header, dependency, license), the evidence directly supports the claim without a spurious trace assertion.
+The "did they actually do the work" criterion: whether Rule 7's trace was genuinely performed, or only written about.
+- **2** — For sink-pattern findings, the trace names the variable's origin in the current function, the caller/call-site one or two levels up, and any middleware/validator/schema check examined, landing in one of Rule 7's four buckets with a named classification. For non-sink findings (config, header, dependency), the evidence directly supports the claim without a spurious trace assertion.
 - **1** — A trace is present but shallow: names the immediate source ("comes from req.body.q") without showing what was checked at the caller/middleware layer, or asserts "unsanitized" without naming what was examined and found absent.
 - **0** — The finding asserts "sink reached" / "tainted" / "user-controlled" with no trace chain shown at all — a bare classification with no evidence, which is itself a Rule 7 violation the grader is catching after the fact.
 
@@ -42,7 +42,7 @@ Covers Rule 5 (dangerous-pattern naming outside Evidence), Rule 6 (never-auto-fi
 - **0** — A literal dangerous-pattern name spelled out in prose (distinct from criterion 1, which covers the Evidence block itself), OR text implying a fix was attempted/applied during the read-only scan phase, OR a finding or passed-check for a category outside the selected scan scope (a SCOPE RULE violation).
 
 ### Criterion 5: Evidence-to-claim alignment (0-2)
-Checks whether the assigned CWE / severity / confidence actually match what the trace showed — the security-specific version of marketing's "does the evidence support the claim."
+Checks whether the assigned CWE / severity / confidence actually match what the trace showed.
 - **2** — CWE matches the specific vulnerability class shown in evidence; severity is consistent with the risk narrative and blast radius; confidence is consistent with how far the trace actually reached.
 - **1** — One mismatch that's a matter of degree, not a categorical error: severity one tier higher than evidence+risk supports, or the right CWE family but the wrong specific ID.
 - **0** — Categorical mismatch: CWE doesn't match the vulnerability at all, severity is wildly out of line with the trace (e.g., Critical on an admin-only, internal, already-mitigated path), or the finding's narrative contradicts its own Evidence block.
@@ -127,7 +127,7 @@ grader:
 
 ## Token cost
 
-Typically **15-25%** of the original scan's token cost — somewhat higher than marketing's 10-20%, because Criterion 2 (data-flow trace rigor) requires the grader to independently re-verify the Rule 7 chain rather than only judge prose quality, which is additional reasoning work beyond a pure writing-quality rubric. For Full System / Ultra scans producing dozens of findings, grading cost scales roughly linearly with finding count; raise `fail_severity_threshold` to `medium` on very large scans to grade only Medium+ findings and contain cost. Toggle off entirely via `grader.enabled: false`, or rely on `auto_skip_scan_modes` for Quick/Diff scans, when token budget is tight. The redaction hard-fail gate is unaffected by any of these toggles and always runs.
+Typically **15-25%** of the original scan's token cost. It runs at the higher end of a writing-quality rubric because Criterion 2 (data-flow trace rigor) requires the grader to independently re-verify the Rule 7 chain rather than only judge prose quality, which is additional reasoning work beyond a pure writing-quality rubric. For Full System / Ultra scans producing dozens of findings, grading cost scales roughly linearly with finding count; raise `fail_severity_threshold` to `medium` on very large scans to grade only Medium+ findings and contain cost. Toggle off entirely via `grader.enabled: false`, or rely on `auto_skip_scan_modes` for Quick/Diff scans, when token budget is tight. The redaction hard-fail gate is unaffected by any of these toggles and always runs.
 
 ## When the grader is required vs optional
 
@@ -143,7 +143,3 @@ The REDACTION hard-fail gate is never optional, in either case.
 - Treating the redaction hard-fail gate as "just another criterion" that can be scored 0/1/2 and deferred to the normal rewrite loop — a live leak blocks the save outright.
 - A `pass_rate` computed by excluding findings that failed and were never successfully rewritten (`findings_still_failing` must be counted against the denominator, not dropped).
 - Grading a finding's severity/CWE calibration (Criterion 5) as a substitute for the severity × likelihood fix-ordering overlay in `references/risk-prioritization.md` — that overlay answers "which to fix first"; this criterion answers "is this finding's write-up internally consistent." Keep both; do not collapse one into the other.
-
----
-
-*LLM-as-grader meta-evaluation structure (5 scored criteria + pass/fail calibration + auto-rewrite loop) ported from snitch-marketing's `references/grader.md`, re-grounded in snitch-security's Rules 1-7 and its existing coverage-accounting / finding-identity conventions. Internal reference only.*

@@ -1,10 +1,10 @@
 ## CATEGORY 71: Lifecycle / drip / newsletter marketing
 
-Distinct from Cats 61-65 (transactional). This audit covers the marketing email program: newsletter, onboarding drip, win-back, churn-prevention, product-update announcements.
+Distinct from Cats 61, 63 and 65 (transactional). This audit covers the marketing email program: newsletter, onboarding drip, win-back, churn-prevention, product-update announcements.
 
 ### Pre-flight: lifecycle presence check
 
-If source has no ESP integration AND no newsletter signup form on the site, **Skip** with reason `no lifecycle / newsletter program detected; setting one up is a strategic decision, see STEP 5 recommendations`. Don't run Evidence Required.
+If source has no ESP integration AND no newsletter signup form on the site, **Skip** with reason `no lifecycle / newsletter program detected; setting one up is a strategic decision, see STEP 4 recommendations`. Don't run Evidence Required.
 
 ### Evidence required (do not skip, only when ESP / signup exists)
 
@@ -18,6 +18,8 @@ If source has no ESP integration AND no newsletter signup form on the site, **Sk
 
 1. Find newsletter signup form: `<form>` containing email input + button labeled "Subscribe", "Get updates", "Newsletter".
 2. Subscribe with a throwaway email; capture sequence of emails received over 7-14 days.
+   - **Tooling caveat:** An audit is a single session — it has no mailbox and cannot wait 7-14 days. Run this step only when the user supplies a mailbox to subscribe with and the received sequence, or has already pasted the emails. Use a browser/Playwright or `WebSearch` tool IF one is present, else ask the user to paste or screenshot the emails the sequence actually sent, else **Skip-with-reason**; do not assert sequence timing, email count, or copy quality you can't see (Rule 1).
+   - The rest of this category still runs from source: the ESP integration, the sequence definitions in code, and the signup form are all observable without receiving a single email.
 3. Note timing, tone, value-per-email, CTA quality.
 
 ### Forbidden claims
@@ -79,7 +81,7 @@ Drip patterns:
 
 ### Reference
 
-Justin Welsh's solopreneur newsletter playbook (case study): https://www.justinwelsh.me
+The newsletter cadence and sequence shapes above come from a large body of published solo-operator newsletter playbooks; the auditable patterns are summarized in this category.
 
 **Severity tagging:**
 - Signup exists but no email sent → Critical (lost lead-gen).
@@ -89,9 +91,9 @@ Justin Welsh's solopreneur newsletter playbook (case study): https://www.justinw
 - All-promotional content → Medium.
 - No post-purchase value narration → Low.
 
-**Fix voice:** `sahil-lavingia` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `indie-commerce-founder` (primary) | `honest-design-critic` (backup).
 
-Read `souls/sahil-lavingia.json` before writing the Fix.
+Read `souls/indie-commerce-founder.json` before writing the Fix.
 
 Worked fix example:
 

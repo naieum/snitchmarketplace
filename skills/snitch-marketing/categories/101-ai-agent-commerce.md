@@ -1,14 +1,14 @@
 ## CATEGORY 101: AI-agent commerce signals
 
-In 2026 a meaningful share of commerce is initiated by an AI agent acting on a user's behalf, ChatGPT shopping mode, Claude operator, Perplexity Pages with buy intents, Anthropic's tool-using research agents, OpenAI's custom GPTs that complete tasks. These agents read your product page, evaluate whether your product matches the user's stated need, and either recommend it or click through to it. The signals that matter to a human shopper (hero image, brand voice, mood video) matter less to an agent; the signals that matter to an agent are extractable structured data, machine-checkable trust signals, and unambiguous transactional metadata.
+A growing share of commerce is initiated by an AI agent acting on a user's behalf: assistant shopping modes, browser-operating agents, answer engines with buy intents, and tool-using research agents. The specific product names move fast — check what the assistants ship today rather than quoting this list. These agents read your product page, evaluate whether your product matches the user's stated need, and either recommend it or click through to it. The signals that matter to a human shopper (hero image, brand voice, mood video) matter less to an agent; the signals that matter to an agent are extractable structured data, machine-checkable trust signals, and unambiguous transactional metadata.
 
-Brands optimized for human-only shoppers will be passed over by agent intermediation. Since early 2026 this extends past extraction into protocol-level checkout: the Universal Commerce Protocol (UCP), the open agent-transaction standard co-developed by Shopify and Google with broad industry backing (Amazon, Meta, Microsoft, Salesforce, Stripe, Target), gives agents a discoverable `/.well-known/ucp` endpoint covering discovery → cart → checkout, and hosted platforms syndicate their native structured product fields (e.g. Shopify metafields, via Shopify Catalog) directly into AI shopping surfaces. This category audits the agent-readiness of commerce surfaces.
+Brands optimized for human-only shoppers will be passed over by agent intermediation. This now extends past extraction into protocol-level checkout. The Universal Commerce Protocol (UCP) is the open agent-transaction standard this category audits against: it gives agents a discoverable `/.well-known/ucp` endpoint covering discovery → cart → checkout. Hosted commerce platforms separately syndicate their native structured product fields into AI shopping surfaces. The standard, its endpoint path, its participating platforms and its backers are all still moving — read the specification's own site for the current shape before auditing against it, and quote the endpoint the site actually serves rather than the one named here. This category audits the agent-readiness of commerce surfaces.
 
 ### Pre-flight: relevance check
 
-Skip with reason `not applicable` if the site is not selling anything (no e-commerce, no SaaS subscription, no paid digital good, no service booking). Required everywhere else, even for low-volume brands, agent intermediation is asymmetric in 2026 (small brands gain disproportionately when their product matches a niche query).
+Skip with reason `not applicable` if the site is not selling anything (no e-commerce, no SaaS subscription, no paid digital good, no service booking). Required everywhere else, even for low-volume brands: agent intermediation is asymmetric (small brands gain disproportionately when their product matches a niche query).
 
-### The framework: 5 signal classes
+### The framework: 6 signal classes
 
 | Signal class | What the agent extracts | Failure looks like |
 |---|---|---|
@@ -23,12 +23,11 @@ Skip with reason `not applicable` if the site is not selling anything (no e-comm
 
 **Source mode, required tool calls:**
 
-1. Identify product / SKU / service pages. `Grep` for Product schema (Cat 34) AND SoftwareApplication schema (Cat 91) AND Offer schema. Quote.
-2. Check Product schema for: `name`, `brand`, `category`, `gtin`/`mpn`/`sku`, `image`, `description`, `offers` (with `price`, `priceCurrency`, `availability`, `priceValidUntil`, `url`).
-3. Check for return policy + shipping policy markup: `merchantReturnPolicy`, `shippingDetails` on Offer.
-4. Check whether prices are text (extractable) vs image (not extractable).
-5. Check for deep-link / one-click-buy URL patterns: `/buy/[sku]`, `/cart/add?sku=...`, `/checkout?sku=...`.
-6. On a detected hosted commerce platform (Shopify and similar — see `references/framework-recipes.md`): check whether product attributes beyond title/price (materials, dimensions, compatibility, care, certifications) live in the platform's native structured fields (Shopify metafields / metaobjects) or only as prose inside the description HTML / hardcoded theme templates. Platform structured fields syndicate through the platform catalog to AI channels; prose and theme Liquid do not. Quote a spec-like fact that exists only as prose.
+1. Identify product / SKU / service pages. `Grep` for Product, SoftwareApplication and Offer schema. Quote.
+2. **Field-level validation of those types is Cat 32's job, not this category's.** Whether `name`, `brand`, `gtin`/`mpn`/`sku`, `offers`, `hasMerchantReturnPolicy` and `shippingDetails` are present and well-formed is scored against the Product row of `references/standards-table.md` and reported under Cat 32; do not re-report the same missing property here. This category starts where that ends: given whatever schema exists, can an agent qualify and buy the product?
+3. Check whether prices are text (extractable) vs image (not extractable).
+4. Check for deep-link / one-click-buy URL patterns: `/buy/[sku]`, `/cart/add?sku=...`, `/checkout?sku=...`.
+5. On a detected hosted commerce platform (Shopify and similar — see `references/framework-recipes.md`): check whether product attributes beyond title/price (materials, dimensions, compatibility, care, certifications) live in the platform's native structured fields (Shopify metafields / metaobjects) or only as prose inside the description HTML / hardcoded theme templates. Platform structured fields syndicate through the platform catalog to AI channels; prose and theme Liquid do not. Quote a spec-like fact that exists only as prose.
 
 **Crawl mode, required tool calls:**
 
@@ -36,7 +35,7 @@ Skip with reason `not applicable` if the site is not selling anything (no e-comm
 2. Quote each product's structured data + visible price.
 3. Test a representative agent query in ChatGPT / Claude / Perplexity ("buy [thing fitting your category] under $X with free returns"). Note whether your product is mentioned and how.
 4. Check whether the page renders price + availability server-side (most agent crawlers don't execute JS heavy enough to populate JS-rendered prices).
-5. `Fetch` `{origin}/.well-known/ucp`. Quote the HTTP status and, if 200, the discovery document's advertised capabilities. On a UCP-capable platform (Shopify exposes agentic commerce self-serve as of its Spring '26 release), a 404 here is a finding. On a custom-built store, absence is an opportunity note, not a failure — adoption outside the major platforms is still uneven.
+5. `Fetch` `{origin}/.well-known/ucp`. Quote the HTTP status and, if 200, the discovery document's advertised capabilities. On a UCP-capable platform, a 404 here is a finding — confirm the platform is capable from its current documentation rather than assuming, since platform support arrives release by release. On a custom-built store, absence is an opportunity note, not a failure — adoption outside the major platforms is still uneven.
 
 ### Forbidden claims
 
@@ -44,14 +43,14 @@ Skip with reason `not applicable` if the site is not selling anything (no e-comm
 - "Price may be in an image." Quote the visible page; identify whether price is text or image asset.
 - "Return policy may be unclear." Quote the visible policy.
 
+### Detection
+
+Product / checkout surface read scored against the signal classes above, from the schema and page text an agent would actually see.
+
 ### What to Search For
 
-- Product / SoftwareApplication / Offer schema completeness
-- `gtin` / `mpn` / `sku` presence
-- `priceCurrency` + `priceValidUntil` set
-- `availability` status and freshness
-- `merchantReturnPolicy` (window, fees, eligibility)
-- `shippingDetails` (cost, delivery time, regions)
+- Product / SoftwareApplication / Offer schema present at all (its field completeness is Cat 32's row, reported there)
+- `availability` claiming a stock state the visible page contradicts
 - Server-side rendered price + availability
 - Deep-link checkout URLs
 - `/.well-known/ucp` discovery endpoint (agentic checkout participation)
@@ -60,16 +59,10 @@ Skip with reason `not applicable` if the site is not selling anything (no e-comm
 
 ### Actually Hurts the Marketing Surface
 
-- **Product without GTIN/MPN/SKU on category-applicable products** (agents disambiguate products by these, without them, your product looks identical to similar competitors).
-  Evidence required: Product schema + missing identifier.
 - **Price as image / canvas / SVG** (agent can't read it; OCR is unreliable).
   Evidence required: visible price element + image source.
 - **Price + availability rendered post-hydration only** (the agent sees an empty placeholder).
   Evidence required: `curl` of page returns shell HTML; price absent until JS executes.
-- **No `merchantReturnPolicy` markup** (agents looking for "free returns" filter your product out).
-  Evidence required: missing schema field.
-- **No `shippingDetails` markup** (agents looking for "ships in 2 days" can't qualify your product).
-  Evidence required: missing schema field.
 - **`availability` stale** (page says "in stock" but the product hasn't been in stock for weeks).
   Evidence required: schema availability + visible stockout indicator.
 - **No deep-link / one-click-buy URL** (the agent can hand the user a product page but not a direct add-to-cart link).
@@ -93,7 +86,7 @@ Skip with reason `not applicable` if the site is not selling anything (no e-comm
 ### Context Check
 
 1. Are products SKU-shaped (physical goods, software licenses, ticketed events)? If yes, full Cat 101 applies.
-2. Is structured data complete enough for an agent to make a recommendation without visiting the page?
+2. Is structured data complete enough for an agent to make a recommendation without visiting the page? (The property-by-property answer comes from Cat 32; what this category asks is whether the gaps it found leave an agent unable to qualify the product.)
 3. Is the price + availability extractable from the SSR HTML, not just post-hydration?
 4. Is there a one-click deep-link the agent can hand to the user?
 5. Has the team tested agent queries in ChatGPT / Claude / Perplexity for their category?
@@ -114,11 +107,8 @@ Universal Commerce Protocol (Shopify engineering): https://shopify.engineering/u
 Shopify agentic-commerce developer platform (Spring '26): https://www.shopify.com/news/spring-26-edition-dev
 
 **Severity tagging:**
-- Product without GTIN/MPN/SKU → High.
 - Price as image → Critical.
 - Price/availability post-hydration only → Critical.
-- No `merchantReturnPolicy` → High.
-- No `shippingDetails` → Medium.
 - Stale `availability` → High.
 - No deep-link checkout URL → Medium.
 - Specs in PDF only → Medium.
@@ -127,7 +117,7 @@ Shopify agentic-commerce developer platform (Spring '26): https://www.shopify.co
 - Structured attributes only in prose or theme code (no platform fields) → Medium.
 - Custom stack without UCP → Low (opportunity note).
 
-**Fix voice:** `solutions-architect` (primary) | `sahil-lavingia` (backup).
+**Fix voice:** `solutions-architect` (primary) | `indie-commerce-founder` (backup).
 
 Read `souls/solutions-architect.json` before writing the Fix.
 

@@ -78,5 +78,5 @@ console; the blueprint records who owns watching it.
 snitch-storeready before every submission — it owns the full policy depth (review
 guidelines, privacy manifests, data-safety forms, SDK-API floors, per-store metadata
 rules); this file only front-loads the decisions that are expensive to reverse.
-snitch-ux for onboarding depth; ads-ready if paid installs are planned (attribution and
+snitch-ux for onboarding depth; snitch-adsready if paid installs are planned (attribution and
 consent on mobile have store-specific rules it owns).

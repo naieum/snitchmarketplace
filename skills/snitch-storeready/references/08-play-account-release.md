@@ -2,9 +2,11 @@
 
 When to read this: planning the path from a finished build to production on Play — account gates, listing assets, billing rules, testing tracks, and enforcement risk.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 ## New-account gates
 
-- **Closed-testing requirement**: personal developer accounts created after 2023-11-13 must run a closed test with at least 12 testers opted in continuously for at least 14 days before applying for production access. A tester who opts out and rejoins restarts that tester's clock. Then a three-part production-access application (closed-test details, app info, readiness) — review typically within 7 days. Organization accounts are exempt. Bot or emulator testers violate policy; Google evaluates engagement quality. Figures current as of 2026-08 — verify at https://support.google.com/googleplay/android-developer/answer/14151465.
+- **Closed-testing requirement**: personal developer accounts created after 2023-11-13 must run a closed test with at least 12 testers opted in continuously for at least 14 days before applying for production access. A tester who opts out and rejoins restarts that tester's clock. Then a three-part production-access application (closed-test details, app info, readiness) — review typically within 7 days. Organization accounts are exempt. Bot or emulator testers violate policy; Google evaluates engagement quality. Verify current figures at https://support.google.com/googleplay/android-developer/answer/14151465.
 - **Developer verification**: personal accounts verify government ID, address, phone, email. Organizations need a D-U-N-S number, registration documents, and an authorized rep's ID. Public display: legal name and email for everyone; developers with paid apps or purchases show a verified legal address and phone on every listing. Government apps must be Organization accounts.
 - One-time $25 registration fee for new accounts.
 
@@ -25,7 +27,7 @@ Screenshots must show the real in-app experience; misleading imagery is a metada
 ## Billing
 
 - Baseline: digital goods and services consumed in the app go through Google Play Billing. Physical goods, physical services, and peer-to-peer payments must NOT use Play Billing.
-- **US storefront**: following the Epic ruling (effective 2025-12-09), US developers may link out to external purchase or download sites, use non-Play billing in-app, and communicate external pricing. Related program and fee-reporting obligations phase in through 2026 (current as of 2026-08 — verify at https://support.google.com/googleplay/android-developer/answer/15582165).
+- **US storefront**: following the Epic v. Google litigation, Google published new US policies on 2025-12-09 letting developers link out to external purchase or download sites, use non-Play billing in-app, and communicate external pricing. The parties reached a further settlement in March 2026 and asked the court to enter a revised injunction, so treat the exact terms as still moving. Verify current terms at https://support.google.com/googleplay/android-developer/answer/15582165.
 - **User-choice billing** operates in 35+ countries with a fee reduction on alternative-billing transactions; you take on payment processing, PCI-DSS, refunds, and monthly reporting.
 - Settlement-driven fee restructures are pending court approval — treat every specific commission percentage as volatile and verify current terms in Play Console.
 
@@ -51,7 +53,7 @@ Release practices:
 
 ## Review timing
 
-No SLA. Established accounts commonly see 1–3 days; plan for at least 7. Sensitive categories (finance, health, kids, VPN, dating, AI chat) and December run longer. New personal accounts stack the production-access review on top. Timings commonly reported and volatile — current as of 2026-08.
+No SLA. Established accounts commonly see 1–3 days; plan for at least 7. Sensitive categories (finance, health, kids, VPN, dating, AI chat) and December run longer. New personal accounts stack the production-access review on top. Timings commonly reported and volatile — verify current SLAs in Play Console.
 
 ## Strikes and termination
 

@@ -5,7 +5,7 @@ The HTML version of the audit report is a SINGLE-FILE, OFFLINE, BRAND-PALETTE-CO
 ## Hard constraints
 
 1. **Single file.** No external CSS, no external JS, no CDN dependencies. The file must work when opened from disk with no internet connection. Embed all styles inline; embed Prism.js for syntax highlighting inline; embed any icons as SVG inline.
-2. **Brand palette only.** Red, white, black per the user's standing brand-palette rule. No cyan, no blue (including the link-blue default), no green (including the success-green default). Severity badges use red shades for Critical / High, gray for Medium / Low, no green checkmarks for "What's working" (use a black or red bullet instead).
+2. **Brand palette only.** Red, white, and black are the only hues the report uses. No cyan, no blue (including the link-blue default), no green (including the success-green default). Severity badges use red shades for Critical / High, gray for Medium / Low, no green checkmarks for "What's working" (use a black or red bullet instead).
 3. **Print-friendly.** A `@media print` block hides nav / TOC / interactive elements and produces a clean PDF when the user prints to PDF.
 4. **Accessible.** Semantic HTML throughout (`<main>`, `<nav>`, `<article>`, `<section>`, `<h1>`-`<h6>` hierarchy). ARIA labels on interactive elements. Color is not the only severity signal (text labels accompany every color-coded badge).
 5. **Confidential mode.** When `snitch-marketing.config.md` has `confidential: true`, the HTML adds a fixed footer banner ("CONFIDENTIAL — DO NOT DISTRIBUTE") and disables the print / share affordances.
@@ -152,5 +152,5 @@ Every time the markdown is written. The HTML is a derived view; it tracks the ma
 ## Cross-references
 
 - `references/report-template.md`, the markdown structure that the renderer parses.
-- `references/output-formats.md`, the broader output-format options (executive summary, JSON, CSV, Slack digest, PR comment) of which HTML is one.
+- `references/output-formats.md`, the broader output-format options (executive summary, JSON, CSV, PR comment) of which HTML is one.
 - `snitch-marketing.config.md`, the `confidential` flag and (future) HTML-styling overrides.

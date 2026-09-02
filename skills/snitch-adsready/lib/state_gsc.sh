@@ -63,7 +63,8 @@ run_state_gsc() {
     "https://searchconsole.googleapis.com/webmasters/v3/sites" 2>/dev/null)"
 
   if [[ -z "$property" ]]; then
-    jq -n --arg ts "$ts" --argjson sites "${sites:-{}}" \
+    [[ -z "$sites" ]] && sites='{}'
+    jq -n --arg ts "$ts" --argjson sites "$sites" \
       '{
         schema: "adssec.state-gsc",
         schema_version: 1,
@@ -96,9 +97,12 @@ run_state_gsc() {
     -H "Content-Type: application/json" \
     -X POST --data "$body" "$url" 2>/dev/null)"
 
+  [[ -z "$sites" ]] && sites='{}'
+  [[ -z "$resp" ]] && resp='{}'
+
   jq -n --arg ts "$ts" --arg property "$property" --arg start "$start" --arg end "$end" \
-    --argjson sites "${sites:-{}}" \
-    --argjson report "${resp:-{}}" \
+    --argjson sites "$sites" \
+    --argjson report "$resp" \
     '{
       schema: "adssec.state-gsc",
       schema_version: 1,

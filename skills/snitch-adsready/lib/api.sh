@@ -7,13 +7,29 @@
 ADSEC_USER_AGENT="${ADSEC_USER_AGENT:-ads-ready-skill/1}"
 ADSEC_LAST_STATUS=""
 ADSEC_LAST_BODY=""
-ADSEC_CALL_LOG="${STATE_DIR:-/tmp}/api-calls.log"
+ADSEC_CALL_LOG="${STATE_DIR:-${TMPDIR:-/tmp}}/api-calls.log"
 ADSEC_HTTP_TIMEOUT="${ADSEC_HTTP_TIMEOUT:-20}"
+# A status assigned inside $(…) does not reach the parent shell, so every
+# wrapper also writes it here and callers read it with http_last_status.
+ADSEC_LAST_STATUS_FILE="${TMPDIR:-/tmp}/adsec_api_status_$$"
+adsec_tmp_register "$ADSEC_LAST_STATUS_FILE"
+
+# _api_record_status <code>
+_api_record_status() {
+  ADSEC_LAST_STATUS="$1"
+  printf '%s' "$1" > "$ADSEC_LAST_STATUS_FILE" 2>/dev/null || true
+}
+
+# http_last_status — the status of the most recent http_* call, readable after
+# the call ran inside a command substitution.
+http_last_status() {
+  cat "$ADSEC_LAST_STATUS_FILE" 2>/dev/null || printf '000'
+}
 
 # --- low-level HTTP wrappers ---
 
 # http_get <url>
-# Generic GET. Body on stdout. ADSEC_LAST_STATUS / ADSEC_LAST_BODY set.
+# Generic GET. Body on stdout. Status readable via http_last_status.
 # Non-2xx returns rc=3.
 http_get() {
   local url="$1"
@@ -24,7 +40,7 @@ http_get() {
     -A "$ADSEC_USER_AGENT" \
     -o "$tmp" -w '%{http_code}' \
     "$url" 2>/dev/null || echo "000")
-  ADSEC_LAST_STATUS="$code"
+  _api_record_status "$code"
   ADSEC_LAST_BODY="$(cat "$tmp" 2>/dev/null || printf '')"
   rm -f "$tmp"
   printf '%s\t%s\t%s\t%s\n' \
@@ -61,7 +77,7 @@ http_post_json() {
       -o "$tmp" -w '%{http_code}' \
       "$url" 2>/dev/null || echo "000")
   fi
-  ADSEC_LAST_STATUS="$code"
+  _api_record_status "$code"
   ADSEC_LAST_BODY="$(cat "$tmp" 2>/dev/null || printf '')"
   rm -f "$tmp"
   printf '%s\t%s\t%s\t%s\n' \
@@ -76,7 +92,7 @@ http_post_json() {
 
 # fetch_url_html <url>
 # GET with redirect following (max 5). Echo body on stdout.
-# ADSEC_LAST_STATUS set; rc=3 on non-2xx; rc=4 on hard transport failure.
+# Status readable via http_last_status; rc=3 on non-2xx; rc=4 on hard transport failure.
 fetch_url_html() {
   local url="$1"
   local tmp; tmp="$(mktemp)"
@@ -87,7 +103,7 @@ fetch_url_html() {
     -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
     -o "$tmp" -w '%{http_code}' \
     "$url" 2>/dev/null || echo "000")
-  ADSEC_LAST_STATUS="$code"
+  _api_record_status "$code"
   ADSEC_LAST_BODY=""
   printf '%s\t%s\t%s\t%s\n' \
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "GET" "$url" "$code" \
@@ -115,7 +131,7 @@ fetch_url_headers() {
     -A "$ADSEC_USER_AGENT" \
     -o "$tmp" -w '%{http_code}' \
     "$url" 2>/dev/null || echo "000")
-  ADSEC_LAST_STATUS="$code"
+  _api_record_status "$code"
   printf '%s\t%s\t%s\t%s\n' \
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "HEAD" "$url" "$code" \
     >> "$ADSEC_CALL_LOG" 2>/dev/null || true
@@ -156,29 +172,31 @@ has_linkedin_ads_api() {
   [[ -n "${LINKEDIN_ADS_ACCESS_TOKEN:-}" ]]
 }
 has_tiktok_marketing_api() {
-  [[ -n "${TIKTOK_ADS_ACCESS_TOKEN:-}" ]]
+  [[ -n "${TIKTOK_ADS_ACCESS_TOKEN:-${TIKTOK_ACCESS_TOKEN:-}}" ]]
 }
 has_x_ads_api() {
-  [[ -n "${X_ADS_ACCESS_TOKEN:-}" \
+  [[ -n "${X_ADS_ACCESS_TOKEN:-${X_ADS_BEARER_TOKEN:-}}" \
      && -n "${X_ADS_ACCESS_TOKEN_SECRET:-}" \
      && -n "${X_ADS_CONSUMER_KEY:-}" \
      && -n "${X_ADS_CONSUMER_SECRET:-}" ]]
 }
 has_pinterest_ads_api() {
-  [[ -n "${PINTEREST_ADS_ACCESS_TOKEN:-}" ]]
+  [[ -n "${PINTEREST_ADS_ACCESS_TOKEN:-${PINTEREST_ACCESS_TOKEN:-}}" ]]
 }
 has_reddit_ads_api() {
   [[ -n "${REDDIT_ADS_ACCESS_TOKEN:-${REDDIT_ACCESS_TOKEN:-}}" ]]
 }
 has_snapchat_marketing_api() {
-  [[ -n "${SNAPCHAT_ADS_ACCESS_TOKEN:-}" ]]
+  [[ -n "${SNAPCHAT_ADS_ACCESS_TOKEN:-${SNAPCHAT_ACCESS_TOKEN:-}}" ]]
 }
 has_apple_search_ads_api() {
-  # Apple uses JWT with private-key file.
-  [[ -n "${APPLE_SEARCH_ADS_CLIENT_ID:-}" \
-     && -n "${APPLE_SEARCH_ADS_TEAM_ID:-}" \
+  # Apple uses JWT with a private-key file. The four names below are exactly
+  # what lib/platforms/apple.sh reads — TEAM_ID doubles as the client_id, and
+  # ORG_ID scopes the token, so both are required.
+  [[ -n "${APPLE_SEARCH_ADS_PRIVATE_KEY:-}" \
      && -n "${APPLE_SEARCH_ADS_KEY_ID:-}" \
-     && -n "${APPLE_SEARCH_ADS_PRIVATE_KEY:-}" ]]
+     && -n "${APPLE_SEARCH_ADS_TEAM_ID:-}" \
+     && -n "${APPLE_SEARCH_ADS_ORG_ID:-}" ]]
 }
 
 # Map a capability name to its has_* function.
@@ -257,12 +275,6 @@ doctor_run() {
       log_warn "doctor" "platform-${p}" "${p} Marketing API auth not set — state platform ${p} will return {locked:'${p}-api'}."
     fi
   done
-
-  if [[ -n "${ADSEC_MCP_PRESENT:-}" ]]; then
-    log_ok "doctor" "mcp" "ADSEC_MCP_PRESENT=1 — agent will prefer the loaded MCP for typed reads."
-  else
-    log_info "no ad-platform MCP currently exists; the skill works fully via curl."
-  fi
 
   return $rc
 }

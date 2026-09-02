@@ -6,7 +6,7 @@ When a customer searches the brand name on Google, what they see is the brand's 
 
 Skip with reason `not applicable` if the brand is brand-new (domain age <90 days), a brand SERP barely exists yet, so there's nothing to defend. Otherwise: required.
 
-### The framework: 5 layers
+### The framework: 6 layers
 
 Brand SERP defense decomposes into five layers. Audit each.
 
@@ -33,11 +33,11 @@ Brand SERP defense decomposes into five layers. Audit each.
 6. Check Google Ads Transparency Center for competitors bidding on the brand name (Cat 66 cross-reference).
 7. Check Wikipedia for the brand entry (if it exists). Quote any factual errors or outdated content.
 8. Layer 4 off-site sweep: check presence + recency across the off-site platforms searchers and AI assistants weight, per `references/brand-authority-platforms.md` (Wikipedia, Reddit, YouTube, LinkedIn, G2, Trustpilot, etc.). Quote presence and last-activity per platform, and cross-check each against the `sameAs` array (a profile in `sameAs` that's abandoned or 404s is the finding).
-9. Layer 6 SERP-feature ownership: for the brand name AND the brand's top 3-5 informational/commercial queries, capture which SERP features render and WHO owns each — **featured snippet** (which URL is quoted), **People Also Ask** (whose pages answer the questions), **image pack**, **video carousel**, **knowledge panel**, **top-stories**. (Google RETIRED the Sitelinks Searchbox in Nov 2024 — it no longer renders, so don't look for it and don't flag its absence; the `WebSite` `SearchAction` markup behind it is inert, per Cat 37.) The finding is a feature the brand could own but a third party or competitor occupies (e.g., a featured snippet for "what is {brand}" pulled from a review site, not the brand's own page). Quote the feature + the owning URL + rank. Same tooling caveat as the live-SERP steps — needs a browser/WebSearch tool or a user-supplied screenshot; otherwise Skip-with-reason. Cross-reference Cat 82 (extractability) for WHY the brand's page isn't the one being pulled into the snippet.
+9. Layer 6 SERP-feature ownership: for the brand name AND the brand's top 3-5 informational/commercial queries, capture which SERP features render and WHO owns each — **featured snippet** (which URL is quoted), **People Also Ask** (whose pages answer the questions), **image pack**, **video carousel**, **knowledge panel**, **top-stories**. (Google RETIRED the Sitelinks Searchbox in Nov 2024 — it no longer renders, so don't look for it and don't flag its absence; the `WebSite` `SearchAction` markup behind it is inert, per Cat 32's WebSite row.) The finding is a feature the brand could own but a third party or competitor occupies (e.g., a featured snippet for "what is {brand}" pulled from a review site, not the brand's own page). Quote the feature + the owning URL + rank. Same tooling caveat as the live-SERP steps — needs a browser/WebSearch tool or a user-supplied screenshot; otherwise Skip-with-reason. Cross-reference Cat 82 (extractability) for WHY the brand's page isn't the one being pulled into the snippet.
 
 **Source mode, required tool calls:**
 
-1. `Grep` Organization schema (Cat 37) for `sameAs` array. Quote.
+1. `Grep` Organization schema (Cat 32's Organization row) for `sameAs` array. Quote.
 2. Confirm `sameAs` URLs all resolve to live, brand-owned profiles.
 3. Check that the brand's homepage has a complete, current `Organization` schema feeding the knowledge panel.
 
@@ -46,6 +46,10 @@ Brand SERP defense decomposes into five layers. Audit each.
 - "Competitors are probably bidding on your brand." Either Ads Transparency confirms it OR you ran a brand search and saw the ad. Quote.
 - "The knowledge panel is probably outdated." Quote the panel content + the on-site source of truth.
 - "Wikipedia may have errors." Quote the Wikipedia text + the corrected fact.
+
+### Detection
+
+Branded-query SERP capture (browser / WebSearch tool, or a user-supplied paste), cross-read against the on-site `Organization` / `sameAs` entity surfaces.
 
 ### What to Search For
 
@@ -61,7 +65,7 @@ Brand SERP defense decomposes into five layers. Audit each.
 ### Actually Hurts the Marketing Surface
 
 - **No knowledge panel for an established brand (>1 year old)**.
-  Evidence required: brand SERP screenshot + missing panel. Often signals incomplete Organization schema (Cat 37) or low entity authority.
+  Evidence required: brand SERP screenshot + missing panel. Often signals incomplete Organization schema (Cat 32's Organization row) or low entity authority.
 - **Knowledge panel with outdated logo / description / founded date / leadership**.
   Evidence required: panel quote + on-site current value.
 - **No sitelinks under the brand's top result**.
@@ -93,7 +97,7 @@ Brand SERP defense decomposes into five layers. Audit each.
 
 1. What does someone landing on the brand SERP for the first time see? That's the impression that drives the first conversion or first abandonment.
 2. Is the knowledge panel claimed (Google My Business / Knowledge Graph claim)? Unclaimed panels can be edited by Google's automated systems with no brand input.
-3. Is the brand's Organization schema (Cat 37) feeding the knowledge panel correctly?
+3. Is the brand's Organization schema (Cat 32's Organization row) feeding the knowledge panel correctly?
 4. Does the brand have a defensive PPC bid on its own brand name (Cat 66)? The argument for: prevents competitor ads from displacing organic.
 5. Are negative reviews dominant for `<brand> reviews`? If so, audit Cat 74 (customer feedback / social proof) and consider building an on-site review surface.
 
@@ -117,9 +121,9 @@ Branded-keyword PPC defense (Cat 66 cross-ref).
 - Wikipedia absent (notability met) → Medium.
 - `sameAs` incomplete / stale → Medium.
 
-**Fix voice:** `tobias-van-schneider` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `brand-surface-designer` (primary) | `honest-design-critic` (backup).
 
-Read `souls/tobias-van-schneider.json` before writing the Fix.
+Read `souls/brand-surface-designer.json` before writing the Fix.
 
 Worked fix example:
 

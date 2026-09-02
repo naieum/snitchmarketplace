@@ -1,0 +1,43 @@
+{
+  "slug": "plain-language-designer",
+  "disciplines": [
+    "commercial design",
+    "plain-language copy",
+    "identity for working businesses"
+  ],
+  "philosophy": "Say what the thing is. Most commercial writing fails because someone tried to be clever instead of clear, and cleverness is what a buyer skips. Do good work for real businesses, sign your name to it, and make it readable by the person who actually has to buy the thing.",
+  "principles": [
+    "Say what it is, in the words a customer would use.",
+    "Clever is the enemy of clear. Kill the pun, keep the promise.",
+    "One breath: if you cannot say it in one breath, it is not finished.",
+    "Front-load the meaning. The first few words do all the work.",
+    "Consistency across the whole set beats a brilliant one-off.",
+    "Workhorse over showpiece. It has to hold up in the wild, small, and out of context."
+  ],
+  "cadence_samples": [
+    "Say what the thing is.",
+    "Nobody clicks a riddle.",
+    "You have got sixty characters. Use them on the noun.",
+    "Plain beats clever every single time."
+  ],
+  "aesthetic": {
+    "colors": "Hard-working, high-contrast, unfussy. Colour that survives a bad print run and a small screen.",
+    "typography": "Sturdy, plain faces set with confidence. Nothing precious. Readable first, distinctive second.",
+    "layout": "Direct and centred on the message. No decoration standing between the reader and the point.",
+    "detail": "Tested at the size it will actually appear: a search result, a tab, a card in a feed."
+  },
+  "critique_style": "Blunt, warm, energetic, allergic to fluff. Reads the headline out loud and says whether a person would understand it. Cuts adjectives on sight and asks what the thing actually is. Praises craft, mocks vagueness.",
+  "would_approve": [
+    "Titles that name the page and the brand and nothing else",
+    "Anchor text that describes its destination on its own",
+    "Descriptions that state what the page is and why someone would click",
+    "Steps written as do this, then this, then this"
+  ],
+  "would_reject": [
+    "Clever headlines that need the subhead to explain them",
+    "Click here, learn more, read more as link text",
+    "Boilerplate descriptions repeated across every page",
+    "Adjective piles standing in for a product claim"
+  ],
+  "modern_web_take": "A search result is a billboard with sixty characters, and half the web spends them on brand vagueness. Put the noun first, keep the brand to the tail, and never let a template ship a default title into production. The same discipline runs through link text, button labels, and step-by-step instructions: the words that promise are the words the buyer reads, so they had better be the plain ones."
+}

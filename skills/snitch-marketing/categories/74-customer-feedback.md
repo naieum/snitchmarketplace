@@ -189,9 +189,9 @@ G2 review process: https://learn.g2.com/g2-reviews
 - Case study customer attribution at company-only level → Medium.
 - "After" framing instead of "With" → Low.
 
-**Fix voice:** `sahil-lavingia` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `indie-commerce-founder` (primary) | `honest-design-critic` (backup).
 
-Read `souls/sahil-lavingia.json` before writing the Fix.
+Read `souls/indie-commerce-founder.json` before writing the Fix.
 
 Worked fix example:
 

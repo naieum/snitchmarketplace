@@ -10,10 +10,6 @@ It runs regardless of `grader.enabled` and regardless of whether the audit is in
 customer-facing — a report is a file that gets pasted into Slack, mailed to a client, and committed
 to a repo, so an unredacted value in a draft is already a leak.
 
-Rule 5 (`anti-hallucination.md`) is stated in six places across this skill and, before this gate,
-was enforced in none of them. A stated rule with no scan is a rule that holds only when the agent
-happens to remember it.
-
 Scan the **entire drafted output** — every finding, the executive snapshot, copy drafts, code
 blocks, quoted HTML, `audit_metadata`, and any JSON / CSV / HTML export — for:
 
@@ -40,8 +36,12 @@ record a report as saved with the gate unrun.
 
 ## What the lint scans for
 
+This file is the single owner of the report-hygiene rules below. Every other reference cites them
+by name (em-dash threshold, sycophantic-adjective list, no-practitioner-names) and does not restate
+the thresholds or the lists.
+
 - **Em dashes** (` — ` or `—`) and word-bounded double-hyphens (`word -- word`) used as substitutes. Em dashes are fine in moderation, not as filler — count them across the report's narrative prose and aim for under one per 200 words. If the density exceeds that threshold, rewrite the worst offenders with commas, semicolons, colons, or parens. Don't substitute em dashes with `--`. (See `categories/59-ai-content-tells.md` for the underlying density heuristic.)
-- **Designer / practitioner names**: scan for any soul slug from `souls/*.json` (e.g., "Dieter Rams", "Frank Chimero", "Rob Fitzpatrick", "April Dunford") plus the formatted variants ("Rams", "Dunford" alone). Names that appear in the report body must be rewritten so the framework or principle is described without naming the practitioner. Names appearing in the `audit_metadata.voice_reads_completed` array are internal and stay; the lint excludes that block.
+- **Practitioner and source names**: scan for the name of any designer, author, consultant, or founder, and for any book, course, or vendor tool cited as the source of a framework. Soul slugs are discipline names (`less-but-better-designer`, `positioning-strategist`), so a slug is never a name — but the report must not carry one either. Rewrite every hit so the framework or principle is described by what it does ("a restraint-first design discipline", "a segment-scoring positioning frame"), never by who wrote it.
 - **Sycophantic adjectives**: forbidden list = "best", "best-in-class", "excellent", "great", "amazing", "world-class", "textbook", "textbook-correct", "comprehensive", "strong foundation", "well-architected", "thoughtful", "reference example", "outstanding", "remarkable", "robust" (when used as praise, not as technical descriptor), "elegant" (similar). Replace with factual descriptions of what is configured.
 - **Sycophantic framing patterns**: scan for opening phrases like "Atlas has a strong foundation but...", "The brand has done a great job of...", "The team has thoughtfully...", "Bonus observation:", "Worth highlighting:". Rewrite to lead with severity counts and findings without preamble praise.
 - **"Bonus" / "Highlight" sections** that re-praise something already in the "What's working" list. Remove or fold into "What's working" at the same depth.
@@ -65,7 +65,7 @@ lint:
   values_redacted: 0
   em_dash_density_per_200_words: 0.0
   em_dash_overuse_rewrites: 0
-  designer_names_corrected: 0
+  practitioner_names_corrected: 0
   sycophantic_adjectives_corrected: 0
   sycophantic_framing_corrected: 0
   bonus_sections_collapsed: 0

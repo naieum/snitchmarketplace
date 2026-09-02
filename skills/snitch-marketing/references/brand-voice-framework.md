@@ -84,6 +84,6 @@ brand's intent; name the gap.
 
 ---
 
-*Framework adapted from concepts in the Apache-2.0 `anthropics/knowledge-work-plugins`
-(marketing/brand-review and the partner-built brand-voice skills), reimplemented under Snitch's
-evidence-first constraints. Internal reference only; not surfaced in reports.*
+*Framework adapted from concepts common to several permissively licensed open-source
+brand-review and brand-voice rule sets, reimplemented under Snitch's evidence-first constraints.
+Internal reference only; not surfaced in reports.*

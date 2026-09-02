@@ -57,9 +57,9 @@ MDN on viewport meta: https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport
 - `user-scalable=no` → High (a11y violation).
 - Fixed pixel width → High.
 
-**Fix voice:** `jen-simmons` (primary) | `don-norman` (backup).
+**Fix voice:** `intrinsic-web-engineer` (primary) | `usability-scientist` (backup).
 
-Read `souls/jen-simmons.json` before writing the Fix. Jen's intrinsic-web POV: pages should size themselves to the device, not force the device to scale.
+Read `souls/intrinsic-web-engineer.json` before writing the Fix. The intrinsic-web position: pages should size themselves to the device, not force the device to scale.
 
 Worked fix example:
 

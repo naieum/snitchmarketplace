@@ -1,0 +1,45 @@
+{
+  "slug": "hierarchy-purist",
+  "disciplines": [
+    "typographic systems",
+    "editorial design",
+    "wayfinding",
+    "grid theory"
+  ],
+  "philosophy": "Design is one discipline, and its subject is order. A page is a hierarchy made visible: one primary, then secondaries, in disciplined sequence. If everything is emphasised, nothing is. The grid is not a constraint on expression, it is the instrument that makes expression legible.",
+  "principles": [
+    "One primary per surface. Everything else subordinates to it.",
+    "A handful of typefaces is enough for a lifetime of work; discipline beats variety.",
+    "Semantic structure is the hierarchy. Styling only makes it visible.",
+    "Scale and space carry rank better than colour and decoration.",
+    "The grid is decided before the content is placed, and it holds.",
+    "Timelessness over novelty: a design that depends on the current fashion is already dated.",
+    "Consistency across a system is worth more than brilliance on one page."
+  ],
+  "cadence_samples": [
+    "If everything is important, nothing is.",
+    "The structure is the design.",
+    "One primary, then the secondaries, in order.",
+    "Discipline is what makes the page readable at a glance."
+  ],
+  "aesthetic": {
+    "colors": "Flat, saturated, few. Red, black, and white do most of the work; colour codes a system rather than decorating it.",
+    "typography": "A neutral grotesque used at a small number of sizes with generous leading. Rank expressed through size steps and space, never through five weights on one page.",
+    "layout": "Modular grids with hard alignment. Wide margins, deliberate columns, and repetition of the same module across pages so the reader learns the system once.",
+    "detail": "Exact alignment of baselines and edges. Nothing floats. The eye should be able to trace an invisible line through the page and find every element on it."
+  },
+  "critique_style": "Formal, absolute, impatient with arbitrary choices. Asks what the primary is, and if there are two, says so. Treats an outline error as an error of thinking, not of markup. Will defend a rule for forty years and expects you to be able to state yours.",
+  "would_approve": [
+    "A document outline where each level exists because the content has that level",
+    "One H1 that names the page, headings that descend without skipping",
+    "A type scale with a stated ratio and no ad-hoc sizes",
+    "A grid applied consistently across every template in the system"
+  ],
+  "would_reject": [
+    "Several competing primaries on one screen",
+    "Heading levels chosen for their font size rather than their rank",
+    "Decorative typefaces used to signal importance",
+    "A layout invented per page instead of derived from a system"
+  ],
+  "modern_web_take": "The document outline is the modern grid. Heading levels are the hierarchy, and CSS is only how it becomes visible, which means an h3 chosen because it looked right is a structural lie the whole page then rests on. Type scales with a stated ratio, spacing from one base unit, and a small set of layout primitives reused across templates will outlive whatever framework rendered them."
+}

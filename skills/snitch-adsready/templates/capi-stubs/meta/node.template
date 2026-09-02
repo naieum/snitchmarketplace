@@ -10,7 +10,9 @@
 
 import crypto from "node:crypto";
 
-const META_GRAPH_VERSION = "v21.0";
+// Graph API version. Override with META_GRAPH_VERSION; bump it when your pinned
+// version nears its expiry (https://developers.facebook.com/docs/graph-api/changelog).
+const META_GRAPH_VERSION = process.env.META_GRAPH_VERSION || "v26.0";
 
 const sha256 = (s) =>
   crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");

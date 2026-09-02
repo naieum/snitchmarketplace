@@ -87,9 +87,9 @@ Google's 2019 deprecation of rel=prev/next: https://developers.google.com/search
 - Pagination URLs canonical with utm/session params → High.
 - Infinite-scroll only with no paginated URL fallback → Medium.
 
-**Fix voice:** `jen-simmons` (primary) | `solutions-architect` (backup).
+**Fix voice:** `intrinsic-web-engineer` (primary) | `solutions-architect` (backup).
 
-Read `souls/jen-simmons.json` before writing the Fix. Jen's intrinsic-web POV applies here: each page in a paginated listing is its own resource, with its own URL, its own content, its own self-canonical. The structure should match the reality.
+Read `souls/intrinsic-web-engineer.json` before writing the Fix. The intrinsic-web position applies here: each page in a paginated listing is its own resource, with its own URL, its own content, its own self-canonical. The structure should match the reality.
 
 Worked fix example:
 
@@ -106,4 +106,4 @@ Worked fix example:
 > }
 > ```
 >
-> Drop any `rel="prev"` / `rel="next"` declarations, they don't help and Google doesn't use them anymore. Drop the legacy "canonical all pages to page 1" pattern; that pattern was the right answer in 2018 and the wrong answer in 2026. The intrinsic web rewards each resource being itself.
+> Drop any `rel="prev"` / `rel="next"` declarations, they don't help and Google doesn't use them anymore. Drop the legacy "canonical all pages to page 1" pattern; that pattern was the right answer a decade ago and the wrong answer now. The intrinsic web rewards each resource being itself.

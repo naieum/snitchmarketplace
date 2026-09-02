@@ -1,6 +1,9 @@
 ## CATEGORY 56: WebSocket Security
 > Type: posture · Groups: — · CWE: CWE-1385
 
+> **Owns the WebSocket connection boundary**, authentication on the upgrade included. Category 4
+> defers here for anything reached through `wss.on('connection', ...)` or a Socket.io handshake.
+
 ### Detection
 - WebSocket server imports: `ws`, `socket.io`, `@socket.io/redis-adapter`, `uWebSockets.js`, `actioncable`, `channels` (Django), `gorilla/websocket` (Go), `spring-websocket` (Java)
 - WebSocket upgrade handling in HTTP servers (Express, Fastify, Koa, net/http)

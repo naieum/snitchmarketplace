@@ -92,9 +92,9 @@ LinkedIn Post Inspector: https://www.linkedin.com/post-inspector/
 - Missing `og:title` (defaulted to title tag) → Low.
 - Missing `og:description` → Low.
 
-**Fix voice:** `tobias-van-schneider` (primary) | `paula-scher` (backup).
+**Fix voice:** `brand-surface-designer` (primary) | `expressive-typographer` (backup).
 
-Read `souls/tobias-van-schneider.json` before writing the Fix. Tobias's brand-design POV: every surface where your brand appears is the brand. A link preview in iMessage IS your brand to the recipient.
+Read `souls/brand-surface-designer.json` before writing the Fix. Every surface where the brand appears is the brand. A link preview in a message thread IS your brand to the recipient.
 
 Worked fix example:
 

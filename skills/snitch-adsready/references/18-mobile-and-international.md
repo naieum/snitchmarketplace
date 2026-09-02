@@ -1,6 +1,7 @@
 # 18 — Mobile + international
 
-Read when auditing mobile-first behavior or expanding to new locales.
+Read when auditing mobile-first landing-page behavior, or when a campaign runs in a region
+with its own ad rules.
 
 ## Mobile-first reality
 
@@ -34,44 +35,12 @@ Test in DevTools mobile mode + a real low-end Android (Moto G or similar).
 
 `apply_mobile` emits these as a starter set in the host file head.
 
-## hreflang
+## Multi-region landing pages
 
-Tells search engines + AI crawlers which version serves which language/region:
-
-```html
-<link rel="alternate" hreflang="en-us" href="https://example.com/" />
-<link rel="alternate" hreflang="en-gb" href="https://example.com/uk/" />
-<link rel="alternate" hreflang="de-de" href="https://example.com/de/" />
-<link rel="alternate" hreflang="x-default" href="https://example.com/" />
-```
-
-Validation: hreflang.xml validator, Search Console → International Targeting.
-
-Common mistake: hreflang reciprocity — every locale must list every other locale. If German doesn't list English, both lose ranking.
-
-## Localized landing pages
-
-Don't translate the same page into 8 languages and call it done. Localize:
-
-- Currency in price displays.
-- Phone number format + country-specific phone-extension widget.
-- Date format (mm/dd/yyyy US; dd/mm/yyyy elsewhere).
-- Image references (don't ship a UK-only photo to a US landing page).
-- Examples / case studies (US healthcare ≠ UK NHS).
-
-## Per-region consent rules
-
-| Region | Consent default behavior |
-|---|---|
-| EU + UK + EEA | denied (must opt in) — Consent Mode v2 enforced |
-| Switzerland (FADP) | denied (recently aligned with GDPR) |
-| Brazil (LGPD) | similar to GDPR |
-| California (CCPA / CPRA) | granted by default; honor opt-out + GPC signal |
-| Other US states (CO, CT, VA, etc.) | similar to California |
-| Canada (PIPEDA / Quebec L25) | denied for Quebec; granted elsewhere |
-| Australia, NZ, Asia (most) | granted, with opt-out support |
-
-Most CMPs auto-detect region by IP and apply the right default. Verify your CMP does this.
+Locale variants, `hreflang` reciprocity, and localized page content are judged against search
+and traffic, not against an ad platform: **call the Skill tool with "snitch-marketing"**. What
+stays here is the per-platform and per-region ad behavior below, and the consent defaults —
+those moved to `04-consent-and-cmp.md`, which owns the region table.
 
 ## Per-platform regional caveats
 
@@ -83,13 +52,11 @@ Most CMPs auto-detect region by IP and apply the right default. Verify your CMP 
 
 ## Verification
 
-- Lighthouse Mobile-Friendly Test
-- Search Console → International Targeting
-- Bing Webmaster → Geo-Targeting
+- Lighthouse or PageSpeed Insights, mobile strategy (Google retired the standalone Mobile-Friendly Test in December 2023)
 - Manual: load page on a low-end Android, confirm interactive in <3s
 
 ## See also
 
 - `06-core-web-vitals.md` — CWV is mobile-first measured.
 - `04-consent-and-cmp.md` — region-aware consent.
-- `19-ios-skadnetwork-and-att.md` — iOS-specific.
+- `references/platforms/apple.md` — the iOS attribution section (ATT, SKAdNetwork, AdAttributionKit).

@@ -21,8 +21,8 @@ Usage:
     python3 commoncrawl_backlinks.py example.com --competitor rival.com
     python3 commoncrawl_backlinks.py example.com --limit 800 --timeout 25
 
-Inspired by the Common Crawl backlink approach in the MIT-licensed AgriciDaniel/claude-seo
-project. Re-implemented from the public Common Crawl APIs; no code copied.
+The backlink-from-Common-Crawl approach appears in several open-source SEO rule sets. This is a
+fresh implementation against the public Common Crawl APIs; no code was copied from any of them.
 """
 
 import argparse

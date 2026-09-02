@@ -8,7 +8,7 @@ Fill in the [Evidence] placeholders with findings and passed checks from your Sn
 
 ## CC6.1 -- Logical Access Controls
 
-**Mapped Snitch Categories:** 4 (Authentication Flaws), 14 (Session Management), 28 (Authorization Flaws), 39 (Identity Management)
+**Mapped Snitch Categories:** 4 (Authentication Issues), 28 (Authorization & Access Control (IDOR)), 39 (Token & Session Lifetime Analysis), 63 (JWT Algorithm & Key Attacks)
 
 ### Control Description
 
@@ -16,19 +16,19 @@ The entity implements logical access security software, infrastructure, and arch
 
 ### Snitch Evidence
 
-**Category 4 -- Authentication Flaws**
+**Category 4 -- Authentication Issues**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 14 -- Session Management**
+**Category 28 -- Authorization & Access Control (IDOR)**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 28 -- Authorization Flaws**
+**Category 39 -- Token & Session Lifetime Analysis**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 39 -- Identity Management**
+**Category 63 -- JWT Algorithm & Key Attacks**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
@@ -46,7 +46,7 @@ The entity implements logical access security software, infrastructure, and arch
 
 ## CC6.6 -- System Boundaries
 
-**Mapped Snitch Categories:** 5 (Injection Attacks), 8 (Input Validation), 32 (API Security)
+**Mapped Snitch Categories:** 8 (CORS Configuration), 32 (Security Headers), 44 (API Security)
 
 ### Control Description
 
@@ -54,15 +54,15 @@ The entity implements logical access security measures to protect against threat
 
 ### Snitch Evidence
 
-**Category 5 -- Injection Attacks**
+**Category 8 -- CORS Configuration**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 8 -- Input Validation**
+**Category 32 -- Security Headers**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 32 -- API Security**
+**Category 44 -- API Security**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
@@ -80,7 +80,7 @@ The entity implements logical access security measures to protect against threat
 
 ## CC7.1 -- Vulnerability Management
 
-**Mapped Snitch Categories:** 1 (Hardcoded Secrets), 2 (Dangerous Code Patterns), 3 (Cryptographic Issues), 10 (Dependency Vulnerabilities), 27 (Security Misconfigurations)
+**Mapped Snitch Categories:** 3 (Hardcoded Secrets), 9 (Cryptography), 10 (Dangerous Code Patterns), 27 (Dependency Vulnerabilities / Supply Chain)
 
 ### Control Description
 
@@ -88,23 +88,19 @@ To meet its objectives, the entity uses detection and monitoring procedures to i
 
 ### Snitch Evidence
 
-**Category 1 -- Hardcoded Secrets**
+**Category 3 -- Hardcoded Secrets**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 2 -- Dangerous Code Patterns**
+**Category 9 -- Cryptography**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 3 -- Cryptographic Issues**
+**Category 10 -- Dangerous Code Patterns**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 10 -- Dependency Vulnerabilities**
-- Findings: [Evidence]
-- Passed Checks: [Evidence]
-
-**Category 27 -- Security Misconfigurations**
+**Category 27 -- Dependency Vulnerabilities / Supply Chain**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 

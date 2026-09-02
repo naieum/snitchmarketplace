@@ -44,15 +44,15 @@ Valid values: `both` (default), `clarity` (clarity pass only — use when the br
 understandable," or when persuasion moves are out of scope for the team), `persuasion` (assumes the
 clarity pass already happened; rarely the right choice on a first review).
 
-**This key never disables the ethics gate.** Step 3.5 and `references/review-checklist.md` §10 run
-at every value of `lenses`, including `clarity`. The gate is not a persuasion technique — it is the
+**This key never disables the ethics gate.** `references/ethics-gate.md` (Workflow Step 1,
+move 4) runs at every value of `lenses`, including `clarity`. The gate is not a persuasion technique — it is the
 check that decides whether persuasion techniques may be used at all, so restricting the lenses
 narrows what gets *optimised*, never what gets *checked*.
 
 ## writing-system
 
 How the prose-mechanics lens (`references/writing-system.md` + `scripts/copy-lint.py`) runs during
-the copy pass (Workflow Step 1, move 5).
+the copy pass (Workflow Step 1, move 6).
 
 ```
 writing-system: auto
@@ -65,12 +65,12 @@ entirely).
 
 `off` narrows the *review*, not the skill's own writing: any replacement copy the skill proposes,
 and the report's own prose, still meet the writing-system bar. And like `lenses`, this key never
-touches the Step 3.5 ethics gate — a lint-clean dark pattern is a finding at every value.
+touches the ethics gate — a lint-clean dark pattern is a finding at every value.
 
 ## platform
 
 Which platform conventions apply. Governs whether the mobile hard rules (tab count, thumb zone,
-44×44px tap targets — `references/mobile-navigation.md`) are enforced or skipped, and which
+44×44px tap targets — `references/navigation.md`) are enforced or skipped, and which
 familiar-pattern set counts as "the convention."
 
 ```

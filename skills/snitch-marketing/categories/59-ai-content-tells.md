@@ -78,9 +78,9 @@ Google on AI-generated content: https://developers.google.com/search/blog/2023/0
 - Made-up statistics → Critical (factual misrepresentation).
 - Em dash overload as the dominant punctuation → Medium.
 
-**Fix voice:** `mike-monteiro` (primary) | `frank-chimero` (backup).
+**Fix voice:** `honest-design-critic` (primary) | `content-shape-editor` (backup).
 
-Read `souls/mike-monteiro.json` before writing the Fix. Mike's voice on cutting bullshit out of writing.
+Read `souls/honest-design-critic.json` before writing the Fix. The voice for cutting the bullshit out of writing.
 
 Worked fix example:
 

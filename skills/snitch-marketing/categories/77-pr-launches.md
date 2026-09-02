@@ -1,21 +1,19 @@
 ## CATEGORY 77: PR, launches, press surface
 
-In 2026 traditional press pitching is the LAST step, not the first. The launch sequence that works now:
+Traditional press pitching is the LAST step, not the first: journalists cover what already has
+signal, so the founder announcement, the community submissions (Hacker News, Product Hunt), the
+newsletter/podcast slots and the timed creator content all come before the pitch. This category
+audits what that leaves on the site — is the launch infrastructure in place, is the press kit
+complete for inbound, is coverage surfaced, is the founder publishing. Designing the launch
+sequence itself is generation work: call the Skill tool with "snitch-cmo".
 
-1. **Founder posts the announcement** on personal LinkedIn / X / Substack (cross-reference Cat 84). Personal account = personal trust = better engagement than the brand account.
-2. **Hacker News submission** at 8am ET on a Tuesday/Wednesday for tech / dev / infra products. The community decides if it's interesting; press follows traction, not pitches.
-3. **Product Hunt launch** at 12:01am PT. Hunter is the founder. Top-5 placement compounds for 30+ days.
-4. **Niche newsletter / podcast announcements** through pre-arranged sponsorships or relationships (cross-reference Cat 85).
-5. **Creator partnerships** time their content to coincide (cross-reference Cat 83).
-6. **Traditional press pitch** comes AFTER the above generate signal. Journalists cover what's already trending; cold pitches fail because they're cold.
-
-The press kit / `/press` page exists as a follow-on for journalists who DO show up after the launch generates signal. It's a landing page for inbound press interest, not the activator.
+The press kit / `/press` page exists as a follow-on for journalists who DO show up after the launch generates signal. It is a landing page for inbound press interest, not the activator.
 
 Audit covers: launch infrastructure (HN/PH ready, founder-led announcement), press kit completeness for inbound, surfaced press coverage, founder publishing cadence.
 
 ### Pre-flight: PR maturity check
 
-Confirm STEP 0.6 classified PR presence as `minimal` or `established`. If `none` (no third-party press, no Product Hunt launch, no founder-published essays), **Skip** with reason `no detectable press coverage yet; recommendation pending in STEP 5`.
+Confirm STEP 0.6 classified PR presence as `minimal` or `established`. If `none` (no third-party press, no Product Hunt launch, no founder-published essays), **Skip** with reason `no detectable press coverage yet; recommendation pending in STEP 4`.
 
 ### Evidence required (do not skip, only when maturity is `minimal`+)
 
@@ -42,22 +40,12 @@ Press surfaces:
 - `/press`, `/media`, `/news` routes on the brand site
 - `media-kit.zip`, brand assets download links
 
-### The attention jetstream (newsjacking) and angle-first pitching
+### The angle (the definition the pitch finding is scored against)
 
-Two earned-media patterns worth recommending when the audit finds PR effort producing nothing:
-
-- **Ride attention; don't manufacture it.** Nobody is paying attention to the brand, but
-  they're always paying attention to *something* — and attention is a jetstream: temporary,
-  shifting, rideable. The operational form is a standing weekly meeting: "what is culture (or
-  our niche) paying attention to or angsty about right now, and where does our product touch
-  it?" The winning post is a wink the informed audience decodes, not a press release (Nike on
-  Scheffler's PGA win a year after his wrongful arrest: "The verdict is in." — one organic
-  post, national coverage). Expect a ~1-in-10 hit rate; pushback is attention.
-- **Pitch an angle, not the product.** Podcasts and journalists book *angles* — a
-  provocative, true claim adjacent to the product ("audio is almost the only technology that
-  got worse in 80 years") — never product pitches. For a small brand, a publicist retainer
-  pitching one sharp angle can out-earn the same dollars in paid social, especially paired
-  with a break-even mini-book or guide that converts listeners into educated buyers.
+Journalists and podcast bookers accept **angles**, not products: a provocative, true claim adjacent
+to the product that a non-customer would care about. A pitch that leads with what the product does,
+rather than with a claim, is the finding below. Writing the angle — and the newsjacking cadence
+that keeps a supply of them — is generation work: call the Skill tool with "snitch-cmo".
 
 ### Actually Hurts the Marketing Surface
 
@@ -90,7 +78,7 @@ Two earned-media patterns worth recommending when the audit finds PR effort prod
 
 ### Reference
 
-Justin Jackson on indie product launches: https://justinjackson.ca/launches
+The launch sequence above is distilled from a large body of indie-product launch write-ups by founders who published what actually worked. Treat it as a pattern, not a rule.
 
 **Severity tagging:**
 - No press kit on a >6mo product → Medium.
@@ -99,19 +87,14 @@ Justin Jackson on indie product launches: https://justinjackson.ca/launches
 - Press coverage exists but not surfaced on site → High.
 - PR materials pitch the product instead of an angle → Medium.
 
-**Fix voice:** `sahil-lavingia` (primary) | `tobias-van-schneider` (backup).
+**Fix voice:** `indie-commerce-founder` (primary) | `brand-surface-designer` (backup).
 
-Read `souls/sahil-lavingia.json` before writing the Fix.
+Read `souls/indie-commerce-founder.json` before writing the Fix.
 
 Worked fix example:
 
-> Pick one launch moment. A new product, a major version, a category-defining post. Write the announcement post yourself first, control the narrative.
+> Build the `/press` page the pitch points at: logo files (svg + png in dark/light), brand color hex, founder bios, a contact email, and links to coverage as it accumulates. Without it, a journalist who does show up leaves.
 >
-> Then submit:
-> - Hacker News at 8am ET on a Tuesday/Wednesday. Title is the punch line; body is one paragraph. Show up in comments.
-> - Product Hunt at 12:01am PT same day. Hunter is the founder.
-> - Pitch to 5-10 niche journalists with a one-paragraph email and the link.
+> Surface the coverage you already have — a logo strip or a `/news` list — so the next editor can see someone else went first.
 >
-> Build a `/press` page with logo files (svg + png in dark/light), brand color hex, founder bios, contact email. Links to existing coverage as it accumulates.
->
-> Most launches get one window. Use the post-launch traction to seed the next quarter's PR, "this is what we shipped, and this is what users said about it."
+> Rewrite the pitch materials so they lead with a claim an editor would cover rather than with the feature list. Choosing that claim, and sequencing the launch it attaches to, is generation work: call the Skill tool with "snitch-cmo".

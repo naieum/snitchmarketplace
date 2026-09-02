@@ -5,9 +5,9 @@
 # Exports:
 #   run_recommend <area>
 #
-# Areas: cmp gtm-server capi-helpers lighthouse-runner cwv-monitoring listings
+# Areas: cmp gtm-server capi-helpers lighthouse-runner cwv-monitoring
 
-ADSSEC_RECOMMEND_AREAS=(cmp gtm-server capi-helpers lighthouse-runner cwv-monitoring listings)
+ADSSEC_RECOMMEND_AREAS=(cmp gtm-server capi-helpers lighthouse-runner cwv-monitoring)
 
 # _recommend_emit_error <error> <code> <remediation>
 _recommend_emit_error() {
@@ -23,15 +23,14 @@ _recommend_emit_error() {
 # run_recommend <area>
 run_recommend() {
   local area="${1:-}"
-  local skill_dir="${ADSSEC_SKILL_DIR:-${HOME}/.claude/skills/ads-ready}"
-  local catalog="${skill_dir}/templates/recommendations.json"
+  local catalog="${TPL_DIR}/recommendations.json"
 
   if [[ -z "$area" ]]; then
     _recommend_emit_error "missing area argument" "E_USAGE" "Usage: recommend <area>. Valid areas: ${ADSSEC_RECOMMEND_AREAS[*]}."
     return 2
   fi
   if [[ ! -f "$catalog" ]]; then
-    _recommend_emit_error "templates/recommendations.json not found at ${catalog}" "E_TEMPLATE" "Reinstall the skill or run refresh-docs."
+    _recommend_emit_error "templates/recommendations.json not found at ${catalog}" "E_TEMPLATE" "Reinstall the skill — the templates/ directory beside ads-ready.sh is missing or incomplete."
     return 2
   fi
 

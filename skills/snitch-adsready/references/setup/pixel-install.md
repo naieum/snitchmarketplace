@@ -19,7 +19,7 @@ Walkthrough that the agent reads when running `setup pixel-install <platform>`. 
 | Microsoft | https://ads.microsoft.com → Tools → Conversion Tracking → UET tag | UET tag ID |
 | LinkedIn | https://www.linkedin.com/campaignmanager → Account Assets → Insight Tag | Partner ID |
 | TikTok | https://ads.tiktok.com → Tools → Events → Web | Pixel code |
-| X | https://ads.twitter.com → Tools → Events Manager → Pixel | Pixel ID |
+| X | https://ads.x.com → Tools → Events Manager → Pixel | Pixel ID |
 | Pinterest | https://ads.pinterest.com → Conversions | Tag ID |
 | Reddit | https://ads.reddit.com → Events Manager → Pixel | Pixel ID |
 | Snapchat | https://ads.snapchat.com → Events Manager → Pixel | Pixel ID |
@@ -46,6 +46,8 @@ bash ads-ready.sh fix pixel-install <platform>
 ```
 
 The apply step:
+- Refuses first when the project shows no consent banner / CMP signal — a 🔴 FAIL pointing at
+  `fix consent-mode` and `recommend cmp`. Land consent before the pixel.
 - Reads `templates/pixel-snippets/<platform>.html`.
 - Detects host stack.
 - Emits `=== FILE/DIFF/CONTENT ===` block targeting:
@@ -87,7 +89,7 @@ Open tool, load deployed page, confirm pixel fires once with expected ID.
 bash ads-ready.sh state site <url> pixels
 ```
 
-Digest should report the platform under `pixels_detected`. If still missing:
+The `pixels` slice should now report `.pixels.<platform>.detected = true`, with the ids it found in `.pixels.<platform>.ids`. If it is still false:
 - Did the user actually deploy?
 - Snippet in the source HTML (`view-source:`)?
 - CSP blocking the platform's domain?

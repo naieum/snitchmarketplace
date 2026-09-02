@@ -2,6 +2,8 @@
 
 When to read this: auditing monetization (IAP/subscriptions/external purchases), export compliance, EU obligations, or planning TestFlight and the release itself.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 ## 3.1.1 In-App Purchase — the core rule
 
 Digital goods and services consumed in the app must use IAP. Physical goods and services (3.1.3(e)) must NOT use IAP — take Apple Pay or cards. Specific tripwires:
@@ -22,10 +24,10 @@ Reader apps (magazines, news, books, audio, music, video) may let users access p
 
 ## External purchase links — regional state (volatile, hedge everything)
 
-- **US storefront**: since May 2025 (court contempt order), apps may include buttons, links, and calls to action to outside purchase methods with no entitlement and, per the order, no commission on those external purchases. The order is under appeal; current as of 2026-08 — verify at https://developer.apple.com/app-store/review/guidelines/#business before advising a client to remove IAP.
-- **EU (DMA)**: alternative app marketplaces, Web Distribution, alternative browser engines (2.5.6 entitlement, also Japan), and alternative payments are available. The June 2025 terms use a single communication-and-promotion entitlement with tiered fees (initial acquisition fee, Store Services Tier 1/Tier 2, Core Technology Commission); the Core Technology Fee to Core Technology Commission transition was announced for January 2026 but was not finalized as of mid-2026. Treat every EU fee number as volatile — verify at https://developer.apple.com/support/dma-and-apps-in-the-eu/.
+- **US storefront**: since May 2025 (court contempt order), apps may include buttons, links, and calls to action to outside purchase methods with no entitlement. The commission rate on those external purchases is unsettled and moving: the Ninth Circuit (Dec 2025) held Apple may charge a commission "based on the costs that are genuinely and reasonably necessary for its coordination of external links," but not the prior 27%, and remanded rate-setting to the district court; Apple's rehearing request was denied (Mar 2026); the Supreme Court granted certiorari (Jun 30, 2026, No. 25-1311), limited to whether civil contempt can rest on an injunction's "spirit" rather than its plain text — merits briefing runs into Nov 2026 with no argument date yet, and it does not pause the remand (administrative stay denied). Verify the current commission rate and terms at https://developer.apple.com/app-store/review/guidelines/#business before advising a client to remove IAP.
+- **EU (DMA)**: alternative app marketplaces, Web Distribution, alternative browser engines (2.5.6 entitlement, also Japan), and alternative payments are available. Apple announced (2026-08) that the per-install Core Technology Fee is replaced by the Core Technology Commission, a 5% commission on digital transactions in apps distributed outside the App Store; new terms are signable immediately and take effect 2026-10-01. Treat every EU fee number as volatile — verify at https://developer.apple.com/support/apps-in-the-eu/.
 - **Everywhere else**: external purchase links remain prohibited outside entitlement programs (reader apps; music streaming in specific regions).
-- Standard commission elsewhere: 30%, or 15% for the Small Business Program and year-two subscriptions (current as of 2026-08 — verify in App Store Connect).
+- Standard commission elsewhere: 30%, or 15% for the Small Business Program and year-two subscriptions (verify in App Store Connect).
 
 ## Export compliance / encryption
 
@@ -45,7 +47,7 @@ Also keep content-rights documentation (trademarks, streaming rights, third-part
 
 ## Review timing, rejection response, release mechanics
 
-- 90% of submissions are reviewed within 24 hours (Apple's published figure; current as of 2026-08 — verify at https://developer.apple.com/distribute/app-review/). Plan two to three review cycles for a first submission.
+- 90% of submissions are reviewed within 24 hours (Apple's published figure; verify at https://developer.apple.com/distribute/app-review/). Plan two to three review cycles for a first submission.
 - Expedited review: request at https://developer.apple.com/contact/app-store/?topic=expedite for a critical bug fix (include reproduction steps) or a dated event. Use sparingly.
 - Rejection response: reply in App Store Connect messages (humans answer); resubmit with fixes plus an explanation in Review Notes. If you believe a guideline was misapplied, file an appeal (one per rejected submission) at https://developer.apple.com/contact/app-store/?topic=appeal. Thirty-minute consultations with App Review are bookable.
 - Phased release: automatic-update rollout over 7 days — 1%, 2%, 5%, 10%, 20%, 50%, 100%. Pausable up to 30 days with unlimited pauses; users updating manually always get the new version. Source: https://developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases.

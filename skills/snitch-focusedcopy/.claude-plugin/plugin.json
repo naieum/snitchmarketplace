@@ -1,7 +1,7 @@
 {
   "name": "snitch-focusedcopy",
-  "description": "Persuasive copy structure via the six-stage CLOSER framework — maps landing pages, pricing pages, and cold emails to the sales arc, reorders before rewriting, and verifies every claim against the product behind an anti-fabrication gate.",
-  "version": "0.1.0",
+  "description": "Is your landing page copy in the wrong order? Restructures it around a widely taught sales-call framework and checks every claim.",
+  "version": "0.2.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

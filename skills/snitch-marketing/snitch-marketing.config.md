@@ -2,16 +2,6 @@
 
 Edit this file to tune the audit behavior. The skill reads it at scan start.
 
-## min-confidence
-
-Findings below this threshold land in a "Needs Review" section instead of the main report.
-
-```
-min-confidence: medium
-```
-
-Valid values: `low` (everything in main report), `medium` (default), `high` (only high-confidence findings in main report).
-
 ## report-output
 
 Where the markdown report is written. Default: `snitchfindings/` subdirectory of the working directory, with a per-target subfolder.
@@ -64,7 +54,7 @@ crawl-max-pages: 50
 
 ## diff-base
 
-Git ref to diff against when running in Diff Mode (menu option 9).
+Git ref to diff against when running in Diff Mode (the scan menu's Diff Mode option; `references/scan-selection.md` owns the option numbers).
 
 ```
 diff-base: HEAD

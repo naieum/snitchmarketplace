@@ -20,7 +20,8 @@ degrades to the contributor findings alone and says so. Never block on it.
 
 Get a free key at the Google Cloud console (enable "PageSpeed Insights API" — the same
 key works for CrUX). Store it in the env var **`CRUX_API_KEY`** (also accepted:
-`GOOGLE_PSI_KEY`). `doctor`/setup notes this as optional.
+`GOOGLE_PSI_KEY`). The key is optional: without it, field CWV is skipped with a reason and the
+audit reports contributor cats only.
 
 ## Invocation (agent runs this in crawl mode)
 

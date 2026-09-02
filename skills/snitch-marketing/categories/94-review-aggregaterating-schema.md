@@ -1,6 +1,6 @@
 ## CATEGORY 94: Review / AggregateRating schema
 
-`Review` and `AggregateRating` schema power the star ratings shown in SERP rich results, for products (Cat 34), local businesses (Cat 92), software apps (Cat 91), recipes (Cat 87), courses (Cat 88), and services. Misused, they're one of Google's most-policed schema types: faked, padded, or self-applied ratings invite manual actions and SERP suppression. This category audits review/rating schema across all surfaces, product, app, business, service, for honesty and structural correctness.
+`Review` and `AggregateRating` schema power the star ratings shown in SERP rich results, for products, local businesses, software apps, recipes, courses, and services — every type Cat 32 validates, which is why rating honesty is pulled out here rather than repeated per type. Misused, they're one of Google's most-policed schema types: faked, padded, or self-applied ratings invite manual actions and SERP suppression. This category audits review/rating schema across all surfaces, product, app, business, service, for honesty and structural correctness.
 
 ### Pre-flight: relevance check
 
@@ -92,9 +92,9 @@ Google's manual actions guide on rich results: https://developers.google.com/sea
 - Review surface present but no schema → Medium.
 - Stale review datePublished → Low.
 
-**Fix voice:** `mike-monteiro` (primary) | `solutions-architect` (backup).
+**Fix voice:** `honest-design-critic` (primary) | `solutions-architect` (backup).
 
-Read `souls/mike-monteiro.json` before writing the Fix.
+Read `souls/honest-design-critic.json` before writing the Fix.
 
 Worked fix example:
 

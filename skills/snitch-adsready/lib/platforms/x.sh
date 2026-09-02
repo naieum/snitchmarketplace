@@ -74,7 +74,7 @@ _x_oauth1_header() {
 
 _x_http_get_oauth1() {
   local url="$1"
-  local hdr; hdr="$(_x_oauth1_header GET "$url" "$X_ADS_CONSUMER_KEY" "$X_ADS_CONSUMER_SECRET" "$X_ADS_BEARER_TOKEN" "$X_ADS_ACCESS_TOKEN_SECRET")"
+  local hdr; hdr="$(_x_oauth1_header GET "$url" "$X_ADS_CONSUMER_KEY" "$X_ADS_CONSUMER_SECRET" "${X_ADS_ACCESS_TOKEN:-${X_ADS_BEARER_TOKEN:-}}" "$X_ADS_ACCESS_TOKEN_SECRET")"
   local tmp; tmp="$(mktemp)"
   local code
   code=$(curl -sS -o "$tmp" -w '%{http_code}' \
@@ -86,10 +86,13 @@ _x_http_get_oauth1() {
 }
 
 platform_state() {
+  # Canonical env name for the OAuth 1.0a access token is X_ADS_ACCESS_TOKEN
+  # (what doctor/prereqs check); X_ADS_BEARER_TOKEN is a legacy fallback.
+  local token="${X_ADS_ACCESS_TOKEN:-${X_ADS_BEARER_TOKEN:-}}"
   local acct_id="${1:-${X_ADS_ACCOUNT_ID:-}}"
   local ts; ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-  if [[ -z "${X_ADS_BEARER_TOKEN:-}" \
+  if [[ -z "$token" \
      || -z "${X_ADS_CONSUMER_KEY:-}" \
      || -z "${X_ADS_CONSUMER_SECRET:-}" \
      || -z "${X_ADS_ACCESS_TOKEN_SECRET:-}" \
@@ -102,8 +105,8 @@ platform_state() {
       platform: "x",
       locked: "x-api",
       reason: "X Ads API auth env not configured. X Ads API uses OAuth 1.0a — bearer alone is insufficient.",
-      remediation: "Export X_ADS_BEARER_TOKEN (= access token), X_ADS_ACCOUNT_ID, X_ADS_CONSUMER_KEY, X_ADS_CONSUMER_SECRET, X_ADS_ACCESS_TOKEN_SECRET. Apply for Ads API access: https://developer.x.com/en/docs/x-ads-api/getting-started",
-      env_required: ["X_ADS_BEARER_TOKEN","X_ADS_ACCOUNT_ID","X_ADS_CONSUMER_KEY","X_ADS_CONSUMER_SECRET","X_ADS_ACCESS_TOKEN_SECRET"]
+      remediation: "Export X_ADS_ACCESS_TOKEN (the OAuth 1.0a access token), X_ADS_ACCOUNT_ID, X_ADS_CONSUMER_KEY, X_ADS_CONSUMER_SECRET, X_ADS_ACCESS_TOKEN_SECRET. Apply for Ads API access: https://developer.x.com/en/docs/x-ads-api/getting-started",
+      env_required: ["X_ADS_ACCESS_TOKEN","X_ADS_ACCOUNT_ID","X_ADS_CONSUMER_KEY","X_ADS_CONSUMER_SECRET","X_ADS_ACCESS_TOKEN_SECRET"]
     }'
     return 0
   fi

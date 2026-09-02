@@ -22,10 +22,13 @@ _pin_http_get() {
 }
 
 platform_state() {
-  local acct_id="${1:-${PINTEREST_AD_ACCOUNT_ID:-}}"
+  # Canonical env names are PINTEREST_ADS_* (what doctor/prereqs check); the
+  # unprefixed names are accepted as a legacy fallback.
+  local token="${PINTEREST_ADS_ACCESS_TOKEN:-${PINTEREST_ACCESS_TOKEN:-}}"
+  local acct_id="${1:-${PINTEREST_ADS_ADVERTISER_ID:-${PINTEREST_AD_ACCOUNT_ID:-}}}"
   local ts; ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-  if [[ -z "${PINTEREST_ACCESS_TOKEN:-}" || -z "$acct_id" ]]; then
+  if [[ -z "$token" || -z "$acct_id" ]]; then
     jq -n --arg ts "$ts" '{
       schema: "adssec.state-platform.pinterest",
       schema_version: 1,
@@ -34,13 +37,13 @@ platform_state() {
       platform: "pinterest",
       locked: "pinterest-api",
       reason: "Pinterest API auth env not configured.",
-      remediation: "Export PINTEREST_ACCESS_TOKEN (OAuth2; scopes ads:read pins:read user_accounts:read) and PINTEREST_AD_ACCOUNT_ID. See https://developers.pinterest.com/docs/getting-started/authentication/",
-      env_required: ["PINTEREST_ACCESS_TOKEN","PINTEREST_AD_ACCOUNT_ID"]
+      remediation: "Export PINTEREST_ADS_ACCESS_TOKEN (OAuth2; scopes ads:read pins:read user_accounts:read) and PINTEREST_ADS_ADVERTISER_ID (the ad-account id). See https://developers.pinterest.com/docs/getting-started/authentication/",
+      env_required: ["PINTEREST_ADS_ACCESS_TOKEN","PINTEREST_ADS_ADVERTISER_ID"]
     }'
     return 0
   fi
 
-  local at="$PINTEREST_ACCESS_TOKEN"
+  local at="$token"
   local camp_url="${ADSSEC_PIN_API_BASE}/ad_accounts/${acct_id}/campaigns?page_size=100"
   local convtag_url="${ADSSEC_PIN_API_BASE}/ad_accounts/${acct_id}/conversion_tags"
   local aud_url="${ADSSEC_PIN_API_BASE}/ad_accounts/${acct_id}/audiences?page_size=100"

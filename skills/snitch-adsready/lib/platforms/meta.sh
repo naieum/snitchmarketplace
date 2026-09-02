@@ -7,7 +7,12 @@
 #   platform_state [act-id]
 #   platform_pixel_signals
 
-ADSSEC_META_API_BASE="${ADSSEC_META_API_BASE:-https://graph.facebook.com/v21.0}"
+# Graph API version. Single source of truth for the meta calls in this skill;
+# the capi-stub templates read META_GRAPH_VERSION from the environment with the
+# same default. Latest as of 2026-09-01 (v26.0, released 2026-07-29):
+# https://developers.facebook.com/docs/graph-api/changelog
+ADSSEC_META_VERSION="${ADSSEC_META_VERSION:-v26.0}"
+ADSSEC_META_API_BASE="${ADSSEC_META_API_BASE:-https://graph.facebook.com/${ADSSEC_META_VERSION}}"
 
 # Compute appsecret_proof = HMAC-SHA256(access_token, app_secret) hex.
 _meta_appsecret_proof() {

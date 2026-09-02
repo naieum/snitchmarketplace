@@ -8,7 +8,7 @@ Fill in the [Evidence] placeholders with findings and passed checks from your Sn
 
 ## 164.312(a) -- Access Controls
 
-**Mapped Snitch Categories:** 4 (Authentication Flaws), 14 (Session Management), 28 (Authorization Flaws)
+**Mapped Snitch Categories:** 4 (Authentication Issues), 28 (Authorization & Access Control (IDOR)), 39 (Token & Session Lifetime Analysis)
 
 ### Control Description
 
@@ -16,15 +16,15 @@ Implement technical policies and procedures for electronic information systems t
 
 ### Snitch Evidence
 
-**Category 4 -- Authentication Flaws**
+**Category 4 -- Authentication Issues**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 14 -- Session Management**
+**Category 28 -- Authorization & Access Control (IDOR)**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 28 -- Authorization Flaws**
+**Category 39 -- Token & Session Lifetime Analysis**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
@@ -42,7 +42,7 @@ Implement technical policies and procedures for electronic information systems t
 
 ## 164.312(c) -- Integrity
 
-**Mapped Snitch Categories:** 1 (Hardcoded Secrets), 2 (Dangerous Code Patterns), 5 (Injection Attacks), 10 (Dependency Vulnerabilities)
+**Mapped Snitch Categories:** 1 (SQL Injection), 3 (Hardcoded Secrets), 10 (Dangerous Code Patterns), 27 (Dependency Vulnerabilities / Supply Chain)
 
 ### Control Description
 
@@ -50,19 +50,19 @@ Implement policies and procedures to protect electronic protected health informa
 
 ### Snitch Evidence
 
-**Category 1 -- Hardcoded Secrets**
+**Category 1 -- SQL Injection**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 2 -- Dangerous Code Patterns**
+**Category 3 -- Hardcoded Secrets**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 5 -- Injection Attacks**
+**Category 10 -- Dangerous Code Patterns**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 10 -- Dependency Vulnerabilities**
+**Category 27 -- Dependency Vulnerabilities / Supply Chain**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
@@ -80,7 +80,7 @@ Implement policies and procedures to protect electronic protected health informa
 
 ## 164.312(e) -- Transmission Security
 
-**Mapped Snitch Categories:** 9 (Network Security), 34 (TLS/SSL Issues)
+**Mapped Snitch Categories:** 9 (Cryptography), 32 (Security Headers), 34 (FIPS 140-3 / Cryptographic Compliance)
 
 ### Control Description
 
@@ -88,11 +88,15 @@ Implement technical security measures to guard against unauthorized access to el
 
 ### Snitch Evidence
 
-**Category 9 -- Network Security**
+**Category 9 -- Cryptography**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 34 -- TLS/SSL Issues**
+**Category 32 -- Security Headers**
+- Findings: [Evidence]
+- Passed Checks: [Evidence]
+
+**Category 34 -- FIPS 140-3 / Cryptographic Compliance**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
@@ -110,7 +114,7 @@ Implement technical security measures to guard against unauthorized access to el
 
 ## 164.308(a)(1) -- Security Management
 
-**Mapped Snitch Categories:** 20 (Privacy Violations), 37 (Logging and Monitoring)
+**Mapped Snitch Categories:** 20 (HIPAA), 37 (Infrastructure Monitoring & Observability), 60 (Audit Log Integrity)
 
 ### Control Description
 
@@ -118,11 +122,15 @@ Implement policies and procedures to prevent, detect, contain, and correct secur
 
 ### Snitch Evidence
 
-**Category 20 -- Privacy Violations**
+**Category 20 -- HIPAA**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 37 -- Logging and Monitoring**
+**Category 37 -- Infrastructure Monitoring & Observability**
+- Findings: [Evidence]
+- Passed Checks: [Evidence]
+
+**Category 60 -- Audit Log Integrity**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 

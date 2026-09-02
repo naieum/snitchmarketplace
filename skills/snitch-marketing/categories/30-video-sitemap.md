@@ -14,7 +14,7 @@ Sites with video content benefit from a video-specific sitemap (or video extensi
 
 1. `Fetch` `/sitemap.xml`. Parse for `<video:video>` elements (xmlns: video).
 2. Or fetch `/sitemap-video.xml` separately.
-3. Sample video pages, confirm they have VideoObject schema (Cat 38), different but related.
+3. Sample video pages, confirm they have VideoObject schema (Cat 32's VideoObject row), different but related.
 
 ### Forbidden claims
 
@@ -87,4 +87,4 @@ Worked fix example:
 > </urlset>
 > ```
 >
-> Pair this with VideoObject schema on the video page itself (Cat 38). Sitemap declares existence; schema describes the video for rich results. Both, not either.
+> Pair this with VideoObject schema on the video page itself (Cat 32's VideoObject row). Sitemap declares existence; schema describes the video for rich results. Both, not either.

@@ -71,9 +71,9 @@ CSS font-display: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/fo
 - No preconnect to fonts CDN → Medium.
 - Multiple unused font weights loaded → Medium.
 
-**Fix voice:** `erik-spiekermann` (primary) | `performance-engineer` (backup).
+**Fix voice:** `typography-master` (primary) | `performance-engineer` (backup).
 
-Read `souls/erik-spiekermann.json` before writing the Fix. Spiekermann is the typography master; he'd say type that's invisible isn't typography. Make the type readable from the first paint.
+Read `souls/typography-master.json` before writing the Fix. Type that arrives late is type that failed. Make the text readable from the first paint.
 
 Worked fix example:
 

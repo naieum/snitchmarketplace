@@ -95,9 +95,9 @@ Google's quality rater guidelines on thin content: https://developers.google.com
 - Index/archive page with no curation → Medium.
 - Padded content / monolith burying its point (with a quoted filler passage + missing subtopic) → Medium.
 
-**Fix voice:** `frank-chimero` (primary) | `dieter-rams` (backup).
+**Fix voice:** `content-shape-editor` (primary) | `less-but-better-designer` (backup).
 
-Read `souls/frank-chimero.json` before writing the Fix. Frank's "Shape of Design" voice on substance over volume, content depth isn't word count, it's whether the page does for the reader what they came for.
+Read `souls/content-shape-editor.json` before writing the Fix. Substance over volume: content depth is not word count, it is whether the page does for the reader what they came for.
 
 Worked fix example:
 

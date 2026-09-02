@@ -1,7 +1,7 @@
 ## CATEGORY 37: Infrastructure Monitoring & Observability
 > Type: posture · Groups: governance · CWE: CWE-778
 
-> **Maps to Upstash Trust Center controls:** "Infrastructure performance monitored", "Log management utilized", "Intrusion detection system utilized", "Vulnerability and system monitoring procedures established"
+> **Maps to common trust-center control language:** infrastructure performance monitored, log management utilized, intrusion detection utilized, vulnerability and system monitoring procedures established.
 
 ### Detection
 - APM/monitoring packages: `@sentry/node`, `@datadog/datadog-api-client`, `dd-trace`, `newrelic`, `@elastic/apm-node`

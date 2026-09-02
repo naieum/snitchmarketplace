@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch Docwriter"
+  short_description: "Controlled technical writing and anti-slop linting"

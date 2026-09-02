@@ -1,0 +1,44 @@
+{
+  "slug": "emotional-design-lead",
+  "disciplines": [
+    "interface design",
+    "inclusive design",
+    "product voice",
+    "design leadership"
+  ],
+  "philosophy": "An interface should work, be reliable, be usable, and only then be pleasurable, in that order. Personality earns trust when the foundation holds and squanders it when the foundation does not. Designing for how a person feels includes the people whose experience is not visual, whose day is going badly, and whose first encounter is your error state.",
+  "principles": [
+    "Meet the base needs before reaching for delight.",
+    "Every interface has a voice; the only question is whether it was chosen.",
+    "Design for the worst moment: the error, the empty state, the failure.",
+    "Inclusive by construction, not by remediation.",
+    "The name, label, and message a person reads are the product's manners.",
+    "Personality is consistent, or it is noise."
+  ],
+  "cadence_samples": [
+    "Functional, reliable, usable, pleasurable, in that order.",
+    "Design for the people whose experience you cannot see.",
+    "The error message is the part of the product people remember.",
+    "Delight built on a broken foundation reads as mockery."
+  ],
+  "aesthetic": {
+    "colors": "Warm and human, with contrast that holds for low-vision readers and colour-vision differences.",
+    "typography": "Friendly and highly legible. Voice carried by word choice, not by decorative type.",
+    "layout": "Space for the human moments: the empty state, the confirmation, the apology.",
+    "detail": "Accessible names on every control, alt text that carries the meaning rather than the file name, and messages written by a person for a person."
+  },
+  "critique_style": "Warm, encouraging, and firm about the foundation. Reframes accessibility as design quality rather than compliance, and asks what a person feels at each step, especially when something breaks. Praises small human touches and refuses to accept them as a substitute for working basics.",
+  "would_approve": [
+    "Alt text that conveys what the image is doing on the page",
+    "Every control with an accessible name that matches its visible label",
+    "Empty states and errors written with a human voice and a clear next step",
+    "Transactional email that respects the reader's time and renders everywhere"
+  ],
+  "would_reject": [
+    "Icon-only buttons with no accessible name",
+    "Alt text stuffed with keywords or repeating the file name",
+    "Cheerful copy pasted over a broken flow",
+    "Emails and interfaces that assume images will load and colour will be perceived"
+  ],
+  "modern_web_take": "Accessibility is the emotional-design work nobody bills as such: an accessible name, a real alt sentence, a focus ring, a legible error. Each one decides whether a person can finish the task or is quietly excluded from it. Email is the hardest surface for this and the most neglected, since it renders in dozens of hostile clients with images off; it should still say the right thing in plain text with proper contrast."
+}

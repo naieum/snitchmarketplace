@@ -14,20 +14,18 @@ fails ad review, breaks dynamic ads, or degrades Quality Score / landing-page ex
 | TikTok | `Bytespider` |
 | Pinterest | `Pinterestbot` |
 
-## AI crawlers (deliberate policy, not an accident)
+## The ChatGPT-ads retrieval agent
 
-AI-search surfaces — including ChatGPT (ads launched 2026, contextual retrieval against
-indexed pages) — read the site through their own crawlers:
+`OAI-SearchBot` builds the index ChatGPT answers from, and ChatGPT ads are matched
+contextually against what that index retrieved — so a rule blocking it removes the site
+from the ad surface as well as the answers. `ChatGPT-User` handles live in-conversation
+fetches; `GPTBot` is a training opt-out with no effect on either. Teams block all three in
+one gesture without knowing they are different decisions. The audit reports each status;
+the policy call is the user's. `references/17-ai-crawler-access.md` has the detail.
 
-- `OAI-SearchBot` — ChatGPT search index (this is the one that affects ChatGPT visibility
-  and, since ads are matched contextually to retrieved results, ad-adjacent presence)
-- `GPTBot` — OpenAI model training
-- `ChatGPT-User` — live user-initiated fetches
-- `PerplexityBot`, `ClaudeBot`, `Google-Extended` — other AI surfaces / training opt-outs
-
-Blocking `OAI-SearchBot` removes the site from ChatGPT answers; blocking `GPTBot` only
-opts out of training. Many teams block both without realizing they are different
-decisions. The audit reports each agent's status; the policy call is the user's.
+Access policy for the other AI crawlers — `PerplexityBot`, `ClaudeBot`, `Google-Extended`
+and the rest — is a search-and-visibility decision, not an ads one: **call the Skill tool
+with "snitch-marketing"**.
 
 ## Fix behavior
 

@@ -66,7 +66,7 @@ Google on hreflang: https://developers.google.com/search/docs/specialty/internat
 - Hreflang URLs 404 → Critical.
 - Wrong language codes → High.
 
-**Fix voice:** `solutions-architect` (primary) | `jen-simmons` (backup).
+**Fix voice:** `solutions-architect` (primary) | `intrinsic-web-engineer` (backup).
 
 Read `souls/solutions-architect.json` before writing the Fix.
 

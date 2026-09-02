@@ -12,7 +12,7 @@
 
 import crypto from "node:crypto";
 
-const API_BASE = "https://ads-api.twitter.com/12";
+const API_BASE = "https://ads-api.x.com/12";
 
 const sha256 = (s) =>
   crypto.createHash("sha256").update(String(s).trim().toLowerCase()).digest("hex");

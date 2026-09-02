@@ -2,7 +2,7 @@
 
 Lift-and-deploy copy templates the brand can use today. Each template has a structure, a fill-in-the-blank version, and notes on when to use it. None of these are vendor-specific; they're patterns that work across most indie SaaS, content brands, and personal brands.
 
-The audit surfaces this reference from STEP 4.5 when channel work is recommended (founder-led posting on X / LinkedIn, Reddit replies, comparison-page seeding, lifetime-offer launches). Customers often ask "what should I actually post?" The templates answer that without making the team start from a blank page.
+The audit surfaces this reference from STEP 4 when channel work is recommended (founder-led posting on X / LinkedIn, Reddit replies, comparison-page seeding, lifetime-offer launches). Customers often ask "what should I actually post?" The templates answer that without making the team start from a blank page.
 
 ## Pattern 1: Twitter / X bio (founder-personal handle)
 
@@ -54,7 +54,7 @@ Worked example:
 ```
 The thing that worked for me wasn't another keyboard, it was typing 60% less.
 I use voice dictation behind one hotkey: hold the key, talk, words appear in whatever app I'm in.
-I built the tool I use (https://getabe.app, $6/mo, free up to 2k words/week). Happy to answer
+I built the tool I use (https://example.com, $6/mo, free up to 2k words/week). Happy to answer
 questions about voice setups in general — there are 4-5 decent options now and the right one
 depends on whether you need offline, what platform you're on, and how technical your vocabulary is.
 ```
@@ -139,7 +139,7 @@ For each `/compare/{competitor}` page, the page leads with one sentence that nam
 [Brand] is [shorter / cheaper / simpler / faster / more X] than [Competitor]. [Competitor] is better at [specific thing]. Use [Brand] if [trigger condition]; use [Competitor] if [trigger condition].
 ```
 
-When to use: every comparison page on the site. Cat 95 (programmatic SEO) specifically calls for honest comparison content.
+When to use: every comparison page on the site. Cat 122 (comparison / alternatives pages) specifically calls for honest comparison content.
 
 Worked example:
 
@@ -147,7 +147,7 @@ Worked example:
 Atlas is cheaper and simpler than Formspree. Formspree is better at advanced spam filtering and has been around longer. Use Atlas if you want a free-forever tier with no usage caps and your spam needs are normal; use Formspree if you need fine-grained spam controls or want a longer-tenure vendor.
 ```
 
-## Pattern 8: "Things X is NOT for" section (Cat 111 trust artifact #5)
+## Pattern 8: "Things X is NOT for" section (Cat 60 trust artifact #5)
 
 ```
 [Product] is NOT a good fit for:
@@ -180,7 +180,7 @@ Q: [The exact question a real customer asked, verbatim from a discovery call]
 A: [Honest answer, no marketing dress-up]. [Concrete next step or link].
 ```
 
-When to use: FAQ rewrite per Cat 81 / Cat 35. Shipped in week 2 of the 30/60/90 plan after discovery calls produce the verbatim questions.
+When to use: FAQ rewrite per Cat 81 / Cat 32's FAQPage row. Shipped in week 2 of the 30/60/90 plan after discovery calls produce the verbatim questions.
 
 Worked examples (from a real discovery call):
 
@@ -380,7 +380,7 @@ You shouldn't get ripped off by insurance companies. If you hire us, you won't.
 Your legs shouldn't look like that — and after this procedure, they won't.
 ```
 
-When to use: Cat 81 pain-led hero drafts (Pattern 5 Draft A), ad creative for Cat 67, anywhere the problem line exists but reads flat.
+When to use: Cat 81 pain-led hero drafts (Pattern 5 Draft A), ad creative for Cat 66, anywhere the problem line exists but reads flat.
 
 ## Pattern 14: Decision-trigger close (+ fence-sitter email)
 
@@ -433,13 +433,13 @@ Examples:
 
 - Cat 84 (founder-led brand) recommendation → Pattern 1 (Twitter/X bio), Pattern 4 (LinkedIn post).
 - Cat 77 (PR / launches) recommendation → Pattern 10 (Show HN), Pattern 4 (LinkedIn announcement).
-- Cat 95 (programmatic SEO) for `/compare/*` pages → Pattern 7 (comparison positioning sentence).
-- Cat 111 (trust artifact audit) for "not for" section → Pattern 8.
+- Cat 122 (comparison / alternatives pages) for `/compare/*` pages → Pattern 7 (comparison positioning sentence).
+- Cat 60 (conversion & trust, trust-artifact half) for "not for" section → Pattern 8.
 - Cat 81 (positioning) high-severity → Pattern 5 (3 hero variants).
-- Cat 35 (FAQ schema) + Cat 81 high-severity → Pattern 9 (FAQ entries).
-- Customer-discovery recommendation (from STEP 4.5) → Pattern 11 (cold customer-discovery email, with the variations for free-to-paid and long-tenured cohorts).
+- Cat 32 (FAQPage row) + Cat 81 high-severity → Pattern 9 (FAQ entries).
+- Customer-discovery recommendation (from STEP 4) → Pattern 11 (cold customer-discovery email, with the variations for free-to-paid and long-tenured cohorts).
 - Cat 81 high-severity narrative finding → Pattern 12 (Sales narrative homepage scroll structure), in conjunction with Pattern 5 (three hero variants).
-- Flat problem line in hero or ad creative (Cat 81 / Cat 67) → Pattern 13 ("shouldn't and won't").
+- Flat problem line in hero or ad creative (Cat 81 / Cat 66) → Pattern 13 ("shouldn't and won't").
 - Weak or passive ask at the conversion moment (Cat 60 / Cat 99) → Pattern 14 (decision-trigger close + fence-sitter email).
 - Cat 84 "no identity line" / scattered-topics finding → Pattern 15 (founder identity line).
 - Cat 81 inward-facing mission finding → Pattern 16 (customer-welfare mission line).
@@ -451,5 +451,5 @@ Examples:
 - Cat 81 (positioning), the deeper framework these templates serve.
 - Cat 84 (founder-led brand), the channel context for Patterns 1, 4, 10.
 - Cat 77 (PR launches), the launch context for Pattern 10.
-- Cat 95 (programmatic SEO), the comparison context for Pattern 7.
-- Cat 111 (trust artifact audit), the trust context for Pattern 8.
+- Cat 122 (comparison / alternatives pages), the comparison context for Pattern 7.
+- Cat 60 (conversion & trust, trust-artifact half), the trust context for Pattern 8.

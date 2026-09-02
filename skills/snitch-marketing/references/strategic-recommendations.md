@@ -1,6 +1,6 @@
 # Strategic Recommendations Template & Synthesis Rules
 
-Used in STEP 4.5. After STEP 3 produces the audit report, synthesize the findings + STEP 0.7 competitor research into a prioritized recommendation brief — the "what should I actually do next" deliverable.
+Used in STEP 4. After STEP 3 produces the audit report, synthesize the findings + STEP 0.7 competitor research into a prioritized recommendation brief — the "what should I actually do next" deliverable.
 
 Save to `STRATEGIC_RECOMMENDATIONS.md` next to the audit report.
 
@@ -66,7 +66,7 @@ Off-site recommendations get sequenced by readiness. Tier 1 starts this week. Ti
 - {channel + specific action}
 
 **Tier 3 (don't start yet):**
-- {channel + specific reason; e.g., "Paid Google/Meta ads, defer until activation rate >60% per Cat 55 north-star metric, otherwise paid traffic burns money"}
+- {channel + specific reason; e.g., "Paid Google/Meta ads, defer until activation rate >60% per the north-star metric below, otherwise paid traffic burns money"}
 - {channel + reason}
 
 The sequencing rationale: each tier earns the next. Paid acquisition without an activated funnel burns money; influencer outreach without a wedge burns relationships; press launches without testimonials burn the launch window. Earn the right to escalate.
@@ -77,26 +77,26 @@ A literal sequenced checklist for the next 90 days. Each item is observable (the
 
 **Days 1-7, foundation:**
 - [ ] Confirm or correct the assumptions captured in STEP 0.5.1.
-- [ ] Lock the wedge (per Cat 110 ICP scoring output).
-- [ ] Rewrite hero, subhead, FAQ per Cat 81 (3 drafts) and the audit's Critical findings.
+- [ ] Lock the wedge. Marketing reports umbrella positioning (Cat 81); to score the candidate segments and pick one, call the Skill tool with "snitch-cmo".
+- [ ] Rewrite hero, subhead, FAQ against Cat 81's findings and the audit's Critical findings (hero variants: `references/copy-bank-templates.md` Pattern 5).
 - [ ] Ship a 30-second demo video on the homepage (per `references/copy-bank-templates.md` Pattern 2 if applicable).
-- [ ] Add founder face + sentence + direct email (per Cat 111 trust artifact #1).
-- [ ] Set up analytics events per Cat 55, including the north-star metric.
+- [ ] Add founder face + sentence + direct email (per Cat 60 trust artifact #1).
+- [ ] Set up analytics events per Cat 53, including the north-star metric.
 - [ ] Email every existing user one sentence: "Hi, I'm [name], the founder. Why'd you stop using [product]?" or "Why'd you stick with it?"
 
 **Days 8-30, proof:**
 - [ ] Run 10 customer-discovery calls per `references/customer-discovery-script.md`.
 - [ ] Mine real customer language; rewrite hero, subhead, FAQ a second time using verbatim quotes.
-- [ ] Ship comparison pages (`/compare/{competitor}`) per Cat 95 + Cat 81.
+- [ ] Ship comparison pages (`/compare/{competitor}`) per Cat 122 + Cat 81.
 - [ ] Three founder-led posts per week on X/LinkedIn from a personal handle (per Cat 84).
-- [ ] Three named testimonials onto the homepage (per Cat 111 trust artifact #2).
-- [ ] Ship the changelog page; commit to weekly updates (per Cat 111 trust artifact #3).
+- [ ] Three named testimonials onto the homepage (per Cat 60 trust artifact #2).
+- [ ] Ship the changelog page; commit to weekly updates (per Cat 60 trust artifact #3).
 
 **Days 31-60, distribution:**
 - [ ] Active answering on relevant subreddits / community surfaces. Target: 5 high-value comments per week.
 - [ ] Targeted partnership outreach (10 contacts) per Tier 2.
 - [ ] Cross-promo outreach to 3-5 adjacent brands.
-- [ ] Optional pricing tier launch (lifetime / annual) per Cat 112 if recommended.
+- [ ] Optional pricing tier launch (lifetime / annual). The strategic read that decides this is not audited here: call the Skill tool with "snitch-cmo".
 
 **Days 61-90, read and decide:**
 - [ ] Review the analytics. Has the north-star metric crossed the healthy threshold?
@@ -111,23 +111,53 @@ Define the stop conditions BEFORE running. Without pre-committed conditions, the
 | Signal at day 90 | Decision |
 |---|---|
 | Paid MRR > 2x day-30 MRR AND one named channel produces 30%+ of paid | **Scale.** Double down on that channel; consider the first paid test. |
-| Activation < 60% of installs (per Cat 55 north-star metric) | **Narrow, not a marketing problem.** Stop all distribution; fix onboarding; resume distribution after activation crosses 60%. |
-| Wedge produces < 20% of paid signups, but a backup wedge organically produces > 30% | **Pivot wedge.** Re-do Cat 110 with the segment that's actually working. |
+| Activation < 60% of installs (per the north-star metric below) | **Narrow, not a marketing problem.** Stop all distribution; fix onboarding; resume distribution after activation crosses 60%. |
+| Wedge produces < 20% of paid signups, but a backup wedge organically produces > 30% | **Pivot wedge.** Re-score the segments with the one that's actually working by calling the Skill tool with "snitch-cmo". |
 | Total paid users < 50 after 90 days | **Diagnose before quitting.** Either the product is not solving a real problem, the price is wrong, or the wedge is wrong. Run 5 more discovery calls before any other action. |
 | A leading competitor drops to the brand's price OR ships a feature that nullifies the brand's wedge | **Re-position immediately.** Lean entirely on the differentiation that doesn't depend on the obviated wedge. |
 
 These are the conditions; the team commits to acting on them at day 90.
 
+## The north-star metric
+
+Every set of recommendations names ONE leading-indicator metric the team commits to watching as the single most important number. The metric falls out of the event taxonomy audited in Cat 53 (analytics instrumentation); without instrumented events there is no metric, so an uninstrumented brand gets the instrumentation recommendation first and the number second. The audit identifies the metric; the team owns it.
+
+**The pattern.** A north-star metric for a marketing surface is a percentage of users who reach the activation event within a bounded time after entry:
+
+`% of [users who entered via {channel}] who reach [activation event] within [N hours/days] of entry`
+
+**Selecting the right metric.** Walk the funnel from the customer's first touchpoint to the moment the product creates value:
+
+1. Entry events (landing_view, signup, install, first content read).
+2. Engagement events (scroll, click, an action that signals intent).
+3. **Activation event** (the first time the product produces value: first task completed, first form submission received, first audit run, first post published).
+4. Retention events (return visit, repeat usage, subscription).
+5. Revenue events (paid signup, upgrade, renewal).
+
+The activation event is the highest-leverage measurement target, and the percentage of new users who reach it within 24 hours (or 7 days for higher-friction products) is the single number the team monitors.
+
+**Why activation, not signup or revenue.** Signup is too early — it is nearly free to produce and predicts little. Revenue is too late — a quarter of lag before the team can react. Activation is the leading indicator that predicts retention better than any other event in the funnel.
+
+**Output expected.** The recommendations name:
+
+- The activation event, by its instrumented event name.
+- The bounding time window (24h, 7d).
+- The current baseline, if instrumented (and Skip-with-reason if not).
+- The healthy threshold for the brand's category (e.g. "<60% means an onboarding problem; >80% is good").
+- The decision rule at each threshold ("if <60%, fix onboarding before any marketing investment; 60-80%, marketing investment may compound; >80% with free→paid below 5%, price/value perception is the gap, not activation").
+
+The framing is "the single most important number": one dashboard, one number, and the team knows whether the product is working. The threshold numbers above are working defaults to be argued with, not measurements — state them as the team's chosen thresholds, never as observed data.
+
 ## Tracking
 
-Suggested KPI dashboard for the next 90 days, tied to the recommendations above. The single most important number is the Cat 55 north-star metric.
+Suggested KPI dashboard for the next 90 days, tied to the recommendations above. The single most important number is the north-star metric defined above.
 ```
 
 ## Synthesis rules
 
 - **Cite the evidence**: every recommendation references specific findings (by section + finding number) AND specific competitor evidence (by domain + observation). No generic advice.
 - **Every recommendation declares a kill rule**: pre-commit the evidence that would invalidate it. The kill rule is the difference between a recommendation and a vibe. Without it, the team executes for another quarter past the point the recommendation stopped working. Use observable, time-bound conditions (e.g., "if CAC payback exceeds 18 months AND ICP-match is <50% after 60 days, stop and revisit pricing"). A vague kill rule ("if it isn't working") is no kill rule.
-- **Voice each recommendation**: pick the soul whose POV best fits the recommendation type. Read the soul JSON before writing the prose. Adopt the cadence; never name the practitioner in the prose. The `voice_reads_completed` array is an internal verification mechanism, not displayed in the visible report.
+- **Voice each recommendation**: pick the soul whose POV best fits the recommendation type. Read the soul JSON before writing the prose. Adopt the cadence; never name a practitioner or a source in the prose, and never put a soul slug in the document or its metadata (`references/voiced-remediations.md`).
 - **Single tier of importance per recommendation**: rank them 1, 2, 3 by leverage. No "all of these are important" hedging.
 - **Honest about effort**: don't recommend "do all 16 channels" if the team is one founder. Recommend the 1-3 channels that fit current capacity.
 - **Tie to business model**: a free OSS project doesn't need affiliate program recommendations. A pre-revenue brand doesn't need backlink-disavow recommendations.

@@ -1,23 +1,15 @@
 # Principle Catalog
 
-> **The ethics gate outranks every principle in this file. Run it first.**
-> `review-checklist.md` §10 and SKILL.md Workflow Step 3.5 decide whether this surface has
-> earned these techniques — run them *before* you apply anything below. Every rule here assumes
-> the underlying claim is **true** and the cost is **disclosed**. This is the file SKILL.md calls
-> the loaded tool: applied to a surface with fabricated urgency, a hidden recurring charge, a
-> pre-checked paid option, or a buried cancellation, several of these principles make the page
-> measurably worse rather than better. **If the gate fails, the finding is the dishonesty, not the
-> wording — report those items and do not optimise them, whatever was asked for.**
->
-> The gate is not subject to the `lenses` config key. `lenses: persuasion` removes the clarity
-> pass, never the gate.
+> Gate first: `ethics-gate.md`. This is the file SKILL.md calls the loaded tool: applied to a
+> surface that failed the gate, several of these principles make the page measurably worse.
+> If the gate failed, the finding is the dishonesty, not the wording.
 
 Each entry: **the rule**, *why it works* (the psychology), and concrete **Do / Don't**.
 Grouped by the job it does. Apply the few that fit the surface — not all at once.
 
 These are the *actionable* moves; the cognitive mechanisms they draw on (System 1/2,
 anchoring, loss aversion, working-memory limits, social imitation, dopamine/variable
-reward) live in `psychology-foundations.md`. When a principle here needs justifying, or a
+reward) live in `substrate.md`. When a principle here needs justifying, or a
 case isn't covered, reason up from that file.
 
 ---
@@ -277,7 +269,7 @@ prominent and its label quiet.
 *Why:* feedback tells users their input registered and gives a sense of control. The pace
 matters as much as the presence: ~0.1s reads as instant, ~400ms keeps the exchange feeling
 conversational, and past ~1s the wait itself needs acknowledging (thresholds and the
-perceived-performance moves in `interaction-model.md`).
+perceived-performance moves in `substrate.md` Part 2).
 - **Do:** distinct selected states (color + size change), live-updating values, instant
   consequences (show the new balance/total right away), error *prevention* via clarity;
   where real work takes longer, respond instantly anyway — optimistic update, skeleton,
@@ -322,7 +314,7 @@ perceived-performance moves in `interaction-model.md`).
 - **One-word categorization does the thinking** — a tiny "cheaper" / "best value" tag tells
   the brain which to pick.
 
-See also: `copywriting.md`, `mobile-navigation.md`, `review-checklist.md`.
+See also: `copywriting.md`, `navigation.md`, `review-checklist.md`.
 
 ---
 

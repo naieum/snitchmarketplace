@@ -55,7 +55,6 @@ A dependency is scored **Medium** if ANY of the following are true (and none of 
 - Unmaintained but no known CVEs
 - Active but has low-severity CVEs
 - Stale with a deep transitive dependency tree
-- Missing or unclear license (cross-reference with license-scan.md)
 
 ### Low Risk
 
@@ -63,7 +62,6 @@ A dependency is scored **Low** if ALL of the following are true:
 - Active (published within 12 months)
 - No known CVEs
 - Healthy maintenance indicators
-- Permissive license
 
 ## Process
 

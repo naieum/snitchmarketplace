@@ -1,19 +1,38 @@
-# Smart Detection Logic (Quick Scan - Option 1)
-
-Quick Scan always includes: Categories 1, 2, 3, 4
-
-Then adds categories based on detected dependencies:
+# Smart Detection Logic (mode `quick`)
 
 ## Detection Method
 1. Read `package.json` (or equivalent for other languages)
 2. Parse dependencies and devDependencies
 3. Check for security-relevant packages
 
-## Advanced Validation Signals (Quick Scan Add-On)
+## Selecting the set — 5 to 10 categories, and the cap is real
 
-Quick Scan also emits **Validation Signals** when relevant tech/features are detected.
-These are evidence-backed assurance checks that complement findings without changing
-the selected category set or scan mode naming.
+The triggers below are candidates, not the answer. On a real stack far more of them fire than a
+quick scan can carry, so the set is built and then cut:
+
+1. **Start with `quick-core`** — every row in `categories/_index.md` whose `Groups` column contains
+   `quick-core`. Resolve it from the manifest; never from a number list written here.
+2. **Add every trigger below that fires** on the detected dependencies, files, and keywords.
+3. **Drop anything not `active`.** Merged and deprecated rows never enter a quick scan, whatever
+   number a trigger names.
+4. **Cap at 10.** If more fired, rank and keep the top 10:
+   - `quick-core` rows first — they are never cut
+   - then `Type: sink-pattern` rows whose sink library is actually imported in source (not merely
+     present in the manifest)
+   - then `posture` rows for a service the project demonstrably integrates with (a Stripe key read,
+     a Supabase client constructed, a Redis connection opened)
+   - then everything else
+   State which candidates the cap dropped and that mode `full` covers them. A quick scan that
+   silently scans 22 categories is not a quick scan; one that hides the 12 it dropped is worse.
+5. **Floor at 5.** If fewer than five fire, say so and offer `preset:web` or `full` rather than
+   padding the set with categories nothing triggered.
+
+## Validation Signals (mode `quick` only, and only when one fires)
+
+Two signals survive: the ones that check a security control on a path the scan already cares
+about. Test-assurance checks (does a replay script exist, is there a negative test, does this patch
+look superficial) were dropped — they grade the codebase's testing practice, not its attack
+surface, and this skill does not review code for anything but security.
 
 Validation signal rules:
 - Only emit a signal when you have direct code/config evidence (file + line).
@@ -21,25 +40,17 @@ Validation signal rules:
 - Keep signals scoped to selected categories.
 - If a signal proves a concrete vulnerability, report it as a regular finding too.
 - Never invent a signal from assumptions; no evidence means no signal.
+- If neither signal fires, omit the Validation Signals section from the report entirely. An empty
+  section is not evidence of anything.
 
 Signal IDs and intent:
-- `VS-001` Reproducibility Hooks — verify security-relevant tests/replay scripts exist for risky paths
-- `VS-002` Negative Testing Coverage — verify adversarial/error-path tests exist where applicable
-- `VS-003` Fix Verification Path — verify CI/local checks re-run security checks after code changes
-- `VS-004` Patch Safety — detect superficial "fixes" that hide symptoms without mitigation
 - `VS-005` Sensitive Flow Traceability — verify logging/trace points exist on critical auth/data paths
 - `VS-006` Runtime Guardrails — verify runtime limits/kill-switches/timeouts on risky integrations
 
 ## Dependency -> Category Mapping
 
-**Always Add:**
-- Category 1 (SQL Injection) - if any database package found
-- Category 2 (XSS) - if any frontend framework found
-- Category 3 (Hardcoded Secrets) - always
-- Category 4 (Authentication) - if any auth package found
-- Category 12 (Logging and Data Exposure) - always (any project can log sensitive data)
-
-**Conditional Adds:**
+Every entry below is a **conditional** add, subject to the cap. `quick-core` is already in the set
+before any of them is read, so nothing here re-adds it.
 
 Found `stripe` or `@stripe/stripe-js`:
 - Add Category 13 (Stripe Security)
@@ -62,9 +73,6 @@ Found `twilio`:
 Found `@clerk/nextjs`, `@auth0/nextjs-auth0`, or `next-auth`:
 - Add Category 14 (Auth Providers)
 
-Found `@aws-sdk/*`, `@google-cloud/*`, or `@azure/*`:
-- Add Category 11 (Cloud Security)
-
 Found `pg`, `mysql2`, `@prisma/client`, or `drizzle-orm`:
 - Add Category 17 (Database Security)
 
@@ -83,13 +91,21 @@ Found `cors` package:
 Found Keywords: `patient`, `medical`, `diagnosis`, `prescription`, `mrn`, `phi`:
 - Add Category 20 (HIPAA)
 
-Found Keywords: `audit`, `logging`, `compliance`, `mfa`:
+**Compliance keyword triggers need two signals, matched as whole words.** A compliance category is
+expensive and its keywords are ordinary English: `logging` is in nearly every repo, and `pan`
+substring-matches `span` and `expand`. Match on word boundaries (`\bpan\b`), never on a bare
+substring, and require **two distinct keywords from the same list** before adding the category. One
+hit is a note in the detected-features metadata, not a selected category.
+
+Found two or more of: `soc2`, `soc 2`, `trust services`, `control objective`, `evidence`, `mfa`,
+`access review`:
 - Add Category 21 (SOC 2)
 
-Found Keywords: `card`, `payment`, `stripe`, `cvv`, `pan`:
+Found two or more of: `pan`, `cvv`, `cvc`, `cardholder`, `card_number`, `pci`, `luhn`, `track2`:
 - Add Category 22 (PCI-DSS)
 
-Found Keywords: `consent`, `gdpr`, `data-export`, `data-delete`:
+Found two or more of: `consent`, `gdpr`, `dsar`, `data-export`, `data-delete`, `right to erasure`,
+`lawful basis`, `processor`:
 - Add Category 23 (GDPR)
 
 Found Keywords: `fips`, `fips140`, `nist`, `cipher`, `tls_min`, `openssl`:
@@ -98,18 +114,9 @@ Found Keywords: `fips`, `fips140`, `nist`, `cipher`, `tls_min`, `openssl`:
 Found Keywords: `iso27001`, `fedramp`, `cmmc`, `govcloud`, `cui`, `nist800`, `ato`:
 - Add Category 35 (Governance Certifications)
 
-Found any React/Vue/Angular framework or any database package (`@prisma/client`, `drizzle-orm`, `pg`, `mysql2`, `mongoose`):
-- Add Category 24 (Memory Leaks)
-
-Found any ORM (`@prisma/client`, `drizzle-orm`, `typeorm`, `sequelize`, `mongoose`):
-- Add Category 25 (N+1 Queries)
-
-Found any web framework/ORM (`next`, `express`, `fastify`, `@prisma/client`, `drizzle-orm`) or `lodash` or `moment`:
-- Add Category 26 (Performance Problems)
-
-**Always Add:**
-- Category 27 (Dependency Vulnerabilities) - applies to every project with a package manifest
-- Category 33 (Unused Dependencies & Bloat) - applies to every project with a package manifest
+Found a lockfile plus either a direct dependency pinned to an open range (`*`, `latest`, `>=`) or an
+install hook (`preinstall` / `postinstall` / `prepare`) in the project's own manifest:
+- Add Category 27 (Dependency Vulnerabilities)
 
 Found any auth/database/API route package (`next-auth`, `@clerk/nextjs`, `@auth0/nextjs-auth0`, `@prisma/client`, `drizzle-orm`, `express`, `fastify`):
 - Add Category 28 (Authorization & Access Control / IDOR)
@@ -117,8 +124,8 @@ Found any auth/database/API route package (`next-auth`, `@clerk/nextjs`, `@auth0
 Found `multer`, `formidable`, `busboy`, or `@uploadthing/*`:
 - Add Category 29 (File Upload Security)
 
-Found any web framework (`next`, `express`, `fastify`, `koa`, `hono`):
-- Add Category 30 (Input Validation & ReDoS)
+Found any web framework (`next`, `express`, `fastify`, `koa`, `hono`) with a route reading a path or merging a request body:
+- Add Category 30 (Input Validation)
 
 Found `.github/workflows` directory exists:
 - Add Category 31 (CI/CD Pipeline Security)
@@ -140,9 +147,6 @@ Found `ngrok`, `.ngrok2/`, `.ngrok/`, `NGROK_AUTHTOKEN` in env/config, or `cloud
 
 Found `wrangler.toml`, `wrangler.jsonc`, `.dev.vars`, `miniflare`, `CLOUDFLARE_API_TOKEN`, `CF_API_TOKEN`:
 - Add Category 40 (Tunnels & DNS Security)
-
-Found `package.json` with `dependencies`, `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, or any lockfile:
-- Add Category 41 (License Compliance)
 
 Found `Dockerfile`, `docker-compose.yml`, `docker-compose.yaml`, or any `*.Dockerfile`:
 - Add Category 42 (Container & Docker Security)
@@ -171,7 +175,9 @@ Found token/secret comparison, password verification, or HMAC comparison pattern
 Found debug/metrics endpoints (`/debug`, `/metrics`, `/health`, `/status`, `/pprof`, `express-debug`, `swagger-ui`):
 - Add Category 51 (Debug Endpoints)
 
-Any project with secrets, API keys, or credentials in environment variables:
+Found a signing-key or token-issuance surface that a source scan can actually read — a JWKS
+endpoint or `kid` header, a configured token TTL, a KMS/Secrets Manager rotation setting in IaC, or
+a dual-key (`*_KEY_CURRENT` / `*_KEY_PREVIOUS`) arrangement:
 - Add Category 52 (Secrets Rotation)
 
 Found California user data patterns, SOX compliance keywords (`ccpa`, `sox`, `sarbanes`, `california_consumer`, `financial_reporting`):
@@ -207,16 +213,16 @@ Found Node/JS projects with merge utilities (`lodash`, `deepmerge`, `minimist`, 
 Found JWT libraries (`jsonwebtoken`, `jose`, `jwt-decode`, `@fastify/jwt`, `pyjwt`, `python-jose`, `jjwt`, `golang-jwt/jwt`) or any OAuth/OIDC stack:
 - Add Category 63 (JWT Algorithm & Key Attacks)
 
-Found cloud SDKs (`@aws-sdk/*`, `@google-cloud/*`, `@azure/*`) OR any outbound HTTP client (`fetch`, `axios`, `got`, `node-fetch`, `undici`, `requests`, `httpx`) used with any user-influenced URL:
-- Add Category 64 (Cloud Metadata Exploitation)
-
 Found deserialization modules for non-JSON formats (`js-yaml`, `yaml`, `jackson-databind`, `Newtonsoft.Json` with TypeNameHandling, `BinaryFormatter`, Python `pickle`/`dill`/`shelve`, Ruby `Marshal`, PHP `unserialize`):
 - Add Category 65 (Insecure Deserialization)
 
-Any project with a package manifest / lockfile:
+Found an install hook (`preinstall` / `postinstall` / `prepare`) in the project's own manifest or in a
+direct dependency, or a direct dependency whose name is within edit-distance 1 of a popular package:
 - Add Category 66 (Typosquatting & Malicious Install Scripts)
 
-Any JavaScript, TypeScript, PHP, Python, or Ruby project with auth, password, token, or role-comparison code:
+Found a loose equality or type-flexible comparison (`==`, `!=`, PHP `==`, Ruby `==` on mixed types)
+inside auth, password, token, or role-comparison code in a JavaScript, TypeScript, PHP, Python, or
+Ruby project:
 - Add Category 67 (Type Coercion Bypasses)
 
 Found AI SDKs + agent/tool-use frameworks — npm and PyPI names mixed, match either (`@anthropic-ai/sdk` / `anthropic`, `openai`, `ai`, `@ai-sdk/*`, `@google/genai` / `google-genai`, `@google/generative-ai` / `google-generativeai` (both superseded, still deployed), `langchain`, `@langchain/core`, `langgraph`, `llamaindex` / `llama-index`, `@mastra/core`, `crewai`, `autogen`, `pydantic-ai`, `@anthropic-ai/claude-agent-sdk` / `claude-agent-sdk`, `@openai/agents` / `openai-agents`, `@modelcontextprotocol/sdk` / `mcp`) combined with a vector DB (`pinecone`, `@pinecone-database/pinecone`, `weaviate`, `chromadb`, `pgvector`, `@cloudflare/vectorize`) OR a `tools:` array / function-calling pattern:
@@ -225,12 +231,9 @@ Found AI SDKs + agent/tool-use frameworks — npm and PyPI names mixed, match ei
 ## Validation Signal Activation (Auto in Quick Scan)
 
 Trigger VS checks when relevant patterns are detected:
-- `VS-001` if test folders/scripts exist and categories 1, 4, 5, 15, 17, 28, 29, 30, 39, or 40 are selected
-- `VS-002` if any test framework is found (`jest`, `vitest`, `mocha`, `pytest`, `go test`) and risky categories are selected
-- `VS-003` if `.github/workflows` or other CI config exists
-- `VS-004` if prior findings are fixed in this session or patch-like changes are present
-- `VS-005` if categories 4, 12, 20, 21, 22, 23, 37, or 38 are selected
-- `VS-006` if categories 5, 7, 15, 31, 36, 37, or 40 are selected
+- `VS-005` when any selected category is `Type: compliance`, or covers authentication or logging of
+  sensitive data (resolve from the manifest's Type and Title columns, not a number list)
+- `VS-006` when any selected category covers an outbound integration or a rate/consumption control
 
 ## Per-stack hardening references (load on stack detection)
 
@@ -253,13 +256,16 @@ findings stay precise and framework defaults aren't reported as bugs.
 
 Load more than one when the repo spans stacks (e.g., a Next.js frontend + a Go service). If no
 per-stack reference exists for the detected stack, proceed with the category guidance alone (the
-69 active categories are cross-cutting and stack-agnostic).
+62 active categories are cross-cutting and stack-agnostic).
 
 ## Example Output
+
+The cap is what makes this honest — on this stack fourteen triggers fire and four get cut.
 
 ```
 Quick Scan selected.
 Detected tech stack: Next.js, Prisma, Stripe, Supabase
-Selected categories: 1, 2, 3, 4, 6, 13, 17 (7 categories)
+Selected categories: 1, 2, 3, 4, 6, 13, 17, 28, 32, 47 (10 of 14 candidates)
+Dropped for the 10-category cap: 5, 30, 62, 63 — run a Full System Scan to cover them.
 Starting scan...
 ```

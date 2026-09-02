@@ -6,7 +6,7 @@
 | Identifiers | Pixel id (15-16 digits), App ID, Ad Account `act_<digits>`, Business Manager id |
 | Server-side | **Conversions API (CAPI)** — `graph.facebook.com/<pixel-id>/events` |
 | Account model | Business Manager → ad account → campaign → ad set → ad |
-| Marketing API | `graph.facebook.com/v21.0` |
+| Marketing API | `graph.facebook.com/${ADSSEC_META_VERSION}` |
 | Auth | OAuth2 user/page/system-user tokens; `appsecret_proof` strongly recommended |
 | Consent | NOT a Google Consent Mode v2 partner — uses `fbq('consent', ...)` |
 
@@ -31,7 +31,8 @@ Custom events require manual configuration as a custom conversion before they're
 
 ## CAPI
 
-- Endpoint: `POST https://graph.facebook.com/v21.0/<pixel-id>/events?access_token=<TOKEN>&appsecret_proof=<PROOF>`
+- Endpoint: `POST https://graph.facebook.com/${ADSSEC_META_VERSION}/<pixel-id>/events?access_token=<TOKEN>&appsecret_proof=<PROOF>`
+- The Graph version is pinned in one place — `ADSSEC_META_VERSION` in `lib/platforms/meta.sh` (`v26.0` as of 2026-09-01); the CAPI stub templates read `META_GRAPH_VERSION` from the environment with the same default. Meta supports each version for roughly two years, so re-pin it yearly.
 - Body: `{ "data": [ { "event_name": "Purchase", "event_time": <unix>, "event_id": "<dedupe-key>", "action_source": "website", "user_data": { "em": ["<sha256>"], "ph": ["<sha256>"], "client_ip_address": "<ip>", "client_user_agent": "<ua>", "fbp": "<fbp>", "fbc": "<fbc>" }, "custom_data": { "currency": "USD", "value": 99.0 } } ] }`
 - **Event Match Quality (EMQ)** ≥7/10 target. Strongest: hashed email + phone + external_id + fbp + fbc + IP + UA.
 - **Dedup**: same `event_id`, `event_name`, `event_time` within 24h between pixel and CAPI.

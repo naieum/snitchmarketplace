@@ -69,7 +69,7 @@ Web.dev on JS bundle optimization: https://web.dev/articles/reduce-javascript-pa
 - No code splitting → High.
 - moment.js / full-lodash in client bundle → Medium.
 
-**Fix voice:** `performance-engineer` (primary) | `dieter-rams` (backup).
+**Fix voice:** `performance-engineer` (primary) | `less-but-better-designer` (backup).
 
 Read `souls/performance-engineer.json` before writing the Fix.
 

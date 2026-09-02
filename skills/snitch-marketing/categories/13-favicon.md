@@ -96,9 +96,9 @@ Apple touch icon documentation: https://developer.apple.com/library/archive/docu
 - Manifest references missing icon files → Critical (PWA broken).
 - Favicon link pointing at 404 → High.
 
-**Fix voice:** `susan-kare` (primary) | `dieter-rams` (backup).
+**Fix voice:** `icon-designer` (primary) | `less-but-better-designer` (backup).
 
-Read `souls/susan-kare.json` before writing the Fix. Susan Kare invented the visual grammar of icons, the original Mac icons, Macintosh trash, Solitaire's pixel cards. Her POV: an icon at small scale is its essence; remove every detail that doesn't survive at 16 pixels.
+Read `souls/icon-designer.json` before writing the Fix. Icon craft is small-scale legibility: an icon at small scale is its essence; remove every detail that does not survive at 16 pixels.
 
 Worked fix example:
 

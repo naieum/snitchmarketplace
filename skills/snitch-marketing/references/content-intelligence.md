@@ -63,5 +63,6 @@ page an engine should cite.
 
 ---
 
-*Metrics adapted from the MIT-licensed claude-rank project (Flesch-Kincaid, Jaccard >0.80,
-TF-IDF cannibalization). Internal reference only; not surfaced in reports.*
+*Metrics (Flesch-Kincaid, Jaccard >0.80, TF-IDF cannibalization) are standard measures, assembled
+here from open-source SEO rule sets that use the same three. Internal reference only; not surfaced
+in reports.*

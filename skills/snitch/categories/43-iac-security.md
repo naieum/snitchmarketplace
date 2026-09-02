@@ -1,7 +1,13 @@
 ## CATEGORY 43: Infrastructure as Code Security
-> Type: posture · Groups: — · CWE: CWE-16
+> Type: posture · Groups: infra-supply-chain, modern-stack · CWE: CWE-16
 
 Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Dockerfiles. The cloud / orchestrator IS the attack surface for many AI-generated apps; misconfigured infra ships the blast radius. This category catches high-leverage configuration mistakes before they reach an exploitable runtime.
+
+> **Scope.** Categories 11 (Cloud Security) and 71 (IaC Misconfiguration) were merged into this one.
+> Cloud credentials found in source belong to Category 3 (Hardcoded Secrets); an application-code
+> path that reaches the metadata endpoint belongs to Category 5 (SSRF). This category owns the
+> declared infrastructure: what the IAM policy, security group, bucket, pod spec, and instance
+> metadata options actually say.
 
 ### Detection
 - **Terraform**: `*.tf`, `*.tfvars`. Resource blocks (`resource "type" "name" { ... }`), variable definitions, IAM policy documents (often as heredocs)
@@ -26,12 +32,14 @@ Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Doc
 - Missing logging/monitoring on resources (no CloudTrail, no VPC flow logs)
 - Default VPC usage instead of custom VPCs
 - Missing state file encryption or remote state without locking
+- Instance metadata service left on v1: `metadata_options` absent, or present with `http_tokens = "optional"`, on `aws_instance` / `aws_launch_template` / `aws_launch_configuration`. IMDSv1 answers any request that reaches it, so any SSRF in the workload (Category 5) becomes instance-credential theft. IMDSv2 (`http_tokens = "required"`) needs a PUT for a session token first, which a plain SSRF cannot produce. Also read `http_put_response_hop_limit` — a limit above 1 lets a container reach the host's metadata through the bridge
 
 **CloudFormation:**
 - Same S3 / IAM patterns in CFN syntax (`AccessControl: PublicRead`, permissive `PublicAccessBlockConfiguration`, `AWS::IAM::Policy` PolicyDocument with wildcards)
 - Security groups with `0.0.0.0/0` ingress on sensitive ports
 - Unencrypted resources (missing `KmsKeyId`, `StorageEncrypted`)
 - Missing `DeletionPolicy` on stateful resources (RDS, DynamoDB, S3)
+- `AWS::EC2::Instance` / `LaunchTemplate` without `MetadataOptions.HttpTokens: required`
 
 **Kubernetes:**
 - Containers running as root (missing `runAsNonRoot: true` AND no non-zero `runAsUser`)
@@ -40,7 +48,7 @@ Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Doc
 - HostPath mounts to sensitive directories (`/etc`, `/var/run/docker.sock`)
 - Missing `resources.limits` for CPU and memory — one bad pod can DoS the node
 - Image tags that are `:latest` or unset — non-reproducible deployments
-- Missing network policies; default service account usage
+- Missing network policies; default service account usage. A namespace with no `NetworkPolicy` restricting egress lets any pod reach the node's metadata IP (`169.254.169.254`), which on a node with an attached instance profile is the same credential-theft path
 - Secrets in plain YAML (`kind: Secret` with base64 values committed — not sealed-secrets or external-secrets)
 
 **Dockerfile:**
@@ -57,6 +65,8 @@ Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Doc
 - Kubernetes pod running as root with `privileged: true` and no resource limits — on a multi-tenant cluster, node escape reaches all tenants
 - HostPath mount to `/var/run/docker.sock` — container can control the Docker daemon
 - Secrets defined as plain `kind: Secret` with base64-encoded values in committed YAML
+- EC2 instance or launch template with IMDSv1 allowed (`http_tokens` unset or `"optional"`) in a workload that makes outbound requests on behalf of users — pair the finding with the Category 5 sink when one is in scope
+- Workload namespace with no egress NetworkPolicy, on a cluster whose nodes carry an instance profile
 - Dockerfile piping a remote installer into `sh` — if the domain is later bought by an attacker, every CI rebuild becomes an attack vector
 
 ### NOT Vulnerable
@@ -67,6 +77,7 @@ Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Doc
 - Kubernetes pods with `runAsNonRoot: true`, resource limits, read-only root filesystem; root-by-necessity system DaemonSets that drop capabilities
 - Multi-stage Dockerfile stages running as root before the final stage drops privilege — only the final stage matters at runtime
 - Sealed Secrets or External Secrets Operator; `.tfvars` files listed in `.gitignore`
+- `http_tokens = "required"` with `http_put_response_hop_limit = 1`, or an egress NetworkPolicy / firewall rule that blocks the metadata address — quote the argument, not the resource name
 
 ### Context Check
 1. Is this infra production, staging, or dev? A wide-open Postgres on `0.0.0.0/0` is critical in prod, acceptable in a sandbox VPC
@@ -77,6 +88,7 @@ Static policy checks on Terraform, CloudFormation, Kubernetes manifests, and Doc
 6. Is state file encryption and locking configured for Terraform?
 7. Does the org have a documented exception? `# snitch-allow: <rule-id>` inline comments suppress flagged rules
 8. Is the misconfig in a generated file (CDK output, Helm template render)? Flag at the source (the CDK / Helm template), not the rendered output
+9. Does the workload carry an instance profile or service account worth stealing, and is its metadata endpoint reachable — IMDSv2 required, hop limit 1, or egress blocked?
 
 ### Evidence Chain
 A finding's Evidence block must show:
@@ -98,6 +110,7 @@ A finding's Evidence block must show:
 - `Dockerfile`, `Dockerfile.*`, `*.dockerfile`
 - `kustomization.yaml`, `helmfile.yaml`, `values.yaml`
 - `.github/workflows/*.yml` (IaC deployment steps)
+- `metadata_options` / `MetadataOptions` blocks in Terraform and CloudFormation; `NetworkPolicy` manifests
 
 ### Reference
 Walk every `*.tf` / CFN template / K8s manifest / Dockerfile against the checks above (S3 / IAM / RDS / SG / secret-in-TF for Terraform + CloudFormation; runAsRoot / privileged / host-network / no-resource-limits / latest-tag for Kubernetes; runAsRoot / curl-pipe-sh / latest-base for Dockerfile), reporting a rule ID and a per-resource fix for each. Precision is lower on subtle YAML structure and HCL interpolation, so calibrate confidence accordingly. If the project already runs a dedicated IaC scanner (tfsec, checkov, trivy), run it and reconcile against these checks rather than duplicating them.

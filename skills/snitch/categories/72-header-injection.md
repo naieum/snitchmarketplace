@@ -3,11 +3,25 @@
 
 User input concatenated into HTTP request headers, response headers, or any line-based protocol field, without stripping CR / LF / control characters. The attacker injects a delimiter (typically `\r\n`) and smuggles an extra header, an extra protocol field, or a fake response. Old class (CWE-93, CWE-113, CWE-74), still landing high-severity CVEs in 2026 because protocol parsers are everywhere AI-generated code reaches: webhook dispatchers, request-forwarding proxies, custom auth middleware, internal service callers. CVE-2026-3854 (GitHub Enterprise Server RCE, April 2026) was exactly this pattern: a push option value with a delimiter char escalated to RCE on the appliance.
 
-**Data flow tracing required (SKILL.md Rule 7).** Trace every value written into a header sink (`res.setHeader`, `res.writeHead`, `response.headers.set`, `fetch({ headers })`, `axios.defaults.headers`, custom protocol writers) back to its source. Hardcoded header values are Passes. Header values built from `req.*` / cookies / OAuth state / push options / webhook payload / agent output without CR/LF stripping or value escaping are findings. The trace must reach the actual write call: header values often flow through `setCors(req, res)` style helpers where the unsafe write hides one layer down.
+**Data flow tracing required (SKILL.md Rule 7).** Trace every value written into a header sink (`res.setHeader`, `res.writeHead`, `response.headers.set`, `fetch({ headers })`, `axios.defaults.headers`, raw socket writes, custom protocol writers) back to its source. Hardcoded header values are Passes. Trace `res.setHeader` / `res.writeHead` like any other sink, then disposition the completed trace with the runtime-guard block below — the guard decides Pass vs finding, it does not excuse you from tracing. Header values built from `req.*` / cookies / OAuth state / push options / webhook payload / agent output without CR/LF stripping or value escaping are findings. The trace must reach the actual write call: header values often flow through `setCors(req, res)` style helpers where the unsafe write hides one layer down.
+
+**Runtime-guard Pass — read this before flagging `res.setHeader` / `res.writeHead`.** Node's
+`OutgoingMessage.setHeader` and `writeHead` validate header values and throw `ERR_INVALID_CHAR` on
+CR/LF; `http.validateHeaderValue()` exposes the same check. The response-splitting CVE against
+`writeHead`'s reason argument was fixed in 0.10.47 / 0.12.16 / 4.6.0 / 6.7.0, so on any Node release
+still receiving support
+a CR/LF in a response header value is a 500, not a split response. **Record it as a Pass with the
+runtime named**, not a finding, and do not carry a severity for it. Splitting is still live where
+that guard does not exist: raw `socket.write()` of a hand-built response, response strings assembled
+by string concatenation and written to a stream, non-Node runtimes and language stacks with no
+equivalent validation, and any *upstream* proxy or CDN that reparses what you emit. Say which of
+those you found. The same reasoning does not extend to the outbound side by default — request-side
+header handling has had its own CRLF issues in HTTP client libraries, so check the client rather than
+assuming a guard.
 
 ### Detection
 - Any code that builds an HTTP header value from a request body, query string, header, cookie, path segment, or any other input the caller controls.
-- Target functions / properties: `fetch(..., { headers: { ... } })`, `Headers.set()`, `Headers.append()`, `axios.get(..., { headers: ... })`, `http.request({ headers: ... })`, `XMLHttpRequest.setRequestHeader()`, `Response.headers.set()`, framework reply helpers that don't auto-sanitize.
+- Target functions / properties: `fetch(..., { headers: { ... } })`, `Headers.set()`, `Headers.append()`, `axios.get(..., { headers: ... })`, `http.request({ headers: ... })`, `XMLHttpRequest.setRequestHeader()`, `Response.headers.set()`, framework reply helpers that don't auto-sanitize, and raw `socket.write()` / stream writes of hand-built response text.
 - Look for string concatenation, template literals, or property assignment where the right-hand side is user-derived and the left-hand side is a header name.
 - Also look at logging libraries that write user input to access logs without escaping (CRLF log forging — same family, lower severity).
 
@@ -29,27 +43,29 @@ User input concatenated into HTTP request headers, response headers, or any line
 - Pattern: `internalHeader = "field1=" + value1 + "\nfield2=" + value2` where any of the values is user-supplied and unescaped.
 - Common in: build-tool wrappers, internal-RPC clients, anything wrapping a wire protocol that uses line-based framing.
 
-**Response-side splitting (older shape, still relevant):**
-- `res.setHeader("Set-Cookie", req.query.session)` — user input flows into a response header, can split the response.
-- Redirect helpers: `res.setHeader("Location", req.body.next)` without URL validation can also leak via embedded `\r\n`.
+**Response-side splitting (only where no runtime guard exists):**
+- Raw response construction: `socket.write("HTTP/1.1 302 Found\r\nLocation: " + userValue + "\r\n\r\n")` — no library is between the value and the wire.
+- A response assembled as a string in a language or runtime whose header API performs no CR/LF validation, then written to a stream.
+- `res.setHeader("Location", req.body.next)` on Node is an **open-redirect** question (Category 4), not a splitting one — the CR/LF half is caught by the runtime.
 
 ### Actually Vulnerable
 - A webhook dispatcher takes `customHeaders` from a customer's webhook config and passes them straight to `fetch`. Customer sets `X-Custom: foo\r\nX-Internal-Auth: stolen-value` — the outbound request now carries an unintended `X-Internal-Auth` header that the receiving service trusts.
 - A reverse-proxy on Cloudflare Workers does `headers: { ...incomingReq.headers, "X-Forwarded-For": ip }` — an inbound header containing `\r\n` smuggles arbitrary headers into the upstream request.
 - A custom build-tool wrapper takes `--build-arg` values from a CI variable and injects them into an internal HTTP header that drives container provisioning. Attacker controls the variable, smuggles a privileged-mode field. (Same shape as CVE-2026-3854.)
 - An admin-only "replay request" debug endpoint takes a JSON header map and forwards it. Compromised admin session escalates to internal-service access via header injection.
+- A hand-built HTTP response written straight to a socket with a user-controlled `Location` value and no CR/LF stripping — nothing validates it before the wire.
 - A logging shim writes `console.log("login attempt: " + email)` where email is user-supplied. Email contains `\nALERT: account locked` — the log line is now two lines, the second one looks like a system event to the log analyzer.
 
 ### NOT Vulnerable
 - Header values built only from server-side constants, env vars, or values that have already passed a typed schema (Zod, Pydantic) where the schema rejects strings containing CR/LF.
-- Header values that pass through a known sanitizer: `sanitizeHeader()`, `encodeURI()` (for the path/query case), framework helpers that explicitly strip CR/LF (e.g., the `Response` constructor in undici / Cloudflare Workers throws on header values containing `\n`).
+- Header values that pass through a known sanitizer: `sanitizeHeader()`, `encodeURI()` (for the path/query case), or a runtime that validates for you — Node's `res.setHeader` / `res.writeHead` (`ERR_INVALID_CHAR`), and the `Response` / `Headers` constructors in undici, Cloudflare Workers, and Deno, all reject CR/LF in a header value. Name the guard in the Pass evidence.
 - Authorization tokens generated server-side (JWT signed locally, opaque tokens from a secrets manager) — the format guarantees no embedded delimiters.
 - Response headers built by the framework's structured helpers (`res.cookie()` in Express with the `signed` option, Fastify `reply.setCookie()`) where the helper handles encoding.
 - Test fixtures, mocks, and obvious test files (`*.test.*`, `*.spec.*`, `__tests__/`).
 
 ### Context Check
 1. Is the value's source actually user-controlled? Trace it back. Hardcoded strings, env vars, and server-generated tokens are not user input.
-2. Does the runtime already reject CR/LF in header values? Modern fetch implementations (undici, Workers, Deno) throw on invalid header chars — this turns a vulnerability into a 500 error, not exploitation. Older `node:http`, axios with a custom transport, or string-templated raw HTTP calls do NOT have this guard.
+2. Does the runtime already reject CR/LF in header values? Node's response header API and the WHATWG `Headers` implementations in undici, Workers, and Deno all throw — that turns a would-be split into a 500, which is a Pass with the guard named, not a downgraded finding. What does **not** have the guard: raw socket writes, string-built response text, a custom transport that bypasses the library's header layer, and stacks in other languages. Check which one you are looking at before writing the finding.
 3. Is the receiver a trust boundary? Header injection into a header that another service trusts (`X-Internal-Auth`, `X-User-Id`) is critical. Header injection into a header the receiver ignores (a vanity `X-Trace-Id`) is low-impact.
 4. Is there a sanitizer between the input and the header? `value.replace(/[\r\n]/g, '')`, `sanitizeHeader()`, or a regex-validated schema are all valid mitigations. If the sanitizer runs, the pattern is fine.
 5. Is the code path even reachable in production? Header-building code in dev-only debug routes (gated behind `if (env.DEV)`) is not a production exposure.
@@ -62,15 +78,15 @@ User input concatenated into HTTP request headers, response headers, or any line
 - The receiver-side impact link: which downstream service or client trusts the injectable header (e.g., `X-Internal-Auth`), or why response splitting / protocol-field smuggling is exploitable in this path
 
 ### Confidence Scoring
-- **High**: complete trace from user-controlled input to a header write on a runtime that does not reject CR/LF, with no sanitizer in the path, and a receiver that trusts the injectable field
-- **Medium**: trace complete but the runtime likely rejects invalid header chars (turning the exploit into a 500), or the sink is confirmed while the receiver's trust in the header is unconfirmed
+- **High**: complete trace from user-controlled input to a header write with **no runtime validation on that path** (raw socket write, string-built response, custom transport, or a stack with no equivalent check), no sanitizer, and a receiver that trusts the injectable field
+- **Medium**: the sink is confirmed but the receiver's trust in the header is unconfirmed, or the client library's header handling could not be pinned to a version
 - **Low**: header value derives from input whose format is constrained upstream (server-generated token, validated enum) or the path appears dev-only/unreachable and could not be fully traced — tag `needs human verification`
 
 ### Files to Check
 - `**/proxy*.{ts,js}`, `**/forward*.{ts,js}`, `**/gateway*.{ts,js}` (request-forwarding code)
 - `**/webhook*.{ts,js}`, `**/dispatch*.{ts,js}` (outbound webhook dispatchers with custom header maps)
 - `**/middleware/**` (custom auth / CORS helpers that write headers)
-- API routes and handlers that call `res.setHeader` / `res.writeHead` / `headers.set` / `fetch` with constructed headers
+- API routes and handlers that call `headers.set` / `fetch` with constructed headers, and any code writing response text to a socket or stream directly
 - Logging shims and access-log formatters (CRLF log forging)
 
 ### Reference

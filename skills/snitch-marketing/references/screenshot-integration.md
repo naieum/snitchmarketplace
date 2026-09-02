@@ -8,7 +8,8 @@ Screenshot capture runs only when:
 
 1. The audit is in **crawl mode** (source mode has no rendered DOM to screenshot).
 2. The Playwright MCP server is available (the agent's tool list includes `mcp__plugin_playwright_playwright__browser_navigate`, `browser_take_screenshot`, etc.).
-3. The cat being scanned is marked `screenshot-relevant: true` in its category file.
+3. The cat being scanned appears in the screenshot-relevance table below (this file is the only
+   source of truth for that list; category files carry no screenshot flag).
 4. The finding's evidence has a URL + element selector (so the screenshot can be focused on the relevant part of the page).
 
 If any condition fails, the audit skips screenshot capture for that cat / finding silently. The report's `audit_metadata` notes:
@@ -22,7 +23,7 @@ screenshots:
 
 ## Per-cat screenshot relevance
 
-Cats are tagged `screenshot-relevant: true | false` in their category file frontmatter or final metadata block. Default for new cats: `false` (opt-in). Cats currently flagged screenshot-relevant by default:
+Screenshot relevance is declared here and nowhere else. A cat not listed in this table is not screenshot-relevant; adding a cat to the list is the only way to opt it in.
 
 | Cat | Why screenshot-relevant |
 |---|---|
@@ -33,15 +34,14 @@ Cats are tagged `screenshot-relevant: true | false` in their category file front
 | 22 | Breadcrumb component visible in nav |
 | 25, 26 | Image alt visible to screen readers (capture surrounding context) |
 | 28 | CLS / explicit dimensions visible in layout shift |
-| 49 | Color contrast visible in rendered page |
-| 60 | Conversion CTAs visible at hero / pricing / signup |
+| 60 | Conversion CTAs visible at hero / pricing / signup; trust artifacts visible (founder face, testimonials, changelog link, etc.) |
 | 81 | Hero positioning copy visible |
 | 99 | Conversion funnel visible (homepage → pricing → signup) |
-| 111 | Trust artifacts visible (founder face, testimonials, changelog link, etc.) |
+| 103 | Contrast, color-only meaning, visible focus state and target size visible in the rendered page |
 
 Cats NOT screenshot-relevant (source-only or non-visual):
 
-- Cat 1 (robots.txt), Cat 2 (sitemap), Cat 3 (canonical), Cat 4 (indexability), Cat 31 (JSON-LD presence), Cat 39 (font loading), Cat 50-52 (i18n), Cat 53-56 (analytics), schema cats 32-38 + 87-94, Cat 39-44 (performance), Cat 100 (cookieless analytics), Cat 106 (llms.txt), Cat 107-109 (ads measurement methodology).
+- Cat 1 (robots.txt), Cat 2 (sitemap), Cat 3 (canonical), Cat 4 (indexability), Cat 31 (JSON-LD presence), Cat 32 (schema type validation), Cat 94 (Review / AggregateRating), Cat 39 (font loading), Cat 50-52 (i18n), Cat 53 (analytics instrumentation), Cat 39-44 (performance), Cat 82 (AI-search citation, including llms.txt), Cat 109 (ad message match).
 
 ## Capture flow
 

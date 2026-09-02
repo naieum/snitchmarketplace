@@ -18,7 +18,6 @@ the question marks.
 - Billboard Design 101 — five moves for a scannable page
 - Navigation & the home page
 - The reservoir of goodwill — do right by the user
-- Accessibility — the low-hanging fruit
 
 ## The three laws
 
@@ -92,10 +91,10 @@ break it, trap the user, or open things that strand them somewhere Back can't re
 ## Navigation & the home page
 
 The web has no physical sense of scale, direction, or location — navigation is what supplies
-"there's a *there* here," and done well it *is* all the instructions the user needs.
-Site-level navigation (persistent nav, page names, "you are here," breadcrumbs, tabs),
-**the parachute test**, and the home page's job of conveying the big picture live in their own
-file: **`site-navigation.md`**. (For the mobile bottom-tab bar, see `mobile-navigation.md`.)
+"there's a *there* here," and done well it *is* all the instructions the user needs. Site
+structure (persistent nav, page names, "you are here," breadcrumbs, tabs), **the parachute
+test**, the home page's big-picture job, and the mobile bottom-tab bar all live in
+**`navigation.md`**.
 
 The one-line version for the clarity pass: on any deep page, a user should instantly know
 *what site this is, what page they're on, what the sections are, and where they are* — run
@@ -129,18 +128,14 @@ conversion.
 
 ---
 
-## Accessibility — the low-hanging fruit
+## Accessibility
 
-You can't honestly call an interface usable if a whole class of people can't use it —
-accessibility is part of usability, not a separate checklist. And the single most effective
+Accessibility is part of usability, not a separate checklist — you can't honestly call an
+interface usable if a whole class of people can't use it. The single most effective
 accessibility improvement is the same thing that helps everyone: **make it clearer, and test
-it.** People using screen readers "scan with their ears" — they jump by
-the first few words of a link or line — so front-load the meaningful words. Concrete wins:
+it.** People using screen readers "scan with their ears" — they jump by the first few words of
+a link or line — so front-load the meaningful words.
 
-- **Alt text on every image** (empty `alt=""` for purely decorative ones).
-- **Associate form fields with their labels** (`<label for>`), so screen readers announce them.
-- **A "Skip to main content" link** at the top of the page.
-- **Everything usable by keyboard**, not just mouse.
-- **Let text resize** without breaking layout; check a large-type pass.
-- **Sufficient contrast; never encode meaning in color alone.**
-- **Source order = reading order** — the DOM sequence should match how you'd read it aloud.
+The checks themselves, with their WCAG criterion numbers, are `review-checklist.md` §9; the
+wider question of who the user really is, and when persuasion should dial down, is
+`inclusive-design.md`. This file does not keep a second copy of the list.

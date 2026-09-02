@@ -21,7 +21,7 @@ Read when something is broken right now: tracking dropped to zero, a conversion 
 | Mobile platform conversions vanished | iOS ATT decline rate up; SKAdNetwork postback URL misconfigured | check ATT opt-in rate; verify postback URL in Apple Developer |
 | Quality Score dropped | Recent landing-page change degraded LCP/INP/CLS, OR pixel-induced INP regression | `state lighthouse <url>` vs prior snapshot |
 | Google Ads "low quality landing page" | Cookie banner > 30% of viewport (mobile) or interstitial | inspect on mobile; reduce CMP banner footprint |
-| Search Console "structured data error" | JSON-LD invalid (missing required field) | Rich Results Test on affected URL |
+| Merchant Center item disapproved for data mismatch | `Product`/`Offer` markup drifted from the feed (price, availability, lapsed `priceValidUntil`) | Rich Results Test on the product URL, then compare against the feed row |
 
 ## When to escalate to platform support
 
@@ -38,7 +38,7 @@ Read when something is broken right now: tracking dropped to zero, a conversion 
 | Microsoft Advertising | https://status.cloud.microsoft/ |
 | LinkedIn | https://www.linkedin-status.com/ |
 | TikTok Business | (no first-party page; @TikTokBusiness on X) |
-| X | https://api.twitterstat.us/ |
+| X | (first-party status page retired — api.twitterstat.us now serves an inactive page; watch @XDevelopers on X and https://devcommunity.x.com/) |
 | Pinterest | https://www.pinterestbusinessstatus.com/ |
 | Reddit | https://www.redditstatus.com/ |
 | Snap | https://status.snap.com/ |
@@ -47,7 +47,7 @@ Read when something is broken right now: tracking dropped to zero, a conversion 
 ## After the incident
 
 1. Re-run the audit: `state site <url>` + `state crux <url>` + `score <url>`.
-2. Snapshot via `verify` so the next incident has a baseline.
+2. Run `verify <url>` after a `doctor` or `fix` pass — it writes a findings snapshot so the next incident has a baseline to diff against.
 3. Document root cause + fix in the team's runbook.
 
 ## Honest framing
@@ -56,6 +56,6 @@ Many "incidents" aren't incidents — they're attribution shifts caused by priva
 
 ## See also
 
-- `12-migration.md` — past privacy shifts.
+- `04-consent-and-cmp.md` — the privacy regimes behind most attribution shifts.
 - `14-cost-and-budgets.md` if symptom is "API quota exhausted."
 - `30-recipes.md` — "want help fixing this?" prompt.

@@ -2,6 +2,8 @@
 
 When to read this: auditing an Android app's privacy posture — the Data safety form, restricted permissions, foreground services, ads identifiers, health, Families, and content-rating declarations.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 ## Data safety form
 
 Mandatory for every app, including "no data collected". Declare per data type: collected vs shared, ephemeral processing, required vs optional, and purpose (app functionality, analytics, developer communications, advertising, fraud prevention/security, personalization, account management).
@@ -31,7 +33,7 @@ Static check: sign-up flow present but no delete-account route or screen.
 
 ## Restricted permissions requiring Play Console declaration forms
 
-Any of these in the manifest without its Console declaration (and a defensible core-feature justification) blocks the release. Current as of 2026-08 — verify in Play Console's App content section:
+Any of these in the manifest without its Console declaration (and a defensible core-feature justification) blocks the release. Verify in Play Console's App content section:
 
 | Permission / API | Rule |
 |---|---|
@@ -42,7 +44,7 @@ Any of these in the manifest without its Console declaration (and a defensible c
 | Accessibility services (`BIND_ACCESSIBILITY_SERVICE`) | non-accessibility uses must be declared; `isAccessibilityTool` flag; heavy scrutiny |
 | `USE_EXACT_ALARM` | alarm-clock/calendar-class apps only; prefer `SCHEDULE_EXACT_ALARM` |
 | `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO` | broad gallery access only if core to the app; one-time/infrequent selection must use the Android photo picker; declaration required |
-| Broad contacts access | restricted per the 2026-04 policy update — use the contact picker unless contacts are core (current as of 2026-08 — verify in Play Console) |
+| Broad contacts access | Contacts Permissions policy announced 2026-04-15; enforcement for apps targeting Android 17+ (API 37+) begins 2026-10-28 (Play Console pre-review checks from 2026-10-27) — use the contact picker unless contacts are core, or file the Play Console declaration before enforcement starts. See "facts verified" note above. |
 | `REQUEST_INSTALL_PACKAGES` | package-installer class apps only |
 | `SYSTEM_ALERT_WINDOW`, VPNService, body sensors | policy-scrutinized; expect justification requests |
 
@@ -82,5 +84,5 @@ Apps "unintentionally appealing to children" get flagged too; do not use kid-sty
 ## Content rating and sector declarations
 
 - IARC questionnaire is mandatory; unrated apps are removed. The rating must account for ads shown in the app, and must be redone when content changes. Deliberate misrating is enforced.
-- News apps: self-declaration required (in-scope apps without it were removed after 2026-05-27; current as of 2026-08 — verify in Play Console).
+- News apps: self-declaration required (in-scope apps without it were removed after 2026-05-27; verify in Play Console).
 - Government-process apps need Organization accounts and may need proof of authorization.

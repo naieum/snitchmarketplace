@@ -12,14 +12,16 @@ arithmetic is fully shown so a reader can reconstruct it from the findings list.
 ## When surfaced
 
 Render the `## GEO readiness score` section in the report (per `references/report-template.md`) only
-when Cat 82 (AI-search citation), Cat 102 (multi-LLM), or Cat 106 (llms.txt) were in scope for the
+when Cat 82 (AI-search citation) was in scope for the
 scan. If none ran, omit the section entirely (do not show a placeholder). Mirrors the inclusion
 rule used for field-CWV and the previous-audit comparison.
 
 ## Methodology (deduction model)
 
 Start at 100. Deduct per finding by severity. Count each rule once, regardless of how many pages it
-recurs on (a site-wide missing-llms.txt is one deduction, not one per page).
+recurs on (a site-wide missing-llms.txt is one deduction, not one per page) — and once across
+components: every input below comes from a different part of Cat 82, so no finding can be deducted
+twice under two component names.
 
 | Severity | Deduction |
 |---|---|
@@ -37,12 +39,14 @@ Only findings from these GEO surfaces count toward the GEO score:
 
 - **Crawler access** — Cat 1 + `references/ai-crawler-registry.md` (AI crawler blocked = its
   severity).
-- **llms.txt** — Cat 106 (recalibrated severity; see that cat's posture note).
+- **llms.txt** — Cat 82 Layer 1 (recalibrated severity; see that layer's posture note — a missing
+  file is Medium at most, and it deducts here only).
 - **Citability + answer fitness** — Cat 82 layer 2 + `references/citability-scoring.md`
   (passages outside their answer-surface band, weak front-loading/definition).
-- **Extractability + schema** — Cats 31, 35, 37 (missing JSON-LD that backs answer blocks).
+- **Extractability + schema** — Cat 31 (missing JSON-LD) and Cat 32's FAQPage and Organization rows (the markup that backs answer blocks).
 - **Brand authority** — Cat 82 layer 3 + `references/brand-authority-platforms.md`.
-- **Multi-LLM coverage** — Cat 102 (cited by some assistants, absent from others).
+- **Per-assistant coverage** — Cat 82's per-assistant section (cited by some assistants, absent
+  from others where the audience is).
 
 ## Presentation rule
 
@@ -59,6 +63,6 @@ exactly the vanity metric this skill avoids.
 
 ---
 
-*Deduction model adapted from the MIT-licensed claude-rank project; the weighted-percentage
-composite published by geo-seo-claude is intentionally not used (its weights are unsourced).
-Internal reference only; the score itself is customer-facing, this methodology doc is not.*
+*Deduction model adapted from open-source AI-search rule sets; the weighted-percentage composites
+those sets publish are intentionally not used, because their weights are unsourced. Internal
+reference only; the score itself is customer-facing, this methodology doc is not.*

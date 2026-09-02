@@ -1,18 +1,18 @@
 ---
 name: snitch-focusedcopy
-description: Structure persuasive on-page copy — landing pages, pricing pages, sales/waitlist pages, cold emails, ad or VSL scripts — around the CLOSER framework (Clarify why they're here, Label the right visitor, Overview the pain, Sell the outcome before the mechanism, Explain objections, Reinforce the decision), adapted from Alex Hormozi's live-sales-call structure to written pages. Audits an existing page's section order and stage coverage, then reorders sections and tightens copy to close gaps, verifying every claim against the actual product before it is written. Triggers on "structure this page like a sales call", "apply the CLOSER framework", "this page isn't converting", "reorder these sections for persuasion", "who is this landing page for", "handle objections on this page", "make this pitch land", "sell the outcome not the mechanism". Do NOT use for SEO / technical marketing audits (use snitch-marketing), broader UX / interaction / dark-pattern review (use snitch-ux), or plain technical prose (use snitch-docwriter) — this skill owns persuasive narrative STRUCTURE and stage-by-stage copy only, and it must never invent a claim just to fill a stage.
+description: Structure persuasive on-page copy — landing pages, pricing pages, sales/waitlist pages, cold emails, ad or VSL scripts — around the CLOSER framework (Clarify why they're here, Label the right visitor, Overview the pain, Sell the outcome before the mechanism, Explain objections, Reinforce the decision), a widely taught six-stage sales-call structure adapted to written pages. Audits an existing page's section order and stage coverage, then reorders sections and tightens copy to close gaps, verifying every claim against the actual product before it is written. Triggers on "structure this page like a sales call", "apply the CLOSER framework", "this page isn't converting", "reorder these sections for persuasion", "who is this landing page for", "handle objections on this page", "make this pitch land", "sell the outcome not the mechanism". Do NOT use for SEO / technical marketing audits (use snitch-marketing), broader UX / interaction / dark-pattern review (use snitch-ux), plain technical prose (use snitch-docwriter), off-site channel drafts or marketing strategy (use snitch-cmo), or deciding which pages should exist (use snitch-blueprint) — this skill owns persuasive narrative STRUCTURE and stage-by-stage copy only, and it must never invent a claim just to fill a stage.
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.2.0
   homepage: https://snitchplugin.com
 ---
 
 # Snitch: Focused Copy
 
-A structure system for persuasive copy, built on **CLOSER** — the six-stage sales-call
-framework Alex Hormozi teaches in *$100M Leads* (Clarify, Label, Overview, Sell, Explain,
+A structure system for persuasive copy, built on **CLOSER** — a widely taught six-stage
+sales-call structure, adapted to written pages (Clarify, Label, Overview, Sell, Explain,
 Reinforce). A live sales call and a landing page do the same job — take a stranger from "why
 am I here" to "I'm in" — but a call has a human on the other end asking questions and
 handling objections turn by turn. A page has none of that: every stage has to happen through
@@ -34,17 +34,18 @@ cold emails, ad copy, VSL/UGC video scripts, pitch decks — any single piece of
 funnel whose job is to move a stranger toward a specific decision.
 
 **Never applies to:** technical docs, READMEs, error messages, or anything that should read
-as neutral instruction, not persuasion (use snitch-docwriter). Not a substitute for
+as neutral instruction, not persuasion — hand off by calling the Skill tool with
+"snitch-docwriter". Not a substitute for
 snitch-marketing (search/AI-citation/schema mechanics) or snitch-ux (interaction design,
 usability, dark-pattern review across a whole product) — this skill only owns whether a
 specific piece of persuasive copy tells its story in the right order, using true claims.
 
-snitch-marketing's category 114 ("Persuasion architecture") also touches this territory but
-does a different job: it's a whole-site, evidence-tiered research audit that *scores* seven
-psychology surfaces against academic literature (0–175, letter grade). This skill doesn't
-score or research — it applies one named, practical framework (CLOSER) to reorder and rewrite
-a specific page or funnel directly. Reach for cat 114 when you want a holistic, cited audit
-of a whole site; reach for this skill when you just need one page's persuasion arc fixed.
+snitch-marketing's persuasion-architecture category also touches this territory but does a
+different job: it's a whole-site, evidence-tiered research audit that *scores* the site's
+persuasion surfaces against academic literature. This skill doesn't score or research — it
+applies one named, practical framework (CLOSER) to reorder and rewrite a specific page or
+funnel directly. Reach for that category when you want a holistic, cited audit of a whole
+site; reach for this skill when you just need one page's persuasion arc fixed.
 
 ## The six stages
 
@@ -61,8 +62,8 @@ Adapted for written copy, not a live call:
   use themselves, before presenting the solution. Concrete and recognizable beats generic
   ("we solve inefficiency"). This is where a fair, specific comparison against the status quo
   or a named alternative belongs.
-- **S — Sell the outcome, not the mechanism.** Hormozi's line for this is "sell the vacation,
-  not the plane ride": lead with the transformation the reader gets, then explain how it
+- **S — Sell the outcome, not the mechanism.** The shorthand: sell the vacation, not the
+  plane ride — lead with the transformation the reader gets, then explain how it
   works. The most common bug in SaaS copy is doing this backward — opening with architecture,
   model names, or feature lists before the reader has a reason to care what powers any of it.
   Outcome first, mechanism second, always.
@@ -98,8 +99,9 @@ the difference between a persuasive page and a false one. Concretely:
   a strong claim; a false absence is a liability the moment anyone checks.
 - Before writing a comparison ("more than X," "faster than Y," "cheaper than the
   alternative"), confirm the comparison is one you can actually source — a real price, a real
-  measured number, a real doc. If you can't verify it, either drop the specific comparison or
-  soften it to what you *can* stand behind.
+  measured number, a real doc. When the source is a competitor's page rather than this
+  product's own, cite the URL actually fetched this run, with the date. If you can't verify
+  it, either drop the specific comparison or soften it to what you *can* stand behind.
 - Before writing a number (a cap, a percentage, a count, a price), read it out of the source
   of truth (config, database schema, pricing table) rather than recalling it from memory or
   from other marketing copy, which may itself be stale or wrong.
@@ -139,6 +141,18 @@ the difference between a persuasive page and a false one. Concretely:
    internals.
 7. **Verify the result renders correctly** if it's a live page (start the dev server, view
    it) before reporting the work as complete.
+
+## Outcomes
+
+Every stage and every claim gets one of three outcomes, not just a Finding:
+
+- **Finding** — a stage is missing, out of order, imbalanced, or carries an unverified claim.
+  See the format below.
+- **Pass-with-evidence** — a stage is present and in the right order: name the stage and
+  quote the section that does its job.
+- **Skip-with-reason** — a claim can't be checked against the available source (the pricing
+  table isn't in the workspace, the live page needs a login): say what's missing and what
+  would unblock the check, rather than silently dropping it.
 
 ## Finding format
 

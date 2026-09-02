@@ -51,26 +51,51 @@ read it and not be misled about anything.
 product-information facts. It is the doc most worth the user's review.
 
 **Inputs:** product-information.md, competitor research (may be drafted before
-competitor-analysis.md is complete, then reconciled), user interview.
+competitor-analysis.md is complete, then reconciled), user interview. The decision procedures
+behind this doc — wedge scoring, the ten-step workshop, the hero drafts, the narrative arc,
+and the pricing read — live in `references/positioning-method.md`; read it before writing this
+doc, not after.
 
 **Required sections:**
 
 - `## Positioning statement` — one sentence: for [who], who [struggle], [product] is
-  [category] that [unique value], unlike [primary alternative].
+  [category] that [unique value], unlike [primary alternative]. Built by the ten-step
+  workshop in `references/positioning-method.md`, whose steps 8–10 stay with the user's team
+  and are reported as their next actions.
+- `## Wedge` — the segment this leads with for the next 60–90 days, the scored candidates
+  behind the choice (four dimensions, evidence per cell), the two backups, and the pivot
+  conditions that would end the commitment. Method and matrix:
+  `references/positioning-method.md`. Single-obvious-buyer products record the skip and its
+  reason instead.
 - `## Who it's for / not for` — the target segment described the way they'd describe
-  themselves, and the explicit not-fit (a positioning without a not-fit isn't one).
+  themselves, and the explicit not-fit (a positioning without a not-fit isn't one). When a
+  `BLUEPRINT.md` exists, cite its Audience & wedge lines here as the shared fact rather than
+  re-deriving them — a `> Evidence:` pointer to the blueprint, not a second interview.
 - `## The alternative we replace` — what the target does today instead (a competitor, a
-  spreadsheet, nothing), and what that costs them.
+  spreadsheet, nothing), and what that costs them. Cites BLUEPRINT.md's Audience & wedge
+  entry when one exists, the same way.
 - `## Unique value` — the one or two things true of this product and not of the
   alternatives, each traceable to product-information features or limits.
 - `## Why now` — what makes this buyable today; honest `_Weak_` marker if there's no real
   answer.
-- `## Claims we never make` — from the user interview plus anything the Real limits section
-  forbids.
+- `## The villain` — one line naming the root cause the brand is against, on the customer's
+  side of the table, never a named competitor. Rules in
+  `references/brand-story-and-collateral.md`. Every draft inherits this line rather than
+  inventing an adversary per post.
+- `## Pricing posture` — the strategy read, in three short buckets: what's working and must
+  survive a redesign, what's worth changing, and what not to do. Method and the evidence each
+  bucket needs: `references/positioning-method.md`. This is the shape of the tier mix, not
+  the number — a product with no price yet gets its number from snitch-blueprint's
+  sensitivity survey (call the Skill tool with "snitch-blueprint"), and this section reads the
+  posture back from it. Free-only products mark the section `_Not applicable_`.
+- `## Claims we never make` — a pointer to `BLUEPRINT.md`'s Claim inventory when one exists:
+  its complement, not a second list (anything absent from that inventory is unwritable here
+  too), plus anything the Real limits section additionally forbids. No `BLUEPRINT.md` →
+  derive the list from the user interview directly.
 
 **Done when:** the positioning statement reads back true against product-information.md and
-distinct against competitor-analysis.md, and the user has been shown it as a decision, not
-buried in a doc dump.
+distinct against competitor-analysis.md, the wedge names one segment with pivot conditions
+attached, and the user has been shown all of it as decisions, not buried in a doc dump.
 
 ---
 
@@ -106,7 +131,10 @@ feature landing). This is what to re-check when the doc is refreshed.
 drafting mode loads first.
 
 **Inputs:** existing site/README copy (the voice is usually already half-formed there), user
-interview, positioning.md (who it's for constrains register).
+interview, positioning.md (who it's for constrains register, and its villain line sets what
+the voice pushes against). When the user is building assets rather than posts — an About
+page, a name, a lead generator, a deck — the story and collateral patterns are in
+`references/brand-story-and-collateral.md`.
 
 **Required sections:**
 
@@ -137,7 +165,10 @@ constraints (hours/week), channel-plan.md (drafted together; reconcile).
 **Required sections:**
 
 - `## Pillars` — three to five topic territories, each with: the buyer intent it serves,
-  why this product has the right to win it (`> Reasoning:`), and 3–5 example titles.
+  why this product has the right to win it (`> Reasoning:`), its business-potential score
+  0–3 (how indispensable the product is to the problem the pillar covers — scoring rules in
+  `references/channel-playbooks.md`, Blog), and 3–5 example titles. A set that skews to 0s
+  and 1s produces traffic that cannot convert; say so here rather than discovering it later.
 - `## Formats` — which content shapes fit the pillars and the user's capacity (long-form,
   threads, show-don't-tell demos...); explicitly cut what doesn't fit the capacity.
 - `## Cadence` — honest per-week output the user confirmed they can sustain. A cadence the
@@ -170,7 +201,7 @@ ranks last).
 - `## First two weeks` — the concrete starting sequence: which foundation-doc-driven drafts
   to produce first, in order.
 - `## Handoffs` — where sibling skills take over: snitch-marketing to grade the site,
-  snitch-focusedcopy for the landing page, ads-ready if paid ranked.
+  snitch-focusedcopy for the landing page, snitch-adsready if paid ranked.
 
 **Done when:** the top three channels each have a reason a skeptic would accept, and at
 least one channel is explicitly skipped (a plan that skips nothing hasn't chosen anything).

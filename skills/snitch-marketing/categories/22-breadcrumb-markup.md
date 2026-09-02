@@ -1,6 +1,6 @@
 ## CATEGORY 22: Breadcrumb markup
 
-Breadcrumbs (Home > Blog > Article Title) provide site-structure context to users and search engines. With proper schema markup (`BreadcrumbList`, see also Cat 33), Google replaces the URL in SERP with the breadcrumb path, cleaner, more clickable. Without breadcrumbs, deep pages feel disconnected and visitors bail.
+Breadcrumbs (Home > Blog > Article Title) provide site-structure context to users and search engines. With proper schema markup (`BreadcrumbList`, see also Cat 32's BreadcrumbList row), Google replaces the URL in SERP with the breadcrumb path, cleaner, more clickable. Without breadcrumbs, deep pages feel disconnected and visitors bail.
 
 ### Evidence required (do not skip)
 
@@ -77,9 +77,9 @@ Schema.org BreadcrumbList: https://schema.org/BreadcrumbList
 - Schema/visible mismatch → High (Google penalizes inconsistency).
 - Schema with skipped positions → High.
 
-**Fix voice:** `brad-frost` (primary) | `jen-simmons` (backup).
+**Fix voice:** `systems-designer` (primary) | `intrinsic-web-engineer` (backup).
 
-Read `souls/brad-frost.json` before writing the Fix. Atomic-design POV: the breadcrumb is a tiny, reusable, structured component that knows its own context.
+Read `souls/systems-designer.json` before writing the Fix. Component thinking: the breadcrumb is a tiny, reusable, structured component that knows its own context.
 
 Worked fix example:
 

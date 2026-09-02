@@ -12,7 +12,7 @@ Skip with reason `not applicable` if the site has no internal search functionali
 
 1. `Grep` for search-widget integrations: `Algolia`, `algoliasearch`, `typesense`, `meilisearch`, `instantsearch`, `useSearch`, `<SearchBar`, `/api/search`. Quote integration locations.
 2. Read the search route / API handler. Quote the search query handling (what does it search? title? body? tags? all?).
-3. Check for search analytics integration: events fired on search (Cat 55) capturing query string + result count + clicked-through result (or zero-result outcome).
+3. Check for search analytics integration: events fired on search (Cat 53) capturing query string + result count + clicked-through result (or zero-result outcome).
 4. If there's a search-analytics dashboard or log, sample the top 50-100 zero-result queries from the past 90 days. Quote them.
 
 **Crawl mode, required tool calls:**
@@ -26,6 +26,10 @@ Skip with reason `not applicable` if the site has no internal search functionali
 - "Search probably returns poor results." Run real queries and quote outputs.
 - "Zero-result queries are probably common." Pull the actual search log if available, or note the audit is partial.
 - "Search analytics may be missing." Show the missing event in the source / analytics console.
+
+### Detection
+
+Search-integration read plus live queries run against the site's own search, including the zero-result cases.
 
 ### What to Search For
 
@@ -83,7 +87,7 @@ Site-search analytics in GA4: https://support.google.com/analytics/answer/101226
 - Brand-name queries return zero results on own site → High.
 - Search results pages indexed → Medium.
 
-**Fix voice:** `analytics-engineer` (primary) | `frank-chimero` (backup).
+**Fix voice:** `analytics-engineer` (primary) | `content-shape-editor` (backup).
 
 Read `souls/analytics-engineer.json` before writing the Fix.
 

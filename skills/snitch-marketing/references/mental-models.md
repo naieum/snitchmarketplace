@@ -104,12 +104,12 @@ The return on the *next* dollar of ad spend, not the average across all spend. A
 ### Second-Order Thinking
 Consider the effects of the effects.
 **Application:** A flash sale boosts revenue (first order) but trains customers to wait for discounts (second order).
-**Relevant categories:** 112, 114 §6
+**Relevant categories:** 114 §6, 115
 
 ### Map ≠ Territory
 Models represent reality but aren't reality. Don't confuse the dashboard with the customer experience.
 **Application:** A persona is a model. Real customers are messier. Stay in touch with actual users.
-**Relevant categories:** 110 (ICP), 74
+**Relevant categories:** 81 (positioning), 74
 
 ### Blended vs Paid CAC
 Paid CAC divides ad spend by customers from ads. Blended CAC divides *all* marketing cost (spend, tools, content, people) by *all* new customers. Paid-only CAC flatters the numbers, especially when organic is doing quiet work in the background.
@@ -180,7 +180,7 @@ People value things more when they have invested effort in creating them.
 ### Zero-Price Effect
 Free is not just cheap. It is psychologically different. "Free" triggers irrational preference.
 **Application:** Free tiers, free trials, free shipping have disproportionate appeal. The jump from $1 to $0 is bigger than $2 to $1.
-**Relevant categories:** 112, 115
+**Relevant categories:** 115
 
 ### Hyperbolic Discounting (Present Bias)
 People strongly prefer immediate rewards over future ones.
@@ -230,12 +230,12 @@ Once you know something, you cannot imagine not knowing it.
 ### Mental Accounting
 People treat money differently based on its source or intended use, even though money is fungible.
 **Application:** Frame costs favorably. "$3/day" feels different than "$90/month" even when identical.
-**Relevant categories:** 115, 112
+**Relevant categories:** 115
 
 ### Regret Aversion
 People avoid actions that might cause regret, even if the expected outcome is positive.
 **Application:** Address regret directly. Money-back guarantees, free trials, no-commitment messaging reduce regret fear.
-**Relevant categories:** 111 (trust artifacts), 60
+**Relevant categories:** 60 (trust artifacts)
 
 ### Post-Purchase Dissonance
 After paying, people re-litigate the decision. The bigger or less reversible the purchase, the stronger the doubt. Unresolved, it becomes refunds, returns, and early churn.
@@ -244,8 +244,8 @@ After paying, people re-litigate the decision. The bigger or less reversible the
 
 ### Social Proof / Bandwagon Effect
 People follow what others do. Popularity signals quality and safety.
-**Application:** Customer counts, testimonials, logos, reviews, "trending" indicators create confidence.
-**Relevant categories:** 74, 111
+**Application:** Customer counts, testimonials, logos, reviews, "trending" indicators create confidence. The signal is worth only its attribution: a named customer, a logo, a third-party review carries it; a brand's own guarantee or an unattributed quote is the brand vouching for itself and carries none of it.
+**Relevant categories:** 74, 60, 114 §2
 
 ---
 
@@ -266,7 +266,7 @@ Once people commit, they want to stay consistent.
 ### Authority Bias
 People defer to experts and authority figures.
 **Application:** Feature expert endorsements, certifications, "featured in" logos, thought leadership content.
-**Relevant categories:** 74, 111
+**Relevant categories:** 74, 60
 
 ### Liking / Similarity Bias
 People say yes to those they like and those similar to themselves.
@@ -291,7 +291,7 @@ Start with a small request, escalate. Compliance with small leads to compliance 
 ### Door-in-the-Face
 Start with an unreasonably large request, then retreat to what you actually want.
 **Application:** Show enterprise pricing first, then reveal the affordable starter plan. Contrast makes the smaller ask feel reasonable.
-**Relevant categories:** 112, 115
+**Relevant categories:** 115
 
 ### Loss Aversion / Prospect Theory
 Losses feel roughly twice as painful as equivalent gains feel good.
@@ -301,7 +301,7 @@ Losses feel roughly twice as painful as equivalent gains feel good.
 ### Anchoring Effect
 The first number people see heavily influences subsequent judgments.
 **Application:** Show the higher price first (original price, competitor price, enterprise tier) to anchor expectations.
-**Relevant categories:** 115, 112
+**Relevant categories:** 115
 
 ### Decoy Effect
 Adding a third, inferior option makes one of the original two look better.
@@ -342,7 +342,7 @@ For prices under $100, percentage discounts read larger ("20% off"). For prices 
 ### Good-Better-Best
 Three tiers where the middle is the target. Expensive tier makes middle look reasonable, cheap tier anchors.
 **Application:** Most B2B SaaS pricing pages should follow this structure. Decoy tier intentional.
-**Relevant categories:** 115, 112
+**Relevant categories:** 115
 
 ### Mental Accounting (Pricing)
 Framing the same price differently changes perception.
@@ -403,7 +403,7 @@ One metric that best captures the value delivered to customers.
 ### Cobra Effect
 When incentives backfire and produce the opposite of intended results.
 **Application:** Test incentive structures. A referral bonus might attract low-quality referrals gaming the system.
-**Relevant categories:** 78 (affiliate referral)
+**Relevant categories:** 76 (affiliate-referral row)
 
 ---
 
@@ -444,7 +444,7 @@ Balance trying new things (exploration) with optimizing what works (exploitation
 ### Critical Mass / Tipping Point
 The threshold after which growth becomes self-sustaining.
 **Application:** Focus resources on reaching critical mass in one segment before expanding.
-**Relevant categories:** 80, 110
+**Relevant categories:** 80, 81
 
 ### Survivorship Bias
 Focusing on successes while ignoring invisible failures.
@@ -511,7 +511,7 @@ Example: "From abandoned-cart users not returning, to abandoned-cart users compl
 | Habit formation | Streaks (ethical), Loss Aversion, COM-B, Self-Determination |
 | Pricing display | Charm vs Rounded, Rule of 100, Decoy, Anchoring |
 | Hero copy | JTBD, Hyperbolic Discounting, Mimetic Desire, Loss Aversion |
-| "Everyone" hero / no ICP focus | JTBD, ICP + anti-persona (Cat 110), Curse of Knowledge |
+| "Everyone" hero / no ICP focus | JTBD, ICP + anti-persona (Cat 81), Curse of Knowledge |
 | No risk reversal near CTA | Regret Aversion, Loss Aversion, Status-Quo Bias |
 | Hesitation to switch | JTBD Four Forces (Push/Pull/Habit/**Anxiety**), Switching Costs |
 | Scaling paid spend | Marginal ROAS, Diminishing Returns, Blended vs Paid CAC, Contribution Margin |

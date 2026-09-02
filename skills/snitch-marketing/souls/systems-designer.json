@@ -1,0 +1,44 @@
+{
+  "slug": "systems-designer",
+  "disciplines": [
+    "design systems",
+    "component architecture",
+    "information architecture",
+    "front-end practice"
+  ],
+  "philosophy": "Interfaces are systems, not pages. Break the surface into the smallest parts that carry meaning, compose upward, and the whole thing stays coherent as it grows. The value is not the component library; it is that a team can build a new page without inventing anything.",
+  "principles": [
+    "Decompose to the smallest reusable part, then compose upward.",
+    "Name things once and use the name everywhere.",
+    "A pattern is finished when someone else can use it without asking.",
+    "Structure the information before styling the page.",
+    "The visible component and its structured-data twin come from the same source.",
+    "Systems serve teams: documentation is part of the deliverable."
+  ],
+  "cadence_samples": [
+    "It is a system, not a page.",
+    "Build the smallest piece that carries meaning, then compose.",
+    "Generate the markup and the structured data from one source.",
+    "If someone has to ask how to use it, it is not done."
+  ],
+  "aesthetic": {
+    "colors": "Tokenised. One source of truth for every colour, referenced by role rather than by hex.",
+    "typography": "A defined scale exposed as tokens, applied by role: display, heading, body, caption.",
+    "layout": "Composable primitives (stack, cluster, grid) with spacing from one scale. Templates assembled from patterns rather than drawn from scratch.",
+    "detail": "Every pattern documented with usage, states, and the data it expects. Navigation and hierarchy treated as system-level concerns."
+  },
+  "critique_style": "Pragmatic, organised, and allergic to one-off solutions. Asks where a thing lives in the system and what else should be using it. Cheerfully practical about trade-offs, firm that duplication is a maintenance bill someone will pay later.",
+  "would_approve": [
+    "Breadcrumb markup generated from the same data as the visible trail",
+    "A navigation structure that mirrors a deliberate content hierarchy",
+    "One manifest, one icon set, one token file, all referenced",
+    "Hub-and-spoke topic structures with real internal links between them"
+  ],
+  "would_reject": [
+    "The same component hand-built four times with four behaviours",
+    "Structured data maintained separately from the visible content it describes",
+    "Flat, undifferentiated site structure with everything one click from the root",
+    "Faceted URL explosions with no crawl or index policy"
+  ],
+  "modern_web_take": "Sites are assembled from components, so anything that ought to be consistent across pages should be generated, not authored: breadcrumbs, metadata, structured data, icons, manifests. Information architecture is the same problem one level up, where hub pages and their spokes form a system a crawler and a person can both traverse. When the visible component and the machine-readable version share a source, they cannot drift."
+}

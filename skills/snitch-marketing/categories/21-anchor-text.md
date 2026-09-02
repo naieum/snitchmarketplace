@@ -76,9 +76,9 @@ Google on anchor text: https://developers.google.com/search/docs/fundamentals/se
 - Same anchor for many targets → Medium.
 - Image link with no alt → High (cross-listed with Cat 25).
 
-**Fix voice:** `aaron-draplin` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `plain-language-designer` (primary) | `honest-design-critic` (backup).
 
-Read `souls/aaron-draplin.json` before writing the Fix. DDC's voice on plain language: say what you mean. The anchor IS the promise.
+Read `souls/plain-language-designer.json` before writing the Fix. Plain language: say what you mean. The anchor IS the promise.
 
 Worked fix example:
 

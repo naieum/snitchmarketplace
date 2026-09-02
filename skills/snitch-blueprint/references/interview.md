@@ -15,9 +15,9 @@ Record each as a **Fact** with evidence before any question:
   one audience, an inner page is written for a different one — which is it?").
 - **Stack:** framework, hosting target, existing analytics/tag IDs, existing schema.org
   markup, existing metadata approach.
-- **Prior contracts:** existing `BLUEPRINT.md`, `marketing/` foundation (snitch-cmo),
-  `.claude/seo-config.md` or similar onboarding files, CLAUDE.md product notes. Inherit
-  facts and decisions from these; never re-ask them.
+- **Prior contracts:** existing `BLUEPRINT.md`, `marketing/` foundation (snitch-cmo), prior
+  onboarding contracts, CLAUDE.md product notes. Inherit facts and decisions from these;
+  never re-ask them.
 - **The business itself,** if a URL or name is given: what the live site or listing already
   declares (services, area, prices, hours). Live-site claims are evidence of what's
   *declared*, not of what's true — mark them inherited-unverified if the user isn't asked.
@@ -77,7 +77,10 @@ verbatim answers as **Decision**; applied defaults as **Default** with the reaso
 - Time-to-first-value budget: what can a new user *see working* in the first 60 seconds,
   before any real setup? (Sample data, demo project, hosted playground.)
 - Pricing posture today: free-only / free + paid tiers / sales-led / undecided. Undecided
-  is fine — it defers the pricing page, it doesn't block the build.
+  is fine — it defers the pricing page, it doesn't block the build. If the user wants help
+  arriving at the *number* (not just deferring it), offer the price-sensitivity method in
+  `references/pricing-sensitivity-survey.md` — it fields four questions to real buyers and reads
+  an honest price range, in collect-or-analyze mode.
 - Self-serve or demo-gated? (Decides whether the conversion action is signup or booked call.)
 
 ### E-commerce
@@ -121,3 +124,7 @@ verbatim answers as **Decision**; applied defaults as **Default** with the reaso
 - **Offer the default inline** with each question, so answering is accept-or-override.
 - **Record refusals too.** "User declined to pick a prove-out city" is a decision — the
   build order adapts (generic pages first, city pages deferred) instead of stalling.
+- **Pricing the number is available to any priced archetype** (SaaS tiers, an e-commerce
+  hero SKU, a premium service line), not just SaaS. When the user is stuck on *what to
+  charge*, route to `references/pricing-sensitivity-survey.md`; deferring the price is always a
+  valid answer that doesn't block the build.

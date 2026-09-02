@@ -1,6 +1,12 @@
 ## CATEGORY 4: Authentication Issues
 > Type: posture · Groups: secrets-auth, quick-core · CWE: CWE-287
 
+> **Owns:** route-level auth coverage, session and cookie configuration, open redirect, and where the
+> session token is stored. **Does not own:** the JWT algorithm and key-confusion class (Category 63),
+> WebSocket connection auth (Category 56), provider-specific misconfiguration (Category 14), or mass
+> assignment (Category 28). Report a finding under its owner; a duplicate across two categories reads
+> to the user as two problems.
+
 ### Detection
 - Auth libraries: `jsonwebtoken`, `passport`, `express-session`, `next-auth`, `@clerk/nextjs`, `better-auth`
 - JWT usage: `jwt.sign`, `jwt.verify`, `jose` imports
@@ -8,22 +14,18 @@
 
 ### What to Search For
 - Routes without auth middleware
-- JWT signing with weak secrets
-- JWT allowing none algorithm
+- JWT signing with weak or hardcoded secrets (the algorithm itself — `none`, `alg` confusion, key mix-ups — is Category 63)
 - Insecure cookie settings
 - Hardcoded session secrets
 - Open redirects: `redirect()`, `res.redirect()` using `returnUrl`, `next`, `redirect_to` query params without allowlist validation
-- WebSocket connections: `wss.on('connection', (ws) => { ... })` handlers that process messages before verifying authentication
 
 ### Actually Vulnerable
 - Admin routes with no authentication middleware
 - JWT secrets that are short or obvious
-- Accepting none as a valid JWT algorithm
 - Cookies without secure flag in production
 - Session secrets hardcoded as simple strings
 - `redirect(req.query.returnUrl)` without validating the URL is same-origin or on an allowlist
 - `res.redirect(req.body.next)` after login with no URL validation
-- WebSocket connection handler that processes data without checking session/JWT on the initial upgrade request
 
 ### NOT Vulnerable
 - Routes with auth middleware applied
@@ -32,7 +34,6 @@
 - Development-only insecure settings with env checks
 - Redirect URLs validated against a same-origin check or explicit allowlist
 - Auth provider handling redirects (Clerk, Auth0 handle this internally)
-- WebSocket handlers that validate auth token from query params or headers on the `connection` event before any processing
 
 ### Context Check
 1. Is middleware applied at router level?
@@ -52,14 +53,14 @@
    provider specifics; the storage location is in scope here.)
 
 ### Evidence Chain
-- The route handler, JWT/session config, or redirect/WebSocket handler quoted at file:line
+- The route handler, session/cookie config, or redirect handler quoted at file:line
 - For missing-auth findings: the absence demonstrated — the router/middleware registration checked (route level AND router/app level) and quoted or confirmed absent
-- The reachability/impact link: what the unprotected route or weak config exposes (admin action, account takeover via open redirect, unauthenticated WebSocket data)
+- The reachability/impact link: what the unprotected route or weak config exposes (admin action, account takeover via open redirect, session forgery)
 - For weak secrets/insecure settings: the config value quoted and any environment guard checked and found absent
 - Why the route is judged non-public (path name, handler behavior, data accessed)
 
 ### Confidence Scoring
-- **High** — sensitive route or config with the weakness unambiguous in code (e.g. admin route with middleware confirmed absent at both route and router level; `algorithms: ['none']`; literal short session secret)
+- **High** — sensitive route or config with the weakness unambiguous in code (e.g. admin route with middleware confirmed absent at both route and router level; a literal short session secret; `res.redirect(req.query.next)` with no allowlist)
 - **Medium** — pattern present but protection could exist elsewhere not fully confirmed (e.g. possible platform-level middleware, framework defaults, or an env guard whose deployment value is unknown)
 - **Low** — cannot determine whether the route is intentionally public or whether auth is applied via an untraceable mechanism (custom decorator, infra proxy) → tag `needs human verification`
 

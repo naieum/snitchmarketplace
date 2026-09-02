@@ -1,6 +1,8 @@
 # Static checks — the grep-able audit surface
 
-When to read this: you are running the code-side audit (STEP 2). Every check here is verifiable with Read/Grep/Glob against the project, plus at most one HTTP GET. For store-console items you cannot verify from code, use references/10-store-checklists.md.
+When to read this: you are running the code-side audit (STEP 2). Every check here is verifiable with Read/Grep/Glob against the project, plus at most one HTTP GET per check. For store-console items you cannot verify from code, use references/10-store-checklists.md.
+
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
 
 Every finding needs evidence: the exact file:line and snippet. Map each violation to the store rule named in its row. Severity calibration: Critical = upload-blocked or near-certain rejection; High = frequent rejection cause or policy strike risk; Medium = review friction or quality flag; Low = polish.
 
@@ -111,7 +113,7 @@ Severity: missing key with API present = **Critical**. Vague/boilerplate string 
 | `android:allowBackup="true"` without `android:fullBackupContent` / `android:dataExtractionRules` | Backup enabled with no exclusion rules for tokens/keys | Security flag in review | Medium |
 | `android:exported="true"` components | Exported activity/service/receiver/provider with no `android:permission` and no reason to be public; deep-link activities accepting arbitrary URIs | Device & Network Abuse / security | High |
 | Foreground services (targetSdk ≥ 34) | A service started with `startForeground()` lacking `android:foregroundServiceType`, or the type present without its `FOREGROUND_SERVICE_<TYPE>` permission; `specialUse` without `PROPERTY_SPECIAL_USE_FGS_SUBTYPE`. Every declared type also needs the Play Console FGS declaration + demo video (references/10-store-checklists.md) | FGS policy | Critical |
-| Declaration-form permissions | Any of: `READ_SMS` / `SEND_SMS` / `RECEIVE_SMS` / `READ_CALL_LOG` / `WRITE_CALL_LOG` / `PROCESS_OUTGOING_CALLS`, `MANAGE_EXTERNAL_STORAGE`, `QUERY_ALL_PACKAGES`, `ACCESS_BACKGROUND_LOCATION`, `READ_MEDIA_IMAGES` / `READ_MEDIA_VIDEO` (broad gallery — photo picker required for one-time use since 2025), `BIND_ACCESSIBILITY_SERVICE` (non-accessibility use), `USE_EXACT_ALARM`, `REQUEST_INSTALL_PACKAGES`, `SYSTEM_ALERT_WINDOW`, `READ_CONTACTS` (restricted since 2026-05 — contact picker preferred). Each present without matching core functionality = a Play Console declaration the user must be able to defend | Permissions policy | High (Critical if clearly unjustified) |
+| Declaration-form permissions | Any of: `READ_SMS` / `SEND_SMS` / `RECEIVE_SMS` / `READ_CALL_LOG` / `WRITE_CALL_LOG` / `PROCESS_OUTGOING_CALLS`, `MANAGE_EXTERNAL_STORAGE`, `QUERY_ALL_PACKAGES`, `ACCESS_BACKGROUND_LOCATION`, `READ_MEDIA_IMAGES` / `READ_MEDIA_VIDEO` (broad gallery — photo picker required for one-time use since 2025), `BIND_ACCESSIBILITY_SERVICE` (non-accessibility use), `USE_EXACT_ALARM`, `REQUEST_INSTALL_PACKAGES`, `SYSTEM_ALERT_WINDOW`, `READ_CONTACTS` (Contacts Permissions policy announced 2026-04-15, enforcement begins 2026-10-28 for apps targeting API 37+ — contact picker preferred; see references/07-play-data-safety.md). Each present without matching core functionality = a Play Console declaration the user must be able to defend | Permissions policy | High (Critical if clearly unjustified) |
 | `com.google.android.gms.permission.AD_ID` | Ads/analytics SDK in the dependency graph, targetSdk ≥ 33, permission absent (ad ID reads as zeros) — or the permission **present** in a Families-targeted app (forbidden) | Advertising ID / Families | High |
 | `USE_FULL_SCREEN_INTENT` | Present in a non-alarm, non-call app | FSI declaration | Medium |
 | App links | `android.intent.action.VIEW` intent-filter with `android:autoVerify="true"` whose host does not serve `https://<host>/.well-known/assetlinks.json` (one GET per host) | Quality | Medium |
@@ -120,7 +122,7 @@ Severity: missing key with API present = **Critical**. Vague/boilerplate string 
 
 | Check | Violation looks like | Store rule | Severity |
 |---|---|---|---|
-| `targetSdk` | < 35 now; new apps and updates need 36 by 2026-08-31 (extension to Nov 1 via Console) — verify at https://support.google.com/googleplay/android-developer/answer/11926878 | Target API policy | Critical |
+| `targetSdk` | < 36. Since 2026-08-31, new apps and updates must target Android 16 (API 36); an extension to 2026-11-01 is available via the Play Console Policy Status page. Existing apps that are not being updated are grandfathered at API 35. Verify at https://support.google.com/googleplay/android-developer/answer/11926878 | Target API policy | Critical |
 | 64-bit | `abiFilters` / `ndk` block including `armeabi-v7a` without `arm64-v8a`, or `jniLibs` shipping 32-bit-only `.so` files | 64-bit requirement | Critical |
 | `minifyEnabled false` in release | No R8/ProGuard — size and IP exposure; reflection-heavy SDKs without `-keep` rules crash in release (Vitals) | Quality | Medium |
 | Keystore hygiene | `*.jks` / `*.keystore` committed to the repo, or signing passwords in `gradle.properties` under version control | Security (also report via snitch-security) | Critical |

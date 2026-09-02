@@ -2,6 +2,10 @@
 
 Per platform: which features are free vs paid vs require API access. Use to set expectations before recommending a fix.
 
+The matrix covers the **ten tool-backed platforms** — the ones with a `state platform <name>`
+read, a pixel snippet, a CAPI stub, and a `references/platforms/<name>.md` file. One more
+channel appears in the references without a tool surface; it is the row after the matrix.
+
 ## Matrix
 
 | Feature | Google | Meta | Microsoft | LinkedIn | TikTok | X | Pinterest | Reddit | Snapchat | Apple |
@@ -24,21 +28,32 @@ Per platform: which features are free vs paid vs require API access. Use to set 
 
 Legend: free = no cost; yes = supported; partial = configurable but not granular; n/a = not applicable.
 
+## Presence-only channels (no tool surface)
+
+| Channel | Web tag | CAPI | `state platform` | What readiness means | Reference |
+|---|---|---|---|---|---|
+| OpenAI / ChatGPT ads | none — contextual matching, no pixel exists | none | none | crawlability for `OAI-SearchBot`, server-rendered landing-page content, lead-capture quality | `references/platforms/openai.md` |
+
+There is no `state platform openai`, no pixel snippet, and no CAPI stub, because the platform
+exposes none. Audit it with the `robots` and `lead-capture` slices of `state site` and say so
+explicitly — do not report a missing pixel for a platform that has no pixel.
+
 ## What's NOT supported anywhere
 
-- **First-party MCP for any of the 10 platforms.** None ships an MCP today. Skill uses curl.
+- **A first-party MCP for any of these platforms.** None ships one; the skill uses curl for every platform call.
 - **Live editing of a campaign via this skill.** This skill audits + reports + sets up tracking. Use platform UI or native CLI for campaign mutations.
 - **Cross-platform attribution that beats each platform's own.** Each platform uses its own click-to-conversion model. Closest: GA4 + BigQuery export joined to your order DB.
 
-## When to surface ⚪ N/A
+## When to surface ⚪ SKIP
 
 - Platform legitimately doesn't support the feature.
-- User's vertical doesn't need it (B2B SaaS doesn't need product schema; iOS-only app doesn't need ads.txt).
+- User's vertical doesn't need it (a SaaS with no catalog needs no Product feed markup; an iOS-only app needs no ads.txt).
 - API access requires partner approval the user can't easily get (LinkedIn, Apple, X).
 
-⚪ N/A is real. Don't manufacture work.
+A Skip is a real outcome and carries its reason plus what would unblock it. Don't manufacture
+work, and don't hide a check you didn't run.
 
 ## See also
 
 - `references/platforms/<name>.md` — feature deep-dives.
-- `12-migration.md` — legacy → current paths.
+- `01-auth-and-tokens.md` — auth shapes and the per-platform API-versioning table.

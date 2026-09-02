@@ -4,6 +4,10 @@
 # the right host file. Idempotent: searches source for an existing pixel
 # signature first; logs OK + exits if already present.
 #
+# Blocking precondition: a project with no consent banner / CMP signal gets a
+# FAIL and a pointer to `fix consent-mode` / `recommend cmp` instead of a pixel
+# proposal. See the Guardrails section of SKILL.md.
+#
 # Exports:
 #   apply_pixel <platform>
 
@@ -12,8 +16,7 @@ ADSSEC_PIXEL_PLATFORMS=(google meta microsoft linkedin tiktok x pinterest reddit
 # _pixel_template <platform> -> path to template (or empty + return 1)
 _pixel_template() {
   local platform="$1"
-  local skill_dir="${ADSSEC_SKILL_DIR:-${HOME}/.claude/skills/ads-ready}"
-  local p="${skill_dir}/templates/pixel-snippets/${platform}.html"
+  local p="${TPL_DIR}/pixel-snippets/${platform}.html"
   if [[ -f "$p" ]]; then
     printf '%s' "$p"
     return 0
@@ -37,6 +40,18 @@ _pixel_signature() {
     apple)     printf 'AdAttributionKit|SKAdNetwork' ;;
     *)         printf 'NO_SIGNATURE' ;;
   esac
+}
+
+# _pixel_consent_signal — returns 0 when the project shows a consent banner /
+# CMP signal: a Consent Mode v2 default call, the TCF API, or a known CMP
+# vendor in source or package.json. Signatures match lib/detect.sh's
+# `_det_consent_libs`; keep the two in step.
+_pixel_consent_signal() {
+  local pat="gtag\\('consent'|__tcfapi|OneTrust|optanon|[Cc]ookiebot|iubenda\\.com|_iub|cookieyes\\.com|termly\\.io|osano\\.com|klaroConfig|klaro\\.js|tarteaucitron|[Cc]ookie[Cc]onsent"
+  grep -RIEq \
+    --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist \
+    --exclude-dir=build --exclude-dir=out --exclude-dir=.git \
+    "$pat" . 2>/dev/null
 }
 
 # _pixel_detect_stack — emits one of: nextjs-app | nextjs-pages | astro | sveltekit | nuxt | wordpress | vite-spa | vanilla-html | unknown
@@ -144,6 +159,14 @@ apply_pixel() {
       log_ok "pixels" "apply" "${platform} pixel signature already present in source — no changes."
       return 0
     fi
+  fi
+
+  # Consent precondition: never propose a tracking pixel into a page that has
+  # no consent banner / CMP. Blocking — the user picks a CMP first.
+  if ! _pixel_consent_signal; then
+    log_fail "pixels" "consent-gate" \
+      "No consent banner / CMP signal in this project — refusing to propose a ${platform} pixel. Run \`fix consent-mode\` for a Consent Mode v2 starter, or \`recommend cmp\` to pick a CMP, then re-run \`fix pixel-install ${platform}\`."
+    return 3
   fi
 
   local snippet

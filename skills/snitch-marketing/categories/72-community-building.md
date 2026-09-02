@@ -4,7 +4,7 @@ Owned communities (vs rented social platforms). Discord servers, Slack workspace
 
 ### Pre-flight: community presence check
 
-Confirm STEP 0.6 classified community presence as `minimal` or `established`. If `none` (no `discord.gg` / `slack.com` / `/community` / `github.com/<org>/discussions` linked from site), **Skip** with reason `no community detected; whether to build one is a strategic decision tied to audience type, see STEP 5 recommendations`. Don't run Evidence Required.
+Confirm STEP 0.6 classified community presence as `minimal` or `established`. If `none` (no `discord.gg` / `slack.com` / `/community` / `github.com/<org>/discussions` linked from site), **Skip** with reason `no community detected; whether to build one is a strategic decision tied to audience type, see STEP 4 recommendations`. Don't run Evidence Required.
 
 ### Evidence required (do not skip, only when community exists)
 
@@ -32,26 +32,16 @@ URL patterns:
 - `github.com/<org>/discussions`
 - Custom Discourse / Forum URLs
 
-### Identity mechanics (what makes a community a tribe)
+### The celebration mechanic (the one auditable identity signal)
 
-A channel full of support questions is a help desk, not a community. Communities that compound
-have four identity mechanics (the canonical case is "Don't Mess with
-Texas," which cut a state's litter problem by selling membership in an identity rather than
-asking for a behavior):
+A channel full of support questions is a help desk, not a community. Of the identity mechanics that
+turn members into a tribe, one leaves a visible trace: **members celebrated publicly** — featured
+stories, member spotlights, the brand amplifying what members make rather than only broadcasting at
+them. That is the mechanic the finding below scores, and only where activity is visible (GitHub
+Discussions, public subreddits, or pasted samples).
 
-1. **A core belief** statable as "we are people who believe/do X" — not the product's feature
-   list.
-2. **A badge of honor** — a phrase, symbol, or behavior members use to signal "I'm one of us"
-   (a repeated slogan, swag that carries the line, a shared ritual).
-3. **A named villain** — a behavior or root cause, never a person or competitor: "What
-   [villain] is doing to our customers isn't right."
-4. **Members celebrated publicly** — featured stories, member spotlights, amplifying what
-   members make. When customers remix the brand's campaign, feed it rather than policing it;
-   the member is the hero, the brand is the guide (Charity Water's donate-your-birthday
-   campaign compounded because the 7-year-old with the lemonade stand was the story).
-
-These are mostly fix-guidance, but the celebration mechanic is auditable where activity is
-visible (GitHub Discussions, public subreddits, or pasted samples).
+The rest of the identity work — naming the core belief, the badge of honor, the villain, and the
+rituals that carry them — is generation, not a site finding: call the Skill tool with "snitch-cmo".
 
 ### Actually Hurts the Marketing Surface
 
@@ -92,14 +82,14 @@ CMX on community building: https://cmxhub.com/
 - No community where audience expects one → Medium.
 - Broadcast-only community (no member celebration mechanics) → Low.
 
-**Fix voice:** `sahil-lavingia` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `indie-commerce-founder` (primary) | `honest-design-critic` (backup).
 
-Read `souls/sahil-lavingia.json` before writing the Fix.
+Read `souls/indie-commerce-founder.json` before writing the Fix.
 
 Worked fix example:
 
-> Pick one community platform. Discord for synchronous chat, GitHub Discussions for async + dev-audience, Discourse for long-form. Don't run two; the community fragments and neither hits critical mass.
+> Fix the surface first: repair or remove the dead invite, and consolidate to one platform — Discord for synchronous chat, GitHub Discussions for async + dev-audience, Discourse for long-form. Two half-full rooms fragment the audience and neither hits critical mass.
 >
-> One paid mod (or founder time, ~5 hr/week early on). Welcome every new member by name in the first 24 hours. Reply to questions within 24 hours. Pin the FAQ. Run weekly office-hours / AMAs.
+> Then give the room an owner and a visible member: moderation coverage so spam does not sit, and a recurring member spotlight so the history stops reading as broadcast-only.
 >
-> A community that the founder shows up in compounds. A community that the founder ignores fills with spam and dies.
+> The programming that fills it — the belief, the rituals, the launch plan for the space — is generation work: call the Skill tool with "snitch-cmo".

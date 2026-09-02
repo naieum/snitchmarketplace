@@ -1,5 +1,8 @@
 # lib/drift.sh — diff current findings against the latest snapshot.
-# No output when no prior snapshot exists. Findings TSV format (from log.sh):
+# The findings TSV is written by the badge tools (doctor, fix), so a verify run
+# is only meaningful after one of those has run in the same session. With no
+# prior snapshot it reports a Skip and `verify` writes the baseline.
+# Findings TSV format (from log.sh):
 #   STATUS \t area \t key \t message \t docs_url
 # We key each line by (area, key) and compare statuses across the two files.
 #
@@ -22,13 +25,12 @@ drift_run() {
   local prior="${STATE_DIR}/snapshot-latest.tsv"
   local current="${ADSEC_FINDINGS_FILE}"
 
-  if [[ -L "$prior" && ! -e "$prior" ]]; then
-    return 0
-  fi
-  if [[ ! -f "$prior" ]]; then
+  if [[ ! -e "$prior" ]]; then
+    log_info "no prior snapshot in ${STATE_DIR} — writing this run as the baseline; the next verify will diff against it."
     return 0
   fi
   if [[ ! -f "$current" ]]; then
+    log_info "no findings recorded this run — run doctor or fix before verify to have something to diff."
     return 0
   fi
 

@@ -2,6 +2,8 @@
 
 Every `<img>` element needs an `alt` attribute. Either a meaningful description (for content images) or an explicit empty string `alt=""` (for decorative images). Missing alt entirely is the most common a11y bug AND a real SEO miss, Google uses alt for image search ranking.
 
+**Boundary.** This category judges `alt` as a **search and machine-readability signal** — what image search and an assistant can read. The conformance judge for the same attribute is Cat 103's 1.1.1 row; when a missing `alt` also fails that criterion, cross-file it there with the criterion number rather than reporting the same image twice.
+
 ### Evidence required (do not skip)
 
 **Source mode, required tool calls:**
@@ -79,9 +81,9 @@ Google's image SEO docs: https://developers.google.com/search/docs/appearance/go
 - Image inside link with no alt (empty link text) → High.
 - Decorative image with empty alt → Not a problem.
 
-**Fix voice:** `aarron-walter` (primary) | `don-norman` (backup).
+**Fix voice:** `emotional-design-lead` (primary) | `usability-scientist` (backup).
 
-Read `souls/aarron-walter.json` before writing the Fix. Aarron's "designing for emotion" POV: alt text is how you reach people who can't see the image but are still your audience.
+Read `souls/emotional-design-lead.json` before writing the Fix. Designing for how people feel includes the people whose experience is not visual: alt text is how you reach someone who cannot see the image but is still your audience.
 
 Worked fix example:
 

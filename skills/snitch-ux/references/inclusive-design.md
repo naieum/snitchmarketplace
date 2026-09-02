@@ -24,7 +24,7 @@ Most "special cases" aren't rare — they're everyone, sometimes.
 
 ## Cognitive inclusion — the psychology has a duty attached
 
-The mind-works facts in `psychology-foundations.md` (tiny working memory, scanning not
+The mind-works facts in `substrate.md` (tiny working memory, scanning not
 reading, cognitive load) hit some people much harder. Designing for the tighter end of each
 helps everyone:
 

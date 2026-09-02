@@ -18,20 +18,22 @@ The trees below cover the cases where customers most often ask "what now?" and t
 This is the master "the audit is done, now what" tree. Most audits route to one of the four leaves below.
 
 ```text
-Is the activation funnel working? (Cat 55 north-star metric, Cat 99 funnel deep)
+Is the activation funnel working? (the north-star metric, Cat 99 funnel deep)
 ├── No (activation <60% of installs or signups stall pre-value-delivery)
 │   └── ┳━ STOP marketing. Distribution amplifies a broken product.
 │       ┃  Fix activation first; resume after activation crosses the threshold.
 │       ┗━ Spend 2-4 weeks on onboarding, time-to-first-value, and removing
-│          the steps that produce dropoff. Re-audit Cat 55 and Cat 99 in 30 days.
+│          the steps that produce dropoff. Re-audit Cat 53 and Cat 99 in 30 days.
 └── Yes (activation works)
     │
-    └── Is the wedge clear? (Cat 81 positioning + Cat 110 ICP scoring)
-        ├── No (positioning fuzzy, ICP score <70/100, generic hero copy)
+    └── Is the wedge clear? (Cat 81 positioning)
+        ├── No (positioning fuzzy, umbrella hero naming 3+ buyer types)
         │   └── ┳━ Run 10 customer-discovery calls before any other action.
         │       ┃  Use `references/customer-discovery-script.md`.
-        │       ┗━ Re-do Cat 81 / Cat 110 after the calls; rewrite hero from
-        │          customer language; re-test in 30 days.
+        │       ┣━ Re-do Cat 81 after the calls; rewrite hero from customer
+        │       ┃  language; re-test in 30 days.
+        │       ┗━ To score the candidate segments and pick the wedge, call
+        │          the Skill tool with "snitch-cmo".
         └── Yes (wedge sharp, hero answers "what does this do" in 5 seconds)
             │
             └── Is there off-site presence to amplify? (STEP 0.6)
@@ -46,29 +48,30 @@ Is the activation funnel working? (Cat 55 north-star metric, Cat 99 funnel deep)
                     └── Is one channel producing qualified intent?
                         ├── No (presence exists but no channel converts)
                         │   └── ┳━ Audit the funnel from channel to conversion.
-                        │       ┃  Findings from Cat 53-56 (analytics) + Cat 99
+                        │       ┃  Findings from Cat 53 (analytics) + Cat 99
                         │       ┃  (funnel deep) name the leak. Fix the leak;
                         │       ┃  re-test in 30 days.
                         └── Yes (one channel produces signups that activate)
                             └── ┳━ Scale that channel cautiously, with the
-                                ┃  kill rule pre-committed (per STEP 4.5).
+                                ┃  kill rule pre-committed (per STEP 4).
                                 ┗━ Do not diversify until the channel is
                                    producing predictable signups for 60+ days.
 ```
 
-The leaf the audit lands on becomes the headline recommendation in STEP 4.5.
+The leaf the audit lands on becomes the headline recommendation in STEP 4.
 
 ## Tree 2: Should we scale this channel?
 
 Use when the audit shows a channel producing some signups and the customer is considering paid amplification.
 
 ```text
-Does the channel produce ICP-qualified intent? (signups match the ICP scoring from Cat 110)
+Does the channel produce ICP-qualified intent? (signups match the buyer the site names)
 ├── No → Do not scale. Diagnose: is the channel reaching the wrong audience,
-│        or is the ICP scoring out of date? Re-do Cat 110 if positioning shifted.
+│        or is the wedge out of date? If positioning shifted, re-score the
+│        segments by calling the Skill tool with "snitch-cmo".
 └── Yes
     │
-    └── Do the qualified signups activate? (per Cat 55 north-star metric)
+    └── Do the qualified signups activate? (per the north-star metric)
         ├── No → Do not scale. Scaling amplifies dropoff. Fix activation first.
         └── Yes
             │
@@ -78,8 +81,10 @@ Does the channel produce ICP-qualified intent? (signups match the ICP scoring fr
                  Ask which CAC: blended, all marketing cost over all new customers,
                  not paid-only CAC, which flatters the channel when organic is
                  quietly assisting.)
-                ├── No → Do not scale. Raise price (Cat 91 / 112), improve
-                │        conversion (Cat 60), reduce channel cost, or stop.
+                ├── No → Do not scale. Raise price (display tactics: Cat 115;
+                │        the strategic read: call the Skill tool with
+                │        "snitch-cmo"), improve conversion (Cat 60), reduce
+                │        channel cost, or stop.
                 └── Yes → Scale gradually with kill-rule guardrails pre-committed.
                           Stop scaling if CAC payback degrades by >25% over 30 days.
                           Judge each budget increment on its marginal return (did
@@ -121,10 +126,12 @@ Use when the audit produces multiple Critical or High findings and the customer 
 What is the biggest uncertainty in the recommendation?
 ├── ICP / segment unclear     → Customer-discovery interviews
 │                                (per `references/customer-discovery-script.md`)
-├── Wedge / positioning fuzzy → Three positioning drafts (Cat 81), test on
+├── Wedge / positioning fuzzy → Name the gap with Cat 81, get the drafts from
+│                                 the Skill tool with "snitch-cmo", test on
 │                                 10 buyers with a 5-second test
 ├── Pricing / WTP unclear     → Fake-door pricing test or 5 pricing interviews
-│                                 (Cat 91 / 112)
+│                                 (display tactics: Cat 115; the strategic read
+│                                 comes from the Skill tool with "snitch-cmo")
 ├── Hero copy weak            → A/B test on hero variant if traffic supports it
 │                                (rare for indie); else rewrite from VOC and ship
 ├── Channel viability         → Small-budget channel test ($500 ceiling) with
@@ -150,8 +157,9 @@ Has the founder talked to 10 named target customers?
     │
     └── Does the homepage answer "what is this, who is it for, what changes if
         I use it" in 5 seconds?
-        ├── No → Rewrite hero per Cat 81 (positioning) + Cat 117 (copy lint);
-        │        ship three drafts; let three target customers pick one.
+        ├── No → Name the gap with Cat 81 (positioning) + Cat 117 (copy lint);
+        │        get the drafts from the Skill tool with "snitch-cmo"; ship
+        │        three; let three target customers pick one.
         └── Yes
             │
             └── Are there 3 named testimonials?
@@ -166,7 +174,7 @@ The brand-new tree intentionally ignores SEO optimization, paid acquisition, par
 
 ## Tree 6: Activation is broken — what do we fix?
 
-Use when Cat 55 north-star metric scored <60% and the audit recommended pausing marketing to fix onboarding.
+Use when the north-star metric (`references/strategic-recommendations.md`) scored <60% and the audit recommended pausing marketing to fix onboarding.
 
 ```text
 Where do users drop off in the first session?
@@ -182,9 +190,10 @@ Where do users drop off in the first session?
 │       prompt that surfaces the highest-value action; track the click as the
 │       activation event.
 └── At first value delivery (user acts but the result isn't valuable to them)
-    └── This is a wedge problem masquerading as an onboarding problem. Re-do
-        Cat 110 (ICP scoring) — the segment that's signing up may not be the
-        segment that benefits from the product.
+    └── This is a wedge problem masquerading as an onboarding problem. The
+        segment that's signing up may not be the segment that benefits from
+        the product; re-score the segments by calling the Skill tool with
+        "snitch-cmo".
 ```
 
 ## When a leaf and the customer disagree
@@ -200,6 +209,6 @@ Trees are cheap to add when an audit-end state isn't covered. To add one:
 1. Name the customer question the tree answers (the root).
 2. List the 2-4 observable yes/no questions that route to leaves.
 3. Each leaf is a single recommended next action plus the audit cat / reference that owns the detailed playbook.
-4. Cross-reference: tree N maps to which STEP 4.5 leaf and which strategic-recommendations.md tier?
+4. Cross-reference: tree N maps to which STEP 4 leaf and which strategic-recommendations.md tier?
 
 Trees are NOT a substitute for the full Strategic Recommendations document; they are the fast-path when one specific decision is the bottleneck and the audit already knows enough to recommend.

@@ -66,7 +66,7 @@ apply_robots() {
 
   if [[ -z "$existing" ]]; then
     local proposed
-    proposed=$'# robots.txt — ads-ready starter\n'
+    proposed=$'# robots.txt — snitch-adsready starter\n'
     proposed+=$'User-agent: *\n'
     proposed+=$'Allow: /\n\n'
     proposed+="Sitemap: https://example.com/sitemap.xml"$'\n'
@@ -84,7 +84,7 @@ apply_robots() {
   fi
 
   local additions
-  additions=$'\n# === added by ads-ready: ad-platform crawler allowances ===\n'
+  additions=$'\n# === added by snitch-adsready: ad-platform crawler allowances ===\n'
   local ua
   for ua in $blocked_uas; do
     additions+="User-agent: ${ua}"$'\n'

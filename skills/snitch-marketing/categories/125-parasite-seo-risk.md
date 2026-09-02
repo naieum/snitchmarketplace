@@ -15,7 +15,7 @@ single page is rarely the unit Google acts on here. The audit enumerates section
 where third-party commercial content concentrates, and reports the subsections that look like
 they are renting the host's reputation rather than extending the host's editorial work.
 
-Scope note: distinct from Cat 78 (affiliate / referral program health), Cat 18 (thin
+Scope note: distinct from Cat 76 (affiliate / referral program health), Cat 18 (thin
 content), and Cat 95 (programmatic SEO at scale). Those judge quality and scale on their own
 terms. This judges one specific thing: whether a subsection looks like it exists to borrow the
 host domain's reputation for third-party commercial content. A section can pass Cat 18 and Cat
@@ -144,7 +144,7 @@ core subject and reputation type.
   rented subsection; density against the site mean is what matters.
 - A clearly labeled sponsored section that is small, transparently disclosed, and not built to
   rank on the host's authority (a single partner post, plainly marked, not a roundup farm).
-  Note it for disclosure hygiene (Cat 78), not as a policy-exposure finding.
+  Note it for disclosure hygiene (Cat 76), not as a policy-exposure finding.
 
 ### Context Check
 
@@ -165,7 +165,7 @@ core subject and reputation type.
 Google "Site reputation abuse" spam policy:
 https://developers.google.com/search/docs/essentials/spam-policies#site-reputation-abuse
 
-Cross-ref Cat 78 (affiliate / referral program health), Cat 18 (thin content), Cat 95
+Cross-ref Cat 76 (affiliate / referral program health), Cat 18 (thin content), Cat 95
 (programmatic SEO at scale), Cat 70 (spam-policy surface).
 
 **Severity tagging:**
@@ -175,10 +175,10 @@ Cross-ref Cat 78 (affiliate / referral program health), Cat 18 (thin content), C
   → Medium.
 - A single, clearly labeled sponsored page → Low (note, disclosure hygiene, not policy
   exposure).
-- First-party commercial editorial flagged only for affiliate-link hygiene → defer to Cat 78,
+- First-party commercial editorial flagged only for affiliate-link hygiene → defer to Cat 76,
   not a finding here.
 
-**Fix voice:** `solutions-architect` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `solutions-architect` (primary) | `honest-design-critic` (backup).
 
 Read `souls/solutions-architect.json` before writing the Fix.
 
@@ -204,7 +204,7 @@ Worked fix example:
 >    you what it was.
 > 3. **For anything that stays, change its operating model.** Bring it under the editorial
 >    core: your own staff, your own subject, normal commercial-link density, clear disclosure
->    (Cat 78). First-party editorial that carries affiliate links is not the same risk; the
+>    (Cat 76). First-party editorial that carries affiliate links is not the same risk; the
 >    fix is to make it genuinely first-party, not to hide the links.
 > 4. **Close the door that opened this.** An open "write for us" hub is a standing intake for
 >    exactly this content. Gate it, or shut it.

@@ -24,7 +24,7 @@ required for any product/service with named alternatives in a searched category.
 2. Read `.snitch-marketing-context.md` for competitors, differentiation, anti-persona
    (so the audit knows which comparisons are worth making and how to frame honestly).
 3. If comparison pages exist: inspect for an honest comparison table, a clear CTA, and
-   comparison/Product/Review schema (cross-ref Cat 34/94).
+   comparison/Product/Review schema (cross-ref Cat 32's Product row / Cat 94).
 
 **Crawl mode, required tool calls:**
 
@@ -57,7 +57,7 @@ the context file's competitive landscape.
 - Comparison/alternatives page with **no CTA / no conversion path** (high intent wasted)
 - Message mismatch: page targets `{brand} vs {competitor}` but the headline doesn't
   mention either (cross-ref Cat 109)
-- No comparison-table or Product/Review schema on comparison pages (cross-ref Cat 34/94)
+- No comparison-table or Product/Review schema on comparison pages (cross-ref Cat 32's Product row / Cat 94)
 - Outdated competitor claims (pricing/features that changed) — a credibility + legal risk
 - Comparisons that misrepresent the competitor (deceptive; cross-ref Cat 114 ethics overlay)
 
@@ -108,9 +108,9 @@ Bottom-funnel comparison content (Reforge): https://www.reforge.com/blog
 - One-sided / non-credible comparison → Medium.
 - Stale or misleading competitor claims → High (credibility + legal).
 
-**Fix voice:** `april-dunford` (primary) | `seth-godin` (backup).
+**Fix voice:** `positioning-strategist` (primary) | `permission-marketer` (backup).
 
-Read `souls/april-dunford.json` before writing the Fix.
+Read `souls/positioning-strategist.json` before writing the Fix.
 
 Worked fix example:
 

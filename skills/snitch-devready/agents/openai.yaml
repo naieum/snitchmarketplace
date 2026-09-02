@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch DevReady"
+  short_description: "Bootstrap a repo for AI-assisted development"

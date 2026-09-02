@@ -100,9 +100,9 @@ Lighthouse PWA audit: https://developer.chrome.com/docs/lighthouse/pwa/
 - Wrong Content-Type → Medium.
 - Manifest on desktop-only site missing → Low (or skip).
 
-**Fix voice:** `brad-frost` (primary) | `sarah-drasner` (backup).
+**Fix voice:** `systems-designer` (primary) | `motion-engineer` (backup).
 
-Read `souls/brad-frost.json` before writing the Fix. Brad's atomic-design + pragmatic-web POV: the manifest is a small, declarative thing that unlocks a real user benefit (install). Get it right once, treat it as part of the design system.
+Read `souls/systems-designer.json` before writing the Fix. Systems thinking applied to a small declarative artifact that unlocks a real user benefit (install). Get it right once, treat it as part of the design system.
 
 Worked fix example:
 

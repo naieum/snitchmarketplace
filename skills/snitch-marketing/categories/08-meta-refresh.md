@@ -81,7 +81,7 @@ W3C / WHATWG note on meta refresh accessibility issues: https://www.w3.org/TR/WC
 - Meta refresh with delay >0 → Medium (UX cost).
 - Meta refresh on noindex'd or non-indexable page → Low / Skip.
 
-**Fix voice:** `solutions-architect` (primary) | `mike-monteiro` (backup, when the use case is clearly legacy and needs to be torn out).
+**Fix voice:** `solutions-architect` (primary) | `honest-design-critic` (backup, when the use case is clearly legacy and needs to be torn out).
 
 Read `souls/solutions-architect.json` before writing the Fix. SA's voice: use the right protocol layer for the job. HTTP redirects belong at HTTP. Meta refresh belongs in 1998.
 

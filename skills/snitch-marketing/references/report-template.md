@@ -63,7 +63,7 @@ When a previous audit exists, the section looks like:
 
 ## GEO readiness score
 
-**INCLUSION RULE:** Only include this entire `## GEO readiness score` section if Cat 82 (AI-search citation), Cat 102 (multi-LLM), or Cat 106 (llms.txt) were in scope for this scan. If none ran, OMIT THIS SECTION ENTIRELY (no heading, no placeholder). Mirrors the gating of `## Comparison to previous audit` and the field-CWV block. Methodology + the deduction model live in `references/geo-score.md`.
+**INCLUSION RULE:** Only include this entire `## GEO readiness score` section if Cat 82 (AI-search citation) was in scope for this scan. If none ran, OMIT THIS SECTION ENTIRELY (no heading, no placeholder). Mirrors the gating of `## Comparison to previous audit` and the field-CWV block. Methodology + the deduction model live in `references/geo-score.md`.
 
 When in scope, the section shows the score with its full derivation (the reader must be able to add the deductions and reach the total):
 
@@ -80,7 +80,7 @@ Only GEO-surface findings feed the score (crawler access, llms.txt, citability/a
 
 ## What needs work
 
-{Group findings by SEO Impact: Critical first, then High, then Medium, then Low. Within each impact level, group by category number. Use the Finding Format from SKILL.md. Each finding has its own evidence block with file:line or URL+selector. No editorializing.}
+{Group findings by Impact: Critical first, then High, then Medium, then Low. Within each impact level, group by category number. Use the Finding Format from SKILL.md. Each finding has its own evidence block with file:line or URL+selector. No editorializing.}
 
 ### Critical
 
@@ -144,7 +144,7 @@ Rules:
 
 {Categories selected but not run, with reason. State the evidence that produced the skip.}
 
-- **Cat 38, VideoObject schema**: skipped, no `<video>` tags or third-party video embeds found on audited pages (verified via grep).
+- **Cat 32, schema type validation (VideoObject row)**: skipped, no `<video>` tags or third-party video embeds found on audited pages (verified via grep).
 - **Cat 50, Hreflang correctness**: skipped, single-locale site (no `<link rel="alternate" hreflang>` patterns and no internationalization signals in framework config).
 
 ## Suppressed
@@ -167,10 +167,11 @@ provider: {AI provider used for this audit, e.g. "claude-sonnet-4-6"}
 images_enumerated: {N}                                          # required for Cat 25 if a Pass / Finding outcome
 images_sampled: {K of N}                                        # alternative to enumerated; pairs with Skip outcome
 routes_enumerated: {N}                                          # for sitemap / link-graph / cross-route categories
-voice_reads_completed: [internal_only]                          # tracked internally for verification; do not surface in user-visible output
 ```
 
-The `voice_reads_completed` array is INTERNAL. Track every soul slug whose voice informed any Fix during this audit. Do not display this array in the visible report; it lives in the metadata block as a verification mechanism only. The audit's output never names a practitioner.
+The metadata block carries no soul slug and no record of which voices were read. The voice
+mechanism is internal to how a Fix is written (`references/voiced-remediations.md`) and never
+appears in an emitted artifact.
 
 ---
 
@@ -201,7 +202,43 @@ Recommended start: {pick one, with one-sentence reasoning}
 
 When multiple drafts make sense (positioning is genuinely a tradeoff), provide three. When only one direction fits the brand's stage and constraints, provide one and say so explicitly. Pull the structural patterns from `references/copy-bank-templates.md`, and follow `references/remediation-generator.md` for the full audit→fix workflow: ground every draft in `.snitch-marketing-context.md` (ICP, objections, Four Forces, verbatim customer language), generate non-copy fixes too (JSON-LD, llms.txt, meta), and run generated copy through the AI-boilerplate + report-lint pass before emitting.
 
-This applies to: hero rewrites (Cat 81), FAQ rewrites (Cat 35 + Cat 81), CTA rewrites (Cat 60), trust-strip rewrites (Cat 111), comparison-page positioning sentences (Cat 95 + Cat 81), email subject-line rewrites (Cat 62).
+This applies to: hero rewrites (Cat 81), FAQ rewrites (Cat 32's FAQPage row + Cat 81), CTA rewrites (Cat 60), trust-strip rewrites (Cat 60), comparison-page positioning sentences (Cat 122 + Cat 81), email subject-line rewrites (Cat 61).
+
+## Worked finding example
+
+The field list is in SKILL.md's Finding Format. This is one finding written out in full, in source
+mode:
+
+````markdown
+## Finding: Missing canonical on indexable blog route
+
+- **Impact:** High
+- **Schema.org type:** Article
+- **Surface:** Source
+- **Evidence:** `src/routes/blog/$slug.tsx:18`
+  ```tsx
+  export const Route = createFileRoute('/blog/$slug')({
+    component: BlogPost,
+    head: () => ({ meta: [{ title: ... }] }),  // no canonical link
+  });
+  ```
+- **Risk:** Without `<link rel="canonical">`, paginated / utm-tagged duplicates of every blog post compete with the canonical version in Google's index. Average loss in our test corpus: 1-2 ranking positions on the long-tail variants.
+- **Fix:**
+  ```tsx
+  head: () => ({
+    meta: [{ title: ... }],
+    links: [{ rel: 'canonical', href: `https://example.com/blog/${params.slug}` }],
+  })
+  ```
+- **Priority:** P1 (Quick Win)
+- **Confidence:** High
+- **Verify:** the rendered page head carries one absolute canonical (view-source or `curl -s | grep canonical`) immediately; Search Console's duplicate-without-canonical count trends down over ~2-4 weeks.
+- **Affected pages:** All routes under `/blog/$slug` (15 posts).
+````
+
+**Crawl-mode variant of the same finding:** `Surface: Crawl`, the page URL, and the CSS selector
+path plus "element not present" (or the rendered HTML snippet) in place of the `file:line` evidence.
+The Fix becomes the corrected element or response header. Every other field is identical.
 
 ## Verification / leading indicator (required on Critical + High findings)
 
@@ -245,9 +282,12 @@ The closing paragraph is the answer to "if I do nothing else, what should I do?"
 
 ## Voice rules for the report
 
-- Plain and factual. The CLAUDE.md voice rules apply: no em dashes (use commas, semicolons, colons, parens), customer-first.
-- No designer / practitioner names anywhere in user-visible output. The voice mechanism is internal; the prose carries authority on its own.
-- No sycophantic adjectives. Forbidden: "best", "best-in-class", "excellent", "great", "amazing", "world-class", "textbook", "textbook-correct", "comprehensive", "strong foundation", "well-architected", "thoughtful", "reference example".
+`references/report-lint.md` owns the report-hygiene rules and their thresholds — em-dash density,
+the sycophantic-adjective list, the no-practitioner-names scan, and the negative-evidence shape.
+Read it before drafting; it is enforced as a pass before the report can be saved. What is specific
+to this template:
+
+- Plain and factual, customer-first.
 - "What's working" is symmetric to "What needs work". Same depth. Same evidence rigor. Same factual tone.
 - Findings should answer "what does this cost me" before "what's the technical issue". Quantify where possible: "average loss in test corpus: 1-2 ranking positions" beats "may impact rankings".
 - Never claim "you'll rank #1 if you fix this." Say what's likely: "Eligible for rich-result rendering after fix."
@@ -260,7 +300,7 @@ The closing paragraph is the answer to "if I do nothing else, what should I do?"
 - "I scanned X pages and found 47 SEO opportunities", vague summary claim, violates anti-hallucination Rule 2.
 - Findings with no evidence, violates Rule 1.
 - Auto-fixed code in the report, violates Rule 9.
-- Editorializing adjectives in pass-evidence ("textbook-correct font setup", "best-in-class llms.txt"), violates Rule 10.
-- Naming a practitioner in any user-visible passage, violates the no-designer-names rule in VOICED REMEDIATIONS.
+- Editorializing adjectives in pass-evidence ("textbook-correct font setup"), violates Rule 10.
+- Naming a practitioner or a source in any user-visible passage (`references/report-lint.md`).
 - "Bonus observation" sections that re-praise a passing check already in the "What's working" list. If a passing check is unusual, describe what it does in detail; don't separate it into a praise section.
-- Opening preambles ("Atlas has a strong foundation but..."). The report opens with severity counts and gets straight to findings.
+- Opening preambles. The report opens with severity counts and gets straight to findings.

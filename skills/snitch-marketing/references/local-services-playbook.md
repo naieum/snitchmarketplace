@@ -1,6 +1,6 @@
 # Local-Services Playbook
 
-Cross-cutting playbook for service businesses (storefront or service-area). Loaded by Cat 79 (Local SEO / GBP), Cat 118 (GBP depth), Cat 119 (Hyper-local landing pages), and surfaced from Strategic Recommendations when the component inventory detects a local-business surface.
+Cross-cutting playbook for service businesses (storefront or service-area). Loaded by Cat 79 (Local SEO / GBP — foundation, depth, retired features), Cat 119 (Hyper-local landing pages), and surfaced from Strategic Recommendations when the component inventory detects a local-business surface.
 
 The patterns below apply across home services, professional services with physical offices, retail, food service, healthcare, and any business where the buyer makes a "near me" decision.
 
@@ -34,7 +34,7 @@ When a brand has multiple service cities, treat them in tiers based on revenue c
 - **Tier 2: expansion cities** (3-7 cities). Established service area, partial brand recognition, mixed competitive position. Marketing scales here after Tier 1 produces signal.
 - **Tier 3: aspirational cities** (variable). Service area the brand technically covers but has minimal presence in. Marketing here is opportunistic, not planned.
 
-Audit application: the recommended scan prioritizes Tier 1 city pages for completeness (Cat 119) and Tier 1 reviews / posts for GBP depth (Cat 118). Tier 3 cities get a "fix when revenue justifies" annotation, not the same urgency.
+Audit application: the recommended scan prioritizes Tier 1 city pages for completeness (Cat 119) and Tier 1 reviews / posts for GBP depth (Cat 79's depth pass). Tier 3 cities get a "fix when revenue justifies" annotation, not the same urgency.
 
 ## Seasonal campaign rotation
 
@@ -57,7 +57,14 @@ The single highest-leverage local-SEO tactic is consistent review acquisition. M
 2. **What's the cadence?** Going from 5 reviews to 50 in one month triggers velocity-anomaly filters. The safe ramp is 1-3 new reviews per week sustained over months.
 3. **What's the message?** Generic "please review us" reads as transactional. The pattern that converts: short, named, asks about the specific service ("Hope the install in Plano went smoothly — would a quick Google review help us reach more neighbors?").
 
-Audit application: ask the brand how they currently request reviews (or infer from intake-flow review-request surfaces); flag on-site CTA patterns; recommend the 2-hour post-visit SMS pattern.
+Audit application: from the brand's own surfaces, identify every review-request path — QR codes, in-shop kiosks, post-checkout pages, footer "leave a review" links, in-product prompts, automated SMS or email sequences — and quote them. Then identify the trigger (on-site at job close, immediately after, or hours later) and the message. The findings:
+
+- **On-site review CTA active on a local business** (QR code on the truck, in-shop kiosk, "review us before you leave") → High. Report it as a filtering *risk pattern*, never as a confirmed penalty: Google does not document the behavior, and the correlation is what practitioners observe, not what the platform states.
+- **No documented review-request flow** on a brand older than six months with fewer than 20 reviews → High. The compounding trust artifact is being left unbuilt; it pairs with the "zero named testimonials" finding in Cat 60.
+- **A flow exists but asks in generic language** ("please review us") → Medium. Sharpen to short, named and service-specific.
+- **Velocity spike** — a month an order of magnitude above the preceding months, against the cadence threshold above → Medium advisory. Spread the ramp.
+
+Recommend the 2-hour post-visit SMS or email pattern in every case. The reviews this produces are the trust artifacts Cat 60 audits on the site itself.
 
 ## NAP consistency at scale
 
@@ -125,7 +132,7 @@ For each weekly cycle, a local-services brand maintaining local-SEO health hits:
 For each monthly cycle:
 
 - GBP service descriptions reviewed and refreshed if any service changed
-- Competitive depth check vs top 3 local competitors (per Cat 118)
+- Competitive depth check vs top 3 local competitors (per Cat 79's depth pass)
 - City landing pages reviewed for staleness (no photos older than 12 months for any city page representing an active market)
 - Seasonal rotation check (are surfaces aligned with the current season?)
 
@@ -150,10 +157,10 @@ Audit application: if the brand is running paid ads geographically uniform acros
 ## Pairs with
 
 - Cat 79 (Local SEO / GBP foundation)
-- Cat 118 (GBP depth audit)
+- Cat 79's depth pass (GBP fill-every-field discipline)
 - Cat 119 (Hyper-local landing page completeness)
 - Cat 75 (Brand consistency — voice anchors)
-- Cat 111 (Trust artifact audit — review acquisition timing)
+- Cat 60 (Conversion & trust — the trust-artifact inventory the review flow feeds)
 - Cat 74 (Customer feedback inventory)
 - Cat 96 (Brand SERP defense — local-3-pack appearance for brand-name queries)
 - references/strategic-recommendations.md (Tier 1 / 2 / 3 sequencing in the 30/60/90 day plan)

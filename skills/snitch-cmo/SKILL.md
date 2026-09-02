@@ -1,11 +1,11 @@
 ---
 name: snitch-cmo
-description: Generate a checked-in marketing foundation (product information, positioning, competitor analysis, brand voice, content strategy, channel plan) from a product's actual source or site, then draft channel-ready marketing content driven by those docs — blog posts, X/LinkedIn posts, Reddit/Hacker News posts, creator-outreach shortlists, UGC video briefs. Every product claim traces to file:line or a fetched URL; every draft cites the foundation lines that justify its angle and voice. Triggers on "act as my CMO", "build me a marketing strategy", "write my positioning doc", "brand voice guide", "competitor analysis", "content strategy for my product", "marketing plan", "draft a launch post", "write a LinkedIn/X post about", "what should I post on Reddit / Hacker News", "influencer outreach list", "UGC brief", "AI CMO alternative", "marketing foundation docs". Do NOT use for SEO / marketing audits of an existing site (use snitch-marketing — it grades what exists; this skill creates what's missing), persuasive page-section structure (use snitch-focusedcopy), technical prose (use snitch-docwriter), UI microcopy (use snitch-ux), or pixel / conversion-tracking setup (use ads-ready). This skill drafts; a human always publishes.
+description: Generate a checked-in marketing foundation (product information, positioning with a scored audience wedge and a pricing-strategy read, competitor analysis, brand voice, content strategy, channel plan) from a product's actual source or site, then draft channel-ready marketing content and campaign collateral driven by those docs — blog posts, X/LinkedIn posts, Reddit/Hacker News posts, launch and PR sequences, creator-outreach shortlists, sponsorship plans, UGC video briefs, lead generators, sales emails, pitch decks, the About-page story, and company/product/feature names. Every product claim traces to file:line or a fetched URL; every draft cites the foundation lines that justify its angle and voice. Triggers on "act as my CMO", "build me a marketing strategy", "write my positioning doc", "who should we target", "which segment should we lead with", "is our pricing strategy right", "brand voice guide", "name this product / feature", "write our About page story", "competitor analysis", "content strategy for my product", "marketing plan", "plan my launch", "draft a launch post", "write a LinkedIn/X post about", "what should I post on Reddit / Hacker News", "influencer outreach list", "newsletter or podcast sponsorships", "lead magnet", "sales email", "pitch deck", "UGC brief", "AI CMO alternative", "marketing foundation docs". Do NOT use for SEO / marketing audits of an existing site (use snitch-marketing — it grades what exists; this skill creates what's missing), persuasive page-section structure (use snitch-focusedcopy), grading the on-page hero, one-liner, and tagline against the visitor's decision path (use snitch-ux — this skill drafts those options, snitch-ux judges the one on the page), setting the price number on a greenfield build (use snitch-blueprint), technical prose (use snitch-docwriter), or pixel / conversion-tracking setup (use snitch-adsready). This skill drafts; a human always publishes.
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). LLM-backed work uses the user's existing model; no separate server required. Web fetch (built-in) used for crawl mode and competitor research when available; degrades to source-only with hedged competitor sections when not.
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.3.0
   homepage: https://snitchplugin.com
 ---
 
@@ -21,49 +21,72 @@ The skill has two modes, and the second depends on the first:
 
 - **Foundation mode** builds `marketing/` — a stack of six strategy documents derived from
   the product's real source code, site, and the user's answers, with every factual claim
-  traced to evidence. This is the durable asset: versioned, reviewable, diffable.
-- **Drafting mode** produces channel-ready content — blog posts, X/LinkedIn posts, Reddit
-  and Hacker News posts, creator-outreach shortlists, UGC video briefs — where every draft's
-  angle, claims, and voice are justified by citations into the foundation docs. No
-  foundation, no drafting: if `marketing/` doesn't exist, run Foundation mode first.
+  traced to evidence. This is the durable asset: versioned, reviewable, diffable. The load-
+  bearing calls inside it — which segment to lead with, the positioning statement, the
+  villain, and the pricing posture — follow the procedures in
+  `references/positioning-method.md`.
+- **Drafting mode** produces channel-ready content and the campaign collateral around it —
+  blog posts, X/LinkedIn posts, Reddit and Hacker News posts, launch sequences, creator-
+  outreach shortlists, sponsorship plans, UGC video briefs, lead generators, sales emails,
+  decks, the About-page story, and names for the company, product, or a feature — where
+  every draft's angle, claims, and voice are justified by citations into the foundation
+  docs. No foundation, no drafting: if `marketing/` doesn't exist, run Foundation mode first.
 
-Like snitch-marketing, this skill can run in two modes. In **source mode** the product's
-repo is in the workspace: Read/Grep the actual implementation, pricing config, README, and
-existing site copy. In **crawl mode** the user gave a URL: Fetch the rendered pages. Prefer
-source mode for
-product truth (what the thing actually does, real limits, real prices) and crawl mode for
-market-facing context (what the site currently says, what competitors say). Use both when
-both are available.
+Like snitch-marketing, this skill can run in two evidence modes. In **source mode** the
+product's repo is in the workspace: Read/Grep the actual implementation, pricing config,
+README, and existing site copy. In **crawl mode** the user gave a URL: Fetch the rendered
+pages. Prefer source mode for product truth (what the thing actually does, real limits, real
+prices) and crawl mode for market-facing context (what the site currently says, what
+competitors say). Use both when both are available.
 
 ## When to use this skill
 
 - The user wants a **marketing strategy, plan, or foundation** for a product: positioning,
   brand voice, competitor analysis, content strategy, channel plan, "where should I market
   this", "act as my CMO".
+- The user is making a **strategic call the foundation has to record**: which audience
+  segment to lead with, what the positioning statement should be, what the brand is against,
+  or whether the pricing mix is producing the cash flow and signal the stage needs.
 - The user wants **channel content drafted**: a launch post, an X thread, a LinkedIn post, a
   Reddit or Hacker News post, a blog article angle list, a newsletter issue, an outreach
   shortlist, a UGC video brief.
+- The user wants **campaign collateral or a name**: a lead generator, an entry offer, a sales
+  email, a pitch deck, a testimonial-video brief, the About-page story, bad-news or
+  price-rise messaging, or a name for the company, product, or a feature.
 - The user wants to **replace a subscription AI-CMO tool** with something they own.
 - An existing `marketing/` foundation is present and the user asks for anything
   content-shaped — treat the foundation as the source of truth and draft from it.
 
 ## When NOT to use this skill
 
-Hand off rather than running this skill when the user is asking for:
+Hand off rather than running this skill — call the Skill tool with the named skill (one
+skill per call) — when the user is asking for:
 
 - **An audit of an existing site's SEO / marketing** — use `snitch-marketing`. The seam is
   audit vs. generate: snitch-marketing grades what exists with evidence-tiered findings;
   this skill creates the strategy and the drafts. After Foundation mode, snitch-marketing is
-  the natural next step to grade the site against the new strategy.
+  the natural next step: it reads `marketing/positioning.md` and reports tensions between
+  what the site does and what the strategy declares.
 - **Restructuring one persuasive page's sections** — use `snitch-focusedcopy` (CLOSER
   framework). This skill may *cite* a page's weakness in the channel plan, but the
-  section-by-section fix belongs to focusedcopy.
+  section-by-section fix belongs to focusedcopy. The same seam holds for collateral: this
+  skill decides what the asset says and why; focusedcopy structures the one page it lands on.
+- **UI copy, CTAs, onboarding flows, and grading the words once they are on the page** — the
+  tests that judge a hero, one-liner, or tagline in place (cognitive weight, the five-second
+  test, counting how often the page names the customer's problem) — use `snitch-ux`, which
+  judges them against the visitor's decision path. The seam is drafts vs. judgment: this
+  skill *writes* the hero, one-liner, and tagline options that fall out of positioning
+  (`references/positioning-method.md`, § 3), and owns the off-page half — the villain, the
+  About-page story, names, short-format hooks, and the collateral chain; snitch-ux grades
+  whichever draft the site ends up running.
+- **Setting the price number on a build that has none** — use `snitch-blueprint`, whose
+  sensitivity survey decides it. This skill reads the *strategy* around a price that exists:
+  tier shape, annual and lifetime posture, what to protect and what to stop.
 - **Technical prose** (docs, READMEs, error messages, release notes) — use
   `snitch-docwriter`. Its controlled style strips voice on purpose; this skill's drafts are
   voice-bearing by design. Never route marketing drafts through docwriter's linter.
-- **UI copy, CTAs, onboarding flows judged against the user's decision path** — use
-  `snitch-ux`.
-- **Pixel / conversion-tracking / consent readiness** — use `ads-ready`.
+- **Pixel / conversion-tracking / consent readiness**, including the attribution wiring
+  behind creator codes and sponsorship vanity links — use `snitch-adsready`.
 - **Auto-publishing.** This skill never posts, schedules, or deploys content anywhere. It
   writes drafts to the repo; the human ships. Requests to "post this for me" get the draft
   plus a note that publishing is theirs.
@@ -123,7 +146,7 @@ done-when criteria — live in `references/foundation-docs.md`; read it before w
 | Document | Owns |
 |---|---|
 | `marketing/product-information.md` | What the product actually is: features, real limits, real pricing, stack, stage — every line evidenced from source |
-| `marketing/positioning.md` | Who it's for, the alternative it replaces, the unique value, and why now — the decisions every other doc inherits |
+| `marketing/positioning.md` | Who it's for, the scored wedge it leads with, the alternative it replaces, the unique value, the villain, why now, and the pricing posture — the decisions every other doc inherits |
 | `marketing/competitor-analysis.md` | Named competitors with fetched-URL evidence: their positioning, pricing, gaps, and the wedge against each |
 | `marketing/brand-voice.md` | Voice attributes with paired good/bad examples, banned phrases, disclosure identity for community channels |
 | `marketing/content-strategy.md` | Topic pillars mapped to intent, formats, cadence the user can actually sustain, and what "working" means |
@@ -131,16 +154,22 @@ done-when criteria — live in `references/foundation-docs.md`; read it before w
 
 **Flow:**
 
-1. **Detect before asking.** Inventory what the workspace already answers: README and docs,
-   pricing config or billing code, landing page copy, existing `marketing/` or strategy docs
-   (reuse and update rather than re-derive — and check for a `.claude/seo-config.md` or
-   similar prior onboarding contract; inherit its facts), git history for stage and
-   momentum, deployed site via crawl mode. Build the product-truth picture from evidence
-   first.
-2. **Interview only the gaps.** One round of questions, only for what can't be derived:
-   business goal and stage, who's actually buying today (if anyone), competitors the user
-   fears (offer to research candidates if they have none), constraints (time per week,
-   budget, channels the user refuses to touch), claims the product must never make.
+1. **Detect before asking.** Inventory what the workspace already answers: a checked-in
+   `BLUEPRINT.md` (snitch-blueprint) — when one exists, read it per CONTEXT.md's **Declared
+   intent** entry (which sections, read-only, always). This skill's step is inheritance rather
+   than grading: treat the `Decision` lines as settled instead of re-deriving them (the
+   alternative the buyer uses today sits inside *Audience & wedge*), and skip the interview
+   questions below that they already answer — README and docs, pricing config or billing code,
+   landing page copy, existing `marketing/` or strategy docs (reuse and update rather than
+   re-derive; inherit their facts), prior onboarding contracts or CLAUDE.md product notes,
+   git history for stage and momentum, deployed site via crawl mode. Build the product-truth
+   picture from evidence first.
+2. **Interview only the gaps.** One round of questions, only for what can't be derived from
+   the workspace or inherited from `BLUEPRINT.md`: business goal and stage, competitors the
+   user fears (offer to research candidates if they have none), and — when `BLUEPRINT.md`
+   doesn't already answer them — who's actually buying today (if anyone), constraints (time
+   per week, budget, channels the user refuses to touch), and claims the product must never
+   make.
 3. **Research competitors** (crawl mode): fetch each competitor's homepage and pricing page;
    extract positioning, price points, and gaps with URL evidence per the evidence gate.
 4. **Write the six docs in dependency order** — product-information first (everything cites
@@ -169,7 +198,11 @@ visibly changed since the docs were written) → flag it and offer a refresh bef
 2. **Pick the channel and load its playbook** from `references/channel-playbooks.md` —
    format constraints, structural pattern, self-promotion norms, and what good looks like
    for: blog / long-form, X, LinkedIn, Reddit, Hacker News, newsletter, creator outreach,
-   and UGC briefs.
+   newsletter and podcast sponsorships, UGC briefs, an owned community, the founder's own
+   channel, and launches / PR. For an asset rather than a post — a lead generator, an entry
+   offer, a sales email, a deck, a testimonial brief, the About-page story, a name, a
+   short-format hook, or bad-news messaging — load
+   `references/brand-story-and-collateral.md` instead.
 3. **Draft with provenance.** Every draft starts with an HTML-comment provenance header (it
    dies on publish, so it never ships):
 
@@ -191,9 +224,11 @@ visibly changed since the docs were written) → flag it and offer a refresh bef
 5. **Report and hand off.** For each draft: channel, the one-line angle, where it came from
    in the foundation, and any claim that had to be hedged or dropped and why. Then name the
    relevant handoffs. snitch-docwriter is *not* one of them (drafts keep voice). The real
-   ones: snitch-marketing (grade the site against the new strategy), snitch-focusedcopy (fix
-   the landing page the drafts will send traffic to), and ads-ready (if the channel plan
-   ranks paid).
+   ones: snitch-marketing (reads `marketing/positioning.md` and reports tensions against it),
+   snitch-focusedcopy (fix the landing page the drafts will send traffic to), snitch-ux (to
+   grade a hero, one-liner, or tagline draft once it is on the page), and
+   snitch-adsready (if the channel plan ranks paid, or a creator or sponsorship draft needs
+   attribution wiring that doesn't exist).
 
 ## Output discipline
 
@@ -210,6 +245,16 @@ visibly changed since the docs were written) → flag it and offer a refresh bef
 
 - `references/foundation-docs.md` — the six foundation document schemas: purpose, required
   sections, evidence rules, inputs, and done-when criteria for each.
+- `references/positioning-method.md` — the decision procedures behind `positioning.md`:
+  wedge scoring with pivot conditions, the ten-step positioning workshop, the hero drafts,
+  the sales narrative arc, and the pricing strategy read. Loaded in Foundation mode before
+  positioning.md is written.
 - `references/channel-playbooks.md` — per-channel drafting playbooks (blog, X, LinkedIn,
-  Reddit, Hacker News, newsletter, creator outreach, UGC briefs): format constraints,
-  structural patterns, self-promotion norms, disclosure rules, and failure modes.
+  Reddit, Hacker News, newsletter, creator outreach, newsletter/podcast sponsorships, UGC
+  briefs, owned community, founder channel, launches and PR): format constraints, structural
+  patterns, self-promotion norms, disclosure rules, and failure modes.
+- `references/brand-story-and-collateral.md` — the off-page half of the message: the villain,
+  the About-page and long company story, naming (company, product, feature), short-format
+  hooks, repetition discipline, and the collateral chain (lead generators, entry offers,
+  premium framing, closing copy, sales emails, decks, testimonial briefs, bad-news
+  messaging). Loaded when the request is an asset rather than a post.

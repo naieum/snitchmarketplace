@@ -1,12 +1,11 @@
 # Persisted ICP / positioning context file
 
-The audit's psychology, CRO, copy, and positioning findings are only as sharp as
-its model of *who the site is for*. Today the discovery sequence (STEPS 0.5-0.8, specified in
-`references/discovery-flow.md`) captures this into the report, but it isn't **persisted** or
-**consumed** by the per-category checks. This reference defines a single persisted artifact —
-**`.snitch-marketing-context.md`** — that discovery writes once and the relevant
-categories read first, so findings judge the site against its *actual* ICP, not
-generic best practice.
+The audit's psychology, CRO, copy, and positioning findings are only as sharp as its model of
+*who the site is for*. The discovery sequence (STEPS 0.5-0.8, specified in
+`references/discovery-flow.md`) produces that model; this reference defines the artifact it is
+persisted in — **`.snitch-marketing-context.md`** — which discovery writes once and the relevant
+categories read first, so findings judge the site against its *actual* ICP, not generic best
+practice.
 
 Naming is consistent with the skill's other dotfiles (`.snitch-marketing-ignore`,
 `.snitch-marketing-triage.json`).
@@ -16,9 +15,8 @@ Naming is consistent with the skill's other dotfiles (`.snitch-marketing-ignore`
 - **Written** at the end of discovery (STEP 0.8), or on demand. If a file already
   exists, offer to reuse/update rather than regenerate. Migration-aware path search,
   first hit wins: `.snitch-marketing-context.md` (canonical) → `.snitch-marketing/context.md` → the discovery output already in the report.
-- **Read first** by these categories before they score: 60, 73, 81, 99, 109, 110,
-  111, 112, 114, 115, 116, 117 (the persuasion / CRO / copy / positioning / pricing
-  cluster). If the file is absent, those cats fall back to on-page inference and
+- **Read first** by these categories before they judge a surface: 60, 73, 81, 99,
+  109, 114, 115, 116, 117 (the persuasion / CRO / copy / positioning / pricing cluster). If the file is absent, those cats fall back to on-page inference and
   **note the assumption** (per the anti-hallucination assumptions rule) rather than
   asserting ICP facts.
 
@@ -67,10 +65,10 @@ turn vague findings into grounded ones.
 
 ## How categories use it (examples)
 
-- **Cat 81 / 110 (positioning / ICP wedge):** does the hero match the ICP + anti-persona, or does it try to address everyone? Cite the divergence.
+- **Cat 81 (positioning):** does the hero match the ICP + anti-persona, or does it try to address everyone? Cite the divergence.
 - **Cat 114 §3 / §4 (motivation / friction):** does the page address the **Anxiety** and **Push** forces? A missing Anxiety-reducer near the CTA is a grounded finding, not a guess.
 - **Cat 60 / 117 (conversion copy / copy-lint):** does the site's wording match the **verbatim customer language**, or is it jargon the ICP doesn't use? Quote both.
-- **Cat 111 / 74 (trust artifacts / social proof):** are the **proof points** actually on the page where the decision happens?
+- **Cat 60 / 74 (trust artifacts / social proof):** are the **proof points** actually on the page where the decision happens?
 - **Cat 109 (message match):** does the landing copy match the ad *and* the ICP's Pull?
 
 ## Provenance discipline

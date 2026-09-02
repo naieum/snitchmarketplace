@@ -22,10 +22,13 @@ _tt_http_get() {
 }
 
 platform_state() {
-  local adv_id="${1:-${TIKTOK_ADVERTISER_ID:-}}"
+  # Canonical env names are TIKTOK_ADS_* (what doctor/prereqs check); the
+  # unprefixed names are accepted as a legacy fallback.
+  local token="${TIKTOK_ADS_ACCESS_TOKEN:-${TIKTOK_ACCESS_TOKEN:-}}"
+  local adv_id="${1:-${TIKTOK_ADS_ADVERTISER_ID:-${TIKTOK_ADVERTISER_ID:-}}}"
   local ts; ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-  if [[ -z "${TIKTOK_ACCESS_TOKEN:-}" || -z "$adv_id" ]]; then
+  if [[ -z "$token" || -z "$adv_id" ]]; then
     jq -n --arg ts "$ts" '{
       schema: "adssec.state-platform.tiktok",
       schema_version: 1,
@@ -34,13 +37,13 @@ platform_state() {
       platform: "tiktok",
       locked: "tiktok-api",
       reason: "TikTok Business API auth env not configured.",
-      remediation: "Export TIKTOK_ACCESS_TOKEN and TIKTOK_ADVERTISER_ID. See https://business-api.tiktok.com/portal/docs?id=1738373164380162 for OAuth2 setup.",
-      env_required: ["TIKTOK_ACCESS_TOKEN","TIKTOK_ADVERTISER_ID"]
+      remediation: "Export TIKTOK_ADS_ACCESS_TOKEN and TIKTOK_ADS_ADVERTISER_ID. See https://business-api.tiktok.com/portal/docs?id=1738373164380162 for OAuth2 setup.",
+      env_required: ["TIKTOK_ADS_ACCESS_TOKEN","TIKTOK_ADS_ADVERTISER_ID"]
     }'
     return 0
   fi
 
-  local at="$TIKTOK_ACCESS_TOKEN"
+  local at="$token"
   local camp_url="${ADSSEC_TT_API_BASE}/campaign/get/?advertiser_id=${adv_id}&page_size=100"
   local pixel_url="${ADSSEC_TT_API_BASE}/pixel/list/?advertiser_id=${adv_id}"
   local aud_url="${ADSSEC_TT_API_BASE}/dmp/custom_audience/list/?advertiser_id=${adv_id}&page_size=100"

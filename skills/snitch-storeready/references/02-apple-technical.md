@@ -2,9 +2,11 @@
 
 When to read this: auditing build settings, Info.plist, entitlements, PrivacyInfo.xcprivacy, ATS, or ATT wiring before an App Store submission.
 
+**Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
+
 ## Build and SDK floor
 
-- Apps must be built with Xcode 26 and the iOS 26 / iPadOS 26 / tvOS 26 / visionOS 26 / watchOS 26 SDK (in force since April 28, 2026). This floor moves roughly yearly each spring; current as of 2026-08 — verify at https://developer.apple.com/news/upcoming-requirements/. The deployment target may stay lower; only the build SDK is gated.
+- Apps must be built with Xcode 26 and the iOS 26 / iPadOS 26 / tvOS 26 / visionOS 26 / watchOS 26 SDK (in force since April 28, 2026). This floor moves roughly yearly each spring; verify at https://developer.apple.com/news/upcoming-requirements/. The deployment target may stay lower; only the build SDK is gated.
 - Device slices are arm64 only. Bitcode is dead: deprecated in Xcode 14 and rejected at upload. A third-party framework precompiled with bitcode will fail the archive — strip it (`bitcode_strip`). Static check: `otool -l <binary> | grep __LLVM` on embedded frameworks.
 - App thinning requires consistent architectures between the app and every embedded framework.
 - Mac App Store apps must be sandboxed; submitted bundles must not carry the `com.apple.quarantine` xattr.
@@ -22,7 +24,7 @@ Every `UIBackgroundModes` entry must map to real user-facing functionality: `voi
 
 Source: https://developer.apple.com/app-store/app-privacy-details/
 
-- Three buckets: Data Used to Track You / Data Linked to You / Data Not Linked to You, across 14 category groups (Contact Info, Location, Identifiers, Usage Data, Diagnostics, ...).
+- Three buckets: Data Used to Track You / Data Linked to You / Data Not Linked to You, across 16 category groups (Contact Info, Health and Fitness, Financial Info, Location, Sensitive Info, Contacts, User Content, Browsing History, Search History, Identifiers, Purchases, Usage Data, Diagnostics, Surroundings, Body, Other Data). Surroundings and Body are the newer, visionOS-oriented additions; verify the live list at https://apps.apple.com/story/id1539235847 before citing a count.
 - "Collect" means transmitted off-device and retained beyond servicing the real-time request. On-device-only processing is exempt.
 - You must declare everything your third-party SDKs collect, including SDK features you do not use if the SDK repurposes the data. IP address counts (declare as location, device ID, or diagnostics).
 - Labels are editable without a new build; keep them synchronized with the privacy manifest and actual behavior. Label / manifest / behavior mismatch is a standing rejection risk.

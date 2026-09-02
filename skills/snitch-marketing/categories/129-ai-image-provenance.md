@@ -15,7 +15,7 @@ the images are actually used.
 
 Scope note: this is the metadata embedded IN the image binary (IPTC/XMP) plus the
 image-license signal. It is distinct from Cat 25/26 (image alt presence and quality, the
-accessible text), Cat 27 (image format and weight), and Cat 34 (Product schema in the page's
+accessible text), Cat 27 (image format and weight), and Cat 32 (the Product row in the page's
 JSON-LD). Those audit text and page markup. This one audits the bytes inside the file.
 
 ### Pre-flight: relevance check
@@ -144,7 +144,7 @@ https://support.google.com/merchants/answer/6324350
 Google Images image-license metadata and the Licensable badge:
 https://developers.google.com/search/docs/appearance/structured-data/image-license-metadata
 
-Cross-ref Cat 34 (Product schema in JSON-LD), Cat 25/26 (image alt presence and quality),
+Cross-ref Cat 32 (the Product row in JSON-LD), Cat 25/26 (image alt presence and quality),
 Cat 27 (image format and weight).
 
 **Severity tagging:**

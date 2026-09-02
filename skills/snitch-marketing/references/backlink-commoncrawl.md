@@ -8,8 +8,8 @@ on every run, while being explicit about what it is and is not.
 Common Crawl publishes a public web crawl and a public web graph. Neither requires an API
 key. Two signals are useful here, at very different weights and costs.
 
-> Inspired by the Common Crawl backlink approach in the MIT-licensed `AgriciDaniel/claude-seo`
-> project. Re-implemented from the public Common Crawl APIs; no code copied.
+> The backlink-from-Common-Crawl approach appears in several open-source SEO rule sets. This is a
+> fresh implementation against the public Common Crawl APIs; no code was copied from any of them.
 
 ## Signal 1 — crawl coverage (lightweight, the default; what the script does)
 

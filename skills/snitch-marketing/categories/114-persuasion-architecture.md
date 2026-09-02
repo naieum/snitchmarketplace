@@ -2,27 +2,31 @@
 
 The whole-system view across the marketing surface. Tactical categories audit individual elements (alt text, schema, CTA presence). This category audits whether the persuasion architecture HOLDS: does the site move a visitor through First Impression → Trust → Motivation → Friction Reduction → Emotional Resonance → Decision Support → Follow-Through? A site can pass every tactical category and still fail here, because the elements don't compose.
 
+**Every section resolves to one of three outcomes, and nothing else.** A **Finding** names the element, quotes the artifact (or its absence) at `file:line` or URL+selector, and carries a severity. A **Pass-with-evidence** names the surfaces that were read and what was found on them — a Pass with no cited surface is not a Pass. A **Skip-with-reason** says which surface could not be reached and why. There is no section score and no letter grade: a number like "Emotional Resonance 11/25" cannot be traced to evidence, and this skill only reports what it can trace.
+
 ### Pre-flight: always run
 
-Persuasion architecture is universal. No skip; every commercial site should be evaluated.
+Persuasion architecture is universal. No skip at the category level; every commercial site is evaluated.
 
-If the site is a pure marketing landing page (no checkout, no signup, no follow-through surfaces), Sections 4 and 7 may be partial. Note coverage in the finding. Do not skip the category.
+If the site is a pure marketing landing page (no checkout, no signup, no follow-through surfaces), Sections 4 and 7 will carry Skips. Record them as Skips with the reason; do not skip the category.
 
-Read `references/mental-models.md` before scoring. The audit uses model names by reference and assumes the reader can look them up.
+Read `references/mental-models.md` before the pass. The audit uses model names by reference and assumes the reader can look them up.
 
-**Two layers — what you can actually claim (read first).** This category scores the **presence and quality** of persuasion patterns; those are observable from the page and you assert them with rubric evidence. Whether a pattern actually **lifts conversion for this audience is NOT knowable from inspection** — behavioral effects are context-dependent, audience-moderated, and can backfire (a six-country study found a textbook social-proof nudge *reduced* sign-ups in some markets). Frame impact as a **hypothesis to validate via the site's own A/B test** (Cat 73), never a guaranteed lift.
+**Two layers — what you can actually claim (read first).** This category reports the **presence and quality** of persuasion patterns; those are observable from the page. Whether a pattern actually **lifts conversion for this audience is NOT knowable from inspection** — behavioral effects are context-dependent, audience-moderated, and can backfire (a six-country study found a textbook social-proof nudge *reduced* sign-ups in some markets). Frame impact as a **hypothesis to validate via the site's own A/B test** (Cat 73), never a guaranteed lift.
 
 **Evidence-tier the models — don't cite shaky science as fact:**
 - **Tier 1** (relatively robust, still context-dependent): anchoring, loss aversion, social proof, default effect.
 - **Tier 2** (real but parameter/context-sensitive — qualify the claim): scarcity, reciprocity, commitment & consistency.
 - **Tier 3** (contested / failed replication — do NOT assert as established science): ego depletion (the "decision-fatigue / willpower-as-fuel" framing), most unconscious priming. Only ~25% of social-psychology findings replicate; weight Tier 3 accordingly or drop it.
 
+**Boundary with snitch-ux.** This category asks whether the *marketing surface* composes into a coherent argument. How a screen reads to a user mid-decision — the commitment weight of a CTA, the confirmation screen after the yes, the paywall's choice architecture — is judged against the user's decision path, which is the sibling's judge: call the Skill tool with "snitch-ux" for that half.
+
 ### Evidence required (do not skip)
 
 **Source mode + crawl mode required:**
 
 1. Fetch / read the homepage hero. Quote H1, sub-line, primary CTA.
-2. Identify the seven persuasion-architecture sections on the site:
+2. Identify the seven persuasion-architecture surfaces on the site:
    - Hero + above-the-fold (Section 1)
    - Trust elements: testimonials, logos, certifications, third-party reviews (Section 2)
    - Motivation surfaces: outcome framing, identity copy, urgency signals (Section 3)
@@ -30,177 +34,163 @@ Read `references/mental-models.md` before scoring. The audit uses model names by
    - Emotional resonance: storytelling, brand voice, community signals (Section 5)
    - Decision-support: pricing page, FAQ, risk reversal, comparison content (Section 6)
    - Follow-through: onboarding, activation, exit flow, retention surfaces (Section 7)
-3. Score each section 0-25 using the rubrics below.
-4. Sum the seven section scores into a total (0-175). Map to letter grade.
-5. Cross-reference findings to specific tactical categories (60, 74, 81, 99, 112, 115, 116) for fix-level detail.
+
+   A page that is none of the seven is **outside the table**: it is not evidence for any section, in either direction. It cannot be a Finding, it cannot be a Pass, and it cannot corroborate one — a section's proved absence is proved on the seven surfaces alone. Leave it out of the report, or record it once as a Skip-with-reason ("not a persuasion-architecture surface"). Careers, legal, changelog and status pages are the usual out-of-table set.
+3. For each section, work the checklist below. Every checklist line ends as a Finding (artifact quoted, or its absence proved by the read), a Pass (the surfaces read, named), or a Skip (the surface was unreachable, and why).
+4. Report the seven sections as a coverage table: section, outcome, evidence. No totals.
+5. Cross-reference findings to the tactical categories (60, 74, 81, 99, 115, 116) for fix-level detail.
 
 ### Forbidden claims
 
-- "The hero may be unclear." Quote it. Apply Section 1 rubric. Score it.
-- "Trust signals seem weak." List what's there + what's missing. Apply Section 2 rubric.
-- "Friction is high." Count form fields, CTAs above fold, choices on pricing. Apply Section 4 rubric.
-
-Every section score requires the rubric-row evidence quoted. A section cannot be scored without naming the specific element evaluated.
+- "The hero may be unclear." Quote it, then Finding or Pass.
+- "Trust signals seem weak." List what's there and what's missing, then Finding or Pass.
+- "Friction is high." Count the form fields, the CTAs above the fold, the choices on pricing; then Finding or Pass.
+- Any adjective standing in for evidence — "irresistible", "compelling", "delightful", "best-in-class". If a claim cannot be traced to a quoted artifact, it is not reportable. Describe what is on the page and let the reader judge it.
+- Any numeric section score, total or letter grade. The outcome vocabulary is Finding / Pass-with-evidence / Skip-with-reason.
 
 ### Detection
 
-Whole-site audit. The category runs after individual tactical categories have run (so their findings inform the section scores) but produces its own holistic output independently.
+Whole-site audit. The category runs after individual tactical categories have run (so their findings inform the section reads) but produces its own holistic output independently.
+
+### What to Search For
+
+Each element below is judged from a quoted artifact, never from an impression. Search for the artifact first; an element with no artifact to quote is judged from absence, and the absence is what gets quoted.
+
+**First impression (Section 1):** the first-viewport heading, subhead and CTA in the page source; the hero image / video element; any interstitial, cookie wall or modal that renders before them.
+
+**Trust (Section 2):** testimonial blocks (name, title, company, quantified result), customer-logo bars, third-party review badges, guarantee / refund / "cancel anytime" strings, security seals near payment fields, the About / team route.
+
+**Motivation (Section 3):** outcome language in headings vs feature nouns, before/after or use-case sections, pricing-page value framing, comparison or alternatives routes.
+
+**Friction (Section 4):** every `<form>` on the conversion path — field count, required vs optional marking, `label` association, `autocomplete` tokens, card-required-for-trial copy, number of steps between the primary CTA and completion.
+
+**Emotional resonance (Section 5):** narrative sections (founder story, origin, mission), first- vs third-person voice, imagery of people vs stock abstraction, any free artifact given before the ask.
+
+**Decision support (Section 6):** FAQ blocks, comparison tables, plan-difference copy, objection-handling sections near the CTA, docs / demo / sandbox routes.
+
+**Follow-through (Section 7):** post-signup or post-purchase surfaces reachable from source (confirmation route, onboarding route, transactional email templates), unsubscribe and cancellation routes.
+
+When a surface is not reachable with Read / Grep / Fetch, Skip that element with the reason rather than judging it from assumption.
 
 ### The seven sections
 
-Each section scores 0-25 across four elements. Scoring rubric per row:
+Each section is a short checklist. Every line is answerable from an artifact; a line that cannot be answered from one is a Skip, not a guess.
 
-| Score | Rating | Meaning |
-|---|---|---|
-| 0-5 | Critical | Major psychological barrier; likely causing significant drop-off |
-| 6-10 | Poor | Key element missing or counterproductive; needs urgent attention |
-| 11-15 | Moderate | Basic element present but not optimized; room for improvement |
-| 16-20 | Good | Well-implemented with minor optimization opportunities |
-| 21-25 | Excellent | Strong implementation; refinement only |
+**Each section's "Finding when" list is closed.** It names every condition that makes that section a Finding, and nothing else does. An observation the list does not name is not a Finding for that section however true it is: route it to the tactical category that owns it, and let the section resolve on its own checklist. A section whose checklist checks out is a Pass-with-evidence — never a Finding built from a homeless observation.
 
-#### Section 1: First Impression & Attention (0-25)
+#### Section 1: First impression & attention
 
-| Element | 0 | 5 | 10 | 15 | 20 | 25 |
-|---|---|---|---|---|---|---|
-| Hero message | No clear value prop | Generic value prop | Specific benefit stated | Clear outcome-focused | Emotionally compelling | Creates immediate curiosity |
-| Visual hierarchy | Chaotic | Confusing | Basic clarity | Clear flow | Optimal scanning pattern | Guides perfectly |
-| Cognitive load | Overwhelming | High | Moderate | Low | Minimal | Effortless |
-| Novelty factor | Generic / repetitive | Slightly unique | Moderately fresh | Distinctive | Memorable | Standout |
+- Does the first-viewport heading name what this is and who it is for? Quote the H1 and subhead.
+- Is there a primary CTA in the first viewport, and does its label name an outcome? Quote it.
+- Does anything render before the hero — interstitial, cookie wall, newsletter modal? Quote the component.
+- Is the hero's visual a specific artifact (product, result, person) or generic stock? Quote the element and its source.
 
-**Assessment questions:**
-- Does the hero communicate what this is and who it is for in three seconds?
-- Can a visitor understand the primary benefit before scrolling?
-- Is the visual hierarchy intuitive on first scan?
-- Does the design read fresh or templated?
+**Finding when:** no value proposition in the first viewport; no primary CTA above the fold on a commercial page; a modal or interstitial covers the hero on first load.
+**Pass reads like:** "Pass — `/` hero (`src/routes/index.tsx:22-48`): H1 names the audience and the outcome, one primary CTA labeled 'Get my free audit', no interstitial in the source."
 
-**Models in play:** Hero clarity ties to JTBD (Cat B). Cognitive load ties to Hick's Law and Curse of Knowledge. Novelty ties to Mere Exposure (need familiarity) balanced against Pratfall (some distinctive imperfection).
+**Models in play:** hero clarity ties to JTBD. Cognitive load ties to Hick's Law and the curse of knowledge. Familiarity (mere exposure) trades against distinctiveness.
 
 Cross-reference: Cat 81 (positioning), Cat 9 (title tag), Cat 60 (CTA design).
 
-#### Section 2: Trust & Credibility (0-25)
+#### Section 2: Trust & credibility
 
-| Element | 0 | 5 | 10 | 15 | 20 | 25 |
-|---|---|---|---|---|---|---|
-| Social proof | None | Name only | Names + generic quote | Specific results | Detailed case studies | Quantified outcomes with faces |
-| Authority signals | None | Mentioned once | Credentials shown | Expert endorsements | Media mentions | Multiple authority layers |
-| Visual trust | Stock imagery | Generic professional | Some real images | Real team / office | Behind-the-scenes | Transparent operations |
-| Specificity | Vague claims | Some specifics | Verified claims | Data-backed | Third-party verified | Audit-ready evidence |
+- Are testimonials attributed (name, role, company, photo or handle) and do any carry a quantified result? Quote one.
+- Is there a customer-logo bar or third-party review badge near the primary CTA? Quote it or prove its absence.
+- Is there a guarantee, refund or "cancel anytime" string at the paid CTA? Quote it, and record it as a first-party assertion — it is risk reversal, graded in Section 6, and it does not answer this section's question.
+- Is there security emphasis at the payment step, and is the About / team route real (named people) rather than a stock page?
 
-**Assessment questions:**
-- Can visitors verify claims independently?
-- Does the site feel like a real business with real customers?
-- Are credentials displayed?
-- Is there enough detail to reduce uncertainty?
+**Two classes of trust copy — sort them before you pick a severity.** *Attributed proof* is a third party vouching: a testimonial carrying a real name and role, a customer-logo bar, a review badge or link to a review platform, a named case study, a real About / team route. *First-party assertion* is the brand vouching for itself: a guarantee or refund string, a "cancel anytime" line, a founder quote, a self-reported number. First-party assertions are legitimate copy and are graded elsewhere (Section 5 for voice, Section 6 for risk reversal) — they are never counted as proof here, and their presence does not turn an absence of attributed proof into a Pass.
 
-**Models in play:** Social Proof / Bandwagon. Authority Bias. Liking / Similarity. Availability Heuristic (vivid case studies > abstract claims).
+**Finding when:** no proof of either class on a commercial page; no attributed proof on a commercial page even though first-party assertions are present — quote the assertions that are there, then prove the absence of the attributed class; anonymous-only testimonials (a quote with no name, role or company); a claim on the page that nothing on the site substantiates (route it to Cat 117 for the specific line).
+**Pass reads like:** "Pass — `/`, `/pricing`, `/about` read: three named testimonials with role and company (`components/Testimonials.tsx:14-52`), G2 badge above the pricing CTA. The 30-day guarantee string at the paid CTA is recorded as first-party and graded in Section 6; the Pass rests on the attributed items."
 
-Cross-reference: Cat 74 (customer feedback), Cat 111 (trust artifacts), Cat 75 (brand consistency).
+**Models in play:** social proof. Authority bias. Liking / similarity. Availability (a vivid case study lands harder than an abstract claim).
 
-#### Section 3: Motivation & Desire (0-25)
+Cross-reference: Cat 74 (customer feedback), Cat 60 (trust artifacts), Cat 75 (brand consistency).
 
-| Element | 0 | 5 | 10 | 15 | 20 | 25 |
-|---|---|---|---|---|---|---|
-| Jobs-to-be-Done clarity | Not addressed | Product-feature focus | Outcome mentioned | Job clearly defined | Multiple jobs shown | Mastery of job framing |
-| Loss aversion framing | No loss mention | Minimal | Moderate loss | Strong loss | Compelling loss | Future-self visualization |
-| Identity alignment | No identity | Generic audience | Specific segment | Strong fit | Community belonging | Shared mission |
-| Urgency mechanisms | None | Weak / fake | Occasional | Appropriate | Strategic | Creates genuine urgency |
+#### Section 3: Motivation & desire
 
-**Assessment questions:**
-- Is the core job-to-be-done clearly articulated?
-- Does messaging frame what the visitor will lose by not acting?
-- Do visitors feel like this is "for people like them"?
-- Is urgency genuine or artificial? (If artificial, flag as ethical risk regardless of score.)
+- Do the headings name a job to be done, or list features? Quote two headings.
+- Does the page state the cost of the status quo anywhere (before/after, "what it costs to keep doing it manually")? Quote it.
+- Is there identity language naming who this is for? Quote it.
+- Is any urgency signal present, and is it backed by a real deadline or a real count? Quote the mechanism, not just the copy.
 
-**Models in play:** JTBD. Loss Aversion / Prospect Theory. Unity Principle / Identity. Scarcity (only when genuine; false scarcity downgrades to Critical regardless of element score).
+**Finding when:** every heading is a feature noun with no outcome; urgency is asserted with no enforcing mechanism (a timer that resets on reload, a stock count that never changes) — that is a dark pattern and takes the overlay below, not a section note.
+**Pass reads like:** "Pass — `/` and `/for/agencies` read: headings state outcomes ('Ship the audit in an afternoon'), the comparison section quantifies the manual alternative, no urgency mechanism present (nothing to verify)."
 
-Cross-reference: Cat 81 (positioning), Cat 110 (ICP wedge).
+**Models in play:** JTBD. Loss aversion / prospect theory. Identity / unity. Scarcity — only when genuine.
 
-#### Section 4: Friction & Conversion (0-25)
+Cross-reference: Cat 81 (positioning). Segment definition and wedge scoring are strategy generation, not a site audit — call the Skill tool with "snitch-cmo" when the fix is "decide who this is for".
 
-| Element | 0 | 5 | 10 | 15 | 20 | 25 |
-|---|---|---|---|---|---|---|
-| Form / CTA design | No clear action | Multiple confusing | Single clear | Optimized copy | Psychological triggers | Irresistible design |
-| Default effects | Not utilized | Minimal | Moderate | Good defaults | Smart pre-selection | Personalized defaults |
-| Paradox of choice | Overwhelming | Many options | Some options | Limited | Curated | Recommended path clear |
-| Progress indicators | None | Minimal | Basic | Visual | Gamified | Achievement system |
+#### Section 4: Friction & conversion
 
-**Assessment questions:**
-- Is the primary action obvious within three seconds?
-- Are choices simplified or overwhelming?
-- Does completion feel achievable?
-- Are defaults set ethically and optimally?
+- How many fields does the primary conversion form require, and are they all necessary? Quote the form.
+- Is there one obvious primary action per viewport, or several equal-weight ones? Quote the CTA set.
+- How many steps sit between the primary CTA and completion? Trace them from the routes.
+- Are defaults pre-selected, and does each pre-selection favor the user or the business? Quote the default.
+- Does a multi-step flow show progress? Quote the indicator or prove its absence.
 
-**Models in play:** Hick's Law. Default Effect. Paradox of Choice. Goal-Gradient. Activation Energy. BJ Fogg B=MAP.
+**Finding when:** required fields the flow does not need; competing equal-weight CTAs; a consequential checkbox pre-checked in the business's favor (dark pattern — see the overlay); a card required for a "free" trial with no disclosure before the final step.
+**Pass reads like:** "Pass — signup form (`app/signup/page.tsx:31-77`) asks for email only, one primary CTA, two steps to completion, no pre-checked boxes."
 
-Cross-reference: Cat 60 (conversion-trust), Cat 99 (conversion-funnel-deep).
+**Models in play:** Hick's Law. Default effect. Paradox of choice. Goal gradient. Activation energy.
 
-#### Section 5: Emotional Resonance (0-25)
+Cross-reference: Cat 60 (conversion-trust), Cat 99 (conversion-funnel-deep). Whether the ask is too heavy for this point in the decision path → call the Skill tool with "snitch-ux".
 
-| Element | 0 | 5 | 10 | 15 | 20 | 25 |
-|---|---|---|---|---|---|---|
-| Peak-end experience | No memorable moments | One moment | Some moments | Positive peaks | Delightful moments | Emotional journey |
-| Storytelling | None | Basic | Narrative present | Engaging story | Multi-layer narrative | Coherent brand story |
-| Reciprocity | Take only | Minimal give | Some value | Valuable free resource | Generous offering | Progressive value |
-| Community / social | None | Mentioned | Basic | Active community | User-generated | Movement building |
+#### Section 5: Emotional resonance
 
-**Assessment questions:**
-- Is there a memorable experience the visitor will recall?
-- Does the brand tell a compelling story or only list features?
-- Does the site give before asking?
-- Is there a sense of belonging?
+- Is there a narrative anywhere on the marketing surface (founder story, origin, mission), and is it on the path a visitor actually walks? Quote it and name the route.
+- Is the voice first-person or corporate third-person? Quote a sentence.
+- Does the imagery show real people, real product, or abstract stock? Name the assets.
+- Is anything given before the ask — a free tool, a template, an open-source utility, a useful teardown? Quote the artifact.
+- Is a community surfaced anywhere a visitor would see it? Quote the link.
 
-**Models in play:** Peak-End Rule. Reciprocity. Unity / Community. Storytelling (foundational, no single model owns this).
+**Finding when:** the brand has a story that exists only on `/about` and never appears on the conversion path; nothing is given before the ask on a brand whose category expects it; the entire visual layer is stock abstraction on a people-facing product.
+**Pass reads like:** "Pass — `/` includes a two-line founder note under the hero (`index.tsx:64`), free calculator at `/tools/roi`, Discord link in the footer and in the hero sub-line."
 
-Cross-reference: Cat 84 (founder-led brand), Cat 70 (content strategy), Cat 72 (community).
+**Models in play:** peak-end rule. Reciprocity. Unity / community. Narrative structure.
 
-#### Section 6: Decision Support (0-25)
+Cross-reference: Cat 84 (founder-led brand), Cat 70 (content strategy), Cat 72 (community). Writing the story is generation — call the Skill tool with "snitch-cmo".
 
-| Element | 0 | 5 | 10 | 15 | 20 | 25 |
-|---|---|---|---|---|---|---|
-| Anchoring | No reference | One price | Comparison exists | Good comparison | Strategic positioning | Optimal price framing |
-| Decoy effect | Not used | Weak decoy | Clear decoy | Effective decoy | Optimal tier | Subtle influence |
-| Risk reversal | None | Basic guarantee | Standard terms | Strong guarantee | Multiple guarantees | Risk-free experience |
-| FAQ / objections | None | Minimal | Basic | Addressed | Comprehensive | Anticipatory |
+#### Section 6: Decision support
 
-**Assessment questions:**
-- Are prices framed effectively?
-- Is there a clear "best choice"?
-- Are all doubts addressed?
-- Does the site anticipate objections?
+- Is there more than one price on the page, and what does the highest one anchor against? Quote the tier set in display order.
+- Is one plan marked as recommended, and does the marking match what the copy says is best for the buyer? Quote the badge.
+- Is there a risk-reversal (guarantee, trial, refund window, cancel-anytime) at the point of commitment? Quote it.
+- Does an FAQ or objection block sit near the CTA, and does it answer the objections the page raises? Quote two questions.
 
-**Models in play:** Anchoring. Decoy Effect. Regret Aversion. Framing Effect. Contrast Effect.
+**Finding when:** a single unanchored price with no comparison; a "most popular" badge on the tier that is best for the business and worst for the stated buyer; no risk reversal at a paid CTA; an FAQ that answers only questions the buyer never asked. That list is closed: when the tier set, the badge, the risk reversal and the FAQ all check out, Section 6 is a Pass-with-evidence, and anything else the pricing page could improve is routed to its own category rather than written into this row.
+**Pass reads like:** "Pass — `/pricing` read: three tiers in ascending order with the middle marked recommended, 14-day refund line under the CTA, FAQ answers the two objections the comparison page raises."
 
-Cross-reference: Cat 112 (pricing-strategic-read), Cat 115 (pricing-psychology-tactical), Cat 111 (trust artifacts).
+**Models in play:** anchoring. Decoy effect. Regret aversion. Framing. Contrast.
 
-#### Section 7: Follow-Through & Retention (0-25)
+Cross-reference: Cat 115 (pricing display tactics), Cat 60 (trust artifacts). A CTA whose label does not match where it goes — "Talk to sales" pointing at the self-serve signup route — is a CTA and message-match defect, not decision support: it belongs to Cat 60 (CTA design), or Cat 109 when the surface is an ad landing page. Report it there and leave Section 6 on its own four questions. Whether the *price itself* is right for the segment is strategy — call the Skill tool with "snitch-cmo".
 
-| Element | 0 | 5 | 10 | 15 | 20 | 25 |
-|---|---|---|---|---|---|---|
-| Activation energy | High friction | Moderate | Basic ease | Easy | Very easy | Instant success |
-| Commitment devices | None | Minimal | Some | Multiple | Strong | Identity-based |
-| Switching costs | None | Minimal | Moderate | Strong | Very strong | Ecosystem lock-in |
-| Exit intent | None | Weak attempt | Basic | Good | Strategic | Delightful alternative |
+#### Section 7: Follow-through & retention
 
-**Assessment questions:**
-- Can visitors achieve a first win quickly (under five minutes)?
-- Are there hooks for return visits?
-- What makes them come back?
-- Is leaving positioned as loss, or handled with dignity?
+- What does the confirmation surface after signup or purchase actually say? Quote the route or the template.
+- Is there an onboarding path with a first win, and is it reachable from the source? Trace it.
+- Is the cancellation or unsubscribe route as easy to reach as the subscribe route? Quote both.
+- Is there a reason to come back (recap email, saved state, progress)? Quote the mechanism.
 
-**Models in play:** Activation Energy. Commitment & Consistency. Endowment Effect. Switching Costs. IKEA Effect. Peak-End (cancellation flow).
+**Finding when:** subscribe is one click and cancel is a support ticket (asymmetry — dark pattern, see the overlay); the confirmation surface is a bare receipt that restates nothing; the unsubscribe link is missing from a transactional template.
+**Pass reads like:** "Pass — confirmation route (`app/welcome/page.tsx`) restates what the buyer now has and names the next step; cancellation is a self-serve route at `/settings/billing`."
+**Skip reads like:** "Skip — the post-signup product is behind auth; no browser session or pasted screens available, so the activation path was not walked."
 
-Cross-reference: Cat 116 (retention-psychology), Cat 71 (lifecycle email).
+**Models in play:** activation energy. Commitment & consistency. Endowment. Peak-end (the cancellation flow is the last impression).
 
-### Ethics & dark-pattern overlay (caps the score)
+Cross-reference: Cat 116 (retention psychology), Cat 71 (lifecycle email). How the confirmation screen reads to the user who just committed is judged against their decision path — call the Skill tool with "snitch-ux".
 
-Persuasion becomes a **dark pattern** when it stops being truthful or stops leaving the user a free, informed choice. A dark pattern is not just a low section score — it is a **ceiling on the whole category**, flagged regardless of how polished the surface is. Several are now **illegal**, not merely unethical. (Genuine, truthful persuasion — real scarcity, an available anchor price, honest social proof — is **not** penalized; that's the point of the test.)
+### Ethics & dark-pattern overlay (blocking)
+
+Persuasion becomes a **dark pattern** when it stops being truthful or stops leaving the user a free, informed choice. A dark pattern is not a weak section: it is a **blocking finding** on the whole category, reported regardless of how polished the surface is. Several are now **illegal**, not merely unethical. (Genuine, truthful persuasion — real scarcity, an available anchor price, honest social proof — is **not** penalized; that's the point of the test.)
 
 **The boundary test (apply per suspected pattern):**
-1. **Veracity** — is the claim true and substantiable? Countdown maps to a real enforced deadline; "only 3 left" reflects real stock; "12 viewing" ties to real telemetry. *Fabrication signals:* timer resets on reload, stock count never changes, viewer number randomized client-side.
+1. **Veracity** — is the claim true and substantiable? A countdown maps to a real enforced deadline; "only 3 left" reflects real stock; "12 viewing" ties to real telemetry. *Fabrication signals:* timer resets on reload, stock count never changes, viewer number randomized client-side.
 2. **Material distortion** — does the tactic add real information, or only pressure on a false premise?
-3. **Symmetry** — is the user-preferred / cheaper / privacy-protective path no harder than the business-preferred one? One-click subscribe + ten-step cancel, or giant "Accept all" + buried "Reject" → dark.
-4. **Disclosure** — are all mandatory costs / recurring charges shown *before* commitment, not dripped at the final step?
-5. **Mathur 5-attribute tag** — asymmetric / covert / deceptive / information-hiding / restrictive. Zero = legitimate persuasion; one or more (especially *deceptive* or *covert*) = dark, severity scaling with the count.
+3. **Symmetry** — is the user-preferred / cheaper / privacy-protective path no harder than the business-preferred one? One-click subscribe with a ten-step cancel, or a giant "Accept all" beside a buried "Reject" → dark.
+4. **Disclosure** — are all mandatory costs and recurring charges shown *before* commitment, not dripped at the final step?
+5. **Five-attribute tag** (the taxonomy the dark-pattern research literature converged on) — asymmetric / covert / deceptive / information-hiding / restrictive. Zero = legitimate persuasion; one or more (especially *deceptive* or *covert*) = dark, severity scaling with the count.
 
 **Detect (cross-ref Cat 117 copy-lint):** fabricated scarcity/urgency, fake social proof, confirmshaming, hidden costs / drip pricing, preselected consequential checkboxes, hard-to-cancel / roach-motel, forced account creation, disguised ads, nagging, trick wording.
 
@@ -209,107 +199,88 @@ Persuasion becomes a **dark pattern** when it stops being truthful or stops leav
 - **EU:** **DSA Article 25** expressly **prohibits** dark patterns on platforms (since Feb 2024); under **GDPR/EDPB**, consent obtained via deceptive design is **invalid**. A **Digital Fairness Act** is pending (2025-26) — watch.
 - **California (CPRA):** dark-pattern consent is **not** consent; the CPPA test is **effect, not intent**, with a core **symmetry-of-choice** requirement.
 
-**Scoring effect:** any confirmed dark pattern **caps the category at C or lower** and is surfaced as its own High/Critical finding with the boundary-test evidence + the relevant law — even if every section rubric scores well. (Section 3 already downgrades false scarcity to Critical; this overlay generalizes that rule across all sections.)
+**Reporting effect:** a confirmed dark pattern is its own High or Critical finding carrying the boundary-test evidence and the relevant law, and it caps what the rest of the category can say — a surface with a dark pattern is not reported as a strong persuasion architecture no matter how the other sections read.
 
-Sources: deceptive.design (Brignull taxonomy) · Mathur et al., "What Makes a Dark Pattern… Dark?" (arxiv.org/pdf/2101.04843) · FTC "Bringing Dark Patterns to Light" (ftc.gov) · EU DSA Art. 25 · CPPA Enforcement Advisory 2024-02.
+The pattern names and the five-attribute tag come from the published dark-pattern research literature and its widely used public taxonomy. The regulatory anchors are the primary sources and stay citable by name: FTC "Bringing Dark Patterns to Light" (ftc.gov), EU DSA Art. 25, CPPA Enforcement Advisory 2024-02.
 
-### Scoring output
+### Reporting output
 
-Sum the seven section scores. Map to grade:
+Report the seven sections as a coverage table, then the findings in severity order. No totals, no grade.
 
-| Total | Grade | Summary |
+```
+Persuasion architecture — coverage
+
+| Section | Outcome | Evidence |
 |---|---|---|
-| 0-35 | F | Critical psychological barriers; major overhaul needed |
-| 36-70 | D | Significant gaps; substantial work required |
-| 71-105 | C | Basic implementation; competitive but undifferentiated |
-| 106-140 | B | Good implementation; solid and improvable |
-| 141-165 | A | Excellent; strong psychological design |
-| 166-175 | A+ | Best-in-class; refinements only |
+| 1 First impression | Pass | `/` hero src/routes/index.tsx:22-48 — H1 names audience + outcome, one CTA
+| 2 Trust | Finding (High) | `/pricing` — a 14-day guarantee at the paid CTA is the only trust copy; no attributed proof on any page read
+| 3 Motivation | Pass | `/`, `/for/agencies` — outcome headings, quantified status-quo cost
+| 4 Friction | Finding (Medium) | signup form app/signup/page.tsx:31-77 — 7 required fields, 3 unused downstream
+| 5 Emotional resonance | Finding (Medium) | founder story lives only at /about:12-40, absent from the conversion path
+| 6 Decision support | Pass | /pricing — three tiers, recommended tier marked, 14-day refund at the CTA
+| 7 Follow-through | Skip | post-signup product behind auth; no session or pasted screens available
 
-Report format:
-
-```
-Persuasion architecture score: 117 / 175 (B)
-
-Section 1 (First Impression): 18 / 25
-Section 2 (Trust): 14 / 25
-Section 3 (Motivation): 12 / 25
-Section 4 (Friction): 20 / 25
-Section 5 (Emotional Resonance): 11 / 25
-Section 6 (Decision Support): 22 / 25
-Section 7 (Follow-Through): 20 / 25
-
-Priority recommendations:
-- Section 5 is the weakest. Specific fixes: ...
-- Section 3 is the second weakest. Specific fixes: ...
+Dark-pattern overlay: none detected on the surfaces read.
+Outside the table: /careers, /legal — not persuasion-architecture surfaces, not graded into a section.
 ```
 
-### Forbidden claims (additional to general)
+Fix order: dark patterns first (they are blocking and, in places, illegal), then Critical and High findings, then Medium. Sections that Passed need no work; sections that Skipped need access, not fixes — say so plainly rather than implying a defect.
 
-- "The site lacks emotional resonance." Score Section 5 with rubric evidence.
-- "Decision support is weak." Score Section 6 with rubric evidence.
-- "Conversion friction is high." Score Section 4 with rubric evidence.
+### NOT a Problem
 
-A category-114 finding never asserts a quality without a numeric score backed by the rubric.
-
-### Priority recommendations framework
-
-After the score is computed, recommend fixes in this order:
-
-1. **Critical (any section scoring 0-10):** Remove psychological barriers immediately. Address before any other work.
-2. **High (any section scoring 11-15):** Optimize the existing elements. Add specific psychological triggers from the relevant models.
-3. **Medium (any section scoring 16-20):** Fine-tune. Add advanced techniques from the model catalog. A/B test improvements.
-4. **Low (any section scoring 21-25):** Maintain. Document what works. Test for further optimization.
-
-The audit always recommends working on the lowest-scoring section first, regardless of which section it is. A site with strong trust (Section 2: 22) and weak motivation (Section 3: 8) gets motivation-first fixes, not trust polish.
-
-### NOT Vulnerable (the model passes)
-
-- Holistic score above 140 with no section below 15.
-- Lowest-scoring section already has a documented optimization plan and a test running.
-- Site is pre-launch with no customers (Section 2 and 7 will be partial; full score is premature).
-- Internal tool / B2B-only relationship-sold product where the marketing site is a placeholder, not a conversion surface.
+- A section that Passes with cited evidence. Do not manufacture an improvement to fill the row.
+- A section that Skips because the surface is genuinely unreachable (authenticated product, unbuilt onboarding). A Skip is a coverage statement, not a finding.
+- Pre-launch sites with no customers: Sections 2 and 7 will carry Skips, and that is the correct output.
+- Internal tools and relationship-sold B2B products where the marketing site is a placeholder rather than a conversion surface.
+- Absent urgency mechanisms. No urgency is never a finding; fake urgency always is.
+- A page outside the seven surfaces — careers, legal, changelog, status. A thin jobs page is not a Trust or Emotional-resonance defect; it is a page this category's table does not cover.
+- A first-party assertion standing where third-party proof would be stronger. It is graded as what it is (Section 5 voice, Section 6 risk reversal); the missing attributed proof is the Section 2 Finding, and the assertion is not a second one.
+- A deliberate one-tier price with no anchor, where the pricing page says why.
 
 ### Context check
 
-1. What is the site's primary commercial goal (signup, demo, purchase, lead)? Score against THAT goal, not a generic one.
-2. Which section's score most directly affects the primary goal?
-3. Has the brand already worked on this surface (signs of testing, A/B history, conversion data)?
-4. Where does the audit's lowest-scoring section overlap with tactical categories that already flagged findings?
+1. What is the site's primary commercial goal (signup, demo, purchase, lead)? Judge against THAT goal, not a generic one.
+2. Which section most directly serves that goal? Its findings lead the report.
+3. Has the brand already worked this surface (visible test harness, A/B history, conversion data)? Weight their data over these heuristics.
+4. Where does a finding here overlap a tactical category that already flagged it? Cross-file; never double-count.
+5. Which sections Skipped, and what access would turn each Skip into a read?
 
 ### Severity tagging
 
-The total grade maps to overall severity:
-- F or D total → Critical
-- C total → High
-- B total → Medium
-- A or A+ → Low (refinement only)
+Severity attaches to the finding, not to a section total:
 
-Per-section severity follows the same scale (0-10 → Critical, 11-15 → High, 16-20 → Medium, 21-25 → Low). The lowest section drives the priority, not the average.
+- Dark pattern confirmed by the boundary test → Critical (or High when the attribute count is one and it is not deceptive or covert).
+- No value proposition in the first viewport, or no primary CTA on a commercial page → Critical.
+- No proof of either class on a commercial page, **or** no attributed proof on a commercial page when only first-party assertions (a guarantee, a founder quote, a self-reported number) carry the trust load; card required for a "free" trial with no pre-commitment disclosure → High.
+- Attributed proof exists somewhere on the site but not on the page carrying the paid CTA; anonymous-only testimonials (quotes with no name, role or company) → Medium.
+- Story, community or free artifact absent from the conversion path when the brand has one elsewhere → Medium.
+- Unnecessary required fields, competing equal-weight CTAs, unmarked recommended tier, bare confirmation surface → Medium.
+- Missing progress indicator, FAQ that misses the page's own objections → Low.
 
 ### Reference
 
 `references/mental-models.md` for the full model catalog with cross-references back to this category's sections.
 
+`references/objection-killer-checklist.md` for the five-objection scoring of any single landing page a finding names.
+
 ### Worked fix example
 
-> A SaaS marketing site scored 117 / 175 (B). The lowest section was Section 5 (Emotional Resonance) at 11. The audit recommended starting there.
+> A SaaS marketing site. Seven sections read; five Passed or Found, two Skipped.
 >
-> Specific Section 5 findings:
-> - Storytelling element scored 5: the homepage is a feature list. No narrative arc. The brand has a founder story that lives in the About page and never surfaces on the homepage.
-> - Reciprocity element scored 10: the only free thing on the site is a 14-day trial that requires a credit card. Nothing is given before being asked.
-> - Peak-end scored 10: there are no delightful moments in the signup flow. Activation is functional, not memorable.
-> - Community / social scored 15: the brand has a Discord and 800 members but the homepage doesn't mention it.
+> **Section 5 (Emotional resonance) — Finding, Medium.** Surfaces read: `/` (`src/routes/index.tsx`), `/about` (`src/routes/about.tsx`), footer component, `/pricing`.
 >
-> Recommended fixes (in order):
+> - The founder story exists at `about.tsx:12-40` and appears nowhere on the conversion path — the homepage is a feature list from hero to footer.
+> - The only free artifact is a 14-day trial that requires a card (`pricing.tsx:88`). Nothing is given before the ask.
+> - The brand has a Discord with 800 members (`footer.tsx:31`), linked only in the footer's third column.
 >
-> 1. Add a one-line founder-story hook to the homepage, just below the hero. "I built this because I was burning out on..." in the founder's voice. (Storytelling → 10 → 15)
-> 2. Add a genuinely useful free tool to the homepage (a calculator, a template, an open-source utility). Reciprocity asks before take. (Reciprocity → 10 → 18)
-> 3. Add a single delightful animation to the post-signup screen. A confetti burst when the first project is created. A handwritten welcome email on day 1. Peak-end matters. (Peak-end → 10 → 16)
-> 4. Surface the Discord on the homepage. "Join 800 [audience] in our community." (Community → 15 → 20)
+> Fixes, in order:
 >
-> Section 5 projected score after these fixes: ~16-18. Total projected: ~123-125, still B but trending toward A. The next section to address is Section 2 (Trust) at 14.
+> 1. Lift one line of the founder story to the homepage under the hero, in the founder's voice. Evidence it fixes: the narrative is now on the path the visitor walks.
+> 2. Publish one genuinely useful free artifact — a calculator, a template, an open-source utility — reachable from the homepage. Reciprocity before the ask.
+> 3. Surface the community where a visitor sees it: "Join 800 [audience]" in the hero sub-line, not only the footer.
 >
-> Voice: each fix recommendation is grounded in the model that applies (Storytelling foundational, Reciprocity, Peak-End, Unity). The model names go in the fix narrative so the customer understands the WHY, not just the WHAT.
+> **Section 7 (Follow-through) — Skip.** The post-signup product is behind auth. No browser session and no pasted screens were provided, so the activation path, the confirmation surface and the cancellation flow were not walked. To turn this Skip into a read: grant a session, or paste the confirmation screen and the cancellation flow.
+>
+> Each fix names the model it rests on (narrative, reciprocity, unity) so the team understands the WHY — and each is framed as a hypothesis to test (Cat 73), not a promised lift.
 
-**Fix voice:** soul slug per `references/voice-mapping.md`. Default: `seth-godin` (foundational marketing voice) for the narrative; `tobias-van-schneider` for the visual / peak-end design recommendations.
+**Fix voice:** soul slug per `references/voice-mapping.md`. Default: `permission-marketer` (foundational marketing voice) for the narrative; `brand-surface-designer` for the visual and peak-end design recommendations.

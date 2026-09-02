@@ -169,9 +169,9 @@ at scale).
 - Source-only near-duplicate cannibalization on the same intent → Medium (weaker signal; re-run with SERP access).
 - Scattered lightly-related pages (2-3 overlap) missing a contextual cross-link → Low.
 
-**Fix voice:** `brad-frost` (primary) | `solutions-architect` (backup).
+**Fix voice:** `systems-designer` (primary) | `solutions-architect` (backup).
 
-Read `souls/brad-frost.json` before writing the Fix.
+Read `souls/systems-designer.json` before writing the Fix.
 
 Worked fix example:
 

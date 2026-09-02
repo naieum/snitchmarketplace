@@ -11,7 +11,7 @@ expert and authoritative and still fail if it isn't trustworthy. Order findings 
 ## When surfaced
 
 Loaded when Cat 82 layer 3 (authority) runs, or when Cat 59 (AI-content tells), Cat 74 (social
-proof), Cat 93 (Person/author schema), or Cat 111 (trust artifacts) needs to name which E-E-A-T
+proof), Cat 32's Person row (author schema), or Cat 60 (trust artifacts) needs to name which E-E-A-T
 layer its finding maps to.
 
 ## The four layers (Trust first)
@@ -20,7 +20,7 @@ layer its finding maps to.
 |---|---|---|
 | **Trust** (heaviest) | Can a visitor verify who's behind this and that it's honest? | Reachable contact info / physical address, HTTPS, visible publish/update dates, transparent corrections, honest pricing, working privacy/terms, a real "about" |
 | **Experience** | Has the author actually done the thing? | First-hand photos, original screenshots, case studies, "we tested/used" language with specifics |
-| **Expertise** | Does the author know the subject? | Named author with credentials (Cat 93 Person schema), topical depth (Cat 57), correct terminology |
+| **Expertise** | Does the author know the subject? | Named author with credentials (Cat 32's Person row), topical depth (Cat 57), correct terminology |
 | **Authoritativeness** | Does the wider web treat this source as a reference? | External citations, brand mentions (`references/brand-authority-platforms.md`), Wikipedia entity, industry references |
 
 ## Who / How / Why heuristic
@@ -50,5 +50,5 @@ A page that can't answer Who/How/Why cleanly is the finding.
 
 ---
 
-*Framework aligned to Google's Search Quality Rater Guidelines; consolidation approach adapted from
-the MIT-licensed claude-seo project. Internal reference only; not surfaced in reports.*
+*Framework aligned to Google's Search Quality Rater Guidelines, with the consolidation approach
+drawn from open-source SEO rule sets. Internal reference only; not surfaced in reports.*

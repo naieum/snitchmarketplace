@@ -36,9 +36,9 @@ run_state_crux() {
 
   local body
   body="$(http_get "$full" 2>/dev/null || true)"
-  local code="${ADSEC_LAST_STATUS:-000}"
+  local code; code="$(http_last_status)"
   if [[ ! "$code" =~ ^2 ]]; then
-    printf '{"error":"PSI API call failed","code":"E_PSI","status":"%s","url":"%s","remediation":"set PSI_API_KEY to raise the quota; or retry later"}\n' "$code" "$url" >&2
+    printf '{"error":"PSI API call failed","code":"E_PSI","status":"%s","url":"%s","remediation":"a 429 means the anonymous PageSpeed Insights quota is exhausted — set PSI_API_KEY and retry. A 000 means the call timed out; raise ADSEC_HTTP_TIMEOUT (a PSI run often takes 30s or more)."}\n' "$code" "$url" >&2
     return 3
   fi
 
@@ -49,16 +49,15 @@ run_state_crux() {
     final_url: .lighthouseResult.finalUrl,
     fetch_time: .analysisUTCTimestamp,
     strategy: .lighthouseResult.configSettings.formFactor,
-    categories: (.lighthouseResult.categories | to_entries | map({key: .key, score: .value.score}) | from_entries),
+    categories: ((.lighthouseResult.categories // {}) | with_entries(.value |= .score)),
     field_data: (
       .loadingExperience as $le |
       {
         overall_category: ($le.overall_category // null),
-        metrics: ($le.metrics // {} | to_entries | map({
-          key: .key,
-          percentile: .value.percentile,
-          category: .value.category
-        }) | from_entries)
+        metrics: (($le.metrics // {}) | with_entries(.value |= {
+          percentile: .percentile,
+          category: .category
+        }))
       }
     ),
     origin_field_data: (
@@ -74,8 +73,12 @@ run_state_crux() {
     )
   }' <<<"$body" 2>/dev/null)"
 
+  # `${digest:-{}}` would append a stray `}` — the first `}` closes the
+  # expansion — so normalize the empty case explicitly.
+  [[ -z "$digest" ]] && digest='{}'
+
   jq -n --arg ts "$ts" --arg url "$url" --arg strategy "$strategy" \
-    --argjson digest "${digest:-{}}" \
+    --argjson digest "$digest" \
     --argjson has_key "$(has_psi_api_key && printf 'true' || printf 'false')" \
     '{
       schema: "adssec.state-crux",

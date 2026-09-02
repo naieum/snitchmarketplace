@@ -4,7 +4,7 @@
 |---|---|
 | Web tag | Reddit Pixel — `rdt` global |
 | Identifiers | Pixel id (advertiser id, e.g., `a2_xxxxxxxxxxxx`), ad account id |
-| Server-side | **Reddit CAPI** — `ads-api.reddit.com/api/v3/conversions/events/<advertiser-id>` |
+| Server-side | **Reddit CAPI** — `ads-api.reddit.com/api/v2.0/conversions/events/<pixel-id>` (the Conversions API is versioned separately from the Marketing API below) |
 | Account model | Account → ad account → campaign → ad group → ad |
 | Marketing API | `ads-api.reddit.com/api/v3` |
 | Auth | OAuth2; scopes `adsread`, `adsedit` |
@@ -30,7 +30,7 @@ Recommended properties: `value`, `currency`, `itemCount`, `transactionId`, `prod
 
 ## CAPI
 
-- Endpoint: `POST https://ads-api.reddit.com/api/v3/custom_audiences/conversion_events/<advertiser_id>`
+- Endpoint: `POST https://ads-api.reddit.com/api/v2.0/conversions/events/<pixel-id>` — the same path the bundled stubs use (`templates/capi-stubs/reddit/`). The pixel id is the `a2_…` advertiser id from Events Manager. Reddit versions the Conversions API separately from the v3 Marketing API; confirm the path against the Conversions API docs below before shipping.
 - Headers: `Authorization: Bearer <token>`, `Content-Type: application/json`, `User-Agent: <your-app>/1.0`.
 - Body: `{ "events": [ { "event_at": "<ISO8601>", "event_type": { "tracking_type": "Purchase" }, "click_id": "<rdt-click-id>", "event_metadata": { "currency": "USD", "value_decimal": 99.00, "item_count": 1, "products": [{ "id": "SKU-1", "name": "Foo", "category": "bar" }] }, "user": { "email": "<sha256>", "external_id": "<sha256>", "ip_address": "<ip>", "user_agent": "<ua>", "rda": "<reddit-device-advertiser-id>" } } ] }`
 - **RDT click id**: query param `?rdt_cid=<id>`.

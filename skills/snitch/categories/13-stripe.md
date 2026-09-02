@@ -27,7 +27,6 @@
 #### High
 - Test keys (`sk_test_*`) in production code without environment guards
 - Missing `STRIPE_WEBHOOK_SECRET` verification in webhook handlers
-- Hardcoded price IDs that should be environment variables
 
 #### Medium
 - Publishable key (`pk_*`) hardcoded instead of environment variable

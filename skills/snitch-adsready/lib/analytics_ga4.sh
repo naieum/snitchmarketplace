@@ -75,7 +75,8 @@ run_analytics_ga4() {
     -X POST --data "$body" \
     "https://analyticsdata.googleapis.com/v1beta/properties/${prop}:runReport" 2>/dev/null)"
 
-  jq -n --arg ts "$ts" --arg property "$prop" --argjson report "${resp:-{}}" \
+  [[ -z "$resp" ]] && resp='{}'
+  jq -n --arg ts "$ts" --arg property "$prop" --argjson report "$resp" \
     '{
       schema: "adssec.analytics-ga4",
       schema_version: 1,

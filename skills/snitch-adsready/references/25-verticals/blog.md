@@ -19,25 +19,11 @@ For ad-funded blogs, "conversions" are usually subscribers and engagement events
 
 ## Schema.org
 
-Required:
-- `Organization` (root)
-- `WebSite`
-- `BreadcrumbList`
-- `BlogPosting` (each post) OR `NewsArticle` (journalism only) OR `Article` (general)
-- `Person` (author byline)
-- `ImageObject` (hero images)
-
-Required article fields:
-- `headline` (under 110 chars for Google rich results)
-- `image` (1×1, 4×3, 16×9 variants — `templates/structured-data/article.starter.json` ships these)
-- `datePublished` / `dateModified` (ISO 8601 with timezone)
-- `author.name` + `author.url`
-- `publisher` linked to `@id` of root Organization
-- `mainEntityOfPage`
-- `articleSection`
-- `inLanguage`
-
-For Google News inclusion: register your domain in Publisher Center.
+Article, BlogPosting, NewsArticle, Organization, WebSite, BreadcrumbList, author E-E-A-T
+signals, and rich-result eligibility are evidenced against search, not against an ad platform:
+**call the Skill tool with "snitch-marketing"**. The only schema this skill emits is
+`Product`/`Offer` as a shopping-feed input (`07-structured-data.md`), which a content site
+usually has no use for — Skip it with that reason.
 
 ## ads.txt is REQUIRED for ad-monetized blogs
 
@@ -55,18 +41,12 @@ Tactics:
 - Hero image: AVIF/WebP, `priority`, explicit dimensions.
 - Comments: lazy-load Disqus / Commento; don't render on first paint.
 
-## AI Overviews / AI search are HUGE for blogs
+## AI crawler access
 
-LLM-driven traffic is the next decade's organic. Optimize:
-
-1. First paragraph contains direct answer to the headline question.
-2. Ship FAQ schema for question-formatted content.
-3. Ship HowTo schema for tutorials.
-4. Ship Article schema with author E-E-A-T signals.
-5. Don't gate meaty content behind email walls — AI can't extract from a form.
-6. Use `<article><section>` semantic HTML.
-
-See `17-llms-txt-and-ai-search.md` for `/llms.txt` setup.
+For a content site the ads-side question is narrow: can the ChatGPT retrieval agent fetch the
+articles, and is that a deliberate choice? `17-ai-crawler-access.md` covers it. Content
+structure, citation strategy, and llms.txt are a search surface — **call the Skill tool with
+"snitch-marketing"**.
 
 ## Common blog-specific failures
 
@@ -75,7 +55,6 @@ See `17-llms-txt-and-ai-search.md` for `/llms.txt` setup.
 | AdSense earnings dropped suddenly | ads.txt missing / wrong; or low ad-viewability flagged |
 | Newsletter signups not in GA4 | Embedded form (Substack, ConvertKit) iframes; tracking lives in vendor's analytics |
 | Affiliate clicks not tracked | Outbound link tracking not wired; link-shortener intercepting |
-| Article schema invalid | Missing `image` array, or `datePublished` not ISO format |
 | CWV scores tanking on article pages | New ad-network rotation introduced heavy JS |
 
 ## Honest framing
@@ -83,9 +62,9 @@ See `17-llms-txt-and-ai-search.md` for `/llms.txt` setup.
 For ad-funded content sites, the audit priority is:
 
 1. **ads.txt** (revenue floor)
-2. **Schema.org Article + FAQ** (SERP visibility)
+2. **Search and schema coverage** (snitch-marketing owns it)
 3. **CWV** (ranking + ad viewability)
 4. **Newsletter capture pixel + CAPI** (only if running paid acquisition)
-5. **AI search readiness** (next-decade traffic)
+5. **AI crawler access** (the ChatGPT retrieval and ad-matching surface)
 
 Less priority: 10-platform pixel coverage. Most blogs run ads to monetize; they don't run paid ads to acquire users. Most platforms in the 10-platform suite are N/A unless the blog also runs paid email-list acquisition.

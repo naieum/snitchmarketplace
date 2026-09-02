@@ -13,7 +13,8 @@
 Universal: pixel basics in `02-pixel-foundations.md`; CMv2 in `04-consent-and-cmp.md`.
 
 **SOAP → REST transition:** SOAP is feature-frozen on **October 1, 2026** (new features REST-only)
-and fully decommissioned on **January 31, 2027**. This skill's `state platform microsoft` already
+and fully deprecated on **January 31, 2027** (dates verified 2026-09-01 against the migration guide
+in Cited URLs). This skill's `state platform microsoft` already
 uses the REST binding; any custom integrations still on `CampaignManagementService.svc` SOAP
 need migrating before the freeze. REST path convention: SOAP operation `Get<Entity>By<X>` →
 `POST /<Entity>/QueryBy<X>` with the same JSON body fields.
@@ -76,4 +77,5 @@ EEA: as of March 2024, Microsoft enforces consent for personalized advertising; 
 - Developer token: <https://developers.ads.microsoft.com/Account>
 - Bulk service: <https://learn.microsoft.com/en-us/advertising/bulk-service/bulk-service-reference>
 - LinkedIn profile targeting: <https://help.ads.microsoft.com/apex/index/3/en/60022>
+- SOAP → REST migration guide: <https://learn.microsoft.com/en-us/advertising/guides/migrate-to-rest?view=bingads-13>
 - ads.txt: not generally required for advertisers

@@ -1,5 +1,5 @@
 ## CATEGORY 61: ReDoS
-> Type: sink-pattern · Groups: web, performance · CWE: CWE-1333
+> Type: sink-pattern · Groups: web · CWE: CWE-1333
 
 **Data flow tracing required (SKILL.md Rule 7).** A backtracking-prone regex is only a finding when attacker-controlled, length-unbounded input reaches it. Trace the matched string to its source: hardcoded or small fixed strings, length-capped input (`slice(0, n)`), and linear-time engines (Go / Rust / RE2) are Passes; a nested-quantifier or overlapping-alternation pattern applied to `req.*` without a length cap is a finding. Un-traceable sources downgrade to Low confidence + `needs human verification`.
 

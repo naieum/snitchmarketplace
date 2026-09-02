@@ -1,4 +1,4 @@
-# Traffic Diagnosis Workflow (STEP 4.7)
+# Traffic Diagnosis Workflow (on-demand lane, outside the numbered audit flow)
 
 Use this when something happened to traffic and the team needs an answer fast. Distinct from a routine audit — diagnostic, reactive, narrow scope.
 
@@ -15,7 +15,7 @@ Use this when something happened to traffic and the team needs an answer fast. D
 
 ## When NOT to use
 
-- Routine performance reporting (use the analytics dashboard or run Cat 53-55).
+- Routine performance reporting (use the analytics dashboard or run Cat 53).
 - Pre-emptive content planning (use Cat 70 + Cat 86).
 - A backlink-only investigation (use Cat 69).
 - A general "audit my site" request (run the full audit instead).

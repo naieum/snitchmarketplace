@@ -11,6 +11,24 @@ This is a **post-audit, opt-in** step (post-scan menu "generate fixes", or inlin
 on a Critical/High finding with a generatable fix). The skill **emits** the
 artifact; the user applies it (never auto-write, per anti-hallucination Rule 9).
 
+## Color-fix safeguard (applies to post-scan `[2]` and `[3]`)
+
+Any fix that touches a color value — Cat 103's contrast and color-only-meaning criteria, or any rewrite of
+a color token, hex, or `oklch/hsl/rgb` value — requires **per-finding confirmation even in batch
+mode**. Color values are brand identity, and a mathematically better ratio is still a brand change
+the customer did not ask for.
+
+Before applying one:
+
+1. Show before / after, plus the measured contrast ratio (SC 1.4.3 / 1.4.11) or the redundant channel
+   being added (SC 1.4.1).
+2. Ask "Apply this color change? [Yes / Skip]" and wait.
+
+A **color-only-meaning fix (SC 1.4.1) adds a redundant channel** — icon, text, pattern, weight, position — rather than
+rewriting a color. If the only proposed fix is a palette swap, the category was misread; flag it as
+a misclassified color rewrite instead of applying it. Never substitute a "CVD-safe palette" for the
+customer's brand palette unless they explicitly ask for one.
+
 ## Grounding (read first)
 
 1. Read `.snitch-marketing-context.md` (`references/context-file.md`). Copy fixes
@@ -25,17 +43,17 @@ artifact; the user applies it (never auto-write, per anti-hallucination Rule 9).
 
 | Finding (cat) | Generated artifact | Source of truth |
 |---|---|---|
-| Weak/"everyone" hero, value-prop (81, 110, 114 §1) | Headline + subhead + CTA, Draft A/B/C | context ICP + Pull/Push forces + verbatim language |
+| Weak/"everyone" hero, value-prop (81, 114 §1) | Headline + subhead + CTA, Draft A/B/C | context ICP + Pull/Push forces + verbatim language |
 | Vague CTA (60, 114 §4) | CTA via `[Action verb] + [What they get] + [Qualifier]` | context primary conversion |
-| No objection handling (35, 60, 111) | FAQ / objection block | context **top-3 objections** + Anxiety force |
-| Weak/absent trust strip (74, 111) | Trust-strip copy + placement | context **proof points** (real metrics/customers only) |
+| No objection handling (32 FAQPage row, 60) | FAQ / objection block | context **top-3 objections** + Anxiety force |
+| Weak/absent trust strip (60, 74) | Trust-strip copy + placement | context **proof points** (real metrics/customers only) |
 | Title/meta (9, 10) | `<title>` + meta description per route | target query + context language |
-| Missing/invalid schema (31-38, 87-94) | Valid JSON-LD for the detected type | `standards-table.md` + on-page facts |
+| Missing/invalid schema (31, 32, 94) | Valid JSON-LD for the detected type | `standards-table.md` per-type row + on-page facts |
 | Missing llms.txt (106) | A drafted `/llms.txt` | site structure + context one-liner |
 | robots/sitemap gap (1, 2) | The directive/snippet | crawl findings |
 | Message mismatch (109) | Rewritten landing headline to match the ad | the ad copy + context Pull |
 
-## Copy formulas (author these; coreyhaines' bank is headline-only)
+## Copy formulas (author these; the widely circulated swipe files are headline-only)
 
 **Headline formulas:** outcome (`{achieve outcome} without {pain}`), problem
 (`Never {bad event} again` / `{question naming the pain}`), audience (`The {category}
@@ -45,7 +63,7 @@ proof (`{N} {people} use {product} to {outcome}`).
 **CTA formula:** `[Action verb] + [What they get] + [Qualifier]` → "Get my free audit",
 "Start my trial, no card required".
 
-**PAS / AIDA** (not in any borrowed bank, author here):
+**PAS / AIDA** (not in any swipe file — author these here):
 - **PAS:** Problem (name it in the buyer's words) → Agitate (the cost of inaction, the Anxiety/Push force) → Solve (your differentiated answer + proof).
 - **AIDA:** Attention (hero hook) → Interest (the job, Cat-114 §3) → Desire (proof + outcome) → Action (the CTA). Map each to a page section.
 

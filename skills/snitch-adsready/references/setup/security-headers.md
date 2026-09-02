@@ -17,16 +17,21 @@ bash ads-ready.sh fix security-headers
 ```
 
 The apply step:
-- Reads `templates/security-headers-for-ads.template.txt`.
-- Detects host stack:
-  - Next.js → `next.config.js` `headers()` block.
-  - Cloudflare Pages → `_headers`.
-  - Vercel → `vercel.json` `headers` array.
-  - Netlify → `netlify.toml` `[[headers]]`.
-  - WordPress / Apache → `.htaccess`.
-  - Nginx → `server { add_header ... }`.
+- Reads the header values from `templates/security-headers-for-ads.template.txt` — the single
+  source of truth for the CSP allowlist. `Cache-Control` in that file is not emitted (a blanket
+  no-cache would hurt the Core Web Vitals this skill also grades).
+- Detects the host stack and renders that file's format:
+  - Next.js → a `next.config.js` `headers()` snippet.
+  - Cloudflare Pages / Netlify → `_headers`.
+  - Vercel → a `vercel.json` `headers` array.
+  - Nginx → `add_header ... always;` lines.
 - Emits `=== FILE/DIFF/CONTENT ===` targeting the right file.
-- Idempotent: MERGES existing CSP / HSTS rather than replaces (per CONVENTIONS — never lower posture).
+- **Proposes, does not merge.** It never reads your existing CSP, so it cannot lower your
+  posture — and cannot combine with it either. You merge. If you already ship a CSP, take the
+  new source domains from this snippet rather than replacing the whole policy.
+- The CSP allows scripts **by nonce**, not `'unsafe-inline'`: replace `{{NONCE}}` with a
+  per-request value from your edge layer and stamp the same value on each inline pixel tag.
+  Without that, the inline snippets are blocked. The tool warns about this on every run.
 
 ### 2. Customize CSP for your CMP (manual)
 
@@ -77,11 +82,11 @@ Iterate. Most sites need 2-3 CSP refinements after first deploy.
 bash ads-ready.sh state site <url> headers
 ```
 
-Digest should report:
-- `csp_present: true`
-- `hsts_present: true`
-- `x_frame_options: "DENY"`
-- All other headers from the template.
+The `headers` slice reports each header's raw value under `.security_headers`, or `null` when
+absent: `content_security_policy`, `strict_transport_security`, `x_frame_options`,
+`x_content_type_options`, `referrer_policy`, `permissions_policy`,
+`cross_origin_opener_policy`, `cross_origin_resource_policy`. There are no `*_present`
+booleans — a non-null value is the evidence.
 
 ## Trade-offs
 
@@ -100,5 +105,5 @@ Digest should report:
 ## See also
 
 - `templates/security-headers-for-ads.template.txt` — the template.
-- `cloudflare-secure` skill's `apply_zone_headers` for Cloudflare Transform Rules.
+- your CDN or host's own header configuration — headers set at the edge override anything the app sends.
 - securityheaders.com docs: https://securityheaders.com/

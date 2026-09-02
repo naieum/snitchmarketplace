@@ -8,7 +8,7 @@ Fill in the [Evidence] placeholders with findings and passed checks from your Sn
 
 ## Right to Delete
 
-**Mapped Snitch Categories:** 23 (Data Exposure)
+**Mapped Snitch Categories:** 28 (Authorization & Access Control (IDOR)), 53 (CCPA & SOX Compliance)
 
 ### Control Description
 
@@ -16,7 +16,11 @@ A consumer shall have the right to request that a business delete any personal i
 
 ### Snitch Evidence
 
-**Category 23 -- Data Exposure (Data Deletion Endpoints)**
+**Category 28 -- Authorization & Access Control (IDOR)**
+- Findings: [Evidence]
+- Passed Checks: [Evidence]
+
+**Category 53 -- CCPA & SOX Compliance**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 - Verified deletion endpoints: [Evidence]
@@ -36,7 +40,7 @@ A consumer shall have the right to request that a business delete any personal i
 
 ## Right to Opt-Out
 
-**Mapped Snitch Categories:** 53 (CCPA Controls)
+**Mapped Snitch Categories:** 53 (CCPA & SOX Compliance)
 
 ### Control Description
 
@@ -44,7 +48,7 @@ A consumer shall have the right, at any time, to direct a business that sells or
 
 ### Snitch Evidence
 
-**Category 53 -- CCPA Controls**
+**Category 53 -- CCPA & SOX Compliance**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 - Opt-out mechanism present: [Evidence]
@@ -64,7 +68,7 @@ A consumer shall have the right, at any time, to direct a business that sells or
 
 ## Data Inventory
 
-**Mapped Snitch Categories:** 38 (Data Classification)
+**Mapped Snitch Categories:** 38 (Data Classification & Lifecycle)
 
 ### Control Description
 
@@ -72,7 +76,7 @@ A business shall disclose, in its privacy policy or policies, the categories of 
 
 ### Snitch Evidence
 
-**Category 38 -- Data Classification**
+**Category 38 -- Data Classification & Lifecycle**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 - Personal data fields identified: [Evidence]
@@ -92,7 +96,7 @@ A business shall disclose, in its privacy policy or policies, the categories of 
 
 ## Security Measures
 
-**Mapped Snitch Categories:** 3 (Cryptographic Issues), 4 (Authentication Flaws), 9 (Network Security)
+**Mapped Snitch Categories:** 3 (Hardcoded Secrets), 4 (Authentication Issues), 9 (Cryptography)
 
 ### Control Description
 
@@ -100,15 +104,15 @@ A business that collects a consumer's personal information shall implement and m
 
 ### Snitch Evidence
 
-**Category 3 -- Cryptographic Issues**
+**Category 3 -- Hardcoded Secrets**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 4 -- Authentication Flaws**
+**Category 4 -- Authentication Issues**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 9 -- Network Security**
+**Category 9 -- Cryptography**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 

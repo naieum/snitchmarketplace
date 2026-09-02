@@ -1,4 +1,4 @@
-# snitch-devready v0.4.0
+# snitch-devready v0.5.0
 
 Bootstrap a repo for AI-assisted development — CLAUDE.md, commands, feedback loop, permissions, and a two-tier coding standard (enforced vs advisory) wired to real gates.
 

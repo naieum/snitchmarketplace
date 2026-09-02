@@ -12,6 +12,11 @@ from typing import Any
 
 import requests
 
+# LinkedIn rejects a call with a missing or sunset version header. Override with
+# LINKEDIN_VERSION; each monthly version is supported for at least 12 months.
+# https://learn.microsoft.com/en-us/linkedin/marketing/versioning
+LINKEDIN_VERSION = os.environ.get("LINKEDIN_VERSION", "202608")
+
 
 def sha256(s: str) -> str:
     return hashlib.sha256((s or "").strip().lower().encode("utf-8")).hexdigest()
@@ -54,7 +59,7 @@ def send_linkedin_conversion(
     }
     headers = {
         "Authorization": f"Bearer {access_token}",
-        "LinkedIn-Version": "202410",
+        "LinkedIn-Version": LINKEDIN_VERSION,
         "X-Restli-Protocol-Version": "2.0.0",
         "Content-Type": "application/json",
     }

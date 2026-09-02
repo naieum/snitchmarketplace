@@ -10,9 +10,12 @@ LIB_DIR="$SKILL_DIR/lib"
 PLAT_DIR="$LIB_DIR/platforms"
 REF_DIR="$SKILL_DIR/references"
 TPL_DIR="$SKILL_DIR/templates"
-STATE_DIR="$SKILL_DIR/.state"
-mkdir -p "$STATE_DIR"
-export SKILL_DIR LIB_DIR PLAT_DIR REF_DIR TPL_DIR STATE_DIR
+# Runtime state lives outside the skill folder so a read-only install works and
+# nothing the skill writes can land in the distributed directory.
+STATE_DIR="${ADSEC_STATE_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/snitch-adsready}"
+CACHE_DIR="$STATE_DIR/doc-cache"
+mkdir -p "$STATE_DIR" 2>/dev/null || true
+export SKILL_DIR LIB_DIR PLAT_DIR REF_DIR TPL_DIR STATE_DIR CACHE_DIR
 
 # shellcheck source=lib/log.sh
 . "$LIB_DIR/log.sh"
@@ -30,7 +33,8 @@ Read tools (JSON on stdout):
   detect                              cwd signals: stacks, pixel libs, consent libs, verticals
   state site <url> [slice]            site fetch + parse for ALL 10 platforms.
                                       slices: digest|html|headers|pixels|consent|
-                                              structured-data|robots|sitemap|ads-txt|full
+                                              structured-data|robots|sitemap|ads-txt|
+                                              lead-capture|full
   state crux <url> [mobile|desktop]   CrUX + Lighthouse cat scores via PSI
   state lighthouse <url>              lighthouse CLI JSON if installed; PSI fallback otherwise
   state platform <name> [account-id]  per-platform Marketing API state.
@@ -51,7 +55,7 @@ Mutating (idempotent):
 Setup help:
   setup <area> [platform]             stepped JSON walkthrough plan
   recommend <area>                    tool catalog: cmp|gtm-server|capi-helpers|
-                                      lighthouse-runner|cwv-monitoring|listings
+                                      lighthouse-runner|cwv-monitoring
   prereqs                             local CLI / platform-account checklist
 
 Utility: export | verify | refresh-docs | help
@@ -70,7 +74,6 @@ Env (all optional):
   REDDIT_ADS_*                 Reddit Ads API
   SNAPCHAT_ADS_*               Snap Marketing API
   APPLE_SEARCH_ADS_*           Apple Search Ads API (JWT)
-  ADSEC_MCP_PRESENT            1 if a future ad-platform MCP is loaded
 EOF
 }
 
@@ -147,8 +150,8 @@ dispatch_fix() {
     verification-meta)
       . "$LIB_DIR/apply_verification.sh"; apply_verification "$@" ;;
     all)
-      . "$LIB_DIR/apply_pixel.sh"
       . "$LIB_DIR/apply_consent.sh"
+      . "$LIB_DIR/apply_pixel.sh"
       . "$LIB_DIR/apply_capi.sh"
       . "$LIB_DIR/apply_ads_txt.sh"
       . "$LIB_DIR/apply_robots.sh"
@@ -156,8 +159,10 @@ dispatch_fix() {
       . "$LIB_DIR/apply_headers.sh"
       . "$LIB_DIR/apply_mobile.sh"
       . "$LIB_DIR/apply_verification.sh"
-      apply_pixel "$@"
+      # Consent first: apply_pixel refuses to emit a pixel into a project with
+      # no consent banner / CMP signal, so the banner has to land first.
       apply_consent "$@"
+      apply_pixel "$@"
       apply_capi "$@"
       apply_ads_txt "$@"
       apply_robots "$@"
@@ -198,10 +203,25 @@ main() {
     export)
       . "$LIB_DIR/export.sh"; run_export "$@" ;;
     verify)
+      # Validate before the badge header, so a usage error is JSON on stderr
+      # and nothing else — and so the remediation names `verify`, not the
+      # `state site` call it delegates to.
+      if [[ -z "${1:-}" ]]; then
+        printf '{"error":"verify requires a URL","code":"E_USAGE","remediation":"usage: verify <url> [slice]"}\n' >&2
+        return 2
+      fi
+      case "$1" in
+        http://*|https://*) ;;
+        *)
+          printf '{"error":"URL must begin with http:// or https://","code":"E_URL","got":"%s","remediation":"usage: verify <url> [slice]"}\n' "$1" >&2
+          return 2 ;;
+      esac
       . "$LIB_DIR/state_site.sh"
       . "$LIB_DIR/drift.sh"
-      run_state_site "$@" >/dev/null
-      drift_run ;;
+      log_section "verify"
+      run_state_site "$@" >/dev/null || return $?
+      drift_run
+      snapshot_write ;;
     refresh-docs)
       . "$LIB_DIR/refresh_docs.sh"; run_refresh_docs "$@" ;;
     fix)

@@ -110,7 +110,7 @@ with YouTube mention *impressions* (views) second (correlational). What to audit
   have current entries. Authority gap on the surface assistants weight most." (presence)
 - "G2 listing exists but last review is 14 months old and 3 negative reviews are unanswered."
   (recency + sentiment + response coverage)
-- "`sameAs` in Organization schema lists a LinkedIn URL that 404s." (cross-checks Cat 96 / Cat 37)
+- "`sameAs` in Organization schema lists a LinkedIn URL that 404s." (cross-checks Cat 96 / Cat 32's Organization row)
 
 ## Forbidden claims
 
@@ -124,6 +124,6 @@ with YouTube mention *impressions* (views) second (correlational). What to audit
 
 ---
 
-*Platform set adapted from the MIT-licensed geo-seo-claude and claude-seo projects; the correlation
-weights those projects publish are intentionally NOT imported (unsourced). Internal reference only;
-not surfaced in reports.*
+*Platform set consolidated from several open-source AI-search rule sets; the correlation weights
+those sets publish are intentionally NOT imported, because none of them is sourced. Internal
+reference only; not surfaced in reports.*

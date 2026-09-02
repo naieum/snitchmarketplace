@@ -15,7 +15,7 @@
 - `NODE_ENV` not set to `production` or missing environment check
 - `app.use(errorHandler)` that returns stack traces (e.g., `err.stack` in response body)
 - Source maps generated and served in production (`devtool: 'source-map'` in webpack prod config)
-- GraphQL Playground or GraphiQL enabled without environment check: `playground: true`, `introspection: true`
+- A GraphQL IDE route (Playground, GraphiQL, Apollo Sandbox) served without an environment check — as a *route exposure*. The GraphQL configuration itself (introspection, depth, complexity, field auth) is Category 57; report it there
 - Next.js `/_next/data` or debug pages left in `pages/` or `app/` directories
 - Express `morgan('dev')` or verbose logging middleware in production
 
@@ -55,7 +55,6 @@
 - `/health` endpoints returning database connection strings, internal IPs, or version details
 - `.map` files (source maps) accessible via HTTP in production
 - `/swagger-ui`, `/api-docs`, `/openapi.json` without authentication
-- `/graphql` with introspection enabled and no authentication
 
 ### Actually Vulnerable
 - `/debug/pprof/` accessible in production Go application -- exposes heap dumps, goroutine stacks, CPU profiles
@@ -64,7 +63,6 @@
 - Spring Boot `/actuator/heapdump` exposed -- allows downloading JVM heap containing in-memory secrets
 - Express error handler returning `err.stack` in JSON response body in production
 - Flask `app.run(debug=True)` in production -- enables interactive debugger with code execution
-- GraphQL introspection enabled in production without auth -- reveals entire API schema
 - Source maps deployed to production CDN -- allows reconstructing original source code
 - `/metrics` endpoint without auth exposing internal service names, response times, and error rates
 - Rails with `web-console` gem in production -- allows executing arbitrary Ruby code from browser
@@ -75,7 +73,6 @@
 - `/health` returning only `{ "status": "ok" }` with no sensitive details
 - `/metrics` behind authentication or restricted to internal load balancer
 - `NODE_ENV=production` properly set with error handler returning generic messages
-- GraphQL introspection disabled in production: `introspection: process.env.NODE_ENV !== 'production'`
 - Spring Boot Actuator with only `/actuator/health` exposed and secured
 - Source maps uploaded to error tracking service (Sentry) but not served publicly
 - Swagger UI disabled in production via environment variable check
@@ -84,7 +81,7 @@
 - `/metrics` behind authentication or accessible only from internal network (Prometheus scraping from within VPC)
 - Debug endpoints gated by environment check (`NODE_ENV`, `RAILS_ENV`, `FLASK_DEBUG`, `ASPNETCORE_ENVIRONMENT`) and confirmed disabled in production
 - Swagger/OpenAPI docs intentionally public for documented public APIs (API-as-a-product)
-- GraphQL Playground disabled in production (Apollo Server default since v4 disables playground in production)
+- No GraphQL IDE route reachable in production. On Apollo Server the hosted playground stopped being a production default well before the current major, so its absence is the framework's own behavior rather than a configuration you can credit — see Category 57 for the version-specific reading
 - Internal admin tools accessible only behind VPN or corporate SSO, not on the public internet
 
 ### Context Check
@@ -92,9 +89,8 @@
 2. Are debug/profiling endpoints restricted to internal networks or behind authentication?
 3. Do error responses include stack traces, internal paths, or configuration details?
 4. Are source maps served to end users or only uploaded to error tracking services?
-5. Is GraphQL introspection disabled in production?
-6. Are Spring Boot Actuator endpoints properly secured?
-7. Does the `/health` endpoint expose sensitive internal information?
+5. Are Spring Boot Actuator endpoints properly secured?
+6. Does the `/health` endpoint expose sensitive internal information?
 
 ### Evidence Chain
 Before reporting, verify ALL of these:
@@ -102,15 +98,14 @@ Before reporting, verify ALL of these:
 2. [ ] Verified the endpoint is not behind authentication, VPN, or internal network restriction
 3. [ ] Checked that error responses include stack traces or internal details (not just generic error messages)
 4. [ ] For source maps, confirmed `.map` files are served publicly (not just generated for error tracking upload)
-5. [ ] For GraphQL introspection, verified it is enabled in the production configuration (not just dev)
-6. [ ] For Spring Actuator, confirmed which endpoints are exposed and whether they are secured
-7. [ ] Distinguished between intentionally public endpoints (`/health`, public API docs) and accidentally exposed debug features
+5. [ ] For Spring Actuator, confirmed which endpoints are exposed and whether they are secured
+6. [ ] Distinguished between intentionally public endpoints (`/health`, public API docs) and accidentally exposed debug features
 
 ### Confidence Scoring
 - **HIGH**: Debug endpoint (pprof, actuator/env, actuator/heapdump) is registered unconditionally with no environment check or authentication. Or `DEBUG = True` / `debug=True` is set in what appears to be a production configuration file.
 - **MEDIUM**: Debug features are present but gated by an environment variable check that may or may not be correctly set in production (e.g., `if (!process.env.PROD)` which defaults to debug if the var is missing).
 - **LOW**: Debug endpoint or tool exists but is likely only used in development (e.g., in a dev-only config file, or behind a VPN that is not visible in application code).
-- **SKIP**: All debug routes are explicitly gated to non-production environments. `/health` returns only status with no sensitive data. Source maps are uploaded to Sentry but not served publicly. GraphQL introspection disabled in production by default (Apollo v4+).
+- **SKIP**: All debug routes are explicitly gated to non-production environments. `/health` returns only status with no sensitive data. Source maps are uploaded to Sentry but not served publicly. GraphQL configuration is out of scope here — Category 57 owns it.
 
 ### Files to Check
 - `**/app.ts`, `**/app.js`, `**/server.ts`, `**/server.js`, `**/main.go`

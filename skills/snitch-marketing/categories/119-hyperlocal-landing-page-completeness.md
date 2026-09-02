@@ -2,7 +2,7 @@
 
 For service businesses with city or neighborhood coverage, the landing pages targeting "{service} in {city}" or "{service} {neighborhood}" queries are the ones that actually win local-pack and organic-3-pack visibility. Most teams ship a single "Service Areas" page listing 30 cities and call it done; that's a thin-content finding (cross-reference Cat 18) and a wasted opportunity. The category audits whether each city / neighborhood landing page is substantive enough to rank for the queries it targets.
 
-Distinct from Cat 79 (does the GBP exist + is NAP consistent) and Cat 118 (is GBP filled at depth) — those are off-site (Google's surface). This category is on-site: the brand's own pages that compound with GBP signals.
+Distinct from Cat 79 (does the GBP exist, is NAP consistent, is it filled at depth) — that one is off-site (Google's surface). This category is on-site: the brand's own pages that compound with GBP signals.
 
 ### Pre-flight: relevance check
 
@@ -71,7 +71,7 @@ Per city / neighborhood page:
   - Evidence required: page HTML quoted; schema block absent or incomplete.
 - **No embedded map.** Lower-severity UX miss. Medium.
   - Evidence required: page content scan showing no `<iframe>` from a map provider and no static map image.
-- **No city-specific testimonials; only site-wide generic testimonials reused.** Trust artifact gap (cross-reference Cat 111). Medium to High.
+- **No city-specific testimonials; only site-wide generic testimonials reused.** Trust artifact gap (cross-reference Cat 60). Medium to High.
   - Evidence required: testimonial block content + missing city / customer-location attribution.
 - **No "Service Areas" hub page, or hub doesn't link to city pages.** Topical authority not consolidated; link equity scattered. High.
   - Evidence required: site search for hub page; if found, quote outbound link inventory; if absent, note.
@@ -100,9 +100,9 @@ Per city / neighborhood page:
 ### Pairs with other categories
 
 - **Cat 18 (Thin content)** — flat "Service Areas" pages with no depth are thin-content findings; this category gives them the depth rubric to fix against.
-- **Cat 31 (JSON-LD presence)** + **Cat 37 (Organization / WebSite schema)** — schema presence is universal; this category audits whether `LocalBusiness` schema appears on city-specific pages with coordinates.
+- **Cat 31 (JSON-LD presence)** + **Cat 32 (the Organization / WebSite rows of `references/standards-table.md`)** — schema presence is universal; this category audits whether `LocalBusiness` schema appears on city-specific pages with coordinates.
 - **Cat 79 (Local SEO / GBP)** — off-site local visibility. City pages compound with GBP; broken GBP can't be saved by perfect city pages, and vice versa.
-- **Cat 118 (GBP depth audit)** — sister local-services cat; run both for a complete local-services audit.
+- **Cat 79 (Local SEO + GBP)** — sister local-services cat; run both for a complete local-services audit.
 - **Cat 74 (Customer feedback)** — testimonial inventory feeds the city-specific testimonial element.
 - **Cat 19 (Internal link graph)** — the hub-and-spoke structure is an internal-linking pattern; cross-reference.
 - **Cat 86 (Keyword research)** — "{service} {city}" query mapping informs which city pages to prioritize.
@@ -115,15 +115,21 @@ Per city / neighborhood page:
 - Schema present but missing `geo` coordinates → Medium.
 - No "Service Areas" hub OR hub doesn't link to per-city pages → High.
 - No internal links between adjacent city pages → Medium.
-- No city-specific testimonials → Medium (High when other trust artifacts also weak per Cat 111).
+- No city-specific testimonials → Medium (High when other trust artifacts also weak per Cat 60).
 - One flat "Service Areas" page with 30+ cities and no individual pages → Critical (Cat 18 + this combined).
 - No embedded map on city pages → Low (UX advisory).
 
+### Reference
+
+`references/local-services-playbook.md` — service-radius shape, the city-page pattern, and the thresholds this category defers to.
+
+Cat 32 (the LocalBusiness row) — the per-page markup a city page needs; Cat 79 (Local SEO / GBP) — the listing these pages point at; Cat 18 (Thin content) — the failure mode a templated city page collapses into.
+
 ### Fix voice
 
-`jen-simmons` (primary) | `analytics-engineer` (backup).
+`intrinsic-web-engineer` (primary) | `analytics-engineer` (backup).
 
-The fix is semantic and structural: each city page declares "this is the page for service in this specific city" through every available signal — markup, schema, internal links, content. Jen's intrinsic-web POV applied to local pages.
+The fix is semantic and structural: each city page declares "this is the page for service in this specific city" through every available signal — markup, schema, internal links, content. The intrinsic-web POV applied to local pages.
 
 Internal rule: never name the practitioner in the fix prose (per `references/voiced-remediations.md`).
 
@@ -162,6 +168,6 @@ Internal rule: never name the practitioner in the fix prose (per `references/voi
 >
 > Hub-and-spoke. One Service Areas hub page lists every city, links to each. Each city page links back to the hub and to two or three adjacent cities ("Also serving Plano and Frisco"). The link graph compounds the topical authority; the hub becomes the authoritative source for "service in this region."
 >
-> Then check the SERP. If after the fix the page still ranks nowhere for "{service} {city}", the page is fine and the competitive gap is the lever — that's a GBP depth play (Cat 118), not a content rebuild.
+> Then check the SERP. If after the fix the page still ranks nowhere for "{service} {city}", the page is fine and the competitive gap is the lever — that's a GBP depth play (Cat 79's depth pass), not a content rebuild.
 
 Read `references/local-services-playbook.md` for the broader local-services context and the prioritization rules (which cities to build first, how to budget photographer time, how to source local testimonials).

@@ -3,7 +3,7 @@
 
 Covers ngrok, Cloudflare (cloudflared / Workers / Wrangler), and DNS resolvers.
 
-> **Cross-reference:** Category 3 covers general hardcoded secrets. Category 11 covers broad cloud misconfiguration. Category 31 covers CI/CD pipeline secrets. This category focuses specifically on tunnel credential exposure, Cloudflare Workers secret management, and DNS resolver security.
+> **Cross-reference:** Category 3 covers general hardcoded secrets. Category 43 covers broad cloud and IaC misconfiguration. Category 31 covers CI/CD pipeline secrets. This category focuses specifically on tunnel credential exposure, Cloudflare Workers secret management, and DNS resolver security.
 
 ### Detection
 

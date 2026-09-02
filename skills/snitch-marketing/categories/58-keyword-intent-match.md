@@ -101,9 +101,9 @@ Google on understanding search intent: https://developers.google.com/search/docs
 - Pricing page with no prices → Critical.
 - Page's content type or format differs from the SERP-majority type/format → High.
 
-**Fix voice:** `aaron-draplin` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `plain-language-designer` (primary) | `honest-design-critic` (backup).
 
-Read `souls/aaron-draplin.json` before writing the Fix.
+Read `souls/plain-language-designer.json` before writing the Fix.
 
 Worked fix example:
 

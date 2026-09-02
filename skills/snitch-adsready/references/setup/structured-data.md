@@ -1,103 +1,80 @@
-# Setup — Structured data (JSON-LD)
+# Setup — Product / Offer markup for a shopping feed
 
-Walkthrough for `setup structured-data`. Goal: ship validated Schema.org JSON-LD for Organization, WebSite, BreadcrumbList, plus vertical-specific types.
+Walkthrough for `setup structured-data`. Goal: ship `Product` + `Offer` JSON-LD that a Merchant
+Center / catalog crawl can read without disapproving the item.
+
+Scope check first. This area exists because ad platforms consume `Product`/`Offer`. Organization,
+WebSite, BreadcrumbList, Article, FAQ, rich results, and schema-for-AI-search are a search
+surface, not an ads one — **call the Skill tool with "snitch-marketing"** for those.
 
 ## Pre-checks
 
-1. **Run `bash ads-ready.sh state site <url> structured-data`.** Reports detected JSON-LD types.
-2. **Confirm vertical:** ecommerce, SaaS, marketing, blog, local services. Each maps to different schema.
-3. **Gather org details:** legal name, URL, logo URL (1:1 + transparent ideally), founders, social profile URLs (LinkedIn, X, Facebook, Instagram, YouTube, GitHub).
+1. **Is there a catalog at all?** No products, no feed, no Shopping / catalog campaign planned →
+   Skip with that reason; nothing here applies.
+2. **Is the feed crawl-dependent?** A complete file or API feed that never falls back to a crawl
+   makes on-page markup optional. Ask before proposing work.
+3. **Run `bash ads-ready.sh state site <product-url> structured-data`.** Reports the `@type`
+   values already present on the page.
+4. **Gather the item data source:** where price, availability, GTIN/SKU, shipping, and return
+   policy come from at build or request time. Markup that is not generated from that source
+   drifts within a week.
 
 ## Steps
 
-### 1. Identify vertical-specific types (manual)
+### 1. Confirm the target market's required fields (manual)
 
-Per `07-structured-data.md`:
+Shipping and return-policy disclosure is mandatory for Shopping items in some markets and
+optional in others. Check the Merchant Center requirements for the countries being targeted
+before deciding whether `shippingDetails` and `hasMerchantReturnPolicy` are blockers or
+nice-to-have.
 
-| Vertical | Required types |
+### 2. Apply the Product / Offer starter (auto)
+
+```bash
+bash ads-ready.sh fix structured-data ecommerce
+```
+
+The `ecommerce` argument is what asserts a catalog exists. Without it the apply step infers the
+vertical from `detect`, and warns `not-applicable` instead of emitting anything when detect found
+no catalog signal — pass the argument once pre-check 1 has confirmed there is a catalog.
+
+The apply step reads `templates/structured-data/product.starter.json`, and emits
+`=== FILE/DIFF/CONTENT ===` with every `{{PLACEHOLDER}}` left in place. Placeholders are the
+point: bind each one to the product record at build or render time rather than typing values.
+A literal price in a template is a disapproval waiting for the next price change.
+
+### 3. Bind the placeholders to the product source (manual)
+
+| Placeholder | Bind to |
 |---|---|
-| Ecommerce | Organization, WebSite, Product, Offer, AggregateRating, MerchantReturnPolicy, OfferShippingDetails, BreadcrumbList |
-| SaaS | Organization, WebSite, SoftwareApplication, FAQPage, BreadcrumbList |
-| Marketing | Organization, WebSite, Service or ProfessionalService, FAQPage, BreadcrumbList |
-| Blog / News | Organization, WebSite, BlogPosting / NewsArticle / Article, Person (author), BreadcrumbList |
-| Local services | LocalBusiness (subtype), GeoCoordinates, OpeningHoursSpecification |
+| `{{PRICE}}`, `{{CURRENCY_ISO}}` | the same field the checkout charges from |
+| `{{PRICE_VALID_UNTIL}}` | a rolling date computed at build, never a literal |
+| `{{SKU}}`, `{{MPN}}`, `{{GTIN13}}` | the catalog identifiers already used in the feed |
+| `{{SHIPPING_COST}}`, `{{COUNTRY_ISO}}` | the shipping table for the target market |
+| `{{RATING_VALUE}}`, `{{REVIEW_COUNT}}` | real aggregate review data, or delete the block |
 
-### 2. Apply base schemas (auto)
-
-```bash
-bash ads-ready.sh fix structured-data
-```
-
-The apply step:
-- Reads `templates/structured-data/{organization,website,breadcrumb}.starter.json`.
-- Substitutes `{{PLACEHOLDER}}` from user-supplied org details.
-- Emits `=== FILE/DIFF/CONTENT ===` targeting host's root layout/shell.
-
-For Next.js, JSON-LD goes in `app/layout.tsx` as `<script type="application/ld+json">`. For Astro, in `src/layouts/Layout.astro`. For SvelteKit, in `src/app.html` (or per-page via `<svelte:head>`). For WordPress, in `header.php` or via Yoast SEO Premium.
-
-### 3. Apply vertical-specific schemas (auto)
-
-For per-product pages (ecommerce):
-```bash
-bash ads-ready.sh fix structured-data --type product
-```
-
-For per-article pages (blog):
-```bash
-bash ads-ready.sh fix structured-data --type article
-```
-
-For FAQ sections:
-```bash
-bash ads-ready.sh fix structured-data --type faq
-```
-
-User fills real product / article / FAQ data via build-time interpolation (CMS bindings, MDX frontmatter, React component props).
+Delete any block with no real data behind it. Invented ratings are a policy violation, not a
+formatting problem.
 
 ### 4. Validate (external-tool)
 
 | Tool | URL | What it checks |
 |---|---|---|
-| Google Rich Results Test | https://search.google.com/test/rich-results | Eligibility for Google rich results |
-| Schema.org Validator | https://validator.schema.org/ | Type / property correctness |
-| Search Console → Enhancements | https://search.google.com/search-console | Per-type errors + warnings |
+| Merchant Center → Diagnostics | https://merchants.google.com/ | item-level disapprovals after the next crawl |
+| Google Rich Results Test | https://search.google.com/test/rich-results | the block parses and required fields resolve |
+| Schema.org Validator | https://validator.schema.org/ | type / property correctness |
 
-Resolve every error. Warnings: resolve high-value ones (missing image, missing aggregateRating).
-
-### 5. Re-run state site (auto)
+### 5. Re-run the slice (auto)
 
 ```bash
-bash ads-ready.sh state site <url> structured-data
+bash ads-ready.sh state site <product-url> structured-data
 ```
 
-Digest should report all expected types under `structured_data_types`.
-
-## Linked-data graph
-
-Use `@id` to link entities across pages:
-
-```json
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "Organization", "@id": "https://example.com/#org", "name": "..." },
-    { "@type": "WebSite", "@id": "https://example.com/#site", "publisher": { "@id": "https://example.com/#org" } }
-  ]
-}
-```
-
-## Common mistakes
-
-- Hand-crafted JSON-LD that doesn't validate.
-- Multiple Organization schemas on the same page.
-- Wrong @type case (Schema.org is case-sensitive).
-- Stale prices in Product schema.
-- Generic `name`/`description`.
-- Missing `priceValidUntil`.
+`.structured_data.types` should list `Product` (and `Offer` where the parser surfaces nested
+types). Then confirm price and availability in the markup match the feed for the same item.
 
 ## See also
 
-- `07-structured-data.md` — full reference.
-- `templates/structured-data/*.starter.json` — drop-in starters.
-- Schema.org: https://schema.org/
-- Google: https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data
+- `07-structured-data.md` — which platforms read the markup and the field-by-field reasons.
+- `templates/structured-data/product.starter.json` — the starter this step renders.
+- Google product structured data: https://developers.google.com/search/docs/appearance/structured-data/product

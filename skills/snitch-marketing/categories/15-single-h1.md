@@ -65,7 +65,7 @@ Fetch the URL. Parse `<body>`. Count `h1` elements. Get their text content for t
 - HTML5's "outline algorithm" allows multiple H1s, one per `<section>`. Modern browsers don't implement this. Google tolerates but doesn't reward it. If the site is deliberately using HTML5 outline, flag as Low (or skip with note "site uses HTML5 outline algorithm; Google has limited support") rather than High.
 - Programmatic SEO pages where the H1 is templated (e.g., "Snitch for {{language}}"), that's correct; the dynamic value is the topic.
 - A page intentionally noindex'd. Doesn't matter what its H1 looks like.
-- A visually-hidden H1 using the standard accessible off-screen technique (`.sr-only` / `.visually-hidden`, `clip: rect(...)`, `width:1px;height:1px;overflow:hidden`, or `clip-path`) with honest, on-topic text. This is the recommended accessible pattern (it gives screen-reader and SEO crawlers a page-topic H1 when the visual design uses a logo or image instead) and aligns with Cats 103-105. Don't flag it as spam. Penalty severity is reserved for `display:none` / `visibility:hidden` / `font-size:0` H1s whose text is ALSO stuffed or off-topic.
+- A visually-hidden H1 using the standard accessible off-screen technique (`.sr-only` / `.visually-hidden`, `clip: rect(...)`, `width:1px;height:1px;overflow:hidden`, or `clip-path`) with honest, on-topic text. This is the recommended accessible pattern (it gives screen-reader and SEO crawlers a page-topic H1 when the visual design uses a logo or image instead) and aligns with Cat 103 (accessibility conformance). Don't flag it as spam. Penalty severity is reserved for `display:none` / `visibility:hidden` / `font-size:0` H1s whose text is ALSO stuffed or off-topic.
 
 ### Context Check
 
@@ -92,9 +92,9 @@ WebAIM's a11y guidance on heading structure (single H1 is also the a11y best pra
 - H1 mismatch with title tag (different topics) → High.
 - HTML5-outline use of multiple H1s with no other issues → Low (or skip).
 
-**Fix voice:** `massimo-vignelli` (primary) | `dieter-rams` (backup).
+**Fix voice:** `hierarchy-purist` (primary) | `less-but-better-designer` (backup).
 
-Read `souls/massimo-vignelli.json` before writing the Fix. Vignelli's lifelong fight was for hierarchy, one primary, then secondaries, in disciplined order. The H1 is the typographic primary of the page; everything else subordinates to it. His NYC subway map and Knoll catalogs are nothing but applied hierarchy.
+Read `souls/hierarchy-purist.json` before writing the Fix. The whole discipline is hierarchy: one primary, then secondaries, in disciplined order. The H1 is the typographic primary of the page; everything else subordinates to it.
 
 Worked fix example:
 

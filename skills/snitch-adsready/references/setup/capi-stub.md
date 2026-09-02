@@ -19,7 +19,7 @@ Walkthrough for `setup capi-stub <platform>`. Goal: install a working server-sid
 | Microsoft | https://ads.microsoft.com → Tools → Microsoft Advertising API → Developer token + OAuth refresh | offline_access + msads.manage |
 | LinkedIn | https://www.linkedin.com/developers → Apps → Auth tab → 3-legged OAuth | r_ads, r_organization_social, w_organization_social, rw_ads |
 | TikTok | https://business-api.tiktok.com → Apps → Generate token | ads.read + advertiser auth |
-| X | https://developer.twitter.com → Projects → Apps → Keys (OAuth 1.0a) | Ads-API access (requires approval) |
+| X | https://developer.x.com → Projects → Apps → Keys (OAuth 1.0a) | Ads-API access (requires approval) |
 | Pinterest | https://developers.pinterest.com → Apps → OAuth | ads:read + ads:write |
 | Reddit | https://ads-api.reddit.com → OAuth | ads:write |
 | Snapchat | https://kit.snapchat.com/portal/marketing-api → Apps → Snap Login OAuth | snapchat-marketing-api |

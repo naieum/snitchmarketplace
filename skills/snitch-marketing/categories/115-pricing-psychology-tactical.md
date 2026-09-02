@@ -2,11 +2,14 @@
 
 Tactical pricing display checks. The auditable mechanics: charm vs rounded prices, decoy tier presence, anchoring order, mental accounting frames, discount math, strike-through provenance.
 
-Distinct from Cat 112 (pricing-strategic-read), which audits whether the pricing positioning aligns with brand and target buyer. Cat 112 is "do you charge the right amount for the right audience"; Cat 115 is "given your prices, are you displaying them in a way that converts."
+This category takes the prices as given and audits how they are **displayed**. Two neighbouring questions belong elsewhere:
+
+- **Is the price itself right for this segment?** That is pricing strategy, not a site audit — call the Skill tool with "snitch-cmo".
+- **How does the pricing UI read to a user mid-decision** — the choice architecture of the plan comparison, the paywall, the ethics of the default? That is judged against the user's decision path — call the Skill tool with "snitch-ux". The sibling sends the *display* half here; this category sends the *decision-path* half back. The same pricing page can carry a finding in both skills; the judge is what the finding is measured against.
 
 ### Pre-flight: only run when a pricing page exists
 
-If the brand has no public pricing page (sales-led, custom-quote, contact-form-only pricing), **Skip** with reason `no public pricing surface to audit; tactical display checks require visible prices`. The strategic question (should pricing be public?) belongs in Cat 112.
+If the brand has no public pricing page (sales-led, custom-quote, contact-form-only pricing), **Skip** with reason `no public pricing surface to audit; tactical display checks require visible prices`. Whether pricing *should* be public is a strategy question — call the Skill tool with "snitch-cmo".
 
 If pricing is shown only in checkout flow (e-commerce per-item), audit the checkout's price-display tactics. Same checks, different surface.
 
@@ -104,8 +107,8 @@ Pricing page + checkout flow.
 
 ### NOT a Problem
 
-- **Single-tier flat pricing.** No anchoring or decoy to audit; the question is whether the price is right (Cat 112).
-- **Pay-what-you-want / sliding scale.** Different psychology; audit against Cat 112 strategic, not 115 tactical.
+- **Single-tier flat pricing.** No anchoring or decoy to audit; the remaining question is whether the price is right, which is strategy (`snitch-cmo`).
+- **Pay-what-you-want / sliding scale.** Different psychology; the strategic read belongs to `snitch-cmo`, not to this display pass.
 - **Hand-quoted enterprise pricing.** Not a public-pricing surface; goes through sales.
 - **Genuine sale with provenance.** Strike-through prices with clear original-date stamps and source aren't fake-sale findings.
 - **Decoy absent on 2-tier pricing.** Decoys require three tiers to function. 2-tier pricing is fine without one.
@@ -120,12 +123,13 @@ Pricing page + checkout flow.
 5. Are there strike-throughs / "was $X" anchors? Are they provenanced?
 6. Is annual / longer-term pricing shown? Is the savings quantified?
 7. Is there a recurring frame (per-month, per-year, per-seat)? Could a per-day frame reduce sticker shock?
+8. Is the question how the plan comparison *feels* to someone choosing right now — choice architecture, the ethics of the default, the paywall moment? Hand that half over: call the Skill tool with "snitch-ux".
 
 ### Reference
 
 - `references/mental-models.md` Section D for the pricing-specific models
-- Cat 112 (pricing-strategic-read) for strategic alignment questions
-- April Dunford on pricing positioning: https://www.aprildunford.com/
+- Pricing strategy (is this the right price for this buyer?) → call the Skill tool with "snitch-cmo"; the decision-path reading of the pricing UI → call the Skill tool with "snitch-ux"
+- `souls/positioning-strategist.json` for the positioning-led read on pricing (internal voice reference)
 
 ### Severity tagging
 
@@ -139,9 +143,9 @@ Pricing page + checkout flow.
 - Pricing tiers exceed five → Medium
 - All-features-list-under-every-tier → Medium
 
-**Fix voice:** `april-dunford` (primary) | `seth-godin` (backup).
+**Fix voice:** `positioning-strategist` (primary) | `permission-marketer` (backup).
 
-Read `souls/april-dunford.json` before writing the Fix.
+Read `souls/positioning-strategist.json` before writing the Fix.
 
 ### Worked fix example
 
@@ -149,7 +153,7 @@ Read `souls/april-dunford.json` before writing the Fix.
 >
 > Findings:
 >
-> 1. **Anchoring is correctly oriented.** Highest visible tier on the right; "Contact us" sits as an anchor above the visible numbers, but barely. Score: 18 / 25 on the Cat 114 §6 Anchoring sub-element.
+> 1. **Anchoring is correctly oriented.** Highest visible tier on the right; "Contact us" sits as an anchor above the visible numbers, but barely. Pass with evidence: the tier order quoted from `/pricing`; Cat 114 §6 records the same read.
 >
 > 2. **Decoy is unclear.** Pro at $49 sits between Starter ($19) and Business ($99). Feature differences between Starter and Pro are small; Pro looks like a low-effort middle tier rather than an intentional decoy steering buyers to Business. Recommendation: either widen the Pro / Business feature gap so Business is the obvious step up (Pro becomes the decoy), or remove Pro entirely and run a clean 3-tier.
 >
@@ -159,4 +163,4 @@ Read `souls/april-dunford.json` before writing the Fix.
 >
 > 5. **Rule of 100 misapplied on the annual discount.** "Save 17%" on a $588 / year price ($49 × 12) feels small. "Save $99" (the same number) reads larger because dollar > percentage for prices > $100. Same offer, different framing. Severity: Low.
 >
-> Voice grounded in the models: Anchoring is correctly positioned (Section 6 rubric, 18 / 25). The Decoy weakness is a Paradox of Choice + Decoy-effect combination. The annual-discount findings combine Default Effect (default to annual nudges higher LTV) + Rule of 100 (frame as $99 not 17%). The mental-accounting frame is Cat 115 §E from the catalog.
+> Voice grounded in the models: anchoring is correctly positioned (Cat 114 §6 Passes on the same evidence). The Decoy weakness is a Paradox of Choice + Decoy-effect combination. The annual-discount findings combine Default Effect (default to annual nudges higher LTV) + Rule of 100 (frame as $99 not 17%). The mental-accounting frame is Cat 115 §E from the catalog.

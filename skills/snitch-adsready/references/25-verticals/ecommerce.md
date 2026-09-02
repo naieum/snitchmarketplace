@@ -31,15 +31,16 @@ Shopify users: native channel apps sync the catalog automatically. WooCommerce: 
 
 ## Schema.org for ecommerce
 
-Required:
+The feed reads this, so it is in scope here. Required on a product page:
 - `Product` (one per product page) — see `templates/structured-data/product.starter.json`
-- `Offer` (nested in Product)
-- `AggregateRating` + `Review` (where applicable)
-- `MerchantReturnPolicy` (Google requires since June 2023)
-- `OfferShippingDetails` (Google requires)
-- `BreadcrumbList`
+- `Offer` (nested in Product) with price, currency, availability, `priceValidUntil`
+- `MerchantReturnPolicy` and `OfferShippingDetails` where the target market mandates disclosure
+- `AggregateRating` + `Review` only where real review data backs them
 
-Validate via Rich Results Test for every product template.
+`07-structured-data.md` has the field-by-field reasons. Every other schema type on the site
+(BreadcrumbList, Organization, WebSite, Article) is a search surface: **call the Skill tool with
+"snitch-marketing"**. Validate product templates in Merchant Center Diagnostics after the next
+crawl, and in the Rich Results Test before deploy.
 
 ## Pixel deduplication is critical
 

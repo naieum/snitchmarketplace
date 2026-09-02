@@ -1,6 +1,11 @@
 ## CATEGORY 57: GraphQL Deep Security
 > Type: posture · Groups: — · CWE: CWE-862
 
+> **Owns everything GraphQL-configuration-shaped:** introspection, query depth and complexity,
+> aliasing and batching, field-level authorization, persisted queries. Categories 44 (API Security)
+> and 51 (Debug Endpoints) detect a GraphQL surface and defer here rather than restating these rules
+> — only this file carries the framework-default readings that keep them from firing on correct code.
+
 ### Detection
 - GraphQL server imports: `apollo-server`, `@apollo/server`, `graphql-yoga`, `mercurius`, `express-graphql`, `graphql-go`, `gqlgen`, `strawberry`, `ariadne`, `graphene`, `spring-boot-starter-graphql`, `hasura`
 - GraphQL schema definitions (`.graphql`, `.gql` files, `typeDefs`, `gql` template literals)

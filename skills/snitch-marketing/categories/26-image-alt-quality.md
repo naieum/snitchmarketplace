@@ -2,6 +2,8 @@
 
 Alt is present but generic, keyword-stuffed, or just the filename. Bad alt is sometimes worse than no alt, screen reader users hear gibberish, Google's image-search algorithm gets a confusing signal.
 
+**Boundary.** As in Cat 25, the judge here is the **search and machine-readability** value of the text, not conformance. Cat 103's 1.1.1 row owns the criterion; cross-file rather than double-count.
+
 ### Evidence required (do not skip)
 
 **Source mode, required tool calls:**
@@ -28,6 +30,17 @@ Patterns indicating low-quality alt:
 - Single character: `alt="i"`, `alt="x"` (dev placeholder)
 - Keyword-stuffed: `alt="cheap running shoes nike adidas best running shoes 2026"`
 - Title-as-alt mismatch: alt set to `aria-label` instead of describing the image
+
+### What to Search For
+
+- `alt="` values ending in an image extension (`.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`, `.svg`)
+- `alt="` values matching camera/export filename shapes: `IMG_`, `DSC`, `Screenshot`, `Untitled`, `unnamed`, `download`, a bare digit run
+- Placeholder words as the whole value: `image`, `photo`, `picture`, `icon`, `logo`, `graphic`, `banner`, `img`, `alt`, `TODO`, `test`
+- Single-character and whitespace-only values (an intentionally empty `alt=""` on a decorative image is correct and is NOT this pattern)
+- Alt values over ~125 characters, or containing the target keyword three or more times
+- Alt values identical across three or more different images on the same page
+- `alt={` expressions bound to a filename, slug, or id field rather than a description field (JSX / template props)
+- CMS field mappings where alt defaults to the asset's title or filename (`image.filename`, `asset.name`, `media.title`)
 
 ### Actually Hurts SEO
 
@@ -67,9 +80,9 @@ Google's image SEO docs: https://developers.google.com/search/docs/appearance/go
 - Keyword-stuffed alt → High (spam signal).
 - Alt >125 chars → Low.
 
-**Fix voice:** `frank-chimero` (primary) | `aarron-walter` (backup).
+**Fix voice:** `content-shape-editor` (primary) | `emotional-design-lead` (backup).
 
-Read `souls/frank-chimero.json` before writing the Fix. Frank's writing-flavored design POV: alt is a sentence about the image. Make it a good sentence.
+Read `souls/content-shape-editor.json` before writing the Fix. The writing-first view of design: alt is a sentence about the image. Make it a good sentence.
 
 Worked fix example:
 

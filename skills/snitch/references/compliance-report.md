@@ -16,7 +16,7 @@ Determine which compliance framework(s) apply. Available templates in `complianc
 |-----------|---------------|------------------|
 | SOC 2 Type II | `soc2-evidence.md` | SaaS providers, cloud services |
 | HIPAA | `hipaa-evidence.md` | Healthcare, health data processors |
-| PCI-DSS v4.0 | `pci-dss-evidence.md` | Payment processing, cardholder data |
+| PCI-DSS v4.0.1 | `pci-dss-evidence.md` | Payment processing, cardholder data |
 | GDPR | `gdpr-evidence.md` | EU personal data processing |
 | CCPA | `ccpa-evidence.md` | California consumer data |
 | SOX | `sox-evidence.md` | Public companies, financial systems |

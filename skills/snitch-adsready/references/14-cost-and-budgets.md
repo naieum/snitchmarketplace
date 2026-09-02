@@ -4,20 +4,18 @@ Read when the user asks about API quotas, monthly costs of CAPI / sGTM hosting, 
 
 ## What costs money
 
-| Item | Cost shape | Typical monthly cost (mid-traffic) |
-|---|---|---|
-| Pixel + CAPI | free at platform | $0 (compute on your infra) |
-| GA4 Standard | free up to 10M events/mo | $0 |
-| GA4 360 | enterprise, ~$150k/yr min | $12,500/mo |
-| BigQuery export of GA4 | $0.02/GB scanned + $5/TB query | $5-100/mo typical |
-| Server-side GTM hosting | App Engine ($40-120), Workers ($5), Stape ($20-300) | $40-150/mo |
-| PageSpeed Insights API | free; rate-limited | $0 |
-| Lighthouse CI Server (self-hosted) | host cost only | $5-25/mo |
-| Calibre / SpeedCurve / DebugBear | $60-1,100/mo | varies |
-| CMP (Cookiebot, OneTrust, etc.) | $0-500+/mo | $11-200/mo typical |
-| Sentry / Datadog RUM | $20-1,000+/mo by traffic | $50-500/mo |
-| Vercel Speed Insights | $10/mo per project (Pro required) | $10-50/mo |
-| Cloudflare Web Analytics | free if site on CF | $0 |
+Pixels and every platform's Conversions API are free at the platform; what you pay for is the
+compute and the third-party tools around them.
+
+Per-vendor pricing lives in one place — `references/recommendations/*.md`, which
+`templates/recommendations.json` feeds and `recommend <area>` emits as JSON. Read it there
+rather than from a second table here, so the numbers rot in one file instead of three:
+
+- CMP vendors — `recommend cmp`
+- Server-side GTM hosting — `recommend gtm-server`
+- CAPI helper libraries — `recommend capi-helpers`
+- CI Lighthouse runners — `recommend lighthouse-runner`
+- RUM / CWV monitoring — `recommend cwv-monitoring`
 
 ## API quotas (read-only)
 
@@ -44,22 +42,22 @@ Read when the user asks about API quotas, monthly costs of CAPI / sGTM hosting, 
 
 1. **GA4 360.** Event volume crossing 10M/mo may push to 360 with no flexible middle tier. BigQuery export reduces urgency.
 2. **Server-side GTM at scale.** App Engine F1 cold-starts hurt at ~50 req/sec sustained; bump to F4 or migrate to Workers.
-3. **CMP per-page-view pricing.** Cookiebot mid-tier starts charging once you exceed N sub-pages. Some teams pay 5x what they need.
+3. **CMP tier thresholds.** Most CMP free and entry tiers are metered on sub-pages or monthly page views; crossing the threshold moves you a tier, and teams routinely sit on a tier above what their traffic needs. Which vendor charges at which threshold is in `recommend cmp`.
 4. **RUM at scale.** Datadog RUM at $1.50 per 1k sessions × millions of sessions = real money. web-vitals JS to GA4 is free.
 
 ## Fixed vs variable cost
 
 Spiky traffic (campaign launches): Cloudflare Workers (per-request), Stape Free, PSI free, web-vitals + GA4.
 
-Steady traffic: App Engine, Vercel Speed Insights, Cookiebot.
+Steady traffic: App Engine, Vercel Speed Insights, a flat-rate managed CMP (`recommend cmp`).
 
 ## Not cost-justified for most
 
 - Datadog RUM for sub-100k MAU (use web-vitals JS).
-- OneTrust for sub-$10M-revenue (use Cookiebot or CookieYes).
+- An enterprise-tier CMP below enterprise scale — the compliance scope it prices for (multi-region frameworks, DSAR workflows, audit logs) is not what a single-region site uses. `recommend cmp` picks the tier by scope.
 - SpeedCurve Pro tier without a dedicated performance engineer.
 - Calibre + SpeedCurve + DebugBear concurrently — pick one.
 
 ## See also
 
-- `references/recommendations/cmp.md`, `gtm-server.md`, `lighthouse-runner.md`, `cwv-monitoring.md`, `listings.md` — pricing in vendor cards (`listings` options are all free to claim; only their upsells cost money).
+- `references/recommendations/cmp.md`, `gtm-server.md`, `lighthouse-runner.md`, `cwv-monitoring.md` — pricing in vendor cards.

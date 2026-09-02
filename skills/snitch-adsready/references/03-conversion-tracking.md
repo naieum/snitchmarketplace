@@ -47,6 +47,12 @@ Dedup field per platform:
 
 Use a server-issued UUID per order/lead. Pass to both client (pixel) and server (CAPI).
 
+Auditing it: find the CAPI payload builder and the matching client `track` call, and quote the
+dedup field from each. A CAPI POST with no dedup field, or a client fire whose id is generated
+independently of the server's, double-counts every conversion the platform receives twice —
+report it with both `file:line`s, not as "dedup may be missing". Cross-check against the order
+DB, not against a second platform's number.
+
 ## Attribution windows
 
 | Platform | Default window | Configurable? |

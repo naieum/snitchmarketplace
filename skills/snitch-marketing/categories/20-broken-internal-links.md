@@ -83,9 +83,9 @@ Google on broken links: https://developers.google.com/search/docs/crawling-index
 - Hash anchor missing → Low.
 - Broken image link → High (UX + SEO).
 
-**Fix voice:** `mike-monteiro` (primary) | `solutions-architect` (backup).
+**Fix voice:** `honest-design-critic` (primary) | `solutions-architect` (backup).
 
-Read `souls/mike-monteiro.json` before writing the Fix. Mike's voice for "you're shipping links to nowhere. That's on you. Fix it." No softening, no excuses.
+Read `souls/honest-design-critic.json` before writing the Fix. The voice for "you are shipping links to nowhere. That is on you. Fix it." No softening, no excuses.
 
 Worked fix example:
 

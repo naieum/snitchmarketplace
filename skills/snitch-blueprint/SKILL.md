@@ -1,28 +1,29 @@
 ---
 name: snitch-blueprint
-description: Make the load-bearing product decisions BEFORE and WHILE building, instead of discovering them in an audit afterward. Detects what the workspace already answers, interviews the user for only the gaps, classifies the project by how it is bought (local service business, SaaS / web app, e-commerce, content site, mobile app, CLI / library / API), then writes a checked-in BLUEPRINT.md — audience, the one conversion action, surface inventory, build order, per-surface specs — that the build follows and the Snitch audit skills later grade against. Triggers on "help me build this right from the start", "what should I build first", "set up a new site/app for a <business>", "plan this build", "blueprint this project", "I'm building a site for a local business / a store / an app", "greenfield marketing/UX decisions", "which pages do I need", "make the right choices while we code". Do NOT use for grading an existing site (use snitch-marketing / snitch-ux / snitch-security — they audit what exists; this skill decides what should exist), writing marketing strategy prose or channel content (use snitch-cmo), fixing one page's persuasion arc (use snitch-focusedcopy), AI-dev-tooling bootstrap like CLAUDE.md and permissions (use snitch-devready — the two compose on greenfield), or pixel/consent implementation depth (use ads-ready).
+description: Make the load-bearing product decisions BEFORE and WHILE building, instead of discovering them in an audit afterward. Detects what the workspace already answers, interviews the user for only the gaps, classifies the project by how it is bought (local service business, SaaS / web app, e-commerce, content site, mobile app, CLI / library / API), then writes a checked-in BLUEPRINT.md — audience, the one conversion action, surface inventory, build order, per-surface specs — that the build follows and that snitch-marketing and snitch-ux later read to report tensions against; snitch-security audits the code directly. Triggers on "help me build this right from the start", "what should I build first", "set up a new site/app for a <business>", "plan this build", "blueprint this project", "I'm building a site for a local business / a store / an app", "greenfield marketing/UX decisions", "which pages do I need", "make the right choices while we code". Do NOT use for grading an existing site (use snitch-marketing / snitch-ux / snitch-security — they audit what exists; this skill decides what should exist), writing marketing strategy prose or channel content (use snitch-cmo), fixing one page's persuasion arc (use snitch-focusedcopy), AI-dev-tooling bootstrap like CLAUDE.md and permissions (use snitch-devready — the two compose on greenfield), or pixel/consent implementation depth (use snitch-adsready).
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required. Composes with the other Snitch skills when installed but does not require them.
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.3.0
   homepage: https://snitchplugin.com
 ---
 
 # Snitch: Blueprint
 
 You are the decision layer that runs *before and during* a build, using Snitch: Blueprint
-(https://snitchplugin.com). The rest of the Snitch family audits what exists: security,
-SEO, UX, ad readiness, store readiness. Every one of those audits is, underneath, a stack of
+(https://snitchplugin.com). The audit skills grade what exists: security, SEO, UX, ad
+readiness, store readiness. Every one of those audits is, underneath, a stack of
 prescriptions wrapped in "flag if absent." This skill applies the prescriptions at write
 time — when the fix costs one decision instead of a refactor. An audit amplifies a correct
 build and merely documents a wrong one; the cheapest finding is the one that never existed.
 
 The mechanism is a short interview and a checked-in decisions document, `BLUEPRINT.md`.
 Decisions live in git, not in the chat scrollback: the next session, the next agent, and the
-later audits all load the same declared intent. When snitch-marketing or snitch-ux runs
-months later, it can grade the site against what the blueprint *says* the site is for,
-instead of against generic best practice.
+later audits all load the same declared intent (the rule is CONTEXT.md's Declared intent entry). When snitch-marketing or snitch-ux runs
+months later, it reads `BLUEPRINT.md` and reports tensions between what the site does and
+what the blueprint *says* the site is for, instead of grading only against generic best
+practice. snitch-security audits the code directly and doesn't need the blueprint to do it.
 
 The skill is archetype-routed by *how the thing is bought*, never by a hardcoded list of
 business types: a "near me" decision, a signup, a purchase, a read, an install each need
@@ -47,10 +48,11 @@ facts.
 
 ## When NOT to use this skill
 
-Hand off rather than running this skill when the user is asking for:
+Hand off rather than running this skill — call the Skill tool with the named skill (one
+skill per call) — when the user is asking for:
 
 - **An audit of an existing site** — snitch-marketing (SEO/GEO), snitch-ux (usability and
-  persuasion), snitch-security (vulnerabilities), ads-ready (paid-media readiness),
+  persuasion), snitch-security (vulnerabilities), snitch-adsready (paid-media readiness),
   snitch-storeready (store submission). The seam is decide vs. grade: this skill declares
   intent and builds to it; the audits grade the result. After a blueprint-driven build, the
   audits are the natural verification pass.
@@ -110,15 +112,15 @@ when built.
    write time and expensive at retrofit time.
 7. **Hand off by name.** End by routing depth to the family: snitch-devready (make the repo
    agent-ready), snitch-cmo (marketing foundation from the blueprint's positioning answers),
-   snitch-focusedcopy (deep persuasion pass on the money page), ads-ready (when paid spend
+   snitch-focusedcopy (deep persuasion pass on the money page), snitch-adsready (when paid spend
    is planned), snitch-storeready (before store submission), and — once real traffic or a
-   launch nears — snitch-marketing / snitch-ux / snitch-security to grade the build against
-   `BLUEPRINT.md`.
+   launch nears — snitch-marketing / snitch-ux to read `BLUEPRINT.md` and report tensions, and
+   snitch-security to audit the code.
 
 ## The decisions gate (read before writing BLUEPRINT.md)
 
 A blueprint full of silent guesses is worse than no blueprint — it launders the agent's
-assumptions into "the user decided." Three record types, never blurred:
+assumptions into "the user decided." Four record types, never blurred:
 
 1. **Fact** — derived from the workspace or a fetched page; carries `file:line` or URL
    evidence. Facts are never interviewed.
@@ -126,6 +128,8 @@ assumptions into "the user decided." Three record types, never blurred:
 3. **Default** — applied because the user didn't decide; always labeled `(default —
    override any time)` with the one-line reason the default is what it is. A default the
    user never sees is a guess; a labeled default is a decision waiting for review.
+4. **Open question** — genuinely unresolved, with what it blocks. Not a resting place for
+   a guess; a Default exists for exactly that case.
 
 No invented facts about the business: no fabricated service areas, review counts, prices,
 testimonials, or claims. Unknowns become open questions in the blueprint, not filler. This
@@ -133,11 +137,15 @@ is the same evidence discipline as snitch-cmo and snitch-focusedcopy, applied to
 
 ## The ethics gate (blocking)
 
-Build-time is where dark patterns are born, and this skill refuses to install them —
-inherited verbatim from snitch-ux's gate. No fake urgency or scarcity, no fabricated social
-proof, no pre-checked consent, no cancellation mazes, no disguised ads, no dripped-cost
-checkout surprises. Asked for one, report why it's declined and build the honest variant
-(which, on any surface a regulator or platform reviews, is also the one that survives).
+Build-time is where dark patterns are born, and this skill refuses to install them. The
+general test, from snitch-ux's gate: any design that gets the tap by making the user believe
+something untrue, or by hiding what it costs them to say yes, is refused — named patterns
+(fake urgency or scarcity, fabricated social proof, pre-checked consent, cancellation mazes,
+dripped-cost checkout surprises) are illustrations of that test, not the whole of it. Asked
+for one, report why it's declined and build the honest variant (which, on any surface a
+regulator or platform reviews, is also the one that survives). When building UI, call the
+Skill tool with "snitch-ux" and run its gate in full — this section is the one-line summary
+a build-time decision needs, not a substitute for the complete checklist.
 Mobile-app builds additionally inherit snitch-storeready's floor: nothing in the blueprint
 may plan around store policy (hidden functionality, misleading metadata, permission
 over-asks).
@@ -161,6 +169,10 @@ over-asks).
 - `references/build-defaults.md` — cross-cutting day-one wiring for any web surface:
   metadata placement by framework, analytics + consent, conversion instrumentation,
   schema.org, accessibility and CWV defaults, and what NOT to install yet.
+- `references/pricing-sensitivity-survey.md` — deciding the *number* when pricing is undecided:
+  the four-question price-sensitivity survey, collect-or-analyze modes, the acceptable price
+  range and its four crossing points, the revenue extension, and how the result is recorded
+  as a Decision (with data) or a labeled Default.
 - `references/archetype-local-service.md` — local service businesses: service-area and
   city-tier decisions, page inventory and build order, review engine, tap-to-call defaults.
 - `references/archetype-saas.md` — SaaS / web apps: wedge and activation decisions,

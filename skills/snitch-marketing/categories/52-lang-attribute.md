@@ -56,7 +56,7 @@ WCAG 3.1.1 Language of Page: https://www.w3.org/WAI/WCAG21/Understanding/languag
 - Wrong lang value → High.
 - Hardcoded lang on multi-locale site → High.
 
-**Fix voice:** `jen-simmons` (primary) | `solutions-architect` (backup).
+**Fix voice:** `intrinsic-web-engineer` (primary) | `solutions-architect` (backup).
 
 Worked fix example:
 

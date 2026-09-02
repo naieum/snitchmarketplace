@@ -77,9 +77,9 @@ Google's quality rater guidelines (general): https://developers.google.com/searc
 - Footer linking to noindex'd / low-quality pages at scale → Medium.
 - Footer with paid / partner spam links → High.
 
-**Fix voice:** `dieter-rams` (primary) | `mike-monteiro` (backup).
+**Fix voice:** `less-but-better-designer` (primary) | `honest-design-critic` (backup).
 
-Read `souls/dieter-rams.json` before writing the Fix. Less but better, every footer link should earn its place.
+Read `souls/less-but-better-designer.json` before writing the Fix. Less but better, every footer link should earn its place.
 
 Worked fix example:
 

@@ -4,7 +4,7 @@ Run this at the start of every audit. Determines:
 
 1. Mode (source / crawl / both)
 2. Stack (framework, CMS, hosting)
-3. Page-type detection (so per-type categories like Product schema only run where they apply)
+3. Page-type detection (so per-type checks like Cat 32's Product row only run where they apply)
 
 ## Mode detection
 
@@ -71,31 +71,34 @@ Run this at the start of every audit. Determines:
 - Source mode unavailable (no repo). Force crawl mode for: Webflow, Wix, Squarespace, Framer, Carrd, Bubble, Ghost(Pro).
 - Framer and Bubble render SPA-like (client-hydrated DOM); treat as JS-rendered.
 - Detect via `<meta name="generator">` (e.g. `Wix.com`, `Squarespace`, `Framer`, `Carrd`, `Bubble`) or platform-specific asset hosts.
-- These platforms have **no source the user can point at**. Do NOT recommend source/Plugin mode for DOM-dependent skips. Use the hosted-platform skip reason below.
+- These platforms have **no source the user can point at**. Do NOT recommend source mode for DOM-dependent skips. Use the hosted-platform skip reason below.
 
-**Hosted-platform skip reason** (closed/hosted builders — Wix / Squarespace / Webflow / Framer / Carrd / Bubble / Ghost(Pro)): when a non-JS crawl can't see post-hydration DOM, mark DOM-dependent cats **Skip** with reason "crawl mode without JS rendering can't see post-hydration DOM; source mode is unavailable on this hosted platform — re-run with a JS-rendering crawler (Playwright / headless Chrome) for the post-hydration DOM." Do NOT tell the user to switch to source/Plugin mode — they have no source.
+**Hosted-platform skip reason** (closed/hosted builders — Wix / Squarespace / Webflow / Framer / Carrd / Bubble / Ghost(Pro)): when a non-JS crawl can't see post-hydration DOM, mark DOM-dependent cats **Skip** with reason "crawl mode without JS rendering can't see post-hydration DOM; source mode is unavailable on this hosted platform — re-run with a JS-rendering crawler (Playwright / headless Chrome) for the post-hydration DOM." Do NOT tell the user to switch to source mode — they have no source.
 
-(For self-hosted SPAs — Next.js / React / etc. where the user owns the repo — keep recommending source/Plugin mode, which reads JSX/TSX directly and is unaffected by hydration.)
+(For self-hosted SPAs — Next.js / React / etc. where the user owns the repo — keep recommending source mode, which reads JSX/TSX directly and is unaffected by hydration.)
 
 ## Page-type detection
 
-Apply per-type schema categories only where they fit:
+Cat 32 (schema type validation) runs one pass per schema type whose page-type signal fires. This
+table is the short form of that pre-flight; the full row set, with required and recommended
+properties per type, is the per-type table in `references/standards-table.md`.
 
-| Page type | Detection signals | Schema categories that fire |
+| Page type | Detection signals | Cat 32 type rows that fire |
 |---|---|---|
-| Homepage | `/` route | Organization / WebSite (37) |
-| Article / blog post | `/blog/`, `/posts/`, `/articles/` paths; `<article>` + author/date metadata | Article (32), BreadcrumbList (33) |
-| Product detail | `/product/`, `/products/`, `/p/` paths; `add to cart` text; `Product` schema present | Product (34), BreadcrumbList (33) |
-| FAQ page | `/faq` URL OR `<details>` / accordion patterns with question-shaped headings | FAQ (35) |
-| How-to / tutorial | `/how-to/`, `/tutorial/`, `/guide/` paths; numbered step headings | HowTo (36) |
-| Video page | `<video>` tag OR YouTube/Vimeo embeds | VideoObject (38) |
-| Index / listing | Multiple article/product cards + pagination controls | BreadcrumbList (33) only |
+| Homepage | `/` route | Organization / WebSite |
+| Article / blog post | `/blog/`, `/posts/`, `/articles/` paths; `<article>` + author/date metadata | Article, BreadcrumbList, Person (if a byline names a human) |
+| Product detail | `/product/`, `/products/`, `/p/` paths; `add to cart` text; `Product` schema present | Product, BreadcrumbList |
+| FAQ page | `/faq` URL OR `<details>` / accordion patterns with question-shaped headings | FAQPage |
+| How-to / tutorial | `/how-to/`, `/tutorial/`, `/guide/` paths; numbered step headings | HowTo |
+| Video page | `<video>` tag OR YouTube/Vimeo embeds | VideoObject |
+| Index / listing | Multiple article/product cards + pagination controls | BreadcrumbList only |
+| Recipe, course, event, job, app, local-business, team pages | see the page-type signal column of the per-type table in `references/standards-table.md` | the matching row |
 
-If a page doesn't match any of the above, only run the always-applicable categories (1-30, 39-56, 57-60).
+If a page doesn't match any of the above, run only the categories whose `categories/_index.md` row has no page-type dependency — the manifest is the authority for which those are; never work from a hardcoded number range.
 
 ## E-commerce signal
 
-Trigger Product schema (34) and Conversion (60) priority bumps when ANY of:
+Trigger Cat 32's Product row and Conversion (60) priority bumps when ANY of:
 
 - Routes contain `/cart`, `/checkout`, `/orders`, `/products`, `/shop`
 - Stripe / Shopify / Snipcart / Square integrations in dependencies

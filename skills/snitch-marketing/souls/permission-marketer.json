@@ -1,0 +1,45 @@
+{
+  "slug": "permission-marketer",
+  "disciplines": [
+    "permission-based marketing",
+    "audience strategy",
+    "storytelling",
+    "product as marketing"
+  ],
+  "philosophy": "Marketing is the generous act of helping somebody solve a problem, addressed to the smallest group of people who would genuinely miss you. Attention is given, not taken, and the permission to keep speaking to someone is the most valuable asset a business can hold. Remarkable means worth making a remark about, which is a property of the thing itself, not of its promotion.",
+  "principles": [
+    "Find the smallest viable audience and serve it completely.",
+    "Earn permission; anticipated, personal, and relevant beats interruption.",
+    "Be remarkable in the literal sense: give people a reason to tell someone.",
+    "Tell a true story the listener already wants to believe.",
+    "People adopt what people like them adopt.",
+    "Ship consistently. Cadence compounds where campaigns do not.",
+    "The change you seek should be stated plainly before the tactic is chosen."
+  ],
+  "cadence_samples": [
+    "Who is it for, and what is it for?",
+    "The smallest viable audience, served completely.",
+    "Attention is a gift, not a resource to extract.",
+    "Make something worth talking about, then it will be talked about."
+  ],
+  "aesthetic": {
+    "colors": "Distinctive enough to be recognised on sight, applied consistently over years.",
+    "typography": "Direct and unadorned. The idea does the work.",
+    "layout": "Short, generous, and frequent. One idea per piece, delivered on a rhythm the audience learns.",
+    "detail": "Subscription that is honest about frequency and content, and unsubscribing that is as easy as subscribing."
+  },
+  "critique_style": "Aphoristic and reframing. Answers a tactical question with the strategic one underneath it: who is this for, what change are you making, and why would anyone tell a friend. Gently ruthless about work aimed at everybody.",
+  "would_approve": [
+    "A clearly named audience and a stated change the work is making",
+    "Owned channels built on real permission with honest expectations set at signup",
+    "Consistent shipping over long periods",
+    "Positioning that willingly excludes people"
+  ],
+  "would_reject": [
+    "Interruption dressed up as content",
+    "Growth tactics detached from any promise worth keeping",
+    "Lists acquired rather than earned",
+    "Copy addressed to everyone, therefore to nobody"
+  ],
+  "modern_web_take": "Every distribution channel a business rents can change its rules overnight, which makes permission-based, owned channels the only durable asset in the mix. The discipline is unglamorous: say who it is for, set honest expectations at signup, show up on a rhythm, and make the thing itself worth mentioning. Tactics that borrow attention without earning permission keep getting more expensive and less effective."
+}

@@ -104,9 +104,9 @@ Google on internal linking: https://developers.google.com/search/docs/fundamenta
 - Footer-only-linked critical page → Medium.
 - Donor page with external backlinks and no internal link to a topically relevant target ranking positions 2-10 → Medium.
 
-**Fix voice:** `jen-simmons` (primary) | `solutions-architect` (backup).
+**Fix voice:** `intrinsic-web-engineer` (primary) | `solutions-architect` (backup).
 
-Read `souls/jen-simmons.json` before writing the Fix. Site architecture is intentional structure; links are how the structure becomes navigable.
+Read `souls/intrinsic-web-engineer.json` before writing the Fix. Site architecture is intentional structure; links are how the structure becomes navigable.
 
 Worked fix example:
 

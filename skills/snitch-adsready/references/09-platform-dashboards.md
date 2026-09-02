@@ -22,9 +22,9 @@ After every `fix`, verify in the platform's own UI. Pixels can show as installed
 | `fix consent-mode` | Google Tag Assistant → Consent column shows the four signals |
 | `fix capi-stub <platform>` | Platform Events Manager → Test Events tab |
 | `fix ads-txt` | Google AdSense → Sites → ads.txt status; adstxt.guru |
-| `fix structured-data` | Search Console → Enhancements; Rich Results Test |
+| `fix structured-data` | Merchant Center → Diagnostics; Rich Results Test |
 | `fix security-headers` | securityheaders.com (target A); Mozilla Observatory (target 90+) |
-| `fix mobile-meta` | Mobile-Friendly Test (PSI) |
+| `fix mobile-meta` | PageSpeed Insights, mobile strategy (Google retired the standalone Mobile-Friendly Test in December 2023) |
 | `fix verification-meta` | Search Console → Settings → Ownership; Bing Webmaster → Site verification |
 
 ## Account-level dashboards
@@ -41,7 +41,7 @@ After every `fix`, verify in the platform's own UI. Pixels can show as installed
 | Bing Webmaster | https://www.bing.com/webmasters |
 | LinkedIn Campaign Manager | https://www.linkedin.com/campaignmanager |
 | TikTok Ads Manager | https://ads.tiktok.com |
-| X Ads | https://ads.twitter.com |
+| X Ads | https://ads.x.com |
 | Pinterest Ads | https://ads.pinterest.com |
 | Reddit Ads | https://ads.reddit.com |
 | Snap Ads Manager | https://ads.snapchat.com |

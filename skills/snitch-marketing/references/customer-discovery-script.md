@@ -2,7 +2,7 @@
 
 The single highest-leverage activity for any indie SaaS, content brand, or solo consultant in the next 60 days is getting on the phone with 10 paying customers and 10 free-tier users who haven't converted, and asking a structured set of questions about what's true and not true about why they did or didn't pay.
 
-This reference is the script. It's surfaced from STEP 4.5 when the audit detects a customer-language gap (homepage hero is generic, no named testimonials, positioning unclear, ICP fuzzy). The script replaces guessing-at-language with using the words the customers themselves use.
+This reference is the script. It's surfaced from STEP 4 when the audit detects a customer-language gap (homepage hero is generic, no named testimonials, positioning unclear, ICP fuzzy). The script replaces guessing-at-language with using the words the customers themselves use.
 
 ## Why this beats every alternative
 
@@ -18,10 +18,10 @@ Recordings of 20 calls become the input data for hero copy, FAQ wording, compari
 The audit recommends discovery when:
 
 - Hero copy uses generic language ("for everyone who [verb]") without segment specificity.
-- No named testimonials exist on the site (Cat 74 / Cat 111 finding).
+- No named testimonials exist on the site (Cat 74 / Cat 60 finding).
 - Pricing copy doesn't name competitor alternatives (Cat 81 positioning gap).
 - The brand has 50+ paying customers but the team can't articulate the canonical buyer in one sentence.
-- The team is debating "should we be for X or Y" without scored evidence (Cat 110 ICP gap).
+- The team is debating "should we be for X or Y" without scored evidence (the site names no single buyer — Cat 81).
 
 ## The three rules (read these before the script)
 
@@ -144,7 +144,7 @@ Within 7 days of each call cohort:
 2. Mark the verbatim quotes worth lifting. Look for: pain language, trigger language, comparison language, recommendation language.
 3. Group quotes by theme. Themes that appear in 5+ calls are real. Themes appearing in 1-2 calls are anecdotes.
 4. Rewrite the hero, subhead, FAQ, and one testimonial-quote section using only customer language. Ship the rewrite.
-5. Run the new homepage for 30 days; measure conversion vs the previous version using the events from Cat 55.
+5. Run the new homepage for 30 days; measure conversion vs the previous version using the events from Cat 53.
 
 ## What signals to listen for
 
@@ -214,8 +214,8 @@ What event makes them search?
 ## Cross-references
 
 - Cat 81 (positioning), the discovery output feeds positioning rewrites.
-- Cat 110 (ICP wedge scoring), discovery confirms which segment scores highest in reality vs assumption.
-- Cat 111 (trust artifact audit), discovery surfaces the customer-language for the trust strip.
-- Cat 55 (event taxonomy), instrument the homepage rewrite test before changing anything.
+- Wedge scoring, which lives in the CMO skill (call the Skill tool with "snitch-cmo"): discovery confirms which segment scores highest in reality vs assumption.
+- Cat 60 (conversion & trust, trust-artifact half), discovery surfaces the customer-language for the trust strip.
+- Cat 53 (analytics instrumentation), instrument the homepage rewrite test before changing anything.
 - `references/feedback-signals.md`, the interpretation framework for what customer language signals.
 - `references/copy-bank-templates.md`, where verbatim customer quotes get re-rendered as templates the team can deploy across channels.

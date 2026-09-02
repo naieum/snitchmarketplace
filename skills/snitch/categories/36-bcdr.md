@@ -1,7 +1,7 @@
 ## CATEGORY 36: Business Continuity & Disaster Recovery
 > Type: posture · Groups: governance · CWE: CWE-636
 
-> **Maps to Upstash Trust Center controls:** "Continuity and Disaster Recovery plans established", "Continuity and disaster recovery plans tested", "Backup processes established", "Infrastructure performance monitored"
+> **Maps to common trust-center control language:** continuity and disaster-recovery plans established and tested, backup processes established, infrastructure performance monitored.
 
 ### Detection
 - Health check endpoints: `/health`, `/ready`, `/live`, `/healthz`, `/readyz`, `/livez`
@@ -23,12 +23,19 @@
 
 ### Actually Vulnerable
 
-#### Critical
+**Severity ceiling for availability posture: Medium.** Nothing in this category is a Critical or a
+High on its own. A missing health check, a missing shutdown handler, or an absent retry does not
+hand an attacker anything — it makes an outage worse, which is a reliability property. This skill
+reserves Critical for remote code execution, authentication bypass, and mass data exposure
+(`references/standards-table.md`). Raise a finding here above Medium only when you can name an
+attacker-reachable impact and evidence it: an unauthenticated endpoint whose absent rate/retry
+control makes it a cheap amplification primitive, or a recovery path that restores from a source
+the attacker can write to. Say which, at file:line, or keep it at Medium.
+
+#### Medium
 - No health check endpoint found in any server entry point (no `/health`, `/ready`, or equivalent)
 - No graceful shutdown handler — server does not listen for `SIGTERM` or `SIGINT`
 - Database connections with no reconnect logic and no connection pool (single connection, crash on disconnect)
-
-#### High
 - No circuit breaker or retry pattern for external service calls (API, database, cache)
 - No dead-letter queue configuration for async message processing
 - No backup configuration in IaC for production databases

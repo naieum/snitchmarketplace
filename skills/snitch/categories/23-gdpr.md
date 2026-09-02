@@ -19,7 +19,14 @@
 ### Actually Vulnerable
 
 #### Critical
-- Personal data collection without `consent`, `opt_in`, or `agreed` verification (Art 6)
+- **Consent-dependent** processing with no consent check (Art 6(1)(a)). This is narrow on purpose:
+  Art 6 offers six lawful bases, and contract (6(1)(b)) and legitimate interest (6(1)(f)) cover
+  ordinary account signup, order fulfilment, and security logging. A registration form with no
+  `consent` keyword near it is **not** a finding. The finding is processing that has no lawful basis
+  other than consent — marketing email enrolment, non-essential cookies and tracking pixels, ad
+  personalisation, profiling, sharing to a third party for their own purposes, or special-category
+  data (Art 9) — reaching the wire with no consent gate on the path. Name which processing, at
+  file:line, and say why contract and legitimate interest do not cover it
 - No data deletion capability for personal data (Art 17 - Right to Erasure). Search broadly for ANY of these patterns:
   - Route/endpoint names: `delete`, `remove`, `erase`, `purge`, `destroy`, `forget`, `wipe`, `clear`
   - Function names: `deleteUser`, `removeAccount`, `eraseUser`, `forgetMe`, `purgeData`, `destroyAccount`, `closeAccount`, `deactivateAccount`
@@ -40,13 +47,14 @@
 - Personal data without `ttl`, `expiresAt`, or cleanup jobs (Art 5)
 - PII sent to external APIs without consent verification (Art 44)
 - Analytics or tracking initialized without consent banner check (Art 7)
-- Missing incident response or breach notification patterns (Art 33)
 
 #### Medium
 - No `anonymize`, `pseudonymize`, or `hash` functions for analytics data (Art 25)
 - Cookie consent not verified before setting non-essential cookies
 
 ### NOT Vulnerable
+- Account signup, order processing, or security logging with no consent gate — contract and
+  legitimate interest are lawful bases; absence of the word "consent" is not a finding
 - Consent verification before data collection
 - Any working data deletion mechanism, regardless of naming convention
 - Any working data export/download mechanism, regardless of naming convention

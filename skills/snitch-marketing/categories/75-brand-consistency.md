@@ -145,9 +145,9 @@ Frontify on brand consistency: https://www.frontify.com/en/guide/brand-consisten
 - Humor register contradicts price tier (premium brand joking, especially around price changes) → Medium.
 - Core-values list with 6+ entries → Low (Medium if the values page is a primary trust surface for the audience, e.g. hiring-heavy brands).
 
-**Fix voice:** `tobias-van-schneider` (primary) | `paula-scher` (backup).
+**Fix voice:** `brand-surface-designer` (primary) | `expressive-typographer` (backup).
 
-Read `souls/tobias-van-schneider.json` before writing the Fix.
+Read `souls/brand-surface-designer.json` before writing the Fix.
 
 Worked fix example:
 

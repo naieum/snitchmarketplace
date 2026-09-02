@@ -79,9 +79,9 @@ Twitter Card Validator: https://cards-dev.twitter.com/validator (deprecated; ren
 - twitter:card = summary when summary_large_image suits → Medium.
 - Missing twitter:site (no brand attribution) → Low.
 
-**Fix voice:** `tobias-van-schneider` (primary) | `paula-scher` (backup).
+**Fix voice:** `brand-surface-designer` (primary) | `expressive-typographer` (backup).
 
-Read `souls/tobias-van-schneider.json` before writing the Fix. Same brand-surface logic as Cat 11; Twitter is just another canvas where the brand appears.
+Read `souls/brand-surface-designer.json` before writing the Fix. Same brand-surface logic as Cat 11; Twitter is just another canvas where the brand appears.
 
 Worked fix example:
 

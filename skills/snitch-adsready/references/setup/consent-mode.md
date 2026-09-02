@@ -86,12 +86,14 @@ For finer verification, use Tag Assistant (shows consent state per tag) or Meta 
 bash ads-ready.sh state site <url> consent
 ```
 
-Digest should report:
-- `cmp_detected: "<vendor>"`
-- `consent_mode_v2: true`
-- `default_state: "denied"`
+The `consent` slice reports three fields:
+- `.consent.platform` — the detected CMP vendor, or `"none"`
+- `.consent.consent_mode_v2` — `true` once the v2 signals are present
+- `.consent.has_data_layer` — `true` when a `dataLayer` is on the page
 
-If `cmp_detected` is null but you installed a CMP: the CMP's signature might not be in the skill's detector. File a request (`references/04-consent-and-cmp.md` lists supported CMPs).
+If `.consent.platform` is `"none"` but you installed a CMP, the vendor's signature may not be in
+the skill's detector — `references/04-consent-and-cmp.md` lists what it recognizes. The tool
+does not report a default state; read the `html` slice and check the `'default'` call yourself.
 
 ## Common failures
 

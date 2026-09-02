@@ -1,18 +1,9 @@
 # Paywalls & Upgrade Screens
 
-> **The ethics gate outranks everything in this file. Run it first.**
-> `review-checklist.md` §10 and SKILL.md Workflow Step 3.5 come *before* any technique here —
-> this file's Guardrails section is at the end, and reading top-to-bottom reaches every pressure
-> technique first. A paywall is where money, urgency, and cancellation all meet, so the gate
-> matters here more than anywhere else in the skill: is the total cost stated where the decision
-> is made, is every countdown and scarcity claim **true**, are paid options opt-in, and is
-> leaving as easy as joining? **If any answer is no, those are findings and you do not optimise
-> them, whatever was asked for.** Two techniques below are actively harmful on a surface that
-> failed the gate — exit-intent interception on a page whose exit is already a trap, and
-> "mark the one-time offer as a moment" when the offer is the fabrication.
->
-> The gate is not subject to the `lenses` config key. `lenses: persuasion` removes the clarity
-> pass, never the gate.
+> Gate first: `ethics-gate.md`. A paywall is where money, urgency and cancellation all meet, so
+> the gate matters here more than anywhere else in the skill. Two techniques below are actively
+> harmful on a surface that failed it — exit-intent interception on a page whose exit is already
+> a trap, and "mark the one-time offer as a moment" when the offer is the fabrication.
 
 The paywall is the only screen that makes money, and it obeys different rules than the rest
 of the persuasion catalog — including one that contradicts it (sometimes *adding* friction
@@ -68,21 +59,27 @@ optimize:
 Flag a mismatch, not a pattern: an app that needs subscriber quality running a
 zero-friction wall, or an app that needs top-of-funnel volume running a card-wall.
 
-## Pricing & packaging on the screen
+## Packaging and price display — not this file's judge
 
-- **Show at most two plans**; default to the annual plan (highest lifetime value) and hide
-  further options behind a "view all plans" sheet. Choice reduction applies hardest at the
-  money moment.
-- **Longer trials de-risk bigger plans.** In one meditation app's test of 7/14/30-day
-  trials across plans, the 14-day trial on the *annual* plan won — the longer trial made
-  the larger commitment feel safe.
-- **Feature tables sell by loss.** A free-column/paid-column table shows what the user
-  *loses* by not subscribing — loss framing in layout form, and consistently
-  strong-performing.
-- **Anchor the price to something already bought:** break it into weekly cost, or compare
-  to a coffee / a therapy session (see anchoring in `principles.md`).
+How the plans are *merchandised* — tier order and count, charm pricing, a decoy column,
+strike-through provenance, the annual-default nudge, loss-framed feature tables — is judged
+against merchandising and traffic rather than against this user's decision path. **Call the
+Skill tool with "snitch-marketing"** for that half. The *ethics* of pricing stays here and in
+`ethics-gate.md`: whether the cost is stated where the decision is made, whether a "was" price
+was ever charged, whether paid options are opt-in.
+
+Two packaging-adjacent findings do belong to this file, because they are risk reduction rather
+than merchandising:
+
+- **Longer trials de-risk bigger plans.** In one meditation app's test of 7/14/30-day trials
+  across plans, the 14-day trial on the *annual* plan won — the longer trial made the larger
+  commitment feel safe.
 - **Show the product working:** a short video of the app in action + a tight bullet list +
   one line of social proof (rating and review count) is a proven simple layout.
+
+And one clarity finding: at the money moment, a wall of near-identical tiers is choice overload
+in its most expensive place. Flag the *legibility* of the plan set; leave the ordering and the
+price formatting to marketing.
 
 ## Micro-details worth testing (practitioner observations, not laws)
 
@@ -103,10 +100,10 @@ zero-friction wall, or an app that needs top-of-funnel volume running a card-wal
 - **Platform risk is now real:** app-store review has begun rejecting misleading
   trial-toggle patterns; confusing paywall mechanics are a rejection risk, not just a
   trust cost.
-- **Cancel asymmetry is the anti-pattern that defines the category:** one fitness
-  marketplace takes 5 screens to subscribe and 17 to cancel. If the flow in is short and
-  the flow out is a maze, that's a finding — regardless of what it does for churn this
-  quarter.
+- **Cancel asymmetry is the anti-pattern that defines the category:** the reported worst cases
+  take a handful of screens to subscribe and several times that to cancel. Count the steps in
+  each direction on the surface in front of you — if the flow in is short and the flow out is a
+  maze, that's a finding, regardless of what it does for churn this quarter.
 - The metrics that matter are **retention and LTV**, not trial starts. A paywall that
   wins sign-ups from people who cancel resentfully is a loss wearing a win's clothes. The
   study's closing question is the right one: not "how do I get people to pay?" but "how do

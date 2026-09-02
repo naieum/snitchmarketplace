@@ -1,7 +1,7 @@
 {
   "name": "snitch",
-  "description": "Security audit for AI-written code with evidence-based findings (file:line + CWE/OWASP mapping), data-flow tracing, SARIF output, and compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX).",
-  "version": "9.2.0",
+  "description": "Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence.",
+  "version": "9.5.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

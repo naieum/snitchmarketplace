@@ -1,4 +1,4 @@
-# snitch v9.2.0
+# snitch v9.5.0
 
 Security audit for AI-written code — evidence-based findings (file:line + CWE/OWASP), data-flow tracing, SARIF, compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR).
 

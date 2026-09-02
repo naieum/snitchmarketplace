@@ -1,6 +1,7 @@
 # lib/platforms/linkedin.sh — LinkedIn Marketing API helper.
 # Auth: OAuth2 access token (member or 3-legged) + ad account id.
-# Versioned API requires `LinkedIn-Version: 202411` header (YYYYMM format).
+# Versioned API requires a `LinkedIn-Version: YYYYMM` header; ADSSEC_LI_VERSION
+# below is the single source of truth for it in this skill.
 # Docs: https://learn.microsoft.com/en-us/linkedin/marketing/
 #
 # Exports:
@@ -8,7 +9,9 @@
 #   platform_pixel_signals
 
 ADSSEC_LI_API_BASE="${ADSSEC_LI_API_BASE:-https://api.linkedin.com/rest}"
-ADSSEC_LI_VERSION="${ADSSEC_LI_VERSION:-202411}"
+# Latest version as of 2026-09-01; LinkedIn supports each version for at least
+# 12 months. https://learn.microsoft.com/en-us/linkedin/marketing/versioning
+ADSSEC_LI_VERSION="${ADSSEC_LI_VERSION:-202608}"
 
 _li_http_get() {
   local url="$1" auth="$2"
@@ -26,10 +29,13 @@ _li_http_get() {
 }
 
 platform_state() {
-  local acct_id="${1:-${LINKEDIN_ACCOUNT_ID:-}}"
+  # Canonical env names are LINKEDIN_ADS_* (what doctor/prereqs check); the
+  # unprefixed account id is accepted as a legacy fallback.
+  local token="${LINKEDIN_ADS_ACCESS_TOKEN:-}"
+  local acct_id="${1:-${LINKEDIN_ADS_ACCOUNT_ID:-${LINKEDIN_ACCOUNT_ID:-}}}"
   local ts; ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-  if [[ -z "${LINKEDIN_ADS_ACCESS_TOKEN:-}" || -z "$acct_id" ]]; then
+  if [[ -z "$token" || -z "$acct_id" ]]; then
     jq -n --arg ts "$ts" '{
       schema: "adssec.state-platform.linkedin",
       schema_version: 1,
@@ -38,13 +44,13 @@ platform_state() {
       platform: "linkedin",
       locked: "linkedin-api",
       reason: "LinkedIn Marketing API auth env not configured.",
-      remediation: "Export LINKEDIN_ADS_ACCESS_TOKEN (OAuth2 access token, scopes r_ads + r_ads_reporting) and LINKEDIN_ACCOUNT_ID. Apply for Marketing Developer Platform access first: https://learn.microsoft.com/en-us/linkedin/marketing/getting-access",
-      env_required: ["LINKEDIN_ADS_ACCESS_TOKEN","LINKEDIN_ACCOUNT_ID"]
+      remediation: "Export LINKEDIN_ADS_ACCESS_TOKEN (OAuth2 access token, scopes r_ads + r_ads_reporting) and LINKEDIN_ADS_ACCOUNT_ID. Apply for Marketing Developer Platform access first: https://learn.microsoft.com/en-us/linkedin/marketing/getting-access",
+      env_required: ["LINKEDIN_ADS_ACCESS_TOKEN","LINKEDIN_ADS_ACCOUNT_ID"]
     }'
     return 0
   fi
 
-  local at="$LINKEDIN_ADS_ACCESS_TOKEN"
+  local at="$token"
   local urn="urn:li:sponsoredAccount:${acct_id}"
   local urn_enc; urn_enc=$(printf '%s' "$urn" | jq -sRr @uri)
 

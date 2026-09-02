@@ -136,13 +136,16 @@ These are one-time, machine-level steps (Claude Code hosts):
 - `/theme` (light/dark/colorblind)
 - `/install-github-app` (@mention Claude on issues/PRs)
 - Enable macOS Dictation to speak prompts (System Settings → Accessibility)
-- Learn the keybindings: Shift+Tab (auto-accept), `#` (remember → CLAUDE.md),
-  `!` (bash into context), `@` (mention files), Esc (interrupt), Ctrl+R (full output),
-  `claude --resume` / `--continue`.
+- Learn the keybindings: Shift+Tab (cycle permission modes), `!` (bash mode — run a
+  shell command straight into the conversation), `@` (mention files), Esc (interrupt),
+  Ctrl+O (verbose transcript), Ctrl+R (history search), `claude --resume` / `--continue`.
+  Run `?` inside a session for the full, environment-specific list.
 
 ## Permissions map (stack → allow)
 
 Use `perms <project_kind>` where project_kind ∈
 node | python | rust | go | ruby | php | jvm | dotnet. It returns a base git/shell
-allowlist plus stack-appropriate build/test/run commands, and a conservative deny list
-(force-push, `rm -rf /`, `curl | sh`, fork-bomb). Merge — never clobber existing entries.
+allowlist plus stack-appropriate build/test/run commands, and an illustrative
+deny/ask list (deny: force-push; ask: `rm -rf`). This is a starting point, not a
+security boundary — a Bash permission matcher can't catch a piped command
+(`curl | sh`) or a fork bomb; that needs a hook. Merge — never clobber existing entries.

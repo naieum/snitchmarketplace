@@ -12,7 +12,7 @@ Not every product fits PLG (enterprise sales-led products, services, agency offe
 
 1. `Grep` for "free", "try it", "no signup required", free-tier signup patterns.
 2. `Grep` for share-link generation: `/s/`, `/share/`, `/embed/`, public artifact URLs.
-3. `Grep` for invite mechanisms: `/invite`, "invite teammate", referral codes (cross-reference Cat 78).
+3. `Grep` for invite mechanisms: `/invite`, "invite teammate", referral codes (cross-reference Cat 76's affiliate-referral row).
 
 **Crawl mode, required tool calls:**
 
@@ -74,9 +74,9 @@ OpenView's PLG playbook: https://openviewpartners.com/product-led-growth/
 - No team-invite flow on team product → Medium.
 - No upgrade prompts in free tier → Medium.
 
-**Fix voice:** `sahil-lavingia` (primary) | `tobias-van-schneider` (backup).
+**Fix voice:** `indie-commerce-founder` (primary) | `brand-surface-designer` (backup).
 
-Read `souls/sahil-lavingia.json` before writing the Fix.
+Read `souls/indie-commerce-founder.json` before writing the Fix.
 
 Worked fix example:
 

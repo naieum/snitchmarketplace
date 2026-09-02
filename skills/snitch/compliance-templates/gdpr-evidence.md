@@ -8,7 +8,7 @@ Fill in the [Evidence] placeholders with findings and passed checks from your Sn
 
 ## Article 25 -- Data Protection by Design and by Default
 
-**Mapped Snitch Categories:** 23 (Data Exposure), 38 (Data Classification)
+**Mapped Snitch Categories:** 12 (Logging & Data Exposure), 23 (GDPR), 38 (Data Classification & Lifecycle)
 
 ### Control Description
 
@@ -16,11 +16,15 @@ The controller shall, both at the time of the determination of the means for pro
 
 ### Snitch Evidence
 
-**Category 23 -- Data Exposure**
+**Category 12 -- Logging & Data Exposure**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 38 -- Data Classification**
+**Category 23 -- GDPR**
+- Findings: [Evidence]
+- Passed Checks: [Evidence]
+
+**Category 38 -- Data Classification & Lifecycle**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
@@ -38,7 +42,7 @@ The controller shall, both at the time of the determination of the means for pro
 
 ## Article 32 -- Security of Processing
 
-**Mapped Snitch Categories:** 3 (Cryptographic Issues), 4 (Authentication Flaws), 9 (Network Security), 28 (Authorization Flaws)
+**Mapped Snitch Categories:** 3 (Hardcoded Secrets), 4 (Authentication Issues), 9 (Cryptography), 28 (Authorization & Access Control (IDOR))
 
 ### Control Description
 
@@ -46,19 +50,19 @@ The controller and the processor shall implement appropriate technical and organ
 
 ### Snitch Evidence
 
-**Category 3 -- Cryptographic Issues**
+**Category 3 -- Hardcoded Secrets**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 4 -- Authentication Flaws**
+**Category 4 -- Authentication Issues**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 9 -- Network Security**
+**Category 9 -- Cryptography**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 28 -- Authorization Flaws**
+**Category 28 -- Authorization & Access Control (IDOR)**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
@@ -76,7 +80,7 @@ The controller and the processor shall implement appropriate technical and organ
 
 ## Article 35 -- Data Protection Impact Assessment (DPIA)
 
-**Mapped Snitch Categories:** 20 (Privacy Violations), 38 (Data Classification)
+**Mapped Snitch Categories:** 23 (GDPR), 38 (Data Classification & Lifecycle)
 
 ### Control Description
 
@@ -84,11 +88,11 @@ Where a type of processing, in particular using new technologies and taking into
 
 ### Snitch Evidence
 
-**Category 20 -- Privacy Violations**
+**Category 23 -- GDPR**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 
-**Category 38 -- Data Classification**
+**Category 38 -- Data Classification & Lifecycle**
 - Findings: [Evidence]
 - Passed Checks: [Evidence]
 

@@ -24,23 +24,18 @@ SaaS conversions often happen weeks after click. Standard pixel attribution wind
 
 ## Schema.org for SaaS
 
-Required:
-- `Organization` — `Service` if business primarily offers services rather than products
-- `WebSite`
-- `SoftwareApplication` — set `applicationCategory`, `operatingSystem`, `offers.price`, `offers.priceCurrency`
-- `Service` (B2B SaaS, agency, consulting)
-- `FAQPage` (per major content page)
-- `BreadcrumbList`
-
-Optional but valuable: `Article` (blog posts), `JobPosting` (if hiring), `Course` (education content).
+`SoftwareApplication`, `Organization`, `WebSite`, `FAQPage`, `Service`, `BreadcrumbList` and
+the rest are a search surface: **call the Skill tool with "snitch-marketing"**. Nothing in a
+SaaS schema stack feeds an ad platform — `Product`/`Offer` markup only matters where a shopping
+or catalog feed reads it (`07-structured-data.md`), so a SaaS site Skips this area with that
+reason.
 
 ## Pricing pages
 
 Drive 30-50% of SaaS conversions. Optimize:
 
-- Schema.org `Offer` per tier with `price`, `priceCurrency`, `billingIncrement`.
 - Direct CTAs above the fold.
-- Comparison table (clean HTML; AI search loves these).
+- Comparison table in clean HTML — readable by a crawler without hydration.
 - Customer logos, testimonials, case-studies.
 
 Run `state lighthouse <pricing-url>` separately — pricing pages often score worse than the homepage due to comparison tables.
@@ -79,4 +74,4 @@ For SaaS, prioritize:
 2. Long lookback + offline conversion uploads for B2B.
 3. Standard event names for optimization.
 4. Hashed email / phone in every CAPI payload (match rate +10-30%).
-5. Schema.org `SoftwareApplication` + `FAQPage` for AI search.
+5. Landing-page and pricing-page clarity — with no pixel on the AI surfaces, the page is the whole conversion story.

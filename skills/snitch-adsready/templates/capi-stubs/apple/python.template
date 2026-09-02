@@ -5,9 +5,8 @@
 #
 # Env vars (NEVER commit):
 #   APPLE_SEARCH_ADS_PRIVATE_KEY   PEM ECDSA P-256 private key
-#   APPLE_SEARCH_ADS_TEAM_ID
+#   APPLE_SEARCH_ADS_TEAM_ID       also the OAuth client_id
 #   APPLE_SEARCH_ADS_KEY_ID
-#   APPLE_SEARCH_ADS_CLIENT_ID
 #   APPLE_SEARCH_ADS_ORG_ID
 #
 # Reference:
@@ -26,13 +25,12 @@ import requests
 def mint_client_assertion() -> str:
     team_id = os.environ["APPLE_SEARCH_ADS_TEAM_ID"]
     key_id = os.environ["APPLE_SEARCH_ADS_KEY_ID"]
-    client_id = os.environ["APPLE_SEARCH_ADS_CLIENT_ID"]
     private_key_pem = os.environ["APPLE_SEARCH_ADS_PRIVATE_KEY"]
 
     now = int(time.time())
     payload = {
         "iss": team_id,
-        "sub": client_id,
+        "sub": team_id,
         "aud": "https://appleid.apple.com",
         "iat": now,
         "exp": now + 180 * 86400,  # max 180 days per Apple
@@ -47,7 +45,7 @@ def exchange_for_access_token(client_assertion: str) -> str:
         data={
             "grant_type": "client_credentials",
             "scope": "searchadsorg",
-            "client_id": os.environ["APPLE_SEARCH_ADS_CLIENT_ID"],
+            "client_id": os.environ["APPLE_SEARCH_ADS_TEAM_ID"],
             "client_secret": client_assertion,
         },
         timeout=5,

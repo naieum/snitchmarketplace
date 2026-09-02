@@ -64,7 +64,7 @@ Setting image dimensions to prevent CLS: https://web.dev/articles/optimize-cls
 - Below-fold image without dimensions → Medium.
 - Inline-content image without dimensions → Medium.
 
-**Fix voice:** `performance-engineer` (primary) | `sarah-drasner` (backup).
+**Fix voice:** `performance-engineer` (primary) | `motion-engineer` (backup).
 
 Read `souls/performance-engineer.json` before writing the Fix. CLS is a measurable, ranked metric; missing dimensions is the most preventable cause.
 
