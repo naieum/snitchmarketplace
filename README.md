@@ -6,8 +6,11 @@
 
 <p align="center">
   <strong>AI writes your code fast. Snitch checks it.</strong><br>
-  Seven free Agent Skills that audit AI-written work — security, UX, SEO,
-  repo readiness, docs, persuasive copy, and ad readiness.<br>
+  Eleven free Agent Skills for AI-built products: audits for security, SEO and
+  marketing, UX, paid-ads readiness, and app-store readiness, plus a build-time
+  blueprint, a marketing foundation and drafting skill, persuasive page structure,
+  controlled technical writing, a repo bootstrap for AI development, and a router
+  that tells you which one fits.<br>
   Every finding cites the exact file and line. No proof, no finding.
 </p>
 
