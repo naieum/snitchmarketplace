@@ -37,7 +37,6 @@ Screenshot relevance is declared here and nowhere else. A cat not listed in this
 | 60 | Conversion CTAs visible at hero / pricing / signup; trust artifacts visible (founder face, testimonials, changelog link, etc.) |
 | 81 | Hero positioning copy visible |
 | 99 | Conversion funnel visible (homepage → pricing → signup) |
-| 103 | Contrast, color-only meaning, visible focus state and target size visible in the rendered page |
 
 Cats NOT screenshot-relevant (source-only or non-visual):
 

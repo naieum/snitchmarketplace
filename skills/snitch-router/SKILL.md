@@ -6,7 +6,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.2.0
+  version: 0.3.0
   homepage: https://snitchplugin.com
 ---
 
@@ -38,10 +38,12 @@ The route greenfield work travels. You're starting (or restarting) a site, app, 
    and wedge, claim inventory, and constraints as prior decisions instead of re-asking them,
    turns them into a checked-in `marketing/` foundation, and drafts channel content from it.
    It drafts; a human always publishes.
-5. When traffic or launch nears, the audits grade the build. **`snitch-marketing` and
-   `snitch-ux` read `BLUEPRINT.md`'s decisions and report tensions** — where the built site
-   contradicts a recorded decision, that is a tension to resolve, not an auto-fix.
-   **`snitch-security` audits the code**; it needs no blueprint to do it.
+5. When traffic or launch nears, the audits grade the build. **`snitch-marketing`,
+   `snitch-ux` and `snitch-ada` read `BLUEPRINT.md`'s decisions and report tensions** — where
+   the built site contradicts a recorded decision, that is a tension to resolve, not an
+   auto-fix. For ada that cuts both ways: a recorded Decision such as "English-only at launch"
+   makes its i18n categories a Skip citing that line, while an accessibility barrier is never
+   waived by a Decision. **`snitch-security` audits the code**; it needs no blueprint to do it.
 
 ## The audits: pick by what the finding is judged against
 
@@ -53,7 +55,8 @@ hands the other over by name. The confusions below settle the pairs that come up
 |---|---|
 | Attacker impact (vulnerabilities, CWE/OWASP, compliance evidence) | `snitch-security` |
 | Search and traffic outcomes (SEO, GEO/AI citation, schema, CWV contributors) | `snitch-marketing` |
-| WCAG 2.2 AA conformance and the legal exposure a failure carries | `snitch-marketing` |
+| WCAG 2.2 AA conformance and the legal exposure a failure carries (ADA, Section 508, the European Accessibility Act) | `snitch-ada` |
+| Whether the site is built to serve people in their own language and script (i18n readiness: strings, plurals, locale formatting, RTL, catalogs) | `snitch-ada` |
 | The user's decision path (clarity, persuasion, usability, UI copy) | `snitch-ux` |
 | Ad-platform requirements (pixels, CAPI, conversion tracking, Consent Mode v2, ads.txt) | `snitch-adsready` |
 | Store policy and upload gates (App Store / Play review, privacy declarations) | `snitch-storeready` |
@@ -64,10 +67,15 @@ The classic confusions, settled:
 - **A headline**: scored on keyword and intent match → marketing; scored on whether the
   visitor knows what to do next → ux.
 - **An unlabelled input, a 3:1 contrast ratio, a 20px tap target**: scored as a WCAG criterion
-  and the exposure of failing it → marketing (it owns the conformance sweep and the criterion
-  table); scored as a barrier that stops a specific user finishing the task, or as a pattern a
-  vulnerable user meets on their decision path → ux. The same broken element can be a finding
-  in both; neither drops its half.
+  and the exposure of failing it → ada (it owns the conformance sweep, the criterion table and
+  the legal read); scored as a barrier that stops a specific user finishing the task, or as a
+  pattern a vulnerable user meets on their decision path → ux. The same broken element can be a
+  finding in both; neither drops its half.
+- **`lang`, hreflang, and translations**: read as a search signal — how engines are told which
+  locale a page serves (hreflang, locale canonicals, `lang` as machine readability) and whether
+  a rendered translated page reads well → marketing; read as conformance and code readiness —
+  `lang` against SC 3.1.1 / 3.1.2, and whether the strings, plurals, formats, RTL layout and
+  catalogs are built to carry another language at all → ada.
 - **`debuggable=true`** (and friends): judged against store policy → storeready; judged
   against attacker impact → security. The same fact can be two findings.
 - **Tracking code**: the pixel and consent wiring itself — pixel install completeness, CAPI
@@ -125,7 +133,7 @@ section order → focusedcopy; decide the number → blueprint; decide the strat
   just audits it — reach for it the moment paid spend is planned. Its structured-data surface
   stops at the markup an ad platform itself consumes (Product/Offer for a shopping feed);
   everything else schema-shaped, plus llms.txt and AI search, hreflang and localized landing
-  pages, and local business listings, is marketing's.
+  pages, and local business listings, is marketing's; the code's i18n readiness is ada's.
 - **`snitch-storeready`** also runs a web-to-store feasibility mode when there's no native
   target yet ("can I put my web app in the App Store?").
 - **`snitch-devready`** is runnable any time on brownfield too — "make this repo
@@ -139,12 +147,14 @@ section order → focusedcopy; decide the number → blueprint; decide the strat
   - cmo's **channel-conduct gate** — same shape, different surface: published channel content,
     not interface design;
   - the **evidence / anti-fabrication gates** (`snitch-cmo`, `snitch-focusedcopy`);
-  - the **redaction gate** (`snitch-security`, `snitch-marketing`, `snitch-storeready`).
+  - the **redaction gate** (`snitch-security`, `snitch-marketing`, `snitch-ada`,
+    `snitch-storeready`).
 
   Those, and the never-auto-fix / human-publishes rules, hold no matter which route you took in.
 
 ## Not in this family
 
 Paid-ads campaign management, penalty-recovery negotiation, deploying tracking code to
-third-party dashboards, publishing content, and app-store submission itself are all human
-work the skills prepare but never perform.
+third-party dashboards, publishing content, app-store submission itself, and the legal side of
+an accessibility complaint — filing a VPAT, answering a demand letter, commissioning a certified
+audit — are all human work the skills prepare but never perform.

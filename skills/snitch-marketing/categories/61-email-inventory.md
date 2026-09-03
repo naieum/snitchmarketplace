@@ -161,7 +161,7 @@ Resend docs: https://resend.com/docs
 
 Postmark transactional best practices: https://postmarkapp.com/transactional-email-templates
 
-WCAG 2.2 1.1.1 (non-text content) governs the image-alt finding; the criterion table in `categories/103-accessibility-conformance.md` is the authority on how to write an accessibility finding.
+WCAG 2.2 1.1.1 (non-text content) governs the image-alt finding. This category reports it as an email-rendering defect. For the conformance judgment against the criterion, call the Skill tool with "snitch-ada".
 
 **Severity tagging (single-valued per Rule 8):**
 

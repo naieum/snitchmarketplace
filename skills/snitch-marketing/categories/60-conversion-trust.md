@@ -1,6 +1,6 @@
 ## CATEGORY 60: Conversion & trust (CTAs, forms, trust signals, trust artifacts, 404 recovery)
 
-The point-in-time conversion-design surface: are CTAs clear and specific? Are forms minimal and frictionless? Are trust signals present and *specific* (named testimonials, logos, security at the decision moment, guarantees)? Are the six trust artifacts a first-time visitor looks for actually on the site? Is the 404 a recovery surface or a dead end? Cat 99 audits the funnel *journey*; Cat 73 the CRO *discipline*; Cat 114 §4 the *holistic* friction read; Cat 103 the WCAG criteria the same form markup fails; Cat 5 the HTTP status a not-found route returns. This category audits the *elements* on the page, and the trust artifacts behind them (absorbed from the former Cat 111).
+The point-in-time conversion-design surface: are CTAs clear and specific? Are forms minimal and frictionless? Are trust signals present and *specific* (named testimonials, logos, security at the decision moment, guarantees)? Are the six trust artifacts a first-time visitor looks for actually on the site? Is the 404 a recovery surface or a dead end? Cat 99 audits the funnel *journey*; Cat 73 the CRO *discipline*; Cat 114 §4 the *holistic* friction read; Cat 5 the HTTP status a not-found route returns. The WCAG criteria the same form markup fails are judged by the accessibility skill — call the Skill tool with "snitch-ada". This category audits the *elements* on the page, and the trust artifacts behind them (absorbed from the former Cat 111).
 
 **Boundary with snitch-ux.** This category judges a CTA on **outcome specificity** — does the label name what the user gets, is the promise the page made kept at the button. Whether swapping that CTA changes the **commitment weight** the user is being asked for on their decision path is the sibling's judge: call the Skill tool with "snitch-ux". Same button, two judges; report the specificity defect here and hand the commitment question over.
 
@@ -111,7 +111,7 @@ Source/DOM audit of the primary conversion surfaces. The highest-confidence, low
 4. Apply Hick's Law to form-field and above-fold CTA count (see `references/mental-models.md`).
 5. Activation Energy: how many clicks from this surface to first value?
 6. Does the mobile experience preserve the CTA and use the right keyboards (`inputmode`/autofill)?
-7. Do the form a11y items (label association, error announcement) also belong in the Cat 103 report? Cross-file the finding under its WCAG criterion.
+7. Do the form a11y items (label association, error announcement) also need the conformance judgment? Call the Skill tool with "snitch-ada" and file them there under their WCAG criterion.
 8. Has the team A/B-tested this surface? If conversion data exists, weight it over heuristics — and remember the fix's *lift* is a hypothesis until tested (Cat 73).
 9. Cross-reference Cat 114 §4 (Friction) for the holistic read and Cat 116 (Retention psychology) for follow-through.
 10. Is the brand a local service business asking for reviews on its own premises? Review-acquisition timing and cadence live in `references/local-services-playbook.md`; the reviews it produces are the trust artifacts audited here.

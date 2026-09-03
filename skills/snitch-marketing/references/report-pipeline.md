@@ -31,9 +31,10 @@ Read it before drafting the report.
   that stopped at `crawl-max-pages` (default 50) is `partial` — say so, give both numbers, and name
   the cap as the reason. **No silent sampling.**
   A category that audits a standard against a **subset** of its criteria reports `partial`, names the
-  subset, and lists the criteria outside it as Skips — Cat 103 covers a stated subset of WCAG 2.2 A/AA
-  and its own criterion table is the denominator, so a criterion with no row is `Skip — outside this
-  category's criterion table`, never an unstated pass.
+  subset, and lists the criteria outside it as Skips. Cat 45 and Cat 52 each cite one WCAG success
+  criterion as a search / machine-readability signal and are not a conformance sweep, so the report
+  never presents them as WCAG coverage; the full A/AA denominator belongs to the accessibility skill,
+  reached by calling the Skill tool with "snitch-ada".
   This is not report hygiene, it is validity. Categories 9, 10, 19 and 20 compute *negative* claims
   from the crawl set — "no duplicate titles", "no orphan pages", "no broken links". A negative claim
   drawn from 50 of 400 URLs is not a weaker finding, it is an invalid one: the duplicate may simply

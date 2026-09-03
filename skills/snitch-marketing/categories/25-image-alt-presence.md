@@ -2,7 +2,7 @@
 
 Every `<img>` element needs an `alt` attribute. Either a meaningful description (for content images) or an explicit empty string `alt=""` (for decorative images). Missing alt entirely is the most common a11y bug AND a real SEO miss, Google uses alt for image search ranking.
 
-**Boundary.** This category judges `alt` as a **search and machine-readability signal** — what image search and an assistant can read. The conformance judge for the same attribute is Cat 103's 1.1.1 row; when a missing `alt` also fails that criterion, cross-file it there with the criterion number rather than reporting the same image twice.
+**Boundary.** This category judges `alt` as a **search and machine-readability signal** — what image search and an assistant can read. The conformance judge for the same attribute is SC 1.1.1, which belongs to the accessibility skill; when a missing `alt` also fails that criterion, call the Skill tool with "snitch-ada" and file it there under the criterion rather than reporting the same image twice.
 
 ### Evidence required (do not skip)
 

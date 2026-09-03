@@ -2,7 +2,7 @@
 
 Alt is present but generic, keyword-stuffed, or just the filename. Bad alt is sometimes worse than no alt, screen reader users hear gibberish, Google's image-search algorithm gets a confusing signal.
 
-**Boundary.** As in Cat 25, the judge here is the **search and machine-readability** value of the text, not conformance. Cat 103's 1.1.1 row owns the criterion; cross-file rather than double-count.
+**Boundary.** As in Cat 25, the judge here is the **search and machine-readability** value of the text, not conformance. SC 1.1.1 owns the criterion and belongs to the accessibility skill; call the Skill tool with "snitch-ada" to file it there rather than double-counting here.
 
 ### Evidence required (do not skip)
 

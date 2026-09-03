@@ -1,5 +1,5 @@
-## CATEGORY 104: Keyboard navigation + focus management — merged into Category 103
+## CATEGORY 104: Keyboard navigation + focus management — moved to snitch-ada
 
-Focus order, focus visibility, focus management on dynamic UI, keyboard traps and keyboard parity now run as the 2.1.1, 2.1.2, 2.4.3, 2.4.7 and 2.4.11 rows of the criterion table in `categories/103-accessibility-conformance.md`.
+Focus order, focus visibility, focus management on dynamic UI, keyboard traps and keyboard parity now run in category 06 (keyboard operability) of the accessibility skill.
 
-**Do not scan this file.** If this category is selected, scan Category 103 instead (`categories/103-accessibility-conformance.md`) and report the finding under it, against its WCAG success criterion.
+**Do not scan this file.** If this category is selected, call the Skill tool with "snitch-ada" and report the finding there.

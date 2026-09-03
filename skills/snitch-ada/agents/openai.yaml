@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch ADA"
+  short_description: "Evidence-based WCAG 2.2 AA, ADA / EAA exposure, and i18n readiness audit"

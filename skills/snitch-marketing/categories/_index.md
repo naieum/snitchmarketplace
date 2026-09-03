@@ -12,7 +12,7 @@ claim**. Twelve types, each carrying one obligation:
 - `schema` — page-type pre-flight is REQUIRED (Skip when the page type doesn't exist); impact ceiling comes from the rich-result table in `references/standards-table.md`; check `references/schema-deprecations.md` before recommending a rich result.
 - `content` — editorial judgment, backed by the deterministic metrics in `references/content-intelligence.md` (readability, Jaccard near-duplicate, cannibalization) rather than adjectives.
 - `performance` — Core Web Vitals *contributors*, not scores; a field claim requires CrUX/PSI per `references/field-cwv.md`, otherwise the finding is labeled static/lab.
-- `accessibility` — cite the WCAG 2.2 success criterion the finding fails; Cat 103 carries the criterion table, the pass sequence and the contrast evidence format. A barrier judged against one user finishing a task, rather than against the criterion, is handed to snitch-ux.
+- `accessibility` — cite the WCAG 2.2 success criterion the finding fails. Only the rows judged against search and machine readability are typed this way here: Cat 45 (viewport, and the zoom it blocks) and Cat 52 (`lang` as a machine-readability signal). The WCAG 2.2 AA conformance sweep itself — the criterion table, the pass sequence, the contrast evidence format and the legal-exposure read — lives in snitch-ada; call the Skill tool with "snitch-ada" for it. A barrier judged against one user finishing a task, rather than against the criterion, is handed to snitch-ux.
 - `measurement` — instrumentation correctness only; never assert traffic, conversion, or revenue figures that would require access to the analytics account.
 - `conversion` — hypothesis plus mechanism; never a predicted lift percentage.
 - `email` — source mode required (server-side sends are invisible to a crawl); deliverability findings come from DNS lookups, not from the HTML.
@@ -29,10 +29,13 @@ Slug → preset: `quick-core` = Quick Audit (menu Option 1), `technical-seo` = G
 `content-structure` = Group 3, `structured-data` = Group 4, `conversion-trust` = Group 5,
 `international` = Group 6, `email-transactional` = Group 7, `channels` = Group 8,
 `modern-marketing` = Group 9, `b2b-saas` = Group 11, `ecommerce` = Group 12, `local` = Group 13,
-`publisher` = Group 14, `a11y-deep` = Group 15. Group 10 (Full Audit) is every row, so it is not
-listed per-row. `quick-core` categories are always in a Quick Audit; smart detection adds 2-3 more
-per detected stack (`references/smart-detection.md`). A `—` means the category is reached only by
-Full Audit, Custom selection, or component-based detection (`references/component-cat-map.md`).
+`publisher` = Group 14. Group 10 (Full Audit) is every row, so it is not listed per-row.
+Group 15 (accessibility deep-dive) is retired: the conformance sweep it existed for now lives in
+snitch-ada, so no row carries an `a11y-deep` slug any more. Its heading stays in
+`references/category-groups.md` as a handoff so old reports still read. `quick-core` categories are
+always in a Quick Audit; smart detection adds 2-3 more per detected stack
+(`references/smart-detection.md`). A `—` means the category is reached only by Full Audit, Custom
+selection, or component-based detection (`references/component-cat-map.md`).
 
 **Standards** is the external authority a finding cites when one exists. `—` means the category is a
 judgment call with no governing spec; those findings carry the Impact tier from
@@ -57,12 +60,10 @@ row changing to `merged→NN`, `moved→snitch-<skill>` or `deleted` needs no ed
 this manifest by attribute. Anything that states a category *count* is a separate, manual update: the
 "Active categories" line below, `SKILL.md`'s count, and `references/category-groups.md`'s ID lists.
 
-Active categories: 94 of 134 rows. Thirteen rows carry `merged→32`: the per-type schema categories
+Active categories: 93 of 134 rows. Thirteen rows carry `merged→32`: the per-type schema categories
 (33-38, 87-93) now run as rows of the per-type table in `references/standards-table.md`, driven by
-Cat 32 (Schema type validation). Seven carry `merged→103`: the accessibility categories now run as
-rows of the criterion table in Cat 103 (Accessibility conformance), which judges the whole surface
-against WCAG 2.2 AA and the legal exposure that attaches to it. One carries `merged→60`: the trust
-artifacts now run as Cat 60's trust half. Two carry `merged→61`: email content and email design now
+Cat 32 (Schema type validation). One carries `merged→60`: the trust artifacts now run as Cat 60's
+trust half. Two carry `merged→61`: email content and email design now
 run as the content and design halves of Cat 61, over one template inventory. Three carry
 `merged→76`: affiliate-referral, creator and sponsorship programs now run as rows of Cat 76's
 program-type table, which audits presence, partner-facing surface and attribution for all four
@@ -75,6 +76,15 @@ citation audit and the llms.txt audit now run as Cat 82's per-assistant section 
 so a missing `llms.txt` deducts once rather than twice. One carries `merged→66`: paid social now
 runs as the social side of Cat 66 (Paid channel presence), which audits presence and message and
 hands pixel wiring to snitch-adsready.
+
+Eight rows carry `moved→snitch-ada`: accessibility conformance (103) and the seven rows it had
+absorbed — touch targets (46), readable text (47), ARIA labels (48), color contrast (49), keyboard
+navigation (104), screen-reader semantics (105) and color-blind safe design (113). The judge for all
+eight is WCAG 2.2 AA conformance and the legal exposure a failure carries, and that judge belongs to
+the accessibility skill, which also owns i18n readiness. Marketing keeps the same elements where the
+judge is search and traffic: image alt as a search signal (25, 26), viewport (45), `lang` as a
+machine-readability signal (52), hreflang and locale canonicals (50, 51), translated-page content
+quality (133) and agent operability (134).
 
 Three rows carry `moved→snitch-adsready`: consent mode, cookieless-analytics readiness and pixel
 install completeness are judged against ad-platform requirements, and the ads-readiness skill
@@ -103,7 +113,7 @@ deleted number stays reserved and its file is gone.
 | 14 | web-manifest | Web app manifest | on-page | — | W3C Web App Manifest | active |
 | 15 | single-h1 | Single H1 per page | on-page | quick-core, content-structure | HTML Living Standard | active |
 | 16 | heading-hierarchy | Heading hierarchy | on-page | content-structure, publisher | WCAG 2.2 1.3.1 | active |
-| 17 | semantic-html | Semantic HTML | on-page | content-structure, publisher, a11y-deep | HTML Living Standard | active |
+| 17 | semantic-html | Semantic HTML | on-page | content-structure, publisher | HTML Living Standard | active |
 | 18 | thin-content | Thin content (word count + content depth) | content | content-structure, publisher | Google Search Essentials | active |
 | 19 | internal-link-graph | Internal link graph (orphan pages) | on-page | content-structure | Google Search Essentials | active |
 | 20 | broken-internal-links | Broken internal links | on-page | content-structure | RFC 9110 (404/410) | active |
@@ -111,10 +121,10 @@ deleted number stays reserved and its file is gone.
 | 22 | breadcrumb-markup | Breadcrumb markup | on-page | content-structure, ecommerce, local, publisher | schema.org/BreadcrumbList | active |
 | 23 | footer-link-spam | Footer link spam | on-page | content-structure, local | Google spam policies (link spam) | active |
 | 24 | external-link-rel | External link rel attributes (nofollow / sponsored / ugc) | on-page | content-structure | Google link attributes (nofollow/sponsored/ugc) | active |
-| 25 | image-alt-presence | Image alt presence | on-page | quick-core, conversion-trust, ecommerce, local, a11y-deep | — | active |
-| 26 | image-alt-quality | Image alt quality | on-page | conversion-trust, a11y-deep | — | active |
+| 25 | image-alt-presence | Image alt presence | on-page | quick-core, conversion-trust, ecommerce, local | — | active |
+| 26 | image-alt-quality | Image alt quality | on-page | conversion-trust | — | active |
 | 27 | image-format | Image format (webp / avif) | performance | conversion-trust, ecommerce | Core Web Vitals LCP | active |
-| 28 | explicit-image-dimensions | Explicit width / height (CLS prevention) | performance | conversion-trust, ecommerce, a11y-deep | Core Web Vitals CLS | active |
+| 28 | explicit-image-dimensions | Explicit width / height (CLS prevention) | performance | conversion-trust, ecommerce | Core Web Vitals CLS | active |
 | 29 | lazy-loading | Lazy-load directives | performance | conversion-trust, ecommerce | Core Web Vitals LCP | active |
 | 30 | video-sitemap | Video sitemap presence | crawl-index | conversion-trust, publisher | Google video sitemap spec | active |
 | 31 | jsonld-presence | JSON-LD presence | schema | quick-core, structured-data, b2b-saas, ecommerce, local | schema.org | active |
@@ -131,14 +141,14 @@ deleted number stays reserved and its file is gone.
 | 42 | third-party-scripts | Third-party script audit | performance | technical-seo, publisher | Core Web Vitals INP | active |
 | 43 | image-weight | Image weight | performance | publisher | Core Web Vitals LCP | active |
 | 44 | bundle-weight | JS bundle weight per route | performance | — | Core Web Vitals INP | active |
-| 45 | viewport | Viewport meta | accessibility | technical-seo, a11y-deep | WCAG 2.2 1.4.10 | active |
-| 46 | touch-targets | Touch target size | accessibility | — | WCAG 2.2 2.5.8 | merged→103 |
-| 47 | readable-text | Readable text without zoom | accessibility | — | — | merged→103 |
-| 48 | aria-labels | ARIA labels on interactive elements | accessibility | — | WCAG 2.2 4.1.2 | merged→103 |
-| 49 | color-contrast | Color contrast on text | accessibility | — | WCAG 2.2 1.4.3 | merged→103 |
+| 45 | viewport | Viewport meta | accessibility | technical-seo | WCAG 2.2 1.4.10 | active |
+| 46 | touch-targets | Touch target size | accessibility | — | WCAG 2.2 2.5.8 | moved→snitch-ada |
+| 47 | readable-text | Readable text without zoom | accessibility | — | — | moved→snitch-ada |
+| 48 | aria-labels | ARIA labels on interactive elements | accessibility | — | WCAG 2.2 4.1.2 | moved→snitch-ada |
+| 49 | color-contrast | Color contrast on text | accessibility | — | WCAG 2.2 1.4.3 | moved→snitch-ada |
 | 50 | hreflang | Hreflang correctness | crawl-index | international, local | Google hreflang spec (RFC 5646 tags) | active |
 | 51 | locale-canonicals | Locale-specific canonicals | crawl-index | international | RFC 6596 | active |
-| 52 | lang-attribute | Lang attribute on html element | accessibility | international, a11y-deep | WCAG 2.2 3.1.1 | active |
+| 52 | lang-attribute | Lang attribute on html element | accessibility | international | WCAG 2.2 3.1.1 | active |
 | 53 | analytics-instrumentation | Analytics instrumentation (install, tag manager, event taxonomy, UTM) | measurement | conversion-trust, local, publisher | — | active |
 | 54 | gtm-hygiene | GTM hygiene | measurement | — | — | merged→53 |
 | 55 | event-taxonomy | Event taxonomy | measurement | — | — | merged→53 |
@@ -189,9 +199,9 @@ deleted number stays reserved and its file is gone.
 | 100 | cookieless-analytics | Cookieless analytics readiness | measurement | — | GDPR / ePrivacy | moved→snitch-adsready |
 | 101 | ai-agent-commerce | AI-agent commerce signals | ai-search | ecommerce | — | active |
 | 102 | multi-llm-citation | Multi-LLM citation differentiation | ai-search | — | — | merged→82 |
-| 103 | accessibility-conformance | Accessibility conformance (WCAG 2.2 AA + legal exposure) | accessibility | conversion-trust, local, a11y-deep | WCAG 2.2 AA | active |
-| 104 | keyboard-navigation | Keyboard navigation + focus management | accessibility | — | WCAG 2.2 2.1.1 | merged→103 |
-| 105 | screen-reader-semantics | Screen reader semantics audit | accessibility | — | WCAG 2.2 4.1.2 | merged→103 |
+| 103 | accessibility-conformance | Accessibility conformance (WCAG 2.2 AA + legal exposure) | accessibility | — | WCAG 2.2 AA | moved→snitch-ada |
+| 104 | keyboard-navigation | Keyboard navigation + focus management | accessibility | — | WCAG 2.2 2.1.1 | moved→snitch-ada |
+| 105 | screen-reader-semantics | Screen reader semantics audit | accessibility | — | WCAG 2.2 4.1.2 | moved→snitch-ada |
 | 106 | llms-txt | llms.txt (AI-crawler-friendly site description) | ai-search | — | llms.txt proposal | merged→82 |
 | 107 | pixel-install-completeness | Pixel install completeness | measurement | — | Consent Mode v2 | moved→snitch-adsready |
 | 108 | utm-hygiene | UTM hygiene + parameter consistency | measurement | — | — | merged→53 |
@@ -199,7 +209,7 @@ deleted number stays reserved and its file is gone.
 | 110 | icp-wedge-scoring | ICP wedge scoring | conversion | — | — | moved→snitch-cmo |
 | 111 | trust-artifact-audit | Trust artifact audit | conversion | — | — | merged→60 |
 | 112 | pricing-strategic-read | Pricing strategic read | conversion | — | — | moved→snitch-cmo |
-| 113 | colorblind-safe-design | Color-blind safe design | accessibility | — | WCAG 2.2 1.4.1 | merged→103 |
+| 113 | colorblind-safe-design | Color-blind safe design | accessibility | — | WCAG 2.2 1.4.1 | moved→snitch-ada |
 | 114 | persuasion-architecture | Persuasion architecture (holistic psychology audit) | conversion | b2b-saas | — | active |
 | 115 | pricing-psychology-tactical | Pricing psychology (tactical display) | conversion | b2b-saas | FTC pricing claims | active |
 | 116 | retention-psychology | Retention psychology (activation, endowment, peak-end, exit) | conversion | b2b-saas | — | active |

@@ -146,7 +146,6 @@ At crawl-mode scan start, detect SPA signals from the initial fetch. If detected
 - **Cat 25, 26** (image alt presence + quality) — when fewer than 3 `<img>` tags appear in the initial HTML body (gallery / hero images often hydrate after).
 - **Cat 28** (image dimensions / CLS) — same condition as Cat 25.
 - **Cat 31** (JSON-LD presence) — when no `application/ld+json` script tags appear in the initial HTML.
-- **Cat 103** (accessibility conformance, the accessible-name criteria) — same as Cat 25.
 - **Cat 22** (breadcrumbs visible) — when no breadcrumb markup appears in the initial HTML.
 
 **Auto-skip exception:** when the SPA emits the relevant content INTO the SSR'd HTML (react-helmet emitting `<title>` / `<meta>` / `<script type=application/ld+json>`, Next App Router emitting metadata via `generateMetadata`, Astro emitting fully-rendered output), the cat proceeds normally with full evidence. The auto-skip fires only when the initial HTML genuinely lacks the content the cat checks.

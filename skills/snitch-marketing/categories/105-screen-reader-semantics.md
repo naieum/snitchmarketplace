@@ -1,5 +1,5 @@
-## CATEGORY 105: Screen reader semantics audit — merged into Category 103
+## CATEGORY 105: Screen reader semantics audit — moved to snitch-ada
 
-Landmarks, heading outline, list and table semantics, label association and live regions now run as the 1.3.1, 3.3.1, 3.3.2 and 4.1.3 rows of the criterion table in `categories/103-accessibility-conformance.md`.
+Landmarks, heading outline, list and table semantics, label association and live regions now run in category 11 (name, role, value and status) of the accessibility skill, with the structural half in its category 03.
 
-**Do not scan this file.** If this category is selected, scan Category 103 instead (`categories/103-accessibility-conformance.md`) and report the finding under it, against its WCAG success criterion.
+**Do not scan this file.** If this category is selected, call the Skill tool with "snitch-ada" and report the finding there.

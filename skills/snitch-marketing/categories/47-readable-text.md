@@ -1,5 +1,5 @@
-## CATEGORY 47: Readable text without zoom — merged into Category 103
+## CATEGORY 47: Readable text without zoom — moved to snitch-ada
 
-The 16px body-text floor, line-height and column-width checks now run as the readability advisory in `categories/103-accessibility-conformance.md`, kept explicitly separate from WCAG 1.4.4 (resize to 200%), which is its own row there.
+The 16px body-text floor, line-height and column-width advisories now run in category 05 (reflow, zoom and spacing) of the accessibility skill, kept separate from SC 1.4.4 resize-to-200% as they always were.
 
-**Do not scan this file.** If this category is selected, scan Category 103 instead (`categories/103-accessibility-conformance.md`) and report the finding under it, against its WCAG success criterion.
+**Do not scan this file.** If this category is selected, call the Skill tool with "snitch-ada" and report the finding there.

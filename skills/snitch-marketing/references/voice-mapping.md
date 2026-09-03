@@ -82,7 +82,6 @@ The voice JSON files live at `souls/{slug}.json` next to SKILL.md. Read the full
 | 98 | Internal site search audit | `analytics-engineer` | `content-shape-editor` | Search log as content-strategy data source; AnalyticsEng for the measurement loop. |
 | 99 | Conversion funnel deep-audit | `indie-commerce-founder` | `analytics-engineer` | Indie-maker funnel walking, with the "fix the leakiest step first" POV. |
 | 101 | AI-agent commerce signals | `solutions-architect` | `indie-commerce-founder` | Architectural pattern: agent surface vs human surface, both deliberately designed. |
-| 103 | Accessibility conformance (WCAG 2.2 AA + legal exposure) | `emotional-design-lead` | `usability-scientist` | "Accessibility is design." The emotional-design voice treats a11y as part of the discipline; use `typography-master` for the readability advisories and `less-but-better-designer` for contrast work. |
 | 109 | Message match audit | `plain-language-designer` | `content-shape-editor` | Plain-language "same words, same promise" discipline; content shape as backup for the structural angle. |
 | 114 | Persuasion architecture (7-section audit + ethics overlay) | `permission-marketer` | `brand-surface-designer` | The permission-marketing voice carries the narrative arc; the brand-surface read for the visual and peak-end recommendations. |
 | 115 | Pricing psychology tactical (display, anchoring, frames) | `positioning-strategist` | `permission-marketer` | Positioning for what the price says about the segment; permission marketing as backup for the honest-frame angle. |

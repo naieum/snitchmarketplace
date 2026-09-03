@@ -30,7 +30,6 @@ These run for every audit, regardless of detected components:
 - Cat 32, schema type validation (Organization / WebSite row; universal, every site has a brand entity)
 - Cat 39, font loading
 - Cat 45, viewport
-- Cat 103, accessibility conformance (WCAG 2.2 AA criterion table; contrast, accessible names, keyboard, color-only meaning)
 - Cat 52, lang attribute
 - Cat 81, market positioning
 - Cat 96, brand SERP defense
@@ -39,7 +38,7 @@ These run for every audit, regardless of detected components:
 - Cat 60, conversion & trust (universal: CTAs, forms, and the trust-artifact inventory every brand has a gap in)
 - Cat 117, site copy lint (universal: every brand has site copy; every line either substantiates its claim or it doesn't)
 
-These 24 cats cover roughly ~31-41K tokens at the low end, regardless of what else is detected.
+These 23 cats cover roughly ~30-39K tokens at the low end, regardless of what else is detected. WCAG 2.2 AA conformance and the legal exposure a failure carries are not in the universal set: they are audited by the accessibility skill, so call the Skill tool with "snitch-ada" when the user wants them.
 
 ## Per-component cat additions
 

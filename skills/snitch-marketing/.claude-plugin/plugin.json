@@ -1,7 +1,7 @@
 {
   "name": "snitch-marketing",
-  "description": "Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, accessibility, and how well the pages persuade, with evidence for every finding.",
-  "version": "1.15.0",
+  "description": "Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding.",
+  "version": "1.16.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

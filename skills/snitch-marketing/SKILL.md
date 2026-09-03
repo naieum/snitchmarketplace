@@ -1,11 +1,11 @@
 ---
 name: snitch-marketing
-description: Audit a site's SEO and marketing with evidence-based findings — reads site source or crawls a URL and reports what a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, accessibility audit / WCAG 2.2 AA conformance review (a11y, ADA / Section 508 / European Accessibility Act exposure, color contrast, keyboard navigation, focus order, screen-reader semantics, alt text), Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS; true field CWV via optional free CrUX/PSI when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads, pixel, or consent-mode readiness (use snitch-adsready), security review (use snitch-security), UX / interface critique judged against the user's decision path (use snitch-ux), generating the strategy or the marketing itself — positioning, wedge scoring, pricing strategy, content (use snitch-cmo), or rewriting one page's persuasion arc (use snitch-focusedcopy).
+description: Audit a site's SEO and marketing with evidence-based findings — reads site source or crawls a URL and reports what a top-tier consultancy would catch, with file:line or URL+selector evidence per finding. Use when the user asks for an SEO audit, marketing audit, technical SEO review, on-page audit, AI search optimization / citation audit (GEO), llms.txt review, schema or structured-data audit, Open Graph audit, Core Web Vitals contributors review (render-blocking, image weight, font loading, bundle weight, CLS; true field CWV via optional free CrUX/PSI when configured), brand SERP audit, traffic-drop diagnosis, post-deploy SEO regression check, competitor SEO analysis, conversion audit, or a lighthouse/ahrefs/semrush/screaming-frog alternative. Do NOT use for paid-ads, pixel, or consent-mode readiness (use snitch-adsready), accessibility conformance, ADA / Section 508 / EAA exposure, or i18n readiness (use snitch-ada), security review (use snitch-security), UX / interface critique judged against the user's decision path (use snitch-ux), generating the strategy or the marketing itself — positioning, wedge scoring, pricing strategy, content (use snitch-cmo), or rewriting one page's persuasion arc (use snitch-focusedcopy).
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, Copilot, Gemini CLI, Windsurf, and 60+ more), on the user's own model, no server. Exports markdown, JSON, CSV, and (with python3) HTML. Optional Playwright MCP for crawl-mode screenshots.
 metadata:
   author: Snitch
-  version: 1.15.0
+  version: 1.16.0
   homepage: https://snitchplugin.com
 ---
 
@@ -30,7 +30,8 @@ checkable and how each category is typed.
 Hand off instead — call the Skill tool with the named skill, one skill per call:
 
 - **Code-level security review** → call the Skill tool with "snitch-security". This skill reports SEO consequences, not application security.
-- **UX / interface critique** → call the Skill tool with "snitch-ux". The split is what the finding is judged against: marketing owns what is evidenced against search and traffic, ux owns what is evaluated against the user's decision path. A headline judged on keyword match is marketing; the same headline judged on whether a visitor knows what to do next is ux. Accessibility splits the same way: WCAG 2.2 AA conformance and the legal exposure a failure carries are audited here (Cat 103); a barrier judged by whether it stops one user finishing a task goes to ux.
+- **UX / interface critique** → call the Skill tool with "snitch-ux". The split is what the finding is judged against: marketing owns what is evidenced against search and traffic, ux owns what is evaluated against the user's decision path. A headline judged on keyword match is marketing; the same headline judged on whether a visitor knows what to do next is ux.
+- **Accessibility conformance, legal exposure, and i18n readiness** → call the Skill tool with "snitch-ada". WCAG 2.2 AA conformance, the ADA / Section 508 / European Accessibility Act exposure a failure carries, and whether the code is ready to serve people in another language and script are judged there against the criterion and the regime. Marketing keeps the same elements where the judge is search and traffic: image alt as a search signal (Cats 25, 26), viewport (Cat 45), hreflang and locale canonicals (Cats 50, 51), `lang` as a machine-readability signal (Cat 52), translated-page content quality (Cat 133) and agent operability (Cat 134). A barrier judged by whether it stops one user finishing a task goes to snitch-ux.
 - **Generating strategy or the marketing itself** — positioning, segment / wedge scoring, the pricing strategic read, brand voice, content strategy, articles, a launch post → call the Skill tool with "snitch-cmo". This skill grades what exists; that one creates what's missing.
 - **Fixing one page's persuasion arc** (hero, section order, objection handling) → call the Skill tool with "snitch-focusedcopy". Auditing the site is here; rewriting a page is there.
 - **Pixel, conversion-tracking, and consent implementation** → call the Skill tool with "snitch-adsready". This skill reports that the measurement layer is wrong; that one sets it up.
@@ -141,7 +142,7 @@ This menu is the single source of truth for the option numbers; `references/outp
   ```
   SEO audit complete. Report saved to snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md.
 
-  Audited by Snitch: Marketing, 94 active categories (134 numbered; merged, moved, and deleted numbers stay reserved)
+  Audited by Snitch: Marketing, 93 active categories (134 numbered; merged, moved, and deleted numbers stay reserved)
   Get the latest version: https://snitchplugin.com/marketing
   ```
 

@@ -108,7 +108,7 @@ Journey trace: name the 3-5 highest-volume paths, walk each route in order, read
   Evidence required: form field count.
 - **Trust signal absent at conversion moment** (no testimonial / logo / guarantee on the signup or checkout page).
   Evidence required: page content + missing trust elements.
-- **Mobile journey broken** (CTAs invisible on mobile, form unusable, payment fails). Cross-reference Cat 45 (viewport) and Cat 103 (target size, contrast, labels).
+- **Mobile journey broken** (CTAs invisible on mobile, form unusable, payment fails). Cross-reference Cat 45 (viewport). For target size, contrast and labels against the WCAG criterion, call the Skill tool with "snitch-ada".
   Evidence required: mobile-walked journey + specific failure point.
 - **Post-conversion empty state with no onboarding** (user signs up, lands in product, sees a blank dashboard, churns).
   Evidence required: post-signup screen content.
@@ -126,7 +126,7 @@ One structural note stays here because it is a funnel defect rather than a psych
 A "home → pricing → signup" trace is one slice. These dimensions change the picture — note which are source-detectable vs analytics-gated:
 
 - **New vs returning** — materially different funnels (first-timers can show ~80% add-to-cart drop vs ~50% for returners; payment-step trust hits new visitors hardest). *Detectable:* does the site differentiate (saved progress, trust at commitment)? *Gated:* the segment split. Cross-ref Cat 73.
-- **Mobile vs desktop** — mobile is the majority of traffic but converts ~half (in a large published body of cart-abandonment research, roughly 80% on mobile vs 66% on desktop). The same form/payment friction hurts mobile disproportionately; an aggregate funnel hides a mobile cliff. *Detectable:* mobile field count, wallet/Apple-Pay support, responsive form behavior. *Gated:* the device split. Cross-ref Cat 45 and Cat 103.
+- **Mobile vs desktop** — mobile is the majority of traffic but converts ~half (in a large published body of cart-abandonment research, roughly 80% on mobile vs 66% on desktop). The same form/payment friction hurts mobile disproportionately; an aggregate funnel hides a mobile cliff. *Detectable:* mobile field count, wallet/Apple-Pay support, responsive form behavior. *Gated:* the device split. Cross-ref Cat 45; for the conformance read on the same controls, call the Skill tool with "snitch-ada".
 - **Cross-device / multi-session** — the journey spans devices and visits; the conversion isn't one session. *Detectable:* whether login / persistent user-ID enables stitching. *Gated:* the stitched path.
 - **Attribution sanity** — last-click misreads multi-touch journeys (GA4's default is data-driven since Jan 2024; B2B averages 6-8 touchpoints). Flag reliance on last-click. *Analytics-gated entirely.*
 - **Micro-conversions / leading indicators** — only ~2.9% complete the macro conversion, so email-capture / pricing-view / doc-view are faster diagnostic signal. *Detectable:* are they instrumented as events (Cat 53)? *Gated:* their rates.

@@ -13,9 +13,10 @@ could an automated agent perceive and complete this page's primary action?
 Scope note: this is distinct from Cat 101 (AI-agent commerce signals), which asks whether
 *product data* is extractable and structured for agents. Cat 134 asks whether the page is
 *operable*, whether a machine can take the action, regardless of how well the product is
-described. It also overlaps heavily with the human-accessibility categories: Cat 17 (semantic
-HTML) and Cat 103 (accessible names and keyboard operability, SC 4.1.2 / 2.1.1). Strong
-human a11y and agent operability rise and fall together, and a page that passes those three
+described. It also overlaps heavily with human accessibility: Cat 17 (semantic
+HTML) here, and accessible names and keyboard operability (SC 4.1.2 / 2.1.1), which the
+accessibility skill judges — call the Skill tool with "snitch-ada" for those. Strong
+human a11y and agent operability rise and fall together, and a page that passes them
 usually passes this one. The lens here is narrower and action-first: "can a machine agent
 complete the job," framed around the page's primary action. Cross-ref those categories rather
 than re-deriving their checks.
@@ -151,8 +152,9 @@ regions: https://web.dev/learn/accessibility/
 MDN, the accessibility tree and accessible names:
 https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA
 
-Cross-ref Cat 101 (agent-readable product data), Cat 17 (semantic HTML), Cat 103 (accessible names
-and keyboard operability), Cat 82 (AI-search citation).
+Cross-ref Cat 101 (agent-readable product data), Cat 17 (semantic HTML), Cat 82 (AI-search
+citation). For accessible names and keyboard operability against the criterion, call the Skill tool
+with "snitch-ada".
 
 **Severity tagging:**
 - Primary conversion action (checkout, signup, book, primary search) implemented as a

@@ -216,14 +216,14 @@ coverage; silence is not distinguishable from not having looked.
 **What this list is judged against:** whether *this person can finish the task*. Conformance
 pass-fail across a whole site, legal exposure (EAA / ADA), and an audit graded against a
 Lighthouse accessibility score are evidenced against something else — call the Skill tool with
-"snitch-marketing" for those. The same fact can be a finding in both skills; the judge is what
+"snitch-ada" for those. The same fact can be a finding in both skills; the judge is what
 differs.
 
 **The criterion number is a locator, not a verdict.** It tells a reader where to look up the
 rule; it is never the cost. Before writing any §9 finding, name the person and the task it
 stops: who is blocked, at which step, with what left as their route. **If the only cost you can
 state is "it fails the criterion," it is not a ux finding** — record it as a Pass or a Skip
-with one line saying conformance is snitch-marketing's judge, and move on. This is where §9
+with one line saying conformance is snitch-ada's judge, and move on. This is where §9
 padding comes from: a criterion the surface technically misses while every user still finishes
 the task is a conformance result wearing a barrier's clothes.
 
@@ -236,7 +236,7 @@ the task is a conformance result wearing a barrier's clothes.
       cross on every page to reach the content. (2.4.1 Bypass Blocks) On a short header — a
       logo and two or three links — the tab cost is a second, nobody is blocked, and a missing
       skip link is a **Pass, not a finding**; the conformance view of it belongs to
-      snitch-marketing. Count the tab stops before you write this one up.
+      snitch-ada. Count the tab stops before you write this one up.
 - [ ] Contrast: **4.5:1 for normal text, 3:1 for large text** (≥24px, or ≥18.5px bold) **and
       for UI components and meaningful graphics** — icons, input borders, focus rings, chart
       strokes. (1.4.3 Contrast (Minimum), 1.4.11 Non-text Contrast)
@@ -257,7 +257,7 @@ the task is a conformance result wearing a barrier's clothes.
       error message, a high-stakes surface, or a missing viewport tag that shrinks it further.
       Absent one of those, a near-miss ratio on ordinary body copy is a **conformance result,
       not a barrier**: record it as a Pass with the ratio quoted and hand the conformance
-      sweep to snitch-marketing. Do not open a Medium on 4.4:1 body text that everyone on the
+      sweep to snitch-ada. Do not open a Medium on 4.4:1 body text that everyone on the
       page can read.
 - [ ] Meaning never carried by color/sound/motion alone; source order = reading order;
       reduced-motion respected. (1.4.1 Use of Color, 1.3.2 Meaningful Sequence,
@@ -308,7 +308,7 @@ the task is a conformance result wearing a barrier's clothes.
 *This list is a starter set covering what this skill's own subject matter touches most often —
 it is not the whole of WCAG, and it is deliberately narrower than a conformance audit. Where a
 surface does something these items don't reach, go to the criterion rather than assuming silence
-means pass, or hand the conformance sweep to snitch-marketing. Criteria this list no longer
+means pass, or hand the conformance sweep to snitch-ada. Criteria this list no longer
 carries but a full pass would: machine-readable field purpose (1.3.5), status messages (4.1.3 —
 §5.5 covers the failure-path case), focus not obscured (2.4.11), error prevention on
 consequential submissions (3.3.4 — §5.5 covers the guard), content on hover (1.4.13), headings

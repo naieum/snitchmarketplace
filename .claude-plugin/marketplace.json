@@ -17,8 +17,16 @@
   {
    "name": "snitch-marketing",
    "source": "./skills/snitch-marketing",
-   "description": "Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, accessibility, and how well the pages persuade, with evidence for every finding.",
-   "version": "1.15.0",
+   "description": "Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding.",
+   "version": "1.16.0",
+   "license": "MIT with Commons Clause",
+   "homepage": "https://snitchplugin.com"
+  },
+  {
+   "name": "snitch-ada",
+   "source": "./skills/snitch-ada",
+   "description": "Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages.",
+   "version": "0.1.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
@@ -26,7 +34,7 @@
    "name": "snitch-ux",
    "source": "./skills/snitch-ux",
    "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion.",
-   "version": "0.10.0",
+   "version": "0.10.1",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
@@ -90,7 +98,7 @@
    "name": "snitch-router",
    "source": "./skills/snitch-router",
    "description": "Not sure which skill you need? Ask this one and it points you to the right skill or flow.",
-   "version": "0.2.0",
+   "version": "0.3.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },

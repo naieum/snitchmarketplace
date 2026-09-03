@@ -1,10 +1,10 @@
 # Category Group Mappings
 
-The primary recommendation mechanism is component-based detection (STEP 0.8 + `references/component-cat-map.md`). The named presets in this file (Groups 2-15) are CURATED SHORTCUTS for customers who already know their shape and want a one-tap audit without the per-component reasoning step. They are alternatives, not the default path.
+The primary recommendation mechanism is component-based detection (STEP 0.8 + `references/component-cat-map.md`). The named presets in this file (Groups 2-14; Group 15 is retired and its heading is now a handoff) are CURATED SHORTCUTS for customers who already know their shape and want a one-tap audit without the per-component reasoning step. They are alternatives, not the default path.
 
 When the user picks "B2B SaaS preset" or "E-commerce preset", the audit uses these curated cat lists directly. When the user picks "run the recommended scan" or doesn't name a preset, the audit uses the component-driven recommendation in STEP 1.5 (which may produce a similar list, but is justified per detected component, not per claimed business model).
 
-The full 134-number catalog is enumerated at the bottom of this file; 94 of those numbers are active categories, and the rest are reserved numbers whose checks were merged into another category, moved to a sibling skill, or deleted (`categories/_index.md` Status column is the authority).
+The full 134-number catalog is enumerated at the bottom of this file; 93 of those numbers are active categories, and the rest are reserved numbers whose checks were merged into another category, moved to a sibling skill, or deleted (`categories/_index.md` Status column is the authority).
 
 ## Token cost heuristic
 
@@ -43,11 +43,11 @@ The whole structured-data surface in three cats: 31 is the gateway (is there any
 
 ## Group 5: Conversion & Trust
 
-Categories: 25, 26, 27, 28, 29, 30, 53, 60, 103, 117, 122, 123
+Categories: 25, 26, 27, 28, 29, 30, 53, 60, 117, 122, 123
 
-**Token cost: ~21-34K tokens.** 12 cats × ~1.5K + ~5K overhead. Cat 103 (accessibility conformance) costs more on interactive-heavy sites. Cat 53 runs four passes (install, tag manager, event taxonomy, UTM) so it costs ~3-4K, and all of it Skips fast when no analytics is installed.
+**Token cost: ~19-31K tokens.** 11 cats × ~1.5K + ~5K overhead. Cat 53 runs four passes (install, tag manager, event taxonomy, UTM) so it costs ~3-4K, and all of it Skips fast when no analytics is installed.
 
-Image quality + accessibility conformance as a conversion signal (Cat 103: labels, contrast, color-only meaning, keyboard) + analytics setup + UTM hygiene + CTAs / forms / trust signals / 404 pages + site copy lint (vague adjectives, unsupported superlatives, dark-pattern urgency, hidden price, weak social proof) + comparison / alternatives pages + lead-magnet acquisition assets. Pixel inventory and consent gating are not audited here: when a pixel is present but its wiring is unknown from the source, call the Skill tool with "snitch-adsready". Ad-account structure is out of scope for the family — no skill inherited it.
+Image quality + analytics setup + UTM hygiene + CTAs / forms / trust signals / 404 pages + site copy lint (vague adjectives, unsupported superlatives, dark-pattern urgency, hidden price, weak social proof) + comparison / alternatives pages + lead-magnet acquisition assets. Pixel inventory and consent gating are not audited here: when a pixel is present but its wiring is unknown from the source, call the Skill tool with "snitch-adsready". Ad-account structure is out of scope for the family — no skill inherited it.
 
 ## Group 6: International
 
@@ -89,9 +89,9 @@ The GEO surface here is backed by several cross-cutting references: `references/
 
 ## Group 10: Full Audit
 
-All 94 active categories.
+All 93 active categories.
 
-**Token cost: ~141-198K tokens.** 94 cats × ~1.5-2K + ~10K full-discovery overhead. Crawl-mode adds 2-4K per fetched URL on top.
+**Token cost: ~139-195K tokens.** 93 cats × ~1.5-2K + ~10K full-discovery overhead. Crawl-mode adds 2-4K per fetched URL on top.
 
 **REQUIRE explicit user confirmation** before launching. The 5-step pre-flight (STEP 0/0.5/0.6/0.7) typically runs as part of the budget. Suggest STEP 1.7's "skip N,N" affordance to cut cats that obviously don't apply (e.g., Cat 79 Local SEO on a pure-online SaaS).
 
@@ -119,11 +119,11 @@ Run with the brand-maturity check (STEP 0.6) gating off-site channels. Add Group
 
 ## Group 13: Local business preset
 
-Categories: 1, 2, 3, 9, 10, 22, 23, 25, 31, 32, 50, 53, 60, 75, 79, 96, 103, 119
+Categories: 1, 2, 3, 9, 10, 22, 23, 25, 31, 32, 50, 53, 60, 75, 79, 96, 119
 
-**Token cost: ~29-48K tokens.** 18 cats × ~1.5K + ~5K overhead. Cat 79 (GBP foundation, depth, retired features) and Cat 96 (brand SERP) require crawl-mode SERP / Maps fetches; add 2-4K each.
+**Token cost: ~28-46K tokens.** 17 cats × ~1.5K + ~5K overhead. Cat 79 (GBP foundation, depth, retired features) and Cat 96 (brand SERP) require crawl-mode SERP / Maps fetches; add 2-4K each.
 
-The local business audit: crawl + indexing fundamentals; on-site LocalBusiness schema (Cat 32's LocalBusiness row) AND the off-site GBP audit (Cat 79: is the profile claimed and NAP-consistent, is it filled at depth against the local leader, does the brand still depend on a retired GBP feature); brand consistency; brand SERP defense; hyper-local landing pages (Cat 119); analytics; international (if multi-locale); accessibility (often legally required for public-sector / healthcare local businesses).
+The local business audit: crawl + indexing fundamentals; on-site LocalBusiness schema (Cat 32's LocalBusiness row) AND the off-site GBP audit (Cat 79: is the profile claimed and NAP-consistent, is it filled at depth against the local leader, does the brand still depend on a retired GBP feature); brand consistency; brand SERP defense; hyper-local landing pages (Cat 119); analytics; international (if multi-locale). Accessibility conformance is often legally required for a public-sector or healthcare local business; it is audited by the accessibility skill, so call the Skill tool with "snitch-ada" alongside this preset.
 
 NAP integrity is the load-bearing concern. Cross-reference Cat 79 GBP listing against the on-site LocalBusiness schema (Cat 32) against the visible footer NAP — drift across these surfaces costs local rank.
 
@@ -137,15 +137,11 @@ The publisher audit: sitemap + canonical (high stakes for content sites); single
 
 Publishers with high content velocity also benefit from Group 9 (2026 Modern Marketing) for the AI-search + creator + founder-led layers.
 
-## Group 15: Accessibility deep-dive preset
+## Group 15: Accessibility deep-dive preset — retired, handed to snitch-ada
 
-Categories: 17, 25, 26, 28, 45, 52, 103
+The WCAG 2.2 AA conformance sweep and the legal-exposure read this preset existed for are now audited by the accessibility skill: if a user asks for it, call the Skill tool with "snitch-ada" rather than assembling a preset here. The heading stays so reports that cite Group 15 still read.
 
-**Token cost: ~14-26K tokens.** 7 cats × ~1.5K + ~5K overhead. Cat 103 (the full criterion pass: keyboard, screen-reader semantics, contrast, color-only meaning, target size) costs more on interactive-heavy sites.
-
-The full a11y audit: semantic HTML; image alt presence + quality; CLS / explicit dimensions; viewport; lang attribute; and Cat 103, which carries WCAG 2.2 AA conformance end to end — accessible names, contrast, color-only meaning, keyboard operability and focus management, screen-reader semantics, target size, and the legal-exposure read. A barrier judged against one user finishing a task belongs to snitch-ux, not here.
-
-Run when the brand has legal accessibility obligations (public-sector, healthcare, education, EAA-covered EU commerce, ADA exposure) OR the brand markets accessibility as a value.
+The SEO-side residual is still reachable from this skill: semantic HTML (17), image alt presence and quality (25, 26), explicit image dimensions (28), viewport (45) and the `lang` attribute (52) sit in Groups 3, 5 and 6 and in Custom selection.
 
 ## Quick Audit (menu Option 1)
 
@@ -223,10 +219,10 @@ carries `merged→NN` in `categories/_index.md`; it is not a category a scan can
 
 ### Mobile & a11y as SEO (45-49)
 45. Viewport meta
-46. Touch target size — merged→103
-47. Readable text without zoom — merged→103
-48. ARIA labels on interactive elements — merged→103
-49. Color contrast on text — merged→103
+46. Touch target size — moved→snitch-ada
+47. Readable text without zoom — moved→snitch-ada
+48. ARIA labels on interactive elements — moved→snitch-ada
+49. Color contrast on text — moved→snitch-ada
 
 ### International (50-52)
 50. Hreflang correctness
@@ -302,9 +298,9 @@ carries `merged→NN` in `categories/_index.md`; it is not a category a scan can
 102. Multi-LLM citation differentiation — merged→82
 
 ### Accessibility deep-dive (103-105)
-103. Accessibility conformance (WCAG 2.2 AA criterion table + legal exposure; absorbs touch targets, readable text, accessible names, contrast, keyboard, screen-reader semantics, color-only meaning)
-104. Keyboard navigation + focus management — merged→103
-105. Screen reader semantics audit — merged→103
+103. Accessibility conformance (WCAG 2.2 AA criterion table + legal exposure) — moved→snitch-ada
+104. Keyboard navigation + focus management — moved→snitch-ada
+105. Screen reader semantics audit — moved→snitch-ada
 
 ### AI-crawler standards (106)
 106. llms.txt (AI-crawler-friendly site description) — merged→82
@@ -320,7 +316,7 @@ carries `merged→NN` in `categories/_index.md`; it is not a category a scan can
 112. Pricing strategic read — moved→snitch-cmo
 
 ### Accessibility (113)
-113. Color-blind safe design — merged→103 (the 1.4.1 row of its criterion table)
+113. Color-blind safe design — moved→snitch-ada
 
 ### Persuasion psychology (114-116)
 114. Persuasion architecture (7-section holistic audit; each section resolves to a Finding, a Pass-with-evidence naming the surfaces read, or a Skip-with-reason; + ethics/dark-pattern overlay & model validity-tiering)

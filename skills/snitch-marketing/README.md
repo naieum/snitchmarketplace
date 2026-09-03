@@ -1,4 +1,4 @@
-# snitch-marketing v1.15.0
+# snitch-marketing v1.16.0
 
 SEO + marketing audit with evidence-based findings — technical SEO, GEO/AI-search, schema, Core Web Vitals.
 

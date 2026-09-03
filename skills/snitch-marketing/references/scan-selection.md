@@ -25,21 +25,21 @@ What would you like to scan?
 [2]  Technical SEO, 15 cats (crawl & indexing, title/meta, performance, mobile/a11y). ~22-34K tokens. ~15-30 min
 [3]  Content & Structure, 18 cats (headings, content quality, internal linking, E-E-A-T, keyword research). ~26-39K tokens. ~15-30 min
 [4]  Schema & Structured Data, 3 cats (JSON-LD presence, per-type validation across all supported types, rating honesty). ~11-19K tokens. ~10-20 min
-[5]  Conversion & Trust, 12 cats (CTAs, forms, trust signals, 404 pages, image quality, accessibility conformance, analytics + UTM hygiene, copy lint, comparison pages, lead magnets). ~21-34K tokens. ~20-40 min
+[5]  Conversion & Trust, 11 cats (CTAs, forms, trust signals, 404 pages, image quality, analytics + UTM hygiene, copy lint, comparison pages, lead magnets). ~19-31K tokens. ~20-40 min
 [6]  International, 4 cats (hreflang, locale canonicals, lang attribute, translation quality). ~6-10K tokens. ~5-10 min
 [7]  Email & Transactional, 3 cats (inventory + templates, deliverability, compliance). ~8-14K tokens. ~15-30 min
 [8]  Off-site & Channels, 16 cats. ~32-53K tokens. ~50-95 min
 [9]  2026 Modern Marketing, 4 cats (AI-search citation incl. llms.txt, partner & sponsorship programs, founder-led brand, agent operability). ~10-18K tokens. ~20-35 min
-[10] Full Audit, all 94 categories. ~141-198K tokens. ~130-245 min. **CONFIRM BUDGET FIRST**
+[10] Full Audit, all 93 categories. ~139-195K tokens. ~130-245 min. **CONFIRM BUDGET FIRST**
 [11] Custom Selection, pick categories by name or number
 [12] Diff Mode, audit changes since previous run (source mode: changed files since last commit; crawl mode: delta vs previous snitchfindings/{slug}/ report). Cost scales with diff size
 
 Vertical presets (curated subsets per business type):
 [13] B2B SaaS preset, 21 cats. ~32-45K tokens. ~30-60 min
 [14] E-commerce preset, 21 cats. ~34-57K tokens. ~30-60 min
-[15] Local business preset, 18 cats. ~29-48K tokens. ~30-50 min
+[15] Local business preset, 17 cats. ~28-46K tokens. ~30-50 min
 [16] Publisher / media preset, 21 cats. ~33-56K tokens. ~45-75 min
-[17] Accessibility deep-dive, 7 cats (WCAG 2.2 AA conformance, semantics, alt text, contrast, viewport). ~14-26K tokens. ~30-60 min
+[17] Accessibility deep-dive — retired. WCAG 2.2 AA conformance, legal exposure and i18n readiness are audited by the accessibility skill: call the Skill tool with "snitch-ada".
 
 Toggles (apply to whichever option you pick):
 [c]  Confidence floor, current: all (toggle: all / medium+ / high+only, high+only suppresses Low/Medium findings from the report)
@@ -58,13 +58,14 @@ Enter your choice (0-17, c, r, v):
 - **0 (Exit):** Display "SEO audit cancelled. No changes made." and exit.
 - **1 (Quick Audit):** Always include: 1 (robots.txt), 2 (sitemap.xml), 3 (canonical), 4 (indexability), 9 (title tag), 10 (meta description), 11 (Open Graph), 15 (single H1), 25 (image alt presence), 31 (JSON-LD presence). Then run stack detection (`references/smart-detection.md`) and add the 2-3 stack-specific cats listed under "Quick Audit (menu Option 1)" in `references/category-groups.md`.
 - **2-9 (Presets):** Scan the predefined category group. Read `references/category-groups.md` for group → category mappings.
-- **10 (Full):** All 94 active categories. Warn user about token cost. **Require explicit confirmation** ("yes, I confirm the ~141-198K token budget") before launching.
+- **10 (Full):** All 93 active categories. Warn user about token cost. **Require explicit confirmation** ("yes, I confirm the ~139-195K token budget") before launching.
 - **11 (Custom):** Present the category picker in Part 3 of this file.
 - **12 (Diff):** Two paths depending on mode:
   - **Source mode**: run `git diff HEAD --name-only`, scan only changed files plus their declared route layouts / heads.
   - **Crawl mode**: detect previous report at `{working_directory}/snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md`. If found, parse the previous findings list, run the same selected cats fresh, then synthesize a delta report with: resolved findings, new findings, unchanged findings, severity-changed findings. Archive the previous report to `SEO_AUDIT_REPORT.{prev_date_iso}.md` in the same directory before overwriting. The new report's "Comparison to previous audit" section gets populated automatically (per `references/report-template.md`'s INCLUSION RULE).
   - **No previous report in either mode**: fall back to the current preset selection or to Quick Audit. The user is informed that this is a first-time scan; diff mode produces nothing meaningful without a baseline.
-- **13-17 (Vertical presets):** B2B SaaS / E-commerce / Local business / Publisher / Accessibility. Read `references/category-groups.md` for Group 11-15 → category mappings. Pick the preset that matches the brand's business model from STEP 0.5.
+- **13-16 (Vertical presets):** B2B SaaS / E-commerce / Local business / Publisher. Read `references/category-groups.md` for Group 11-14 → category mappings. Pick the preset that matches the brand's business model from STEP 0.5.
+- **17 (Accessibility, retired):** not a preset any more. Say that conformance and legal exposure are audited by the accessibility skill, then call the Skill tool with "snitch-ada".
 - **c (Confidence floor):** Toggle between `all` / `medium+` / `high+only`, for this scan only. What each level renders is defined once, under `confidence-floor` in `snitch-marketing.config.md`. Detection runs at every level, so passed-checks evidence is always captured; the floor changes what is rendered, not what is scanned.
 - **r (Rationale):** Toggle whether the executor prints the "why these cats?" block before the first category scans. Default: on. The block names the selected cats and the signal that added each one, then offers `[r]` (hide next time) / `[c]` (confirm and proceed) — the last veto before tokens spend:
 
@@ -120,7 +121,7 @@ Then offer the user 5 branches:
 ```
 [1] Run the recommended scan as-is
 [2] Customize categories (skip / only / add) before running
-[3] Switch to a named-shortcut preset (B2B SaaS, e-commerce, local business, publisher, accessibility, Quick Audit)
+[3] Switch to a named-shortcut preset (B2B SaaS, e-commerce, local business, publisher, Quick Audit)
 [4] Custom from scratch (pick categories by number)
 [5] Show full 17-option menu
 [0] Cancel
@@ -254,10 +255,10 @@ number's `moved→snitch-<skill>` row in `categories/_index.md` produces.
 | `image-weight` | 43 | perf, images |
 | `bundle-weight` / `js-weight` | 44 | perf |
 | `viewport` | 45 | mobile, a11y |
-| `touch-targets` / `touch-target-size` | 103 | mobile, a11y |
-| `text-zoom` / `readable-text` | 103 | mobile, a11y |
-| `aria` / `aria-labels` | 103 | a11y |
-| `contrast` / `color-contrast` | 103 | a11y |
+| `touch-targets` / `touch-target-size` | → snitch-ada | mobile, a11y |
+| `text-zoom` / `readable-text` | → snitch-ada | mobile, a11y |
+| `aria` / `aria-labels` | → snitch-ada | a11y |
+| `contrast` / `color-contrast` | → snitch-ada | a11y |
 | `hreflang` | 50 | i18n |
 | `locale-canonical` / `locale-canonicals` | 51 | i18n |
 | `lang-attr` / `html-lang` | 52 | i18n |
@@ -304,9 +305,9 @@ number's `moved→snitch-<skill>` row in `categories/_index.md` produces.
 | `cookieless-analytics` / `cookieless` / `server-side-tagging` / `capi` / `enhanced-conversions` / `consent-mode-v2` | → snitch-adsready | analytics |
 | `ai-agent-commerce` / `agent-shopping` / `agent-commerce` / `chatgpt-commerce` | 101 | commerce, future |
 | `multi-llm-citation` / `per-llm-citation` / `llm-differentiation` | 82 | ai-search, future |
-| `wcag22` / `wcag-conformance` / `accessibility-conformance` / `aa-conformance` | 103 | a11y, legal |
-| `keyboard-navigation` / `keyboard-a11y` / `focus-management` | 103 | a11y |
-| `screen-reader-semantics` / `screen-reader` / `aria-semantics` | 103 | a11y |
+| `wcag22` / `wcag-conformance` / `accessibility-conformance` / `aa-conformance` | → snitch-ada | a11y, legal |
+| `keyboard-navigation` / `keyboard-a11y` / `focus-management` | → snitch-ada | a11y |
+| `screen-reader-semantics` / `screen-reader` / `aria-semantics` | → snitch-ada | a11y |
 | `llms-txt` / `llms.txt` / `llmstxt` / `ai-crawler-file` | 82 | 2026, ai-search |
 | `pixel-completeness` / `pixel-install` / `pixel-inventory` / `pixel-audit` / `capi-audit` | → snitch-adsready | ads, measurement |
 | `utm-hygiene` / `utm-consistency` / `utm-audit` / `parameter-hygiene` | 53 | ads, measurement |
@@ -328,8 +329,8 @@ These expand to a list of categories:
 | `images` | 25, 26, 27, 28, 29, 30 |
 | `schema` | 31, 32, 94 |
 | `perf` | 39, 40, 41, 42, 43, 44 |
-| `mobile` | 45, 103 |
-| `a11y` | 17, 25, 45, 52, 103 |
+| `mobile` | 45 |
+| `a11y` | 17, 25, 45, 52 (the conformance sweep is → snitch-ada) |
 | `i18n` | 50, 51, 52 |
 | `analytics` | 53, 98 |
 | `content` | 18, 57, 58, 59, 86, 97 |
@@ -348,7 +349,7 @@ These expand to a list of categories:
 | `lifecycle` | 71, 97 |
 | `journey` | 73, 99 |
 | `future` | 101 |
-| `legal` | 103 |
+| `legal` | → snitch-ada |
 | `commerce` | 32, 94, 101 |
 | `ai-search` | 82 |
 | `social` | 11, 12 |

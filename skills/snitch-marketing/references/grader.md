@@ -129,7 +129,7 @@ The grader reads the full report and scores each finding. Cost varies by report 
 
 - Quick Audit (13 cats, ~5-10 findings): ~3-5K tokens for grading + ~1-3K per rewrite.
 - Component-driven scan (38 cats on a multi-component site, ~25-40 findings): ~10-15K tokens for grading + ~5-10K for rewrites.
-- Full Audit (all 94 active cats, ~50-80 findings): ~25-40K tokens for grading + ~10-25K for rewrites.
+- Full Audit (all 93 active cats, ~50-80 findings): ~25-40K tokens for grading + ~10-25K for rewrites.
 
 Total grader-pass cost is typically 10-20% of the original audit's token cost. Worth it for the quality lift on customer-facing audits. Toggle off (`grader.enabled: false`) for token-tight runs.
 

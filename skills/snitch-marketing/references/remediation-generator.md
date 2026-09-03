@@ -13,9 +13,8 @@ artifact; the user applies it (never auto-write, per anti-hallucination Rule 9).
 
 ## Color-fix safeguard (applies to post-scan `[2]` and `[3]`)
 
-Any fix that touches a color value — Cat 103's contrast and color-only-meaning criteria, or any rewrite of
-a color token, hex, or `oklch/hsl/rgb` value — requires **per-finding confirmation even in batch
-mode**. Color values are brand identity, and a mathematically better ratio is still a brand change
+Any fix that touches a color value — any rewrite of a color token, hex, or `oklch/hsl/rgb` value —
+requires **per-finding confirmation even in batch mode**. Color values are brand identity, and a mathematically better ratio is still a brand change
 the customer did not ask for.
 
 Before applying one:
