@@ -34,9 +34,9 @@ than one that makes you stop and think.** So don't collapse a clear 4-step path 
 2-step one that forces a hard decision. Keep the **scent of information** strong — each step
 should visibly confirm "yes, you're heading the right way."
 
-**Third Law — Omit needless words.** Cut the words on the page in half, then cut what's left
-in half again. (Detailed in `copywriting.md`.) Fewer words → less noise, the useful content
-stands out, the page looks less daunting.
+**Third Law — Omit needless words.** Cut repetition and filler, not a fixed percentage.
+Keep necessary requirements, disclosures and recovery instructions (`copywriting.md`).
+The aim is to make useful content easier to find without removing what the task needs.
 
 ---
 

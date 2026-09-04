@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, Copilot, Gemini CLI, Windsurf, and 60+ more), on the user's own model, no server. Exports markdown, JSON, CSV. The two bundled scripts need python3 and are skipped with a note without it. Optional Playwright MCP, or an axe-core / Pa11y / Lighthouse runner, for the runtime checks the bundle cannot perform itself.
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.2.0
   homepage: https://snitchplugin.com
 ---
 
@@ -42,8 +42,8 @@ Hand off instead — call the Skill tool with the named skill, one skill per cal
 
 1. **No finding without evidence** — Read/Grep (source) or Fetch (crawl) first, quote the exact element, cite `file:line` or URL + selector.
 2. **Every finding names its rule** — a WCAG 2.2 success criterion, a named law or standard, or a named i18n pattern from the category's rule table. A check with no row in the table is a Skip, never a finding under a borrowed criterion.
-3. **Never write a verdict.** "Compliant", "conformant", "non-compliant", "WCAG 2.2 AA certified" are forbidden. Conformance is a legal determination that follows a complete audit, not a partial static scan. Write `fails SC 1.4.3 at these elements` and let the reader draw the line.
-4. **Volatile facts get hedges.** Every legal date, compliance deadline, population threshold and standard version carries the `Facts verified: <date> against <URL>` line from `references/legal-landscape.md`. A fact that reference could not verify carries `(unverified — confirm at <URL>)` instead of an assertion.
+3. **Never write a verdict.** "Compliant", "conformant", "non-compliant", "WCAG 2.2 AA certified" are forbidden. WCAG conformance is a technical determination against its requirements, distinct from legal applicability. A partial scan establishes neither whole-site conformance nor a legal conclusion. Write `fails SC 1.4.3 at these elements` and let the reader draw the line.
+4. **Verify volatile facts.** Re-check applicable official sources during the audit before asserting current legal requirements; a reference's old verification date is not current verification. If unavailable, mark that determination Skip, with the source and missing evidence. Do not invent legal exposure from an unknown sector or market. Every legal date, compliance deadline, population threshold and standard version carries the `Facts verified: <date> against <URL>` line from `references/legal-landscape.md`. A fact that reference could not verify carries `(unverified — confirm at <URL>)` instead of an assertion.
 5. **Three outcomes only** — Finding, Pass (with the evidence it ran), Skip (with the reason and what would unblock it). Never "partially audited". Finding nothing splits by whether the subject exists: the subject is present and the failing shape is absent is a **Pass** carrying the search and the count; the subject does not exist in the page set at all is `Skip — not applicable: no <subject> in the page set`, never a Pass.
 6. **Runtime checks Skip, they do not infer.** A check the bundle cannot perform without a browser, a runner or a human is marked in its rule table and Skips with `Skip — <check> requires a human or runner; not run`. Never assert live behavior nobody observed.
 7. **Severity is single-valued** — one tier per finding; escalate or split, never a range.
@@ -69,8 +69,12 @@ On a hydration-heavy stack a plain Fetch returns only the shell, so DOM-dependen
 
 **STEP 0.5: Discovery (required)**
 
-1. **Representative page set.** Name 5-10 pages covering home, a content page, the conversion path, a post-conversion page (account, confirmation, dashboard) and an error state. Every negative claim later is scoped to this set. Record it; it goes in the report metadata.
-2. **Exposure questions, asked ONCE, as one block.** Sector; EU market presence; any public-sector or federal-procurement customer; any prior demand letter, complaint or audit request; any published accessibility commitment. These five answers are the only inputs to the exposure paragraph. Never re-ask them per category, and never infer them.
+1. **Representative page set.** For a whole-site audit, name 5-10 pages covering home, a content page, the conversion path, a post-conversion page (account, confirmation, dashboard) and an error state. Every negative claim later is scoped to this set. Record it; it goes in the report metadata.
+For a scoped request, use only the named component/page set and applicable discovery inputs.
+Do not require a site-wide sample, legal interview, or locale inventory to inspect one control.
+Record unrun legal/i18n/runtime work as Skip. Honor inline-only output requests without writes.
+
+2. **Exposure questions, asked ONCE when legal exposure is in scope, as one block.** Sector; EU market presence; any public-sector or federal-procurement customer; any prior demand letter, complaint or audit request; any published accessibility commitment. These five answers are the only inputs to the exposure paragraph. Never re-ask them per category, and never infer them.
 3. **i18n inventory.** Which locales are served; the source locale; the i18n library or catalog format. If the answer is "one locale, no library", say so — it changes what the i18n categories can find, not whether they run.
 4. **Declared intent, read-only.** Read `BLUEPRINT.md` (only *Audience & wedge*, *Conversion action*, *Claim inventory*, *Constraints*) and `marketing/positioning.md` (only "who it's for / not for" and "claims we never make"). Apply the four rules in CONTEXT.md. Concretely: a recorded `Decision` such as "English-only at launch" makes the i18n categories a **Skip** citing that line, not a Finding. A best-practice fix that contradicts a `Decision` is a Finding capped at Medium whose Fix is "revisit the decision or accept the trade-off". A claim on the surface that is absent from the Claim inventory, or matches "claims we never make", is an uncapped Finding. Neither file present is a Skip with that reason — never interview the user for their contents.
 
@@ -93,7 +97,7 @@ A gate outranks a recorded Decision. An accessibility barrier is not waived by a
 [0] Exit
 ```
 
-A preset resolves to **every active row whose Groups cell contains that preset's slug** (`quick`, `wcag-aa`, `legal`, `i18n`, `forms`, `media`), read out of `categories/_index.md`. Never a hardcoded number list. `[7]` is every active row. Then the **confirm gate**: display the resolved category list with a token estimate and proceed only on confirmation.
+A preset resolves to **every active row whose Groups cell contains that preset's slug** (`quick`, `wcag-aa`, `legal`, `i18n`, `forms`, `media`), read out of `categories/_index.md`. Never a hardcoded number list. `[7]` is every active row. Then the **confirm gate**: display the resolved category list with a token estimate and proceed on confirmation; an explicit bounded request already confirms that scope as described in the selection contract.
 
 **STEP 2: Perform the audit**
 

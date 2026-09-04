@@ -1,11 +1,11 @@
 ---
 name: snitch-ux
-description: Apply behavioral-design / UX-psychology and usability principles when designing, building, or reviewing any user-facing interface — landing pages, onboarding, sign-up, paywalls & pricing, forms, checkout, dashboards, empty states, navigation, mobile nav — or when asked to improve conversion, retention, engagement, reduce drop-off, 'make this clearer / feel premium / more polished', or write UI copy, CTAs, and microcopy, or judge the on-page hero, one-liner, tagline, and value prop against the visitor's decision path. Encodes two lenses — clarity (self-evident pages, scanning, conventions) and persuasion (defaults, anchoring, social proof, loss aversion, friction reduction, visual hierarchy) — as checkable moves, behind a blocking ethics gate that reports dark patterns instead of optimising them. The split across siblings is what the finding is judged against: ux owns what is evaluated against the user's decision path. Do NOT use for security review (use snitch-security), SEO / marketing audits (use snitch-marketing — it judges against search and traffic), accessibility conformance and legal exposure (use snitch-ada — it judges against the criterion and the regime), one page's persuasion structure (use snitch-focusedcopy), drafting the hero, one-liner, and tagline options that fall out of positioning, plus brand story, naming, sales collateral, brand strategy, positioning docs and off-site channel content (use snitch-cmo — snitch-cmo drafts those options, this skill judges the one on the page and rewrites the microcopy around it), technical prose, READMEs and error-message style systems (use snitch-docwriter), or build-time decisions about what should exist at all (use snitch-blueprint).
+description: "Apply behavioral-design / UX-psychology and usability principles when designing, building, or reviewing any user-facing interface — landing pages, onboarding, sign-up, paywalls & pricing, forms, checkout, dashboards, empty states, navigation, mobile nav — or when asked to improve conversion, retention, engagement, reduce drop-off, 'make this clearer / feel premium / more polished', or write UI copy, CTAs, and microcopy, or judge the on-page hero, one-liner, tagline, and value prop against the visitor's decision path. Encodes two lenses — clarity (self-evident pages, scanning, conventions) and persuasion (defaults, anchoring, social proof, loss aversion, friction reduction, visual hierarchy) — as checkable moves, behind a blocking ethics gate that reports dark patterns instead of optimising them. The split across siblings is what the finding is judged against: ux owns what is evaluated against the user's decision path. Do NOT use for security review (use snitch-security), SEO / marketing audits (use snitch-marketing — it judges against search and traffic), accessibility conformance and legal exposure (use snitch-ada — it judges against the criterion and the regime), one page's persuasion structure (use snitch-focusedcopy), drafting the hero, one-liner, and tagline options that fall out of positioning, plus brand story, naming, sales collateral, brand strategy, positioning docs and off-site channel content (use snitch-cmo — snitch-cmo drafts those options, this skill judges the one on the page and rewrites the microcopy around it), technical prose, READMEs and error-message style systems (use snitch-docwriter), or build-time decisions about what should exist at all (use snitch-blueprint)."
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.10.1
+  version: 0.11.0
   homepage: https://snitchplugin.com
 ---
 
@@ -17,13 +17,13 @@ lenses, in this order:
 1. **Clarity — "don't make me think."** Users scan, satisfice, and muddle through. Make the
    page self-evident and remove every question mark you left behind (*is that a link? where
    am I? what does this mean?*). A confusing screen cannot be persuasive. (`clarity.md`)
-2. **Persuasion — people don't decide logically.** Once a screen is clear, shape the choice:
+2. **Persuasion — context shapes decisions.** Once a screen is clear, consider the choice:
    defaults read as recommendations, the first number sets the anchor, a gift creates a debt,
    building something makes it yours. (`principles.md`)
 
-Both rest on one substrate — System 1 decides first, working memory holds about four things,
-people run on mental models, and every "user error" is usually a design failure. When no
-specific rule covers the situation, reason up from `substrate.md`.
+Both use models of attention, memory, and decision-making, not universal laws or measured
+predictions about this audience. When no specific rule covers the situation, reason up from
+`substrate.md`, then check the proposed explanation against the task and evidence.
 
 **The one mental model:** every element on the screen is asking the user a question, and the
 question you pose decides whether they act or hesitate. "Is this worth $19/mo?" is hard, and
@@ -38,9 +38,8 @@ writing CTA/microcopy, designing onboarding or a paywall, laying out a form or d
 choosing a mobile nav, or answering "how do I make this convert / feel premium / stop people
 bouncing." Use it **generatively** while building and as a **review lens** on existing UI.
 
-A review covers the **whole product surface**, not the first screen you land on. Scope it
-first (Step 0). A thorough pass over an agreed scope is the job; a skim of a few pages is the
-failure mode.
+A review covers the **agreed surface**, whether one component or the whole product. Scope it
+first (Step 0); do not expand a bounded request into a product-wide audit.
 
 ## Findings
 
@@ -63,9 +62,10 @@ Every check ends as one of three outcomes: a **Finding** (evidenced), a **Pass**
 evidence that it ran), or a **Skip** (carrying the reason and what would unblock it). "Looked
 fine" is none of the three.
 
-**Report before you edit.** The review phase is read-only. Never rewrite a user's components
-or copy mid-review — not the obvious ones, not even when they said "just fix everything."
-Present the complete findings list, *then* offer to apply changes, confirming each one.
+**Separate review from implementation.** A review-only request authorizes the report, not
+component or copy changes. When the user also requests fixes, finish the evidence pass, state
+the supported changes, then implement and verify within that authorization. Ask only when a
+fix needs a new product decision, unverified business fact, or expanded scope.
 
 ## Workflow
 
@@ -84,7 +84,7 @@ scored lens runs. Read that file for the keys and their valid values — never a
 **No config value touches the ethics gate.** `lenses` narrows what gets optimised;
 `writing-system` narrows the scored copy lens; the gate runs at every setting.
 
-- **Enumerate the full surface.** *In a codebase:* find every screen/page/flow — routes,
+- **Enumerate within the requested boundary.** *In a codebase:* find each screen/page/flow — routes,
   page/view components, templates, layouts — **and** the states each has (default, empty,
   loading, error, success, logged-out). *On a live site:* walk the primary navigation and list
   the reachable pages and key flows.
@@ -96,7 +96,8 @@ scored lens runs. Read that file for the keys and their valid values — never a
 - **Ask when scope or intent is unclear — ask, don't guess.** Which surfaces, the goal
   (conversion? clarity? accessibility? reduce a specific drop-off?), generative or review, and
   the audience/stakes (vulnerable users or high-stakes decisions? → `inclusive-design.md`).
-  Present the enumerated list back and let the user confirm or narrow it.
+  Present the enumerated list for confirmation when the boundary is unresolved. An explicitly
+  named component, page, or flow already supplies a scope; do not ask the user to repeat it.
 - **When you cannot ask, state and proceed — never stop with nothing delivered.** In a
   non-interactive run, or with `confirm-scope: false`, write the assumption into the report's
   scope block, review everything you enumerated, and say so. **Assume up, never down** — if
@@ -112,7 +113,9 @@ to anchor and a count to make non-round. On a surface with no funnel, that press
 invented findings. Name the type before you start:
 
 - **Acquisition surfaces** — landing, pricing, paywall, checkout, sign-up, onboarding. The
-  full catalog applies; run every move.
+  full catalog is available; run every move, but judge each technique for relevance. A clear
+  single-plan offer does not need an anchor, scarcity, social proof, or a problem-first headline
+  merely because it is an acquisition surface.
 - **Working surfaces** — settings, admin, dashboards, editors, configuration, destructive
   actions. The persuasion half applies mainly *in reverse*: honest defaults, symmetry of exit,
   persuasion dialled **down**. Run clarity, friction, feedback and error design, defaults,
@@ -132,12 +135,14 @@ The moves, in order. Cite them as "Step 1, move N".
 1. **Locate the moment.** What is the user trying to do here, and what one question does the
    screen ask? Then check the primary action actually **works** — does the main control have a
    handler, does the form have an action, does the flow collect what it claims to? A button
-   wired to nothing is a conversion defect before it is a design one, and everything else on
-   the page is downstream of it. Grep for the handler rather than assuming.
+   wired to nothing is a conversion defect before it is a design one. Trace native form
+   behavior, imports, shared handlers and the resulting state or effect, not just a local
+   handler name. Missing source is a verification Skip, not proof of a broken control.
 2. **Clarity pass.** Is the page self-evident at a glance — obvious what it is, what's
    clickable, where you are? Remove the accidental question marks first (`clarity.md`).
 3. **Diagnose friction & framing.** Where is the user doing unpaid work (blank fields, extra
-   taps, decisions you could pre-make)? Is any number shown in isolation, with no anchor?
+   taps, decisions you could safely pre-make)? Are price, units and consequences clear enough
+   to make this decision? An absent persuasion technique alone is not a defect.
 4. **Run the ethics gate — before you reach for a single persuasion technique.**
    `ethics-gate.md`, now, not at the end. If any check fails, those items are findings and you
    do not optimise them, whatever the user asked for — say so plainly in your first two
@@ -162,23 +167,27 @@ The moves, in order. Cite them as "Step 1, move N".
    bar**, including the report's own prose (strict); note the result in one line near the
    coverage block.
 7. **Review against `review-checklist.md`** before calling the surface done.
-8. **Validate, don't debate.** When a call is contested or risky, frame it as "put this in
-   front of 3 users" (`usability-testing.md`). Run the **parachute test** on any page with
+8. **Validate, don't debate.** When a call is contested or risky, propose a small exploratory
+   test with relevant users (`usability-testing.md`); do not claim testing happened. Run the **parachute test** on any page with
    navigation (`navigation.md`).
 
 ### Step 2 — Report coverage honestly
 
 ```
-Coverage: 3 of 11 surfaces reviewed — PARTIAL
+Coverage: 3 of 3 in-scope surfaces reviewed (11 discovered) — PARTIAL
 Reviewed: /signup, /signup/verify, /onboarding/step-1
-States seen: default only — empty / loading / error not reachable from static source
-Not reviewed: /pricing, /checkout, /settings (+5) — out of agreed scope
+States: default inspected in source; loading and error branches not supplied; runtime not tested
+Out of scope: /pricing, /checkout, /settings (+5)
 Skipped checks: §9 conditionals — drag, auth (no such interaction); persuasion catalog on /settings (working surface)
 ```
 
-- *Discovered* is the Step 0 enumeration; *Reviewed* is what you opened and ran the pass on.
-  Label it **complete** only when the two numbers match, otherwise **partial**, naming what was
-  left out and why.
+- Report discovered, in-scope and reviewed surfaces separately. **COMPLETE** means all agreed
+  surfaces and relevant states were reviewed with the agreed evidence method, not that the
+  whole product is defect-free. Unknown inventory or unexamined in-scope states makes coverage
+  **PARTIAL** even when the page counts match. Explicit exclusions do not make an otherwise
+  complete scoped review partial.
+- Distinguish source-inspected branches from browser-observed states. A complete source review
+  may leave runtime verification as a named Skip; it cannot claim rendered or end-to-end coverage.
 - **Count states as well as surfaces.** The default state of one page is not that page. Name
   the states you could not reach, and say when a surface genuinely has only one.
 - **List every surface you reviewed, including the ones that came back clean.** A Pass is a

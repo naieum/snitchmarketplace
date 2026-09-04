@@ -1,11 +1,11 @@
 ---
 name: snitch-cmo
-description: Generate a checked-in marketing foundation (product information, positioning with a scored audience wedge and a pricing-strategy read, competitor analysis, brand voice, content strategy, channel plan) from a product's actual source or site, then draft channel-ready marketing content and campaign collateral driven by those docs — blog posts, X/LinkedIn posts, Reddit/Hacker News posts, launch and PR sequences, creator-outreach shortlists, sponsorship plans, UGC video briefs, lead generators, sales emails, pitch decks, the About-page story, and company/product/feature names. Every product claim traces to file:line or a fetched URL; every draft cites the foundation lines that justify its angle and voice. Triggers on "act as my CMO", "build me a marketing strategy", "write my positioning doc", "who should we target", "which segment should we lead with", "is our pricing strategy right", "brand voice guide", "name this product / feature", "write our About page story", "competitor analysis", "content strategy for my product", "marketing plan", "plan my launch", "draft a launch post", "write a LinkedIn/X post about", "what should I post on Reddit / Hacker News", "influencer outreach list", "newsletter or podcast sponsorships", "lead magnet", "sales email", "pitch deck", "UGC brief", "AI CMO alternative", "marketing foundation docs". Do NOT use for SEO / marketing audits of an existing site (use snitch-marketing — it grades what exists; this skill creates what's missing), persuasive page-section structure (use snitch-focusedcopy), grading the on-page hero, one-liner, and tagline against the visitor's decision path (use snitch-ux — this skill drafts those options, snitch-ux judges the one on the page), setting the price number on a greenfield build (use snitch-blueprint), technical prose (use snitch-docwriter), or pixel / conversion-tracking setup (use snitch-adsready). This skill drafts; a human always publishes.
+description: Generate a checked-in marketing foundation (product information, positioning with a scored audience wedge and a pricing-strategy read, competitor analysis, brand voice, content strategy, channel plan) from a product's actual source or site, then draft channel-ready marketing content and campaign collateral driven by those docs or an approved brief for a bounded draft — blog posts, X/LinkedIn posts, Reddit/Hacker News posts, launch and PR sequences, creator-outreach shortlists, sponsorship plans, UGC video briefs, lead generators, sales emails, pitch decks, the About-page story, and company/product/feature names. Every product claim traces to file:line or a fetched URL; every draft identifies the foundation or approved brief behind its angle, voice, and claims. Triggers on "act as my CMO", "build me a marketing strategy", "write my positioning doc", "who should we target", "which segment should we lead with", "is our pricing strategy right", "brand voice guide", "name this product / feature", "write our About page story", "competitor analysis", "content strategy for my product", "marketing plan", "plan my launch", "draft a launch post", "write a LinkedIn/X post about", "what should I post on Reddit / Hacker News", "influencer outreach list", "newsletter or podcast sponsorships", "lead magnet", "sales email", "pitch deck", "UGC brief", "AI CMO alternative", "marketing foundation docs". Do NOT use for SEO / marketing audits of an existing site (use snitch-marketing — it grades what exists; this skill creates what's missing), persuasive page-section structure (use snitch-focusedcopy), grading the on-page hero, one-liner, and tagline against the visitor's decision path (use snitch-ux — this skill drafts those options, snitch-ux judges the one on the page), setting the price number on a greenfield build (use snitch-blueprint), technical prose (use snitch-docwriter), or pixel / conversion-tracking setup (use snitch-adsready). This skill drafts; a human always publishes.
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). LLM-backed work uses the user's existing model; no separate server required. Web fetch (built-in) used for crawl mode and competitor research when available; degrades to source-only with hedged competitor sections when not.
 metadata:
   author: Snitch
-  version: 0.3.0
+  version: 0.4.0
   homepage: https://snitchplugin.com
 ---
 
@@ -17,7 +17,7 @@ subscription "AI CMO" platform that are actually thinking and writing: strategy 
 channel drafting. The third phase, publishing, deliberately stays human. The user ends up
 owning their strategy in git, not renting it from a SaaS.
 
-The skill has two modes, and the second depends on the first:
+The skill has two modes; choose the one the request needs:
 
 - **Foundation mode** builds `marketing/` — a stack of six strategy documents derived from
   the product's real source code, site, and the user's answers, with every factual claim
@@ -30,7 +30,8 @@ The skill has two modes, and the second depends on the first:
   outreach shortlists, sponsorship plans, UGC video briefs, lead generators, sales emails,
   decks, the About-page story, and names for the company, product, or a feature — where
   every draft's angle, claims, and voice are justified by citations into the foundation
-  docs. No foundation, no drafting: if `marketing/` doesn't exist, run Foundation mode first.
+  docs or an explicit, approved brief for a bounded draft. A single post does not require
+  six strategy documents when its product facts, audience, offer, and voice are supplied.
 
 Like snitch-marketing, this skill can run in two evidence modes. In **source mode** the
 product's repo is in the workspace: Read/Grep the actual implementation, pricing config,
@@ -55,7 +56,8 @@ competitors say). Use both when both are available.
   price-rise messaging, or a name for the company, product, or a feature.
 - The user wants to **replace a subscription AI-CMO tool** with something they own.
 - An existing `marketing/` foundation is present and the user asks for anything
-  content-shaped — treat the foundation as the source of truth and draft from it.
+  marketing-content-shaped — use the relevant foundation, checking for stale claims.
+  Its presence does not turn technical documentation into marketing work.
 
 ## When NOT to use this skill
 
@@ -73,7 +75,7 @@ skill per call) — when the user is asking for:
   skill decides what the asset says and why; focusedcopy structures the one page it lands on.
 - **UI copy, CTAs, onboarding flows, and grading the words once they are on the page** — the
   tests that judge a hero, one-liner, or tagline in place (cognitive weight, the five-second
-  test, counting how often the page names the customer's problem) — use `snitch-ux`, which
+  test, and whether the message supports the next decision) — use `snitch-ux`, which
   judges them against the visitor's decision path. The seam is drafts vs. judgment: this
   skill *writes* the hero, one-liner, and tagline options that fall out of positioning
   (`references/positioning-method.md`, § 3), and owns the off-page half — the villain, the
@@ -95,12 +97,14 @@ skill per call) — when the user is asking for:
 
 Marketing built on invented facts is a liability, not an asset. The gate below applies to
 Foundation docs and channel drafts equally, and it blocks — an unverifiable claim is omitted
-or hedged, never shipped punchy and false.
+or attributed to an explicit supplied fact. Hedging does not make an unsupported promise true.
 
 1. **Product claims trace to source.** Before writing what the product does, has, costs, or
-   limits, Read the implementation, config, pricing table, or live page that proves it.
+   limits, read the implementation, effective config, current terms, or explicit approved brief.
+   Distinguish implementation evidence, advertised claims, and user-supplied facts. A fetched
+   page proves what it says, not that the service delivers it. Do not invent citations.
    Record the `file:line` or URL next to the claim: foundation docs carry an evidence
-   footnote per factual section, drafts carry a provenance header (formats below). Memory
+   footnote per factual section, drafts carry separated editorial provenance (formats below). Memory
    and prior marketing copy are not sources; both go stale.
 2. **Competitor claims trace to fetched pages.** Every statement about a competitor's
    features, pricing, or positioning cites the URL actually fetched this run, with the date.
@@ -110,7 +114,8 @@ or hedged, never shipped punchy and false.
    hypothetical customer quotes presented as real, no "trusted by X teams" without a real X.
    Unknown numbers stay qualitative; gaps are flagged, not filled.
 4. **Absence claims get searched first.** Before "no limits", "never", "unlimited", "free
-   forever" — grep the implementation for whatever would make it false. A generous real
+   forever" — trace effective limits and terms, including relevant service dependencies.
+   Grep helps locate evidence; zero matches in a partial tree cannot prove an unlimited offer. A generous real
    limit stated honestly beats a false absence (this mirrors snitch-focusedcopy's
    anti-fabrication gate; the two skills share this discipline).
 5. **The gate applies to editing, too.** When updating an existing foundation doc or reusing
@@ -186,13 +191,14 @@ competitor, and let git diffs show what changed in the strategy.
 
 ## Drafting mode
 
-**Precondition:** `marketing/` exists (all six docs, or at minimum product-information,
-positioning, and brand-voice). Missing → run Foundation mode first; stale (product has
-visibly changed since the docs were written) → flag it and offer a refresh before drafting.
+**Precondition:** enough current product facts, audience, offer, and voice for this request.
+Use relevant foundation docs when available. A user-approved brief is sufficient for a
+bounded draft: attribute it as supplied, omit unsupported additions, and ask only for facts
+that block that draft. Do not create a foundation or refresh unrelated strategy unasked.
 
 **Flow:**
 
-1. **Load the foundation** — read the docs relevant to the request (brand-voice and
+1. **Load the foundation or approved brief** — read the inputs relevant to the request (brand-voice and
    product-information always; positioning for anything persuasive; content-strategy and
    channel-plan for "what should I post" requests).
 2. **Pick the channel and load its playbook** from `references/channel-playbooks.md` —
@@ -203,8 +209,9 @@ visibly changed since the docs were written) → flag it and offer a refresh bef
    offer, a sales email, a deck, a testimonial brief, the About-page story, a name, a
    short-format hook, or bad-news messaging — load
    `references/brand-story-and-collateral.md` instead.
-3. **Draft with provenance.** Every draft starts with an HTML-comment provenance header (it
-   dies on publish, so it never ships):
+3. **Draft with provenance.** Keep a clearly separated editorial provenance block outside
+   the publishable copy. In saved Markdown, an HTML comment is acceptable, but it is not a
+   publishing filter: some channels show it literally. Tell the publisher to exclude it:
 
    ```html
    <!-- snitch-cmo draft
@@ -218,7 +225,8 @@ visibly changed since the docs were written) → flag it and offer a refresh bef
 
    Claims inside the draft obey the evidence gate; angles come from the foundation, not from
    generic marketing instinct.
-4. **Write drafts to `marketing/drafts/<date>-<channel>-<slug>.md`** so they're reviewable
+4. **Return inline when requested; otherwise save requested draft artifacts to
+   `marketing/drafts/<date>-<channel>-<slug>.md`** so they're reviewable
    and diffable. Batch requests ("a week of posts") produce one file per draft plus a short
    index of what maps to which pillar.
 5. **Report and hand off.** For each draft: channel, the one-line angle, where it came from
@@ -233,7 +241,8 @@ visibly changed since the docs were written) → flag it and offer a refresh bef
 ## Output discipline
 
 - Never claim a doc or draft is "done" with unverified claims still in it — the evidence
-  gate's three outcomes are verified, hedged, or omitted.
+  gate records implementation-verified, explicitly supplied, or omitted. Mark verification
+  gaps separately from publishable copy; do not disguise them as verified facts.
 - Never summarize work not performed ("I analyzed 12 competitors") — list exactly what was
   fetched and read.
 - Redact secrets and tracking IDs encountered in source while gathering evidence

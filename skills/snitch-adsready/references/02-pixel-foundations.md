@@ -18,9 +18,9 @@ Pixels work on first-party visits and post-click attribution from ads.
 Canonical order in `<head>`:
 
 ```
-1. Consent Mode v2 default (denied)
-2. CMP / consent banner script (OneTrust, Cookiebot, etc.)
-3. dataLayer = window.dataLayer || [];
+1. dataLayer = window.dataLayer || []; define the gtag queue helper
+2. Consent Mode v2 default (denied), before measurement config/events
+3. CMP / consent banner script and its consent updates
 4. Tag manager bootstrap (gtag.js or GTM container)
 5. Per-platform pixels (fbq init, ttq init, ...)
 6. Page-specific tracking
@@ -59,7 +59,7 @@ one platform in isolation.
 
 | Check | Finding when | Evidence to quote |
 |---|---|---|
-| CAPI pair | a browser pixel exists with no server-side counterpart for a platform that offers one | pixel `file:line` + the missing backend POST |
+| CAPI pair | an agreed or required server-side conversion path is demonstrably missing/broken; browser-only tracking alone is not a defect | requirement + effective event path and scoped absence evidence |
 | Duplicate init | two `init` calls for the same platform | both `file:line`s |
 | Loaded but silent | the library loads and no `track` / `event` call exists anywhere | init `file:line` + the empty grep for that platform's track call |
 | Orphan pixel | a pixel for a platform with no active ad program | pixel `file:line` + the platform's own dashboard or transparency surface showing no activity |
@@ -71,9 +71,9 @@ Redact pixel IDs to a trailing-digits form in anything the user may forward. The
 secret, but a report that travels does not need it.
 
 An orphan pixel is a Medium at most — it costs third-party script weight, not measurement.
-A browser-only pixel on a platform with a CAPI is the expensive one: a meaningful share of
-browser events never arrives under ITP, ETP, and ad blockers, so the platform optimizes on a
-sample and the reported cost per conversion is wrong in the direction that spends more.
+Browser-only tracking can lose events under browser restrictions or blockers. CAPI is a
+possible improvement when justified by measurement needs and cost, not a mandatory counterpart
+or proof of a particular spend error. Inspect existing integrations before proposing one.
 
 ## Common failure modes
 

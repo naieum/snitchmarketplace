@@ -18,17 +18,15 @@ people not.
 
 ## The method — testing on 10 cents a day
 
-- **Three users, not eight.** The first three users hit almost all the significant
-  problems. More rounds beat more users per round — test 3, fix, test 3 again. (Round two's
-  users get *past* the bugs you just fixed and surface the next layer.)
+- **Start with a small exploratory round.** Three relevant participants can expose useful
+  failures; they cannot establish coverage, saturation, population rates or the absence of
+  serious problems. Plan more rounds or a larger study around the risk, audience segments
+  and unanswered questions, not a fixed participant count.
 - **One morning a month.** Make it small and routine, not a big event: 3–4 users in a
   morning, debrief over lunch the same day. No lab, no one-way mirror, no "big honking
   report." A room, a computer, two chairs, and a screen recorder is enough.
-- **Recruit loosely and grade on a curve.** It matters far less *who* you test than that
-  you test. "We're all beginners under the skin" — scratch an expert and you'll find
-  someone muddling through at a higher level, and experts are never insulted by clarity.
-  (Exceptions: if the whole audience is one narrow group, or the task needs real domain
-  knowledge, recruit for that at least once.)
+- **Recruit for the task.** Include relevant domain knowledge, language, device and access
+  needs. Colleagues can help pilot a session, but do not stand in for every audience segment.
 - **Start now, start early.** A crude test early beats a polished test late — it's cheap to
   change a sketch, expensive to change a shipped site. You can even test *competitors'*
   sites before you've built anything ("a free working prototype").
@@ -97,8 +95,8 @@ ways that quietly cost you. Keep measurement honest:
 - **Short-term lift, long-term drag.** Manipulative wins tend to decay: complaints, churn,
   refunds, uninstalls, and support load rise later. Give a change time before you call it a
   win, and look at the costs, not only the conversions.
-- **One change at a time, or you learn nothing.** If you ship five moves at once, you can't
-  tell which helped, which hurt, or which cancelled out.
+- **Match the claim to the experiment.** Testing a bundle can measure its combined effect;
+  it cannot isolate each change's contribution. Use controlled comparisons for causal claims.
 - **Qualitative + quantitative together.** The number says *something changed*; watching
   three people says *what and why*. Neither alone is enough to act with confidence.
 
@@ -113,3 +111,7 @@ debating and go watch three people. In an agent/PR context the practical version
 build the rough thing, run the **parachute test** and the review checklist on it yourself,
 and frame recommendations as "here's what to put in front of 3 users to confirm," not
 "this is definitely right."
+
+An agent walkthrough is an inspection, not a participant session. Do not fabricate quotes,
+completion rates, timings or study outcomes. Say what was observed, what was inferred, and
+what testing remains; necessary safeguards need not wait for a study to justify them.

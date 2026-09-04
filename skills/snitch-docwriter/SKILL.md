@@ -1,32 +1,19 @@
 ---
 name: snitch-docwriter
-description: Write or rewrite technical prose — docs, READMEs, PR descriptions, commit messages, error messages, release notes, runbooks, API docs, code comments, reports — in a controlled technical style adapted from ASD-STE100 Simplified Technical English, and score existing prose with a deterministic anti-slop linter (violations per 100 words). Triggers on make this not sound like AI, remove AI slop, plain English, simplify these docs, tighten this README / PR description, controlled language, Simplified Technical English, STE, rewrite this error message, does my writing sound like AI. Do NOT use for marketing copy, brand voice, or off-site channel content (use snitch-cmo), one page's persuasion structure (use snitch-focusedcopy), or UI microcopy, CTAs, and the on-page hero, one-liner or tagline (use snitch-ux). Those systems keep voice under mechanical discipline. This skill strips voice on purpose. Never rewrite code, identifiers, or command syntax.
+description: Write or rewrite technical prose — docs, READMEs, PR descriptions, commit messages, error messages, release notes, runbooks, API docs, code comments, reports — in a controlled technical style, and score existing prose with a deterministic anti-slop linter (violations per 100 words). Triggers on make this not sound like AI, remove AI slop, plain English, simplify these docs, tighten this README / PR description, controlled language, rewrite this error message, does my writing sound like AI. Do NOT use for marketing copy, brand voice, or off-site channel content (use snitch-cmo), one page's persuasion structure (use snitch-focusedcopy), or UI microcopy, CTAs, and the on-page hero, one-liner or tagline (use snitch-ux). Those systems keep voice under mechanical discipline. This skill strips voice on purpose. Never rewrite code, identifiers, or command syntax.
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance plus one optional local Python script; no server or external calls required.
 metadata:
   author: Snitch
-  version: 0.4.1
+  version: 0.5.0
   homepage: https://snitchplugin.com
 ---
 
 # Snitch: Docwriter
 
-Write technical prose in a controlled style adapted from **ASD-STE100 Simplified
-Technical English**. STE is the aerospace maintenance-documentation standard, first
-issued in 1986 (free official spec at https://asd-ste100.org). It was built so a
-stressed, non-native reader cannot misread an instruction. It defines about 53 writing
-rules and a dictionary of about nine hundred approved words, one meaning per word. This
-skill distills the machine-checkable core of that standard into rules an agent can
-follow and a linter can score.
-
-**Why this works.** A 2026 practitioner experiment tested 6 realistic engineer-writing
-tasks across 4 conditions and two model families, scored by a heuristic linter at
-violations per 100 words. Giving a model this writing system cut slop violations by
-**50–74%** versus baseline. That was the best or tied-best condition on every model
-tested, and far more reliable than the folk fix of banning words one at a time, which did
-almost nothing on one model family. This is directional evidence, not proof: a heuristic
-linter, six tasks. The system also fixes the **form** of slop, not the substance. It
-cannot make a hollow paragraph true.
+Write technical prose that a reader can act on without guessing. This skill combines
+controlled-language rules with a deterministic surface linter. The score locates likely
+editing opportunities; it does not measure truth, safety, or whether a human wrote the text.
 
 ## Scope
 
@@ -36,7 +23,7 @@ getting-started guides, deprecation notices, code comments, and report narrative
 
 **Never applies to:** code, identifiers, command syntax, and quoted output. Leave them
 exactly as they are. This skill also does not cover marketing copy, essays, or UI
-microcopy judged for persuasion, or anything that needs a voice, because STE strips voice
+microcopy judged for persuasion, or anything that needs a voice, because this controlled style reduces voice
 on purpose. Marketing copy and brand voice belong to snitch-cmo, landing-page persuasion
 structure to snitch-focusedcopy, and UI microcopy to snitch-ux. The boundary: those
 systems keep voice under mechanical discipline, and this skill removes voice entirely.
@@ -48,8 +35,8 @@ systems keep voice under mechanical discipline, and this skill removes voice ent
 - **flavored**: general prose (READMEs, PR descriptions, docs, release notes). Target
   **≤ 2.5 violations per 100 words**.
 
-Both modes ban W4 (marketing adjectives) and W5 (filler frames) outright: zero, not a
-budget item. Pick strict when ambiguity has a direct cost. Use flavored otherwise. Say
+Both modes target zero substantiated W4 (marketing adjectives) and W5 (filler frames)
+violations. Raw token matches are candidates, not mandatory substitutions. Pick strict when ambiguity has a direct cost. Use flavored otherwise. Say
 which mode you used.
 
 ## Execution flow
@@ -59,7 +46,9 @@ which mode you used.
    and brand voice, "snitch-focusedcopy" for landing-page persuasion structure, or
    "snitch-ux" for UI microcopy. One skill per call.
 2. **Write or rewrite** under the rules in `references/rules.md`. When rewriting, keep
-   every fact, number, name, and code span. Change only the prose. Write only the
+   every fact, number, name, code span, condition, negation, uncertainty, and obligation.
+   Preserve exact UI labels and terms of art, and use the requested or established dialect.
+   Change only the prose; meaning and safety outrank all style targets. Write only the
    requested text: no preamble, no summary, no closing remarks.
 3. **Score it.** Run the deterministic linter:
    ```
@@ -72,10 +61,12 @@ which mode you used.
    P2, T1). Cite that ID in findings. If Python is unavailable, run the manual self-lint
    below (Self-lint, manual fallback) instead: same rules, a human judge instead of the
    script.
-4. **Fix and re-score** until the mode's target band is met and `banned_word_hits` is 0.
-   Never clear a violation by deleting information. Split, activate, or substitute
-   instead.
-5. **Report** the score: violations per 100 words, and before → after when rewriting.
+4. **Adjudicate, fix, and re-score.** Inspect each hit in context. Exact labels, legitimate
+   technical terms, quoted output, or necessary uncertainty can justify retaining it.
+   Never change meaning to reach a band or zero `banned_word_hits`; stop when remaining
+   hits are justified. Keep raw counts separate from accepted violations.
+5. **Report** the score when an audit or score report is requested; for text-only rewrites,
+   return just the requested text and keep scoring internal. When reporting, give violations per 100 words, and before → after when rewriting.
    Also report the mode, and any rule you deliberately kept violated (quoted text, a term
    of art), with one line of justification.
 
@@ -92,8 +83,9 @@ audit docs, lint the files and report violations per 100 words per file. Quote t
 sentences with the specific rule each breaks, and offer the rewrite. Findings use
 file:line evidence. Run the linter with `--evidence`: it prints one line per hit, with
 the file, the line number, the rule ID, and the sentence. The score is length-normalized,
-so it is comparable across files. It is noisy under ~50 words, though, so trust longer
-samples more.
+so it measures surface-rule density, not authorship or overall quality. It is noisy under ~50 words, though, so trust longer
+samples more. Under 50 words, report word count and raw hits only, not per-100-word
+rates or bands; still inspect meaning and clarity.
 
 ## Audit finding format
 
@@ -103,13 +95,13 @@ samples more.
     tells in docs). Low means polish only.
   - **Evidence:** file:line with the exact sentence, plus the rule ID it breaks.
   - **Risk:** what the violation concretely costs, such as a misread instruction, reader
-    distrust, or a "written by AI" tell.
+    distrust. Never infer AI authorship from a word, punctuation mark, or score.
   - **Fix:** the rewritten sentence, in the same mode as the surrounding text.
-- **Pass**: the file scores under its mode's band with zero `banned_word_hits`. Evidence:
-  the score line (words, total, per100w, mode).
-- **Skip**: no `python3` on the system, or the sample is under 50 words (too short for
-  the score to mean anything). Say which, and fall back to the manual self-lint above
-  (Self-lint, manual fallback) when Python is the reason.
+- **Pass**: inspected prose has no substantiated defect under the chosen rules, including
+  a manual meaning check. Report raw score and any justified exceptions separately; a score
+  alone cannot establish a Pass.
+- **Skip**: the numeric score is unavailable or the sample is under 50 words. Still run the
+  manual meaning and clarity check and report its Findings or scoped Pass separately.
 
 ## Files
 

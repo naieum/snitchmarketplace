@@ -4,7 +4,17 @@ When to read this: you are running the code-side audit (STEP 2). Every check her
 
 **Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
 
-Every finding needs evidence: the exact file:line and snippet. Map each violation to the store rule named in its row. Severity calibration: Critical = upload-blocked or near-certain rejection; High = frequent rejection cause or policy strike risk; Medium = review friction or quality flag; Low = polish.
+Every finding needs evidence: the exact file:line and snippet. Map each violation to the store rule named in its row. Severity calibration: Critical = evidenced applicable upload blocker or explicit policy violation with critical submission impact; High = frequent rejection cause or policy strike risk; Medium = review friction or quality flag; Low = polish.
+
+## Evidence boundary
+
+Grep signals nominate checks; they do not establish the shipped configuration. Trace the
+selected release variant, merged manifests, effective Info.plist, generated config/plugins,
+and relevant API use. A debug-only overlay is not a release defect. A dependency name does
+not prove sensitive behavior or a missing declaration. Where generated artifacts or runtime
+behavior are unavailable, record the unverified part as Skip, not absence. Do not run builds,
+prebuild generators, or dependency installation without authorization. Supplied artifact
+excerpts carry supplied provenance; they are not a build this audit performed.
 
 ## Platform detection (run first)
 
@@ -124,7 +134,7 @@ Severity: missing key with API present = **Critical**. Vague/boilerplate string 
 |---|---|---|---|
 | `targetSdk` | < 36. Since 2026-08-31, new apps and updates must target Android 16 (API 36); an extension to 2026-11-01 is available via the Play Console Policy Status page. Existing apps that are not being updated are grandfathered at API 35. Verify at https://support.google.com/googleplay/android-developer/answer/11926878 | Target API policy | Critical |
 | 64-bit | `abiFilters` / `ndk` block including `armeabi-v7a` without `arm64-v8a`, or `jniLibs` shipping 32-bit-only `.so` files | 64-bit requirement | Critical |
-| `minifyEnabled false` in release | No R8/ProGuard — size and IP exposure; reflection-heavy SDKs without `-keep` rules crash in release (Vitals) | Quality | Medium |
+| Release optimization | Disabled minification alone is not a store-policy defect. Investigate measured size or crash failures against the applicable rule; enabling shrinking can itself require keep rules | Quality, only with an evidenced failure | Calibrate to actual impact |
 | Keystore hygiene | `*.jks` / `*.keystore` committed to the repo, or signing passwords in `gradle.properties` under version control | Security (also report via snitch-security) | Critical |
 | Publishing format | Config producing only APKs — new apps must ship AAB with Play App Signing | AAB requirement | High |
 | `versionCode` | Not monotonic, or per-ABI schemes that can collide | Upload gate | Medium |
@@ -135,7 +145,7 @@ Severity: missing key with API present = **Critical**. Vague/boilerplate string 
 |---|---|---|---|
 | Dynamic code loading | `DexClassLoader` / `PathClassLoader` / `System.load` on files fetched from the network | Device & Network Abuse | Critical |
 | Self-update | Code that downloads and prompts installation of an APK outside Play | Device & Network Abuse | Critical |
-| WebView-wrapper pattern | A single Activity whose main behavior is `webView.loadUrl("<remote site>")` with little native functionality — flag as webview-spam risk, discuss with the user before calling it a FAIL | Spam & minimum functionality | High |
+| WebView-wrapper pattern | Check website-owner authorization, affiliate purpose, and actual utility. A WebView call alone is not evidence of spam or inadequate functionality | Spam & minimum functionality | High |
 | Backup/data-extraction rules | `backup_rules.xml` / `data_extraction_rules.xml` absent or not excluding auth tokens, or referenced file missing | Security | Medium |
 | Account creation detected | No in-app delete-account path (and remind the user of the required web deletion link — console side) | Account deletion policy | High |
 | Placeholder greps | Same list as iOS (lorem ipsum, example.com, localhost, `http://` release endpoints); plus test ad unit IDs (`ca-app-pub-3940256099942544`) in release config | Min functionality / Ads | High |

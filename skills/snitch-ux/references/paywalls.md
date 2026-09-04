@@ -5,12 +5,18 @@
 > harmful on a surface that failed it — exit-intent interception on a page whose exit is already
 > a trap, and "mark the one-time offer as a moment" when the offer is the fabrication.
 
-The paywall is the only screen that makes money, and it obeys different rules than the rest
+The paywall asks for a financial commitment, and can behave differently from the rest
 of the persuasion catalog — including one that contradicts it (sometimes *adding* friction
 wins). Grounded in a study of ~3,000 production paywalls plus the tested observations of a
 practitioner who has shipped 4,700+ of them. Evidence quality varies: named A/B results are
 marked; single-designer observations are marked. The study's own conclusion applies: there
 is no universal best paywall, only better experiments.
+
+Treat the examples and reported lifts below as historical hypotheses, not expected outcomes
+for this product. No missing timeline, card wall, wheel, trial or multi-page sequence is a
+Finding by itself. Judge demonstrated confusion, hidden commitment or blocked completion;
+do not add friction merely to match an anecdote. Generated claims require this product's
+evidence, and all material costs and terms must precede commitment (`finding-rules.md`).
 
 ## The paywall is a flow, not a screen
 

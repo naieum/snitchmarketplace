@@ -4,7 +4,7 @@
 # Output schema: adssec.score
 # Components (each 0-100):
 #   pixel_coverage  — fraction of expected platforms found * 100, gated by what's reasonable.
-#   cwv             — LCP/INP/CLS averaged from CrUX field data (or PSI lab if no field).
+#   cwv             — all three URL field categories, or null when unavailable.
 #   consent         — present + mode_v2 + integrated_with_pixels.
 #   structured_data — jsonld_count + types richness.
 #   security_headers — % of canonical headers present.
@@ -31,43 +31,20 @@ _score_pixel_coverage() {
 }
 
 _score_cwv() {
-  local crux_json="$1"
-  # Read field data first; fall back to lab category score if no field.
-  local lcp inp cls overall_cat
-  lcp="$(jq -r '.data.field_data.metrics.LARGEST_CONTENTFUL_PAINT_MS.category // empty' <<<"$crux_json" 2>/dev/null)"
-  inp="$(jq -r '.data.field_data.metrics.INTERACTION_TO_NEXT_PAINT.category // empty' <<<"$crux_json" 2>/dev/null)"
-  cls="$(jq -r '.data.field_data.metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE.category // empty' <<<"$crux_json" 2>/dev/null)"
-  overall_cat="$(jq -r '.data.field_data.overall_category // empty' <<<"$crux_json" 2>/dev/null)"
-
-  if [[ -n "$lcp" || -n "$inp" || -n "$cls" ]]; then
-    # Map FAST/AVERAGE/SLOW to 100/65/30. NEEDS_IMPROVEMENT same as AVERAGE.
-    local total=0 n=0
-    local m
-    for m in "$lcp" "$inp" "$cls"; do
-      [[ -z "$m" ]] && continue
-      n=$((n+1))
-      case "$m" in
-        FAST)               total=$((total+100)) ;;
-        AVERAGE|NEEDS_IMPROVEMENT) total=$((total+65)) ;;
-        SLOW)               total=$((total+30)) ;;
-        *)                  total=$((total+50)) ;;
-      esac
-    done
-    if (( n > 0 )); then
-      printf '%d' $(( total / n ))
-      return
-    fi
-  fi
-
-  # Fallback to Lighthouse Performance score from PSI.
-  local perf
-  perf="$(jq -r '.data.categories.performance // empty' <<<"$crux_json" 2>/dev/null)"
-  if [[ -n "$perf" ]]; then
-    # perf is 0..1 — multiply by 100, integer.
-    awk -v v="$perf" 'BEGIN { printf "%d", v*100 }'
-    return
-  fi
-  printf '0'
+  # All three URL field categories are required. Lab/origin data are separate evidence.
+  # Missing, malformed, or unknown categories yield null, never a manufactured zero.
+  jq -r '
+    def points:
+      if . == "FAST" then 100
+      elif . == "AVERAGE" or . == "NEEDS_IMPROVEMENT" then 65
+      elif . == "SLOW" then 30 else null end;
+    .data.field_data.metrics as $m |
+    [$m.LARGEST_CONTENTFUL_PAINT_MS.category,
+     $m.INTERACTION_TO_NEXT_PAINT.category,
+     $m.CUMULATIVE_LAYOUT_SHIFT_SCORE.category] |
+    map(points) |
+    if any(. == null) then null else (add / 3 | floor) end
+  ' <<<"$1" 2>/dev/null || printf 'null'
 }
 
 _score_consent() {
@@ -124,6 +101,7 @@ _score_ads_txt() {
 #   pixels 25, cwv 20, consent 20, structured-data 15, headers 15, ads_txt 5
 _score_overall() {
   local pixels="$1" cwv="$2" consent="$3" sd="$4" sec="$5" ads="$6"
+  if [[ "$cwv" == "null" ]]; then printf 'null'; return; fi
   local sum
   sum=$(( pixels*25 + cwv*20 + consent*20 + sd*15 + sec*15 + ads*5 ))
   sum=$(( sum / 100 ))
@@ -132,6 +110,7 @@ _score_overall() {
 
 _score_grade_letter() {
   local n="$1"
+  if [[ "$n" == "null" ]]; then printf 'UNRATED'; return; fi
   if   (( n >= 90 )); then printf 'A'
   elif (( n >= 75 )); then printf 'B'
   elif (( n >= 60 )); then printf 'C'
@@ -164,12 +143,13 @@ run_score() {
   fi
 
   local digest crux
-  digest="$(run_state_site "$url" digest 2>/dev/null)"
-  if [[ -z "$digest" ]]; then
+  digest="$(run_state_site "$url" digest 2>/dev/null)" || digest=""
+  if ! jq -e '.schema == "adssec.state-site.digest" and (.status >= 200 and .status < 300) and (.pixels | type == "object")' <<<"$digest" >/dev/null 2>&1; then
     printf '{"error":"score could not run state-site digest","code":"E_DEPENDENCY","url":"%s"}\n' "$url" >&2
     return 3
   fi
-  crux="$(run_state_crux "$url" mobile 2>/dev/null || printf '{}')"
+  crux="$(run_state_crux "$url" mobile 2>/dev/null)" || crux="{}"
+  jq -e 'type == "object"' <<<"$crux" >/dev/null 2>&1 || crux="{}"
 
   # Pull subobjects.
   local pixels consent sd sec ads
@@ -204,9 +184,11 @@ run_score() {
     --argjson s_ads "$s_ads" \
     --argjson s_overall "$s_overall" \
     --arg grade "$grade" \
+    --argjson crux "$crux" \
     '{
       schema: "adssec.score",
-      schema_version: 1,
+      schema_version: 2,
+      score_basis: "static-signature heuristic; cwv uses URL field categories only",
       generated_at: $ts,
       tool: "score",
       url: $url,
@@ -229,6 +211,7 @@ run_score() {
       overall_score: $s_overall,
       overall_grade: $grade,
       evidence: {
+        performance: $crux,
         pixels: $pixels,
         consent: $consent,
         structured_data: $structured_data,

@@ -4,7 +4,7 @@ When to read this: the static audit (references/09-static-checks.md) is done and
 
 **Facts verified: 2026-09-01.** Dates, fees, quotas, and thresholds below were checked against the cited official pages on this date. They move; re-verify anything volatile at the linked URL before relying on it.
 
-Ask in order; skip N/A rows aloud ("no accounts in this app, so account-deletion items are N/A"). Where the user is unsure, treat as WARN with the verification step as the remediation. Policy details behind each item: references/01-apple-review-guidelines.md through references/08-play-account-release.md.
+Ask in order; skip N/A rows aloud ("no accounts in this app, so account-deletion items are N/A"). Where the user is unsure, record Skip with the verification step needed to settle it. Policy details behind each item: references/01-apple-review-guidelines.md through references/08-play-account-release.md.
 
 ## App Store Connect checklist
 
@@ -41,4 +41,4 @@ Ask in order; skip N/A rows aloud ("no accounts in this app, so account-deletion
 
 ## After the walkthrough
 
-Fold every answer into the main report tables (format: references/30-recipes.md). A checklist item the user cannot answer is a 🟡 WARN whose remediation is the verification step itself ("open Play Console → App content → confirm the health declaration"). Do not mark an item 🟢 OK on the user's guess — OK requires they looked.
+Fold every answer into the main report tables (format: references/30-recipes.md). A checklist item the user cannot answer is a ⚪ SKIP whose unblock condition is the verification step ("open Play Console → App content → confirm the health declaration"). Do not mark an item 🟢 OK on the user's guess — OK requires they looked.

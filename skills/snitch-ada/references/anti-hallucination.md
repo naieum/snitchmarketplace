@@ -42,9 +42,9 @@ such — not a licence to file the finding somewhere convenient.
 ## Rule 3: Never write a verdict
 
 **Forbidden, in every output: "compliant", "conformant", "non-compliant", "WCAG 2.2 AA certified",
-"accessible", "meets the ADA", "passes the EAA", "ADA-compliant".** Conformance is a legal
-determination that follows a complete audit including the manual passes this bundle cannot perform.
-A partial static scan cannot produce it.
+"accessible", "meets the ADA", "passes the EAA", "ADA-compliant".** WCAG conformance is a technical determination with full conformance requirements, distinct
+from legal applicability. This skill's partial static evidence cannot certify a whole site
+or settle its legal obligations. State criterion-level results and actual coverage.
 
 Write what you proved:
 
@@ -60,8 +60,10 @@ keys are absent from `locales/fr.json` and 7 carry placeholder mismatches".
 
 ## Rule 4: Volatile facts get hedges
 
-Every legal date, compliance deadline, population threshold, standard version and enforcement date
-comes from `legal-landscape.md`, and every one of them carries that file's
+Before asserting a current legal requirement, re-check the applicable official source during
+this audit and record the actual access date. If verification is unavailable, Skip that current
+requirement determination and identify the missing evidence. A saved verification date is not
+proof that a rule still holds. Reference material for dates and applicability comes from `legal-landscape.md`, and every one of them carries that file's
 `Facts verified: <date> against <URL>` line into the report. A fact that reference could not verify
 is written with `(unverified — confirm at <URL>)` and never asserted flat.
 

@@ -1,6 +1,7 @@
 # Tool contracts — the JSON every read tool actually returns
 
-Every shape below was captured from a real run of `ads-ready.sh` on 2026-09-01. When the tool
+The original shapes were captured on 2026-09-01; score schema v2 was revised and checked
+with offline fixtures on 2026-09-04. When the tool
 and this file disagree, the tool is right — re-run the subcommand and fix this file.
 
 Read tools emit one JSON document on stdout. `doctor`, `fix`, `verify` and `export` emit
@@ -272,7 +273,7 @@ with `remediation: "run ads-ready.sh fit-matrix without args to see all stack ke
 
 ```json
 {
-  "schema": "adssec.score", "schema_version": 1, "generated_at": "...", "tool": "score",
+  "schema": "adssec.score", "schema_version": 2, "generated_at": "...", "tool": "score",
   "url": "https://example.com",
   "components": {
     "pixel_coverage": 0, "cwv": 100, "consent": 0,
@@ -290,15 +291,19 @@ with `remediation: "run ads-ready.sh fit-matrix without args to see all stack ke
 }
 ```
 
-- `components` are flat integers 0-100. `weights` are percentages summing to 100.
-- `overall_score` is 0-100; `overall_grade` is a letter (A ≥ 90, B ≥ 75, C ≥ 60, D ≥ 40, else
+- Score schema v2: `components.cwv` is an integer or `null`. It averages all three URL field
+  categories only; missing/unknown categories, lab-only data, and origin-only data leave it
+  `null`. `evidence.performance` retains the performance response, and `score_basis` names
+  the heuristic. Other component fields remain integers. Weights sum to 100.
+- Without complete URL field data, `overall_score` is `null` and `overall_grade` is
+  `UNRATED`; do not coerce these to zero or failure. Otherwise score is 0-100 and grade a letter (A ≥ 90, B ≥ 75, C ≥ 60, D ≥ 40, else
   F). **There are no `composite_grade`, `composite_points`, or `composite_max` keys, and no
   `/80` denominator.**
 - `evidence` carries the digest sections the score was computed from — cite those, not the
   letter.
 - `score` is a **heuristic composite, not a finding**: `pixel_coverage` treats 3 detected
-  platforms as full marks, and the letter thresholds are arbitrary. Its value is the delta
-  between two runs. Never report the grade in place of an evidenced Finding.
+  platforms as full marks, and the letter thresholds are arbitrary. Compare runs only with the same scope and data availability. It does not model platform
+  applicability; never add unneeded pixels or publisher files to improve it. Never report the grade in place of an evidenced Finding.
 
 ## `adssec.setup`
 

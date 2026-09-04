@@ -20,11 +20,15 @@ shapes, not the boundary.
 
 ## The five checks
 
-Each is evidenceable from the surface itself — you can cite the markup, the copy, or the
-absence, the same as any other finding.
+Each Finding needs surface evidence and, when truth depends on a business fact, evidence for
+that fact. A hardcoded claim can be true; a precise live counter can be false. Roundness,
+specificity, and lack of an on-page citation prove neither. A timer that restarts indefinitely
+while claiming an expiring offer supplies different evidence: its behavior contradicts its copy.
+When substantiation is unavailable, mark truth verification as a Skip and request its source;
+do not label the claim fabricated or certify it true. Continue work that does not amplify it.
 
 1. **Is every persuasion claim true?** Every countdown, scarcity claim, social-proof number
-   and loss frame reflects something real — no fabricated deadlines, no round invented counts,
+   and loss frame reflects something real — no fabricated deadlines, no invented counts,
    no fake reviews, no buried cancellation. Would the user thank you if they saw how this was
    built? If not, it is a finding.
 2. **Is the cost stated where the decision is made — including what the current defaults add?**
@@ -44,11 +48,11 @@ absence, the same as any other finding.
    ways.
 5. **Vulnerable / high-stakes:** if the user could be a child, an elder, or someone in
    crisis / illness / financial distress — or the decision touches health, money, safety, or is
-   hard to undo — is persuasion **dialed down** (no urgency, no scarcity, no variable reward),
+   hard to undo — is persuasion **dialed down** (no pressure tactics or variable reward),
    with honest defaults and an exit as easy as the yes? (`inclusive-design.md`.)
-   **This is the check that fires on surfaces with no funnel and no dark patterns** — settings,
-   admin, destructive actions — where the first four all come back clean and a reviewer stops
-   reading. A page with nothing to sell can still fail the gate here.
+   Real operational deadlines and factual safety warnings may be necessary: preserve their
+   timing and consequence without adding pressure. Settings and admin surfaces need this
+   check too, but high stakes alone do not establish a failure.
 
 ## What a failure does to the review
 

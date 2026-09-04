@@ -1,19 +1,21 @@
 # Channel playbooks
 
 Per-channel drafting rules for Drafting mode. Shared rules first, then one playbook per
-channel. Every playbook assumes the foundation is loaded (brand-voice.md and
-product-information.md always; positioning.md for anything persuasive) and every draft
-carries the provenance header defined in SKILL.md.
+channel. Use relevant foundation documents or the approved bounded brief permitted by
+SKILL.md. The brief must supply the necessary product facts, audience, offer, and voice;
+do not invent foundation files or citations. Every draft carries separated editorial provenance.
 
 **Shared rules (all channels):**
 
-- Claims obey the evidence gate; angle and voice come from the foundation, not generic
+- Claims obey the evidence gate; angle and voice come from the foundation or approved brief, not generic
   marketing instinct.
 - One draft = one angle. A draft trying to say three things says nothing; split it.
 - Write for the channel's native reader, not for the brand. The test: would a member of
   that channel who has never heard of the product find the post worth their time *even if
   they never click*?
-- Drafts land in `marketing/drafts/<date>-<channel>-<slug>.md`. Human publishes.
+- Return inline when requested; otherwise save requested draft artifacts in
+  `marketing/drafts/<date>-<channel>-<slug>.md`. Human publishes. Do not silently run a
+  campaign workflow, research unrelated channels, or create strategy docs for a single post.
 
 ---
 

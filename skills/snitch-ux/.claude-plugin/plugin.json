@@ -1,7 +1,7 @@
 {
   "name": "snitch-ux",
-  "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion.",
-  "version": "0.10.1",
+  "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion. |",
+  "version": "0.11.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

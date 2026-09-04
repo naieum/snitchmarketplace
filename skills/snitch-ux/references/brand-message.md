@@ -15,6 +15,13 @@ with "snitch-cmo".
 > Gate first: `ethics-gate.md`. A clear line about a false claim only helps people discover
 > the lie faster.
 
+**Use this framework when it fits the decision.** Judge the whole visible message, including
+nearby product context. A clear product-first headline, a descriptive tagline, or an information
+CTA can be right for the visitor. No required story order, tagline length, or problem-mention
+quota creates a Finding on its own. The exercises below are heuristics, not measurements of
+cognitive load or lost revenue. Never postpone material costs, limitations or safety facts
+until after commitment. `finding-rules.md` governs evidence and all proposed claims.
+
 The core mistake this fixes: a page *tells the company's story* ("we're passionate about
 world-class solutions") instead of **inviting the customer into a story** in which the
 customer uses the product to solve their problem.
@@ -25,11 +32,11 @@ Every story is about a hero in a hole. The visitor is that hero; the brand is th
 who throws down a rope. The rope is the product — and **a rope is only valuable to someone in
 a hole.** The *problem* is what creates the value.
 
-- **Lead with the problem, always.** "I own a gym" earns a subject change. "I help men in
-  their 50s add 10 years to their life" earns "tell me more." Any hero that opens with the
-  product, the company, or the founder's backstory is handing strangers ropes.
-- **Order matters.** Problem → empathy → product → backstory, never backstory-first. The
-  personal why is powerful *after* the problem is named and inert before it.
+- **Try the customer's problem as an entry point.** "Strength classes for adults returning
+  to exercise" can orient a visitor better than an unrelated founder story. Keep a clear
+  product-first message when it already answers the visitor's question.
+- **Try an order that fits the question.** Problem → empathy → product → backstory can help
+  an unfamiliar visitor. Retain a different order when it already orients the intended audience.
 
 ## The five sound bites (PEACE)
 
@@ -100,26 +107,24 @@ conversion.
 
 ## Where it lives on the page
 
-- **Hero H1** = the problem line or the change line. The hero's job is **curiosity**, not
-  education: make a stranger say "that sounds like something I need." Explanation, proof, and
-  nuance belong further in — after the demo, after the paywall, after purchase. Nuance in the
-  hero just makes the first step an 8-foot climb.
+- **Hero block** orients the visitor: what this is, who it helps, and the relevant next step.
+  A problem or change line is one way to do that, not a required shape. Layer optional detail
+  where it helps comprehension, but disclose material limits and commitments before the action.
   **Scope this before you write it up.** The rule is about the *message* the hero carries, not
   about which element is largest. A product name as the H1 with the problem or change line
   reading directly beneath it — the conventional brand-name-plus-tagline hero — already
   delivers the message in the block a visitor reads as one unit; that is a Pass, not a
-  hierarchy finding. This becomes a finding only when the hero block as a whole leaves the
-  visitor without the problem or the change: a name with a category label under it, a
-  backstory, or a value prop the visitor has to hunt for further down the page. Never open a
+  hierarchy finding. A Finding needs an evidenced comprehension gap in the whole block, not
+  merely a category label or an absent story element. Never open a
   finding on the H1's *size* or on which line "should" be promoted when the message is
   already there.
 - **Tagline** next to the logo = the controlling idea.
 - **Welcome blurb** = the full five-line sentence, compressed.
-- **In-product strings** echo the sound bites: swap generic UI words for the message ("your
-  budget" → "get good at money").
-- **Primary vs. secondary messaging.** Primary (lead with, always): why you care about the
-  customer's problem, why you're competent, how you solve it, the results. Secondary (never
-  lead with): history, values, vision, goals, passions, why you beat competitors. Secondary
+- **In-product strings** keep functional meaning first. A label such as "Your budget" should
+  not become a slogan when the user needs to find a specific control or data view.
+- **Primary vs. secondary messaging.** Usually primary: why you care about the
+  customer's problem, why you're competent, how you solve it, the results. Often secondary:
+  history, values, vision, goals, passions, why you beat competitors. Secondary
   material earns its place deeper in the surface, not above the fold.
 
 ## Taglines
@@ -171,11 +176,11 @@ product and feature naming is off-surface — call the Skill tool with "snitch-c
   self-congratulation (+10). A 100-lb paragraph gets ignored. Heavy material isn't wrong, it's
   wrong *early* — weight is earned as commitment deepens.
 - **The Sharpie test.** Print the page and circle every place it names the customer's problem
-  with the product positioned as the solution. Target: **10+ circles.**
+  with the product positioned as the solution. Look for relevance, not a target count;
+  repetition that adds nothing should be cut.
 - **The 5-second test.** Show a stranger the page for five seconds, close the laptop, and ask:
   (1) What problem do they solve? (2) What will my life look like after? (3) How do I buy it?
-  All three, or the page is losing money — almost always because secondary messaging is
-  sitting where primary messaging belongs.
+  Use the answers to identify comprehension gaps. The exercise does not measure revenue loss.
 - **"What do you mean by that?"** When copy sounds sophisticated, ask the author what they
   meant — the spoken answer is the clear version. Ship the answer, not the clever part.
 - **"I'll think about it" is a confusion diagnostic.** Nobody says "your cognitive load is too

@@ -5,14 +5,14 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. The bundled shell tools need bash, curl, and jq; platform API reads are optional and env-gated.
 metadata:
   author: Snitch
-  version: 0.4.0
+  version: 0.5.0
   homepage: https://snitchplugin.com
 ---
 
 # snitch-adsready
 
 The `ads-ready.sh` beside this SKILL.md exposes thin tools. Read tools emit JSON on stdout;
-`doctor` and the mutating `fix` tools emit status badges instead. Run
+`doctor` and the proposal-generating `fix` tools emit status badges instead. Run
 `bash "${CLAUDE_SKILL_DIR}/ads-ready.sh" help` for the full surface.
 
 Ten platforms are tool-backed: Google, Meta, Microsoft, LinkedIn, TikTok, X, Pinterest, Reddit,
@@ -48,7 +48,7 @@ Read-only, JSON on stdout, errors as JSON on stderr:
 | `state platform <name> [account-id]` | per-platform Marketing API state. `<name>` ∈ `google\|meta\|microsoft\|linkedin\|tiktok\|x\|pinterest\|reddit\|snapchat\|apple`. Emits `{locked:"<platform>-api"}` when the auth env is unset — that is a Skip, not a Finding |
 | `state gsc [property]` | Search Console state if `GOOGLE_GSC_AUTH` is set |
 | `analytics ga4 <property-id>` | GA4 Data API report if `GA4_AUTH` is set |
-| `fit-matrix [stack]` | per-stack ads-readiness verdict |
+| `fit-matrix [stack]` | stack integration hints; not measured readiness |
 | `stack-docs [stack]` | canonical doc URLs (for WebFetch) |
 | `score <url>` | heuristic composite: pixel × CWV × consent × structured data × headers × ads.txt |
 
@@ -81,6 +81,13 @@ Three outcomes per check — Finding, Pass, or Skip — and each one carries its
    a Pass.
 3. **A Skip carries the reason and what would unblock it** — `{locked:"meta-api"}` means "set
    `META_ACCESS_TOKEN`", not "N/A".
+
+**Interpret the evidence before grading.** Missing initial-HTML pixel/CMP signatures do not
+prove absent runtime wiring. Inspect the relevant consent states, tag-manager configuration,
+network events, navigation, and deduplication before reporting a behavioral defect. An installed
+tag does not prove conversions reach the intended account. Cite supplied traces as supplied,
+not as tests you ran. Select required platforms from the user's plan; unused platforms and
+publisher-only ads.txt on an advertiser site are Skip, not missing features.
 
 `score` is a heuristic composite, not a Finding: report the components and weights so the
 reader can check the arithmetic, and never let a letter grade stand in for evidence.
@@ -168,8 +175,11 @@ Read the file whose area produced a finding. Nothing else.
 - Site-side parsers don't store fetched HTML on disk; the `html` slice prints the body but does
   not cache it.
 - Respects `robots.txt` on the audited site; identifies as `ads-ready-skill/1`.
-- Honest verdicts: a heavily client-side SPA with no SSR will fail Pixel + CWV; `fit-matrix`
-  says so — surface that first instead of hiding behind "it depends."
+- A framework name cannot prove tracking or CWV failure. `fit-matrix` is integration context,
+  not a migration gate. Recommend stack changes only against measured problems and the user's
+  constraints; never install extra pixels, schema blocks, or sellers merely to raise a score.
+- Missing performance evidence is unknown, not zero performance. Keep lab, URL field, and
+  origin field data distinct; do not describe a lab score as field CWV conformance.
 - Apple Search Ads / SKAdNetwork is iOS-only; with no iOS app, mark `apple` ⚪ SKIP with the
   reason — don't manufacture work.
 - For an actual ad-account compromise, use the platform's native security tooling. Tracking

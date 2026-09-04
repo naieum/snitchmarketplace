@@ -5,7 +5,8 @@ The skill is a thin tool surface; YOU (the agent) drive the flow. Always:
 2. Gather context appropriately for the mode.
 3. **Show every proposed artifact as a diff and get confirmation before writing.**
    Never silently overwrite an existing CLAUDE.md / settings / .mcp.json — merge.
-4. Print the manual follow-ups the skill can't do.
+4. Print only relevant follow-ups for the user's actual host. Audit-only requests stop
+   before writes and do not require product interviews unrelated to the requested checks.
 
 Every recipe below says "CLAUDE.md" for brevity; the actual target follows **SKILL.md's
 context-file targeting** — `AGENTS.md` as canonical with per-tool pointers when the team
@@ -81,7 +82,12 @@ or as step 7 of Recipe A / the tail of Recipe C.
    ${CLAUDE_SKILL_DIR}/devready.sh standards
    ```
    Emits `.defined` (linters, formatters, typecheck, tests), `.gates` (commit hooks, CI
-   files, Claude Code hooks), and `.gaps` (missing layers, mechanically determined).
+   files, Claude Code hooks), and `.gaps` (missing file signals, mechanically determined).
+   This is presence-only evidence. Trace each actual command, scope, trigger, activation,
+   and failure status before populating the table. A config, echo-only hook, or CI step with
+   `continue-on-error` is not an enforced gate. Required merge checks need host evidence.
+   Test new gates in an authorized safe context, including a known failing input and host
+   event semantics, before calling them enforced; a template alone proves nothing.
 2. **Present the coverage table** before proposing anything — defined vs gated per layer:
 
    | Layer | Defined | Gated at commit | Gated in CI | Gated in agent loop |
@@ -129,7 +135,7 @@ Anti-patterns this recipe refuses:
 
 ---
 
-## Manual follow-ups (always print — the skill cannot do these)
+## Manual follow-ups (only for the applicable host; the skill cannot do these)
 
 These are one-time, machine-level steps (Claude Code hosts):
 - `/terminal-setup` (Shift+Enter for newlines)
@@ -141,11 +147,11 @@ These are one-time, machine-level steps (Claude Code hosts):
   Ctrl+O (verbose transcript), Ctrl+R (history search), `claude --resume` / `--continue`.
   Run `?` inside a session for the full, environment-specific list.
 
-## Permissions map (stack → allow)
+## Permissions map (reviewed operations only)
 
-Use `perms <project_kind>` where project_kind ∈
-node | python | rust | go | ruby | php | jvm | dotnet. It returns a base git/shell
-allowlist plus stack-appropriate build/test/run commands, and an illustrative
-deny/ask list (deny: force-push; ask: `rm -rf`). This is a starting point, not a
-security boundary — a Bash permission matcher can't catch a piped command
-(`curl | sh`) or a fork bomb; that needs a hook. Merge — never clobber existing entries.
+`perms <project_kind>` accepts the detected kind for compatibility but preapproves no
+stack execution. It emits exact read-only git operations and illustrative ask/deny rules.
+Inspect actual scripts before proposing exact build/test commands. Generic interpreters,
+package managers, installation, git mutations, and publishing are not automatic allowances.
+These rules are not a sandbox or a complete destructive-command detector. Review the host's
+current permission semantics; preserve stricter existing settings. Personal settings stay local.

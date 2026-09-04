@@ -10,107 +10,19 @@
 # The deny list encodes the "block dangerous commands" guidance.
 
 _perms_base_allow() {
-  cat <<'EOF'
-Bash(git status)
-Bash(git diff:*)
-Bash(git log:*)
-Bash(git add:*)
-Bash(git commit:*)
-Bash(git push:*)
-Bash(git checkout:*)
-Bash(git branch:*)
-Bash(ls:*)
-Bash(cat:*)
-Bash(rg:*)
-Bash(grep:*)
-Bash(find:*)
-EOF
+  printf '%s\n' 'Bash(git status)' 'Bash(git diff)' 'Bash(git diff --staged)' 'Bash(git log --oneline -20)'
 }
 
 _perms_for_kind() {
-  case "$1" in
-    node)
-      cat <<'EOF'
-Bash(npm install)
-Bash(npm install:*)
-Bash(npm run:*)
-Bash(npm test:*)
-Bash(npm ci)
-Bash(npx:*)
-Bash(node:*)
-Bash(pnpm:*)
-Bash(yarn:*)
-Bash(bun:*)
-EOF
-      ;;
-    python)
-      cat <<'EOF'
-Bash(python:*)
-Bash(python3:*)
-Bash(pip install:*)
-Bash(pytest:*)
-Bash(ruff:*)
-Bash(uv:*)
-Bash(poetry:*)
-EOF
-      ;;
-    rust)
-      cat <<'EOF'
-Bash(cargo build:*)
-Bash(cargo test:*)
-Bash(cargo run:*)
-Bash(cargo check:*)
-Bash(cargo clippy:*)
-Bash(cargo fmt:*)
-EOF
-      ;;
-    go)
-      cat <<'EOF'
-Bash(go build:*)
-Bash(go test:*)
-Bash(go run:*)
-Bash(go vet:*)
-Bash(gofmt:*)
-EOF
-      ;;
-    ruby)
-      cat <<'EOF'
-Bash(bundle install)
-Bash(bundle exec:*)
-Bash(rake:*)
-Bash(rspec:*)
-EOF
-      ;;
-    php)
-      cat <<'EOF'
-Bash(composer install)
-Bash(composer:*)
-Bash(php:*)
-Bash(./vendor/bin/phpunit:*)
-EOF
-      ;;
-    jvm)
-      cat <<'EOF'
-Bash(./gradlew:*)
-Bash(mvn:*)
-Bash(gradle:*)
-EOF
-      ;;
-    dotnet)
-      cat <<'EOF'
-Bash(dotnet build:*)
-Bash(dotnet test:*)
-Bash(dotnet run:*)
-EOF
-      ;;
-    *) : ;;
-  esac
+  # Stack detection is not authorization to execute project code or install packages.
+  # Keep the argument for compatibility; the agent proposes reviewed commands separately.
+  :
 }
 
 _perms_deny() {
   # Illustrative deny list — real permission-matcher prefix rules only, not a
-  # complete guard against destructive commands (a Bash matcher can't catch a
-  # piped command or a fork bomb; that needs a hook, not a permission rule).
+  # complete guard against destructive commands. Neither these patterns nor an
+  # unverified hook substitute for the host sandbox and reviewed authorization.
   cat <<'EOF'
 Bash(git push --force:*)
 Bash(git push -f:*)

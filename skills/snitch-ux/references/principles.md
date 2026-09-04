@@ -25,8 +25,9 @@ case isn't covered, reason up from that file.
 ## A. Reduce the thinking (cognitive load)
 
 ### Smart defaults
-**Rule:** Pre-select the most common choice for every field; don't make users decide
-what you can already predict.
+**Rule:** Offer a known, appropriate, reversible default when it helps the task. Leave a field
+blank when its value is unknown or requires an explicit choice. Do not guess identity,
+sensitive information, paid add-ons, or consent; popularity is not permission.
 *Why:* most users never change a default and read it as a recommendation ("this is what
 most people pick"). The effect is large and well-replicated across very different contexts
 — retirement enrollment, organ-donor registration, privacy and cookie settings, app
@@ -105,15 +106,14 @@ pays it on the system side once, instead of charging every user on every use.
 
 ## B. Create motivation & commitment
 
-### Goal-gradient / never start at zero
-**Rule:** Give an artificial head start; show progress that is never empty.
-*Why:* car-wash study — a loyalty card with 2 of 10 stamps pre-filled (same 8 needed)
-nearly **doubled** completion vs. an empty 8-stamp card. The closer people feel to done,
-the harder they push. 0% feels like standing still; 20% feels like momentum. You choose
-where the starting line is.
-- **Do:** start onboarding meters at ~20%; count something already done (account created =
-  step one); show a "profile strength" that's never zero.
-- **Don't:** greet a new user with "0% complete."
+### Goal-gradient / honest progress
+**Rule:** Show meaningful progress and the remaining work accurately.
+*Why:* a visible next step can make an unfinished task easier to resume. A granted loyalty
+bonus is not the same as falsely reporting completed work.
+- **Do:** count completed steps against a clear denominator; label any granted bonus as a
+  bonus. An untouched task can correctly start at 0%.
+- **Don't:** inflate completion, change the denominator to manufacture momentum, or file a
+  Finding just because a truthful meter is empty.
 
 ### Endowment / build-it effect
 **Rule:** Let users build, choose, or customize *before* you ask for commitment.
@@ -125,12 +125,11 @@ theirs.
 - **Don't:** open with "email / password / sign up" before they've created anything.
 
 ### Loss aversion & status-quo bias
-**Rule:** Frame the cost of *inaction*, not the gain. Show what they'll lose.
-*Why:* losing is ~2× as psychologically powerful as gaining the same thing.
-Humans are wired to protect what they already have.
-- **Do:** "You'll lose these files / this streak" with specifics; make the dismiss option
-  own the cost ("I'll risk it").
-- **Don't:** sell the upside with a frictionless "Maybe later" that has zero stakes.
+**Rule:** Explain real consequences when relevant; do not manufacture stakes for declining.
+*Why:* potential loss can influence a decision, but its effect varies by context and person.
+- **Do:** state what will be lost and when, with evidence, alongside a neutral exit action.
+- **Don't:** use "I'll risk it" as a default improvement, imply an unproven loss, or shame a
+  refusal. Necessary factual warnings are different from pressure to convert.
 
 ### Commitment & consistency
 **Rule:** Surface the small decision the user already made so the remaining choice shrinks.
@@ -152,14 +151,13 @@ behavior. Free samples can lift purchases dramatically.
 ## C. Persuade & build trust
 
 ### Anchoring / contrast effect
-**Rule:** Never show a cost in isolation; control what the user sees first — it becomes the
-ruler for everything after.
-*Why:* the brain evaluates relatively, against the immediately-prior number. $50 feels big
-alone; "2.6% of your $1,900 cart" feels like nothing.
-- **Do:** show a price as a % of a larger whole; put a crossed-out reference price + "-31%";
-  show one clear number per option (ranges make users grab the *high* end).
-- **Don't:** present a raw number with nothing to measure it against — or a range when a
-  single number would do (that manufactures doubt).
+**Rule:** Make price, units, total commitment and relevant comparisons clear. A single price
+can be sufficient; an anchor is optional, not a Finding condition.
+*Why:* comparison can help when the user is choosing between materially different offers.
+- **Do:** use verified comparisons when useful and retain the actual total and billing term.
+  Preserve ranges when the final price genuinely varies; explain what determines it.
+- **Don't:** invent a reference price, discount, annual plan or savings claim. Do not make
+  a large commitment look small by replacing its total with a per-day equivalent.
 
 ### Decoy & the power of free
 **Rule:** People judge options against the nearest comparison, and treat "free" as a
@@ -195,12 +193,11 @@ drivers of action.
 - **Don't:** claim a shared identity you haven't earned or a community that isn't real.
 
 ### Social proof, halo & specificity
-**Rule:** Show that others chose this; use specific, non-round numbers; lead with a status badge.
-*Why:* social proof ("hundreds are buying") flips "should I risk being first?" to "must be
-good." A best-seller/top-rated badge frames the entire perception (halo). Round numbers
-(100, 500) subconsciously read as fake/placeholder; "4.9 ★, 221 reviews" reads as real.
-- **Do:** live activity ("500+ this week"), exact counts/ratings, a badge above the title.
-- **Don't:** invent counts or use suspiciously round figures.
+**Rule:** Use substantiated social proof when relevant to the decision; it is not required.
+*Why:* other people's experience can reduce uncertainty when its source and relevance are clear.
+- **Do:** preserve the verified count, timeframe, population and rounding convention.
+- **Don't:** infer truth from precision or fabrication from a round number. Never substitute
+  an odd number to make a claim seem real; missing substantiation needs verification.
 
 ### Transparency bias
 **Rule:** Proactively reveal a downside; it *builds* trust, not doubt.

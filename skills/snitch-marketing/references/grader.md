@@ -6,13 +6,14 @@ After the audit produces `SEO_AUDIT_REPORT.md`, after the lint pass runs, and be
 
 The lint pass (in `SKILL.md` STEP 3) catches surface-level violations: em dashes, practitioner and source names, sycophantic adjectives, "Bonus" sections that re-praise. Lint matches on patterns. The grader catches semantic issues lint cannot see by pattern alone:
 
-- A finding's Risk statement is abstract ("hurts SEO") instead of concrete ("loses 1-2 ranking positions on this query") — no forbidden keyword, but the statement is hand-wavy.
+- A finding's Risk statement is abstract ("hurts SEO") instead of concrete ("prevents this page from being indexed, as shown by its effective noindex directive") — no forbidden keyword, but the statement is hand-wavy.
 - A finding's Fix opens with framing prose ("The right way to think about this is...") instead of the concrete action — no forbidden keyword, but the structural pattern is wrong.
 - The quoted evidence doesn't actually support the claim ("title duplicated" claimed but only one route's title quoted) — internal inconsistency lint cannot detect.
 - The severity tier doesn't match the evidence + risk (assigned Critical with weak evidence; assigned Low with high-stakes risk) — calibration error.
-- The finding makes a future-tense or hypothetical claim ("this could affect rankings") rather than naming what is currently true.
+- The Finding confuses an observed defect with its possible consequences. Conditional risk
+  is valid when its mechanism is specific; never require an invented measured loss.
 
-Lint covers ~70% of quality issues. The grader covers the remaining ~30% of harder issues. Both ship in Tier 1.
+Lint and the grader catch different defects; no measured coverage percentage is established.
 
 ## The grading rubric (5 criteria, score 0-2 each, max 10 per finding)
 
@@ -20,13 +21,15 @@ For each finding in the report, the grader evaluates:
 
 ### Criterion 1: Evidence specificity (0-2)
 
-- **2**: Evidence has concrete file:line (source mode) or URL+CSS-selector / URL+request-result (crawl mode). The quoted snippet is verbatim from the source. The reader can locate the exact thing being audited. **For negative claims** (something is missing / absent / not present), the evidence includes the literal search command, the result count (e.g., "returned 0 matches"), AND the scope (which files / URLs the search covered).
+- **2**: Evidence has concrete file:line (source mode) or URL+CSS-selector / URL+request-result (crawl mode), or explicitly identified supplied material. The quote supports the exact claim. **For negative claims**, name the check, result, and complete inspected scope. Search-based claims include the literal command and count. A complete supplied fragment can support a fragment-local observation by full quotation and explicit completeness; do not invent a command that never ran or extend that absence to unseen pages.
 - **1**: Evidence has the URL or file path but the snippet is paraphrased or the selector / line reference is vague. **For negative claims**: search command and result count are shown, but scope is implicit or sample-sized without naming the gap.
-- **0**: Evidence is hand-wavy ("the page has..."), uses "may" / "probably" / "could" / "most" / "many" without enumeration, or makes a claim without quoting source. **For negative claims**: a "missing" / "absent" assertion with no search command + result + scope shape (Rule 1 + Rule 6 violation).
+- **0**: Evidence is hand-wavy, lacks the source or supplied-material quotation, or overstates an unenumerated population. A negative assertion with no check, result, and scope fails; necessary uncertainty in a Risk statement is not an evidence defect.
 
 ### Criterion 2: Risk specificity (0-2)
 
-- **2**: Risk statement names a concrete cost: lost ranking positions, blocked SERP feature, regulatory exposure, attribution gap, conversion friction quantified, fall-off in the funnel. The reader knows what specifically is lost.
+- **2**: Risk names the concrete affected decision or mechanism and ties it to the observed
+  defect. Measured loss is cited only when supplied; an honest conditional consequence can
+  receive full credit. Never manufacture ranking positions, CTR loss, or conversion numbers.
 - **1**: Risk names a category of cost ("SEO impact") but doesn't quantify or specify.
 - **0**: Risk is abstract ("hurts SEO", "impacts conversion") or absent.
 
@@ -44,17 +47,21 @@ For each finding in the report, the grader evaluates:
 
 ### Criterion 5: Evidence-to-claim alignment (0-2)
 
-- **2**: The quoted evidence directly demonstrates the claim. If the claim is "duplicated across 6 routes", at least 2 routes' duplicate values are quoted. If the claim is "missing on the homepage", the homepage quote shows the absence.
+- **2**: The quoted evidence directly demonstrates the claim. If the claim is "duplicated across 6 routes", enumerate evidence for all six; two
+  quoted examples alone prove only those two. If the claim is "missing on the homepage", the homepage quote shows the absence.
 - **1**: Evidence is present but supports a related claim, not the exact one made (e.g., evidence shows "metadata block exists" but claim is "metadata block is incomplete").
 - **0**: Evidence and claim are misaligned. The reader can't see the connection. Or the evidence is missing entirely.
 
 ### Severity calibration check (pass / fail, not scored)
 
-In addition to the 5 scored criteria, the grader checks whether the assigned severity matches the evidence + risk:
+In addition to the 5 scored criteria, check the selected category's severity rule against
+its evidenced conditions. Category-specific rules take precedence over the general guide
+below; do not invent measurements to reconcile them, and never promote a raw score to severity:
 
 - **Critical**: page-level / site-level damage (excluded from indexing, manual-action risk, regulatory violation, paying customer surface broken).
-- **High**: real ranking / CTR loss in measurable terms.
-- **Medium**: incremental improvement; modest measurable impact.
+- **High**: a substantial evidenced defect under the category's rule, with concrete risk;
+  measured ranking/CTR loss is not a prerequisite and must not be invented.
+- **Medium**: a meaningful but limited defect; describe the demonstrated mechanism.
 - **Low**: polish; won't move the needle alone.
 
 If the assigned severity doesn't match the evidence and risk, that's a calibration failure. The grader marks it `severity_calibration: fail` and flags the finding for re-tier.
@@ -67,9 +74,9 @@ without re-running the audit (see `references/report-template.md` "Verification 
 leading indicator" and `references/field-cwv.md`). A Critical/High finding with no
 `Verify:` line, or one that promises a specific ranking ("Verify: you'll rank #1"),
 fails this check. The grader marks `leading_indicator: fail` and flags it for
-rewrite. Medium/Low findings are exempt. For conversion/persuasion findings, a valid
-`Verify:` line points at an A/B test (the lift is unprovable from inspection, per
-Cat 73 / Cat 114) rather than asserting an outcome.
+rewrite. Medium/Low findings are exempt. Verification must match the claim. A wording or
+comprehension defect can use a targeted reader/task check. Claims about conversion lift need
+an appropriate experiment, such as an A/B test; inspection cannot establish that lift.
 
 ## Pass threshold
 
@@ -91,7 +98,7 @@ When `rewrite_failures: true` (default):
 
 1. The grader produces a list of failing findings with the failing criteria called out per finding.
 2. The agent reads the failing finding + the grader's specific criticism.
-3. The agent rewrites the finding to address the criticism (tighten evidence, quantify risk, sharpen fix, fix calibration).
+3. The agent rewrites the finding to address the criticism (tighten evidence, specify risk without invented measurements, sharpen fix, fix calibration).
 4. The grader re-runs on the rewritten finding.
 5. If the rewrite still fails, mark the finding with `grader_failure: true` in the report's hidden metadata and surface the issue to the human auditor as a follow-up.
 

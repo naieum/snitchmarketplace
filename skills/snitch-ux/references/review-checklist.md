@@ -6,6 +6,9 @@ screen. Each check ends as one of three outcomes: a **Finding** (with evidence),
 (with the evidence that it ran), or a **Skip** (with the reason). Skipping an inapplicable
 check is correct and costs nothing — recording it is what turns the skip into coverage.
 
+These are prompts, not a feature checklist. Apply `finding-rules.md`: an absent optional
+technique is not a Finding, and a heuristic match is not proof of a broken task.
+
 > **Gate first: `ethics-gate.md`.** Run it before anything below, and before you reach for a
 > single persuasion technique. It outranks every check in §2, §2.5, §3 and §7, and no config
 > value turns it off.
@@ -59,10 +62,10 @@ check is correct and costs nothing — recording it is what turns the skip into 
 ## 2. Motivation & commitment
 - [ ] If users aren't acting, which of **motivation / ability / prompt** is missing? (too
       hard → cut friction; not wanted enough → strengthen reason or timing; no cue → add/time
-      the prompt). Easing effort usually beats pumping motivation. **A behavior happens only
-      when all three converge in the same moment**, so exactly one of them is what to fix
-      (`substrate.md`, the convergence model).
-- [ ] Any progress indicator that starts at **0%** instead of a head start?
+      the prompt). More than one factor can be missing; non-action alone does not tell you
+      which. Use the model to form testable explanations (`substrate.md`).
+- [ ] Does progress accurately reflect completed work and remaining steps, including **0%**
+      when nothing is complete? Are bonuses distinguished from work done?
 - [ ] For sign-up/commitment: do users **build/own something first** (endowment)? Is the CTA
       "Continue/Start my…" rather than "Sign up"?
 - [ ] Is anything framed as a **gain** that would be stronger as avoiding a **loss** (if true)?
@@ -86,9 +89,10 @@ check is correct and costs nothing — recording it is what turns the skip into 
       subscribing.
 
 ## 3. Trust & persuasion
-- [ ] Any number/price shown **in isolation** with no anchor (%, reference price, total)?
-- [ ] Is there honest **social proof** with specific, non-round figures? A status badge to
-      set the halo?
+- [ ] Are price, units and total commitment clear? Would a verified comparison help this
+      decision? Its absence is not itself a defect.
+- [ ] If **social proof** is used, is it substantiated and relevant? Neither roundness nor
+      precision establishes truth. Missing business evidence is a verification Skip.
 - [ ] Do you **reveal the catch** proactively (transparency), and place **reassurance** at
       the moment of hesitation (near the CTA)?
 - [ ] Does the CTA name the **outcome/total** and preempt the top objection?
@@ -153,9 +157,9 @@ model — slips vs. mistakes, constraints over warnings, and the gulf of evaluat
       without blaming them.
 
 ## 6. Mobile & reachability (if applicable)
-- [ ] Primary actions inside the **thumb zone**; tap targets **44–48px** — 44pt (Apple HIG,
-      and WCAG 2.2 AAA 2.5.5) to 48dp (Material). **24×24 CSS px is the conformance floor**
-      (WCAG 2.2 AA, 2.5.8): passing, not comfortable — design to 44–48.
+- [ ] Primary actions reachable, with targets comfortable for the platform. Keep units
+      distinct: 44pt on iOS, 48dp on Android; web WCAG 2.2 AAA 2.5.5 uses **44×44 CSS px**,
+      not points. **24×24 CSS px** is the AA 2.5.8 threshold, subject to its exceptions.
       **Check 2.5.8's exceptions before filing a failure below 24.** Spacing (a 24px-diameter
       circle centred on the target's bounding box intersects no other target, nor another
       undersized target's circle — it may overlap non-target content freely), Inline targets inside a sentence, an
@@ -177,10 +181,11 @@ model — slips vs. mistakes, constraints over warnings, and the gulf of evaluat
       backstory? Is there one **controlling idea** a visitor could repeat back? Is the hero
       doing curiosity's job (make them say "tell me more"), not education's? Does the header
       weigh **zero pounds** of cognitive load, and does the page pass the **5-second test**
-      (what problem? what's life after? how do I buy?) and the **Sharpie test** (10+ problem
-      mentions)? (See `brand-message.md`.)
+      (what is it? who is it for? what is the next step?)? Treat these as questions, not
+      mandatory headline structures or repetition quotas. (See `brand-message.md`.)
 - [ ] **Taglines:** does the tagline survive the name-strip and stranger-guess tests? Is the
-      CTA direct ("Buy now" / "Schedule a call"), never "Learn more"? (See
+      CTA accurate for its destination and commitment? "Learn more" can suit an information
+      step; it should not hide a purchase. (See
       `brand-message.md`.)
 
 ## 8. Goodwill — does it do right by the user?
@@ -200,10 +205,16 @@ model — slips vs. mistakes, constraints over warnings, and the gulf of evaluat
       apologize? (See the reservoir of goodwill in `clarity.md`.)
 
 ## 9. Accessibility & inclusion (see `inclusive-design.md`)
-Plain language first, WCAG 2.2 criterion number after it — so a finding is conformance, not
-opinion. These are criteria an AA target has to meet; most are Level **A** and the rest AA, with
-the one marked AAA (2.3.3) included as the design target rather than the floor. Quote the
-criterion number, not a level, unless you have checked the level.
+Plain language first, criterion number as a locator after it. This is a task-barrier review,
+not a conformance verdict. Verify the criterion's scope and exceptions before citing it;
+formal conformance and legal exposure belong to snitch-ada.
+
+Verify interpretation against the relevant [labeling guidance](https://www.w3.org/WAI/tutorials/forms/labels/),
+[status-message guidance](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html),
+[contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), and
+[enhanced target-size guidance](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html)
+when those checks need standards detail. These explain mechanisms and thresholds, not this
+skill's task-impact severity.
 
 **Run the first seven on every surface** — alt text and labels, keyboard, skip link, contrast,
 single-channel meaning, viewport and reflow, `lang` and landmarks and focus. **The rest are
@@ -222,21 +233,20 @@ differs.
 **The criterion number is a locator, not a verdict.** It tells a reader where to look up the
 rule; it is never the cost. Before writing any §9 finding, name the person and the task it
 stops: who is blocked, at which step, with what left as their route. **If the only cost you can
-state is "it fails the criterion," it is not a ux finding** — record it as a Pass or a Skip
-with one line saying conformance is snitch-ada's judge, and move on. This is where §9
-padding comes from: a criterion the surface technically misses while every user still finishes
-the task is a conformance result wearing a barrier's clothes.
+state is "it fails the criterion," it is not yet a ux finding** — record a Skip for the
+unresolved task impact or out-of-scope conformance check, and state what evidence is needed.
+Do not turn untested impact into a Pass. A barrier may impede rather than completely prevent
+completion; it does not require a participant study when the mechanism is clear in evidence.
 
 **Always, on every surface:**
-- [ ] Alt text on every image (empty for decorative); form fields tied to `<label>`s.
+- [ ] Appropriate alternatives for images; form fields have persistent visible labels and
+      programmatic names. Inspect wrapping labels, `for`/`id`, `aria-labelledby` and component
+      output before claiming labels absent. A placeholder is not a persistent visible label.
       (1.1.1 Non-text Content, 3.3.2 Labels or Instructions)
 - [ ] Usable by keyboard; text resizes without breaking. (2.1.1 Keyboard, 1.4.4 Resize Text)
-- [ ] A **"skip to main content" link where the repeated block is long enough to trap someone**
-      — a header, nav, or sidebar of roughly ten or more tab stops that a keyboard user has to
-      cross on every page to reach the content. (2.4.1 Bypass Blocks) On a short header — a
-      logo and two or three links — the tab cost is a second, nobody is blocked, and a missing
-      skip link is a **Pass, not a finding**; the conformance view of it belongs to
-      snitch-ada. Count the tab stops before you write this one up.
+- [ ] Can keyboard users bypass repeated navigation? Count the repeated stops, inspect
+      available bypass mechanisms, and explain the effort for this task. There is no ten-stop
+      cutoff and no assumed completion time. (2.4.1 Bypass Blocks)
 - [ ] Contrast: **4.5:1 for normal text, 3:1 for large text** (≥24px, or ≥18.5px bold) **and
       for UI components and meaningful graphics** — icons, input borders, focus rings, chart
       strokes. (1.4.3 Contrast (Minimum), 1.4.11 Non-text Contrast)
@@ -249,16 +259,12 @@ the task is a conformance result wearing a barrier's clothes.
       the two colors in the Evidence — "`color:#8e8e8e` on `#fff` ≈ 3.2:1 against a 4.5:1 requirement"
       is checkable; "low contrast" is not. Light grey small text is the standard way a cost
       disclosure gets buried, so this arithmetic often *is* the finding.
-      **Missing the threshold is not automatically a ux finding — read the computed ratio
-      against what it costs the reader.** At or under **3:1** for normal text, people with
-      low vision cannot read it: that is a barrier, and a finding, every time. **Between 3:1
-      and 4.5:1** the text is legible to most readers, so it is a ux finding only when
-      something else compounds it — small or thin type, a cost or consent disclosure, an
-      error message, a high-stakes surface, or a missing viewport tag that shrinks it further.
-      Absent one of those, a near-miss ratio on ordinary body copy is a **conformance result,
-      not a barrier**: record it as a Pass with the ratio quoted and hand the conformance
-      sweep to snitch-ada. Do not open a Medium on 4.4:1 body text that everyone on the
-      page can read.
+      **Rate task impact, not an invented perceptual cutoff.** Ratios do not prove that all
+      people can or cannot read a string. Identify the text, its role, size, effective colors
+      and the low-vision reader's task; reduced contrast can impede that task without making
+      it impossible. Do not automatically pass ordinary text between 3:1 and 4.5:1, or call
+      text below 3:1 universally unreadable. State source assumptions (theme, background,
+      opacity) and verify computed styles when available; no automatic severity from a ratio.
 - [ ] Meaning never carried by color/sound/motion alone; source order = reading order;
       reduced-motion respected. (1.4.1 Use of Color, 1.3.2 Meaningful Sequence,
       2.3.3 Animation from Interactions, AAA)
@@ -266,28 +272,29 @@ the task is a conformance result wearing a barrier's clothes.
       initial-scale=1">` present; no fixed pixel widths that force horizontal scrolling; content
       reflows at 320px CSS width without a second scroll direction; pinch-zoom not disabled
       (`user-scalable=no` / `maximum-scale=1` are failures). (1.4.10 Reflow, 1.4.4 Resize Text)
-      Check this *before* rating any small-text or small-target finding: without the viewport tag
-      a mobile browser lays out at ~980px and scales down, so 9px text renders nearer 3px and an
-      already-marginal tap target becomes unhittable. It escalates several findings by a band at
-      once, so establish it first. (Escalates — it does not automatically make them Critical:
-      small targets and hard-to-read text are barriers, which `finding-rules.md`'s rubric rates
-      Medium by default, High when they actually stop someone finishing, and Critical only when
-      they leave no route at all.)
+      Missing viewport configuration can cause mobile scaling. Inspect the document shell
+      and framework metadata, then verify at the target viewport when possible. Without a
+      render, do not invent effective pixel sizes or escalate every text/target Finding by
+      one band. State the untested mobile behavior as such.
 - [ ] `<html lang>` set; landmark elements (`header`, `nav`, `main`) present so screen-reader
       users can skip; focus is visible on every interactive element.
       (3.1.1 Language of Page, 1.3.1 Info and Relationships, 2.4.7 Focus Visible)
 
 **Conditional — run each only if the surface has the thing, and record the ones you skipped:**
-- [ ] Anything with an `onclick` is a real control: a `<button>` or `<a href>`, not a `<span>`
-      or `<div>`. A click handler alone gives no keyboard focus, no Enter/Space activation, and
-      no announced role — the element simply does not exist for keyboard and screen-reader
-      users. (2.1.1 Keyboard, 4.1.2 Name, Role, Value)
+- [ ] Interactive elements have the appropriate name, role, focusability and keyboard
+      behavior. Prefer native buttons/links, but inspect implemented equivalents before
+      flagging a custom control. A click handler alone does not supply those semantics.
+      (2.1.1 Keyboard, 4.1.2 Name, Role, Value)
+- [ ] Dynamic results/errors are conveyed through suitable status or alert semantics, or an
+      appropriate focus/context change. `role="status"` and `role="alert"` can supply implicit
+      live behavior; no literal `aria-live` is not evidence of a missing announcement. Source
+      support is not a claim of tested screen-reader behavior. (4.1.3 Status Messages)
 - [ ] **Every error names the field and the problem, in text.** Not color or position alone —
       "Enter a valid email address," tied to the field it is about. A floating word or a red
       border is not an error message. (3.3.1 Error Identification)
 - [ ] **Never ask twice for what the user already gave.** Email, address, code, card — inside
       one flow it must be auto-filled or selectable, not retyped. This is the same rule as
-      "smart defaults, never a blank form" (§1), now a conformance requirement.
+      reuse of known information (§1), not permission to guess unknown or sensitive values.
       (3.3.7 Redundant Entry)
 - [ ] **Sign-up and login don't demand a cognitive-function test.** No memorizing, no
       transcribing, no puzzle, with no way around it; paste and password managers work; if a
@@ -309,8 +316,8 @@ the task is a conformance result wearing a barrier's clothes.
 it is not the whole of WCAG, and it is deliberately narrower than a conformance audit. Where a
 surface does something these items don't reach, go to the criterion rather than assuming silence
 means pass, or hand the conformance sweep to snitch-ada. Criteria this list no longer
-carries but a full pass would: machine-readable field purpose (1.3.5), status messages (4.1.3 —
-§5.5 covers the failure-path case), focus not obscured (2.4.11), error prevention on
+carries but a full pass would: machine-readable field purpose (1.3.5),
+focus not obscured (2.4.11), error prevention on
 consequential submissions (3.3.4 — §5.5 covers the guard), content on hover (1.4.13), headings
 and labels (2.4.6), images of text (1.4.5), consistent help (3.2.6), keyboard traps in modals
 (2.1.2), session timeouts (2.2.1), unexpected changes on focus or input (3.2.1 / 3.2.2),

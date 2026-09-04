@@ -45,7 +45,11 @@ the thresholds or the lists.
 - **Sycophantic adjectives**: forbidden list = "best", "best-in-class", "excellent", "great", "amazing", "world-class", "textbook", "textbook-correct", "comprehensive", "strong foundation", "well-architected", "thoughtful", "reference example", "outstanding", "remarkable", "robust" (when used as praise, not as technical descriptor), "elegant" (similar). Replace with factual descriptions of what is configured.
 - **Sycophantic framing patterns**: scan for opening phrases like "Atlas has a strong foundation but...", "The brand has done a great job of...", "The team has thoughtfully...", "Bonus observation:", "Worth highlighting:". Rewrite to lead with severity counts and findings without preamble praise.
 - **"Bonus" / "Highlight" sections** that re-praise something already in the "What's working" list. Remove or fold into "What's working" at the same depth.
-- **Negative-evidence shape violations**: scan finding Evidence blocks for "missing" / "absent" / "not present" / "not declared" / "no <X> detected" / "zero" claims. Each such claim must be paired (in the same Evidence block) with the literal search command (a `Grep` / `Bash` / `WebFetch` invocation), the result count, AND the scope (which files / URLs were covered). If any of the three is absent, flag the finding for rewrite. Forbidden hedges that fail the shape outright: "most images", "many pages", "appear to", "seem to", "likely also", "probably affects", "may impact" — these all violate Rule 6 (no propagation without enumeration) when paired with a missing/absent claim.
+- **Negative-evidence shape violations**: scan finding Evidence blocks for absence claims. Require the actual inspection method, observed result/count, and scope, as defined in `references/anti-hallucination.md`. A complete supplied fragment plus an exact quote can support a fragment-local absence claim; it cannot prove absence across linked pages, runtime, or a repository. Do not demand or fabricate a command when direct inspection supports the scoped claim. Unenumerated population claims such as "most images" or "probably affects other pages" fail Rule 6.
+
+Preserve exact evidence quotes and technical identifiers during every style pass. The customer's
+quoted "world-class" claim is evidence, not praise by the auditor. Rewrite surrounding analysis,
+not the source quote; redact sensitive values explicitly under the redaction gate.
 
 ## Copy mechanics (delegated)
 

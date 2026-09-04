@@ -1,7 +1,7 @@
 {
   "name": "snitch-ada",
-  "description": "Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages.",
-  "version": "0.1.0",
+  "description": "Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages. |",
+  "version": "0.2.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

@@ -46,9 +46,13 @@ Fix: plain descriptive title, move promotional language out of the title entirel
 
 ### 4. Spam and minimum functionality
 
-Trigger: crash on launch, broken core features, or an app below the quality bar (stable, responsive, engaging — enforced since 2024-08-31). Webview wrappers whose primary purpose is driving traffic to a site are "webview spam". Repetitive clones and made-for-ads apps fall here too.
-Check: does the app do anything a mobile site cannot? Does it launch clean on a real device?
-Fix: add native capability (offline, notifications, device APIs) or do not submit a wrapper.
+Trigger: crash on launch, broken core features, or an app below the quality bar (stable, responsive, engaging — enforced since 2024-08-31). The Webviews and Affiliate Spam rule concerns apps primarily driving affiliate traffic or
+providing a website WebView without owner/administrator permission. Owner-authorized web
+content is not automatically spam. Check utility and functionality separately. Repetitive clones and made-for-ads apps fall here too.
+Check: is website use authorized, is the purpose affiliate traffic, and does the app provide
+useful, stable functionality on a real device? Do not require an arbitrary native-feature quota.
+Fix the evidenced policy or utility defect; changing frameworks alone proves nothing.
+Rule checked 2026-09-04: https://support.google.com/googleplay/android-developer/answer/9899034
 Static check: single-Activity + WebView + `loadUrl` of a remote site with no native features is the wrapper signature (see references/09-static-checks.md).
 
 ### 5. Payments policy

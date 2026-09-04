@@ -1,17 +1,22 @@
 # Discovery Flow: STEP 0.4 → 0.8
 
-The pre-audit discovery sequence that produces the ground truth every category's severity calibration depends on. Run these steps in order before scanning.
+The pre-audit discovery sequence that produces the ground truth every category's severity calibration depends on. Run applicable steps in order before scanning. For an explicitly scoped check, collect
+only the inputs it needs; do not force a full-site interview, competitor research, or context
+file. Honor inline-only requests. Unknowns limit conclusions; they do not become defects.
 
 ## STEP 0.4: Critical Unknowns & Validity Preconditions (Required, runs first)
 
-The first artifact every audit produces is a **Critical unknowns** block before any prose, any findings, or any recommendation. It names three things that would change the recommendation if learned, plus the cheapest way to learn each. At least one of the three is a **validity precondition** — something that would invalidate the entire approach if assumed wrong, not merely tune it.
+The first artifact every audit produces is a **Critical unknowns** block before any prose, any findings, or any recommendation. It names the actual unresolved inputs that would change the recommendation, plus the
+cheapest way to learn each. Do not invent a quota of three unknowns. An applicable **validity precondition** is — something that would invalidate the entire approach if assumed wrong, not merely tune it.
 
 The distinction is load-bearing:
 
 - An **assumption** (STEP 0.5.1 below) tunes the recommendation. "Team size is solo" makes the recommendation favor founder-led posting; "team size is 20" makes it favor ops-heavy plays. Either way, the recommendation is structurally valid.
 - A **validity precondition** invalidates the entire recommendation if wrong. If the site's primary deploy is a JS-rendered SPA and the audit ran in crawl-mode without a JS renderer, half the cats produced false negatives — the recommendation derived from those negatives is structurally wrong, not merely mistuned.
 
-Treat validity preconditions as Critical-tier findings even before the scan starts. If a precondition can't be verified, do not promote a recommendation that depends on it; downgrade to "test the precondition first" and pause the rest of the chain.
+An unverified precondition is a Skip/coverage limitation, not a Critical-tier Finding.
+Suspend only dependent conclusions and continue independent checks. A Finding requires an
+evidenced defect under a selected category; the importance of an unknown is not its severity.
 
 ### Validity precondition classes to check
 
@@ -35,7 +40,8 @@ Pick the ones that apply; surface each one explicitly in the unknowns block.
 ```markdown
 ## Critical unknowns
 
-Before acting on this audit, three things would change the recommendation if learned. At least one is a validity precondition — something that would invalidate the audit's approach if assumed wrong.
+The unresolved inputs below limit the named conclusions. List only actual unknowns,
+including any validity precondition; this is not a Finding count.
 
 | # | What we don't know | Cheapest way to learn | Type |
 |---|---|---|---|
@@ -168,7 +174,8 @@ What would you like to do?
 
 ## STEP 0.7: Niche & Competitor Research (Required for off-site categories + Strategic Recommendations)
 
-Skip this step if the user explicitly opts out of off-site categories AND opts out of recommendation synthesis. Otherwise: required.
+Run this step only when off-site categories or strategic recommendation synthesis are in
+scope. A named on-site/category-only request is not authorization for competitor research.
 
 The audit answers "what's broken on this site." Niche + competitor research adds "and here's what to do about it, given who you're competing with." Without this step, recommendations become generic ("write more content!") instead of specific ("competitor X owns query Y with a 4000-word piece + FAQ schema; ship the equivalent").
 

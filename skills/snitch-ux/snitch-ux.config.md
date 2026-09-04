@@ -69,8 +69,8 @@ touches the ethics gate — a lint-clean dark pattern is a finding at every valu
 
 ## platform
 
-Which platform conventions apply. Governs whether the mobile hard rules (tab count, thumb zone,
-44×44px tap targets — `references/navigation.md`) are enforced or skipped, and which
+Which platform conventions apply. Governs which mobile review prompts (tab count, reachability,
+platform-specific target sizing — `references/navigation.md`) apply, and which
 familiar-pattern set counts as "the convention."
 
 ```
@@ -98,9 +98,10 @@ Add `snitchfindings/` to `.gitignore` if review output should stay local.
 
 ## confirm-scope
 
-Whether Step 0 presents the enumerated surface list and waits for the user to confirm or narrow it
-before the pass starts. Default `true`. Set to `false` for batch runs where no one is there to
-answer — the skill then reviews every surface it enumerated and says so.
+Whether Step 0 asks the user to resolve an unclear surface boundary before the pass starts.
+Default `true`; an explicitly named page, component or flow is already scoped. Set to `false`
+for batch runs — the skill states its scope assumption, reviews the enumerated in-scope
+surfaces, and marks any unknown inventory or unreviewed states as partial coverage.
 
 ```
 confirm-scope: true

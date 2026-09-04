@@ -1,7 +1,7 @@
 {
   "name": "snitch-blueprint",
-  "description": "Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on.",
-  "version": "0.3.0",
+  "description": "Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. |",
+  "version": "0.4.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

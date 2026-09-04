@@ -1,7 +1,7 @@
 {
   "name": "snitch-docwriter",
-  "description": "Does your writing sound like AI wrote it? Rewrites docs in plain controlled English and scores the result.",
-  "version": "0.4.1",
+  "description": "Are your technical docs hard to follow? Rewrites them in plain English without changing meaning; a linter flags wording to inspect. |",
+  "version": "0.5.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

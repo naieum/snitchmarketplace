@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server or bundled tools required. LLM-backed work uses the user's existing model.
 metadata:
   author: Snitch
-  version: 0.3.1
+  version: 0.4.0
   homepage: https://snitchplugin.com
 ---
 
@@ -30,9 +30,9 @@ Hand off by calling the Skill tool with the named skill (one skill per call):
 
 ## Anti-hallucination rules (critical)
 
-1. **No finding without evidence.** Static findings cite `file:line` with the exact snippet. Checklist findings cite what the user told you ("user-confirmed", "user-unsure").
-2. **No invented rule citations.** Cite Apple guideline numbers (e.g. 5.1.1(v)) and Play policy names only when the reference files carry them. If you cannot cite the rule, downgrade to a plain-language WARN.
-3. **Volatile facts get hedges.** Fee percentages, tester counts, review times, yearly SDK/API floors, and EU fee structures all move. State them with the reference file's "Facts verified" date, "verify in App Store Connect / Play Console", and the official URL from the reference file.
+1. **No finding without evidence.** Static findings cite `file:line` with the exact snippet. Checklist Findings cite a confirmed defect and the user's statement. "User unsure" is a Skip with the console evidence needed, not a defect.
+2. **No invented rule citations.** Verify the applicable official Apple guideline or Play policy. References are starting points, not the only possible source. If the rule or applicability cannot be established, Skip that policy determination and name what would unblock it; missing evidence alone is not a WARN Finding.
+3. **Verify volatile facts against the applicable official source during this audit.** A saved reference date is not current verification; if access or applicability is unknown, Skip the determination rather than assert a current floor. Fee percentages, tester counts, review times, yearly SDK/API floors, and EU fee structures all move. State them with the reference file's "Facts verified" date, "verify in App Store Connect / Play Console", and the official URL from the reference file.
 4. **Never promise approval.** Review has human discretion. The ceiling is "no known blockers found".
 5. **Absence of a feature is not a finding.** An app with no account system does not need account deletion; mark ⚪ N/A with the reason. An Android-only app skips every Apple check as N/A, and vice versa.
 6. **Three outcomes only** per check: Finding (with evidence), Pass (with evidence), or Skip (with the reason and what would unblock it). Never "partially audited".
@@ -61,7 +61,7 @@ Ask the user which scan they want (or infer it from their words):
 
 1. **Full audit** — both stores, static checks + console checklist.
 2. **Apple only** / **Play only** — other store's checks become ⚪ N/A.
-3. **Rejection triage** — they have a rejection in hand; verify and fix only that. See the triage map in references/30-recipes.md.
+3. **Rejection triage** — they have a rejection in hand; verify that issue and propose remediation; apply only when requested and confirmed. See the triage map in references/30-recipes.md.
 4. **Pre-flight** — audit only a change set (new permission, new SDK) for store impact.
 5. **Store-path feasibility** — auto-selected when Step 0 finds only a web project; recommends how it could ship to the stores. See references/11-web-to-store.md.
 
@@ -96,7 +96,7 @@ Write the report in the mandatory format from references/30-recipes.md to `{work
 
 ## Finding format
 
-- **Impact:** [Critical / High / Medium / Low] — Critical = upload-blocked or guaranteed rejection; High = documented common rejection cause; Medium = reviewer-discretion risk; Low = post-launch risk (Vitals, discoverability).
+- **Impact:** [Critical / High / Medium / Low] — Critical = an evidenced applicable upload blocker or explicit policy violation with critical submission impact; High = documented common rejection cause; Medium = reviewer-discretion risk; Low = post-launch risk (Vitals, discoverability).
 - **Evidence:** file:line with the exact snippet, or the user's checklist answer.
 - **Risk:** which guideline/policy it violates and what the store does about it.
 - **Fix:** the specific remediation.
@@ -105,5 +105,8 @@ Write the report in the mandatory format from references/30-recipes.md to `{work
 
 - Report first; never auto-fix. Apply fixes one at a time after confirmation, diff shown first.
 - Never weaken existing posture to pass a check (do not suggest removing a permission an implemented feature needs — flag the missing declaration instead).
-- Honest verdicts over comfort: if the app is a thin webview wrapper, say it will likely fail Apple 4.2 and Play's webview-spam rule, and say what "native minimum functionality" would mean here.
+- Judge the shipped experience, not the framework label. Apple 4.2 reviews utility beyond a
+  repackaged website. Play's webview-spam rule targets unauthorized webviews or affiliate
+  traffic; an owner-authorized WebView is not automatically spam. Inspect utility and the
+  applicable policy separately, and record unobserved behavior as Skip.
 - If the user asks you to help evade review (hidden features, misdeclared data collection, dishonest age rating), refuse and explain the enforcement risk: Apple 2.3.1 rejection or developer-program removal; Play strikes up to account termination including associated accounts.

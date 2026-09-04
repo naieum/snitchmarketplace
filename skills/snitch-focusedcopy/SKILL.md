@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.2.0
+  version: 0.3.0
   homepage: https://snitchplugin.com
 ---
 
@@ -18,7 +18,7 @@ am I here" to "I'm in" — but a call has a human on the other end asking questi
 handling objections turn by turn. A page has none of that: every stage has to happen through
 copy and layout alone, in the order the reader scrolls. That's the adaptation this skill
 makes: six stages a rep would walk through out loud, rebuilt as six jobs a page's *sections*
-have to do, in order.
+can do. The default sequence is a diagnostic aid, not a mandatory scroll order.
 
 Most pages that "aren't converting" already have four or five of the six stages somewhere on
 them. They're just out of order (mechanism explained before the reader has a reason to care),
@@ -66,9 +66,10 @@ Adapted for written copy, not a live call:
   plane ride — lead with the transformation the reader gets, then explain how it
   works. The most common bug in SaaS copy is doing this backward — opening with architecture,
   model names, or feature lists before the reader has a reason to care what powers any of it.
-  Outcome first, mechanism second, always.
+  Outcome first is a starting point. Technical buyers may need compatibility or mechanism
+  early to establish fit; material price, limits, and risks must precede commitment.
   - The mechanism explanation still belongs on the page. It answers "how" for a reader who
-    is already sold on "why" — it just runs after the Sell stage, not before it.
+    understands "why". Put it earlier when technical eligibility is the reader's first decision.
 - **E — Explain away objections.** Answer the specific reasons a reader would talk themselves
   out of the decision — price, trust, switching cost, "what's the catch," "is this too good
   to be true" — proactively. An FAQ is the natural home for this stage, but only if the
@@ -81,14 +82,16 @@ Adapted for written copy, not a live call:
 A single page rarely needs to force all six stages into six separate sections — a strong
 hero can do Clarify and half of Sell at once, and a long page can spread the arc across
 several screens or, for a funnel, several separate pages (ad → landing page → pricing page →
-email). What matters is that the *order* holds: nothing from a later stage should have to
-appear before an earlier one has done its job, and no stage should be skipped without a
-reason.
+email). Judge the reader's actual decision path. Combine, move, or omit stages with a reason;
+missing stage labels alone are not defects. Never invent pain, urgency, reassurance, or
+features to complete an arc. An informational next step need not resemble a purchase CTA.
 
 ## The anti-fabrication gate (read this before writing any copy)
 
-**Every claim placed under Overview, Sell, or Reinforce must be checked against the actual
-product before it is written down.** This is not optional and it is not a style note — it is
+**Every factual claim, in any stage, needs an adequate source before it is written down.**
+Use inspected implementation or terms, or explicit user-supplied facts labeled as supplied.
+A page establishes what is advertised, not necessarily what is implemented. Negative grep
+results over a partial scope cannot establish universal absence or unlimited service. This is not optional and it is not a style note — it is
 the difference between a persuasive page and a false one. Concretely:
 
 - Before writing an absence claim ("no X," "never Y," "unlimited Z"), search the actual
@@ -121,20 +124,21 @@ the difference between a persuasive page and a false one. Concretely:
    doing any of the six jobs (nav, footer, legal — that's fine, not everything has to serve
    the arc).
 3. **Diagnose against the map:**
-   - A stage that never appears anywhere = **missing**.
-   - A later-stage section (Sell, Explain, Reinforce) appearing before an earlier one
-     (Clarify, Label, Overview) has finished its job = **out of order** — mechanism-before-
-     outcome is the single most common instance of this.
-   - A stage repeated in three sections while another stage has zero = **imbalanced**.
-   - Any claim under O/S/R that isn't backed by something checkable = **unverified claim**
-     (see the anti-fabrication gate above — this is not a lesser finding, it blocks the fix).
+   - An unaddressed decision need = **missing**; an absent stage without a reader need is Skip.
+   - **Out of order** requires evidence of a prerequisite the reader lacks, not a violation
+     of stage numbering. Keep eligibility and material terms early when needed.
+   - **Imbalanced** requires redundant copy obscuring a necessary decision, not section counts.
+   - Separate a contradicted claim or a demonstrated lack of required substantiation from
+     unknown truth. Missing access alone is verification Skip, not proof of deception.
+     Omit unverified additions from proposed copy; identify what would unblock reuse.
 4. **Verify every claim you intend to write or keep**, per the gate above, against the actual
    product/codebase/pricing source before it goes on the page.
 5. **Propose the fix as a stage-labeled outline first** — the new section order with each
    section's CLOSER stage marked, and a one-line note on what copy changes (if any) each
    section needs. Get this outline right before touching prose; most of the fix is reordering
    sections that already exist, not writing new ones.
-6. **Apply the edits.** Reorder sections, tighten or add copy only where a stage is genuinely
+6. **Apply the edits only when changes were requested.** An audit or outline-only request
+   ends with the report/proposal; it does not authorize file edits. When authorized: Reorder sections, tighten or add copy only where a stage is genuinely
    missing or weak, and leave design, visual style, and brand voice untouched — this is a
    structure and claims pass, not a redesign. When editing code (a marketing site's route/
    component files), keep diffs minimal: reorder existing components before rewriting their
@@ -146,7 +150,8 @@ the difference between a persuasive page and a false one. Concretely:
 
 Every stage and every claim gets one of three outcomes, not just a Finding:
 
-- **Finding** — a stage is missing, out of order, imbalanced, or carries an unverified claim.
+- **Finding** — a demonstrated decision-path gap, harmful ordering/repetition, contradicted
+  claim, or missing required substantiation. Unavailable verification alone is Skip.
   See the format below.
 - **Pass-with-evidence** — a stage is present and in the right order: name the stage and
   quote the section that does its job.
@@ -162,8 +167,7 @@ Every stage and every claim gets one of three outcomes, not just a Finding:
   copy.
 - **Risk:** what it concretely costs — a reader who can't self-qualify keeps reading past
   copy that isn't for them; mechanism-first copy loses skimmers before they know why to care;
-  a missing Reinforce stage leaves last-second doubt unanswered at the CTA; an unverified
-  claim is a false statement waiting to be noticed.
+  a missing Reinforce stage leaves last-second doubt unanswered at the CTA; an unsupported claim can mislead a decision, but unknown does not mean proven false.
 - **Fix:** the specific reorder or copy fix, with the corrected text and, for an unverified
   claim, the source that was checked to confirm the replacement is true.
 

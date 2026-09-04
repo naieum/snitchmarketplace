@@ -4,7 +4,7 @@ These rules prevent false claims. Violating them invalidates your audit. Load th
 
 ## Rule 1: No Findings Without Evidence
 
-- You MUST call Read or Grep (source mode) OR Fetch (crawl mode) before claiming ANY finding
+- Inspect the actual evidence before claiming any finding: Read/Grep in source mode, Fetch or browser inspection in crawl mode, or a complete source fragment supplied by the user. Identify supplied evidence as such; never invent a tool call.
 - You MUST quote the EXACT snippet (code line, HTML element, header value)
 - You MUST include either `file_path:line_number` (source mode) or `URL` + CSS-selector path (crawl mode)
 - If you cannot find evidence in the actual source / rendered HTML / response, it is NOT a finding
@@ -111,16 +111,18 @@ These rules reduce false positives. Apply them during every scan.
 
 Any claim that something is `missing`, `absent`, `not present`, `not declared`, `zero`, `none detected`, or `not found` MUST include three components in the Evidence block:
 
-1. The **search command** that ran (the literal `Grep` / `Bash` / `WebFetch` invocation, with the pattern visible).
+1. The **inspection method** actually used: the literal search command with its pattern, a browser inspection, or an identified complete supplied fragment with its exact quote. Never fabricate a command to satisfy this format.
 2. The **result count** the search returned (e.g., `returned 0 matches across 10 audited pages`, `returned 3 of 17 expected entries`).
 3. The **scope / sample size** the search covered (which files, which URLs, how many of the total population). If the search covered a sample of `N of M`, name the gap and downgrade confidence to Medium or lower.
 
-Negative claims without all three components are Rule 1 violations (no findings without evidence) AND Rule 6 violations (no propagation without enumeration). Spot-checked claims must say `spot-checked at <route|file>; full enumeration pending` and cannot be promoted to High confidence on a population-level claim.
+Negative claims without method, observed result, and scope are Rule 1 violations (no findings without evidence) AND Rule 6 violations (no propagation without enumeration). A complete supplied fragment supports only a fragment-local absence claim, not absence across a repository, linked pages, runtime, or deployment. Spot-checked claims must say `spot-checked at <route|file>; full enumeration pending` and cannot be promoted to High confidence on a population-level claim.
 
-**Pattern (use this exact shape):**
+**Search-based pattern:**
 
 - `Verified via grep -oE "<pattern>" /path/to/<files> returning <N> matches across <M> <pages|files>.`
-- For positive claims (showing presence), the same shape applies — the search + result + scope all belong in the evidence.
+- For positive claims, a directly inspected quoted element with its location and scope is sufficient; do not invent a search to prove visible presence.
+
+**Supplied-fragment pattern:** `Inspected the complete supplied hero at <input location>: <exact quote>. It names no concrete task (0 task descriptions in this one hero). Other sections and linked pages were not supplied; no site-wide absence claim is made.`
 
 **Example correct (negative):** `Verified via grep -oE "googletagmanager|gtag\(|G-[A-Z0-9]+|GTM-[A-Z0-9]+|posthog|plausible|fathom" /tmp/loeras_*.html returning zero matches across all 10 audited pages.`
 

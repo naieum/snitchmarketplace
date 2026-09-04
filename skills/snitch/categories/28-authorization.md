@@ -18,13 +18,16 @@
 - Missing authorization middleware (distinct from authentication)
 - ORM mass assignment: `prisma.*.update({ data: req.body })` or `Model.create(req.body)` without explicit field picking. **This category owns mass assignment** — Category 44 detects the API surface and defers here
 
-#### Frontend Route Authorization (Critical — Often Missed)
-- Admin/privileged layout components that render without checking user role before mounting child routes
-- Dashboard or internal pages accessible by navigating directly to the URL without session/role validation
-- React/Vue/Angular/Svelte route guards that only check authentication (logged in) but not authorization (correct role)
-- Layout components that render sidebar, navigation, or page structure for privileged areas before verifying the user has access — even if API calls later return 403, the UI skeleton itself leaks information about admin features, endpoints, and internal tooling
-- Missing `useEffect`/`onMount`/`beforeRouteEnter` guards in privileged route layouts
-- Admin links or navigation items visible to non-admin users in shared layouts (e.g., root navbar showing "Admin" link to all authenticated users)
+#### Page responses and client-side gates
+- Private records embedded in HTML, hydration payloads, or page-loader responses before server authorization
+- Privileged actions protected only by hidden links, client-side role flags, or route guards
+- Alternate page, export, or action handlers that bypass the guard on the primary API
+
+Trace what an unauthorized caller can actually read or do. A public admin link, route name,
+or empty UI shell is not an authorization Finding by itself. If the visible content is sensitive,
+identify that content and the access policy it violates. Client-side visibility controls do not
+enforce authorization; a loading screen or redirect is neither required nor sufficient to clear
+this category. Usability of navigation belongs to snitch-ux.
 
 ### Actually Vulnerable
 
@@ -38,10 +41,9 @@
 - `User.create(req.body)` or `.update(req.body)` in any ORM without allow-listing specific fields
 
 #### Frontend Route
-- Admin layout component that renders sidebar with admin navigation links (Users, Logs, Stripe, System, etc.) to any authenticated user — exposes internal feature names and URL structure even though API calls return 403
-- Privileged route (e.g., `/admin`, `/internal`, `/moderator`) with no client-side role check — component mounts and renders before any authorization occurs
-- Route layout that checks `session` exists (authentication) but not `session.user.role === "admin"` (authorization)
-- Shared root layout that conditionally renders admin links based on a client-side flag that can be tampered with (e.g., `localStorage.isAdmin`)
+- A page response includes private customer records for a caller without permission, even though a separate API rejects that caller
+- An export or action handler checks only that a session exists before performing an administrator-only operation
+- A client-side flag hides an action whose server handler performs no corresponding permission check
 
 ### NOT Vulnerable
 - Routes with ownership verification (`where: { id, userId: session.userId }`)
@@ -51,8 +53,8 @@
 - Resources scoped by tenant/organization with middleware enforcement
 - Explicit field destructuring before ORM call: `const { name, email } = req.body` then using only those fields
 - Using a Zod/Yup/Joi schema that strips unknown fields before the ORM call
-- Admin layout that verifies role via server-side check (API call or server function) before rendering, and redirects unauthorized users
-- Route guards that call a server endpoint to verify admin status and show a loading state until confirmed
+- Public navigation and empty page shells whose data and action handlers enforce authorization, with no protected content embedded in the page
+- Server authorization before delivering protected page data or performing a privileged action, regardless of client-side redirects
 
 **Server Actions and RPC-style handlers are public endpoints.** A Next.js `"use server"` function,
 a tRPC procedure, or any exported handler a framework wires to a route is network-callable by anyone
@@ -78,22 +80,23 @@ query to it, never to trust the argument.
 3. Are these intentionally public endpoints?
 4. Is there a tenant/org scoping mechanism in place?
 5. Are IDs UUIDs? Note: UUID format alone does NOT prevent IDOR. Ownership verification is still required.
-6. **Frontend routes:** Does the layout/page component for privileged areas verify the user's role BEFORE rendering any UI? A loading/redirect pattern is required — not just hoping the API returns 403.
-7. **Shared layouts:** Does the root layout or navbar conditionally show admin links only to verified admin users, or are they visible to all authenticated users?
+6. **Page responses:** Is protected data embedded before authorization, including HTML, hydration, and loader responses?
+7. **Alternate paths:** Do exports and action handlers independently enforce the caller's permissions? Hidden navigation does not protect them.
 
 ### Evidence Chain
-Before reporting, verify ALL of these:
+Before reporting, establish the protected resource/operation and check every enforcement layer
+on its path. Apply the following evidence requirements to the relevant case:
 1. [ ] Route handles sensitive data or privileged operations (not intentionally public resources)
-2. [ ] No ownership/tenant filter in the database query (check for userId, orgId, tenantId in where clause)
-3. [ ] No authorization middleware at route, router, or framework level
-4. [ ] For mass assignment: req.body is passed directly to ORM without field picking or schema validation
-5. [ ] For frontend routes: no server-side role verification before rendering privileged UI (client-side checks alone are insufficient)
+2. [ ] For IDOR: ownership/tenant enforcement is absent or ineffective; a present but degenerate filter is covered by the fail-open rules below
+3. [ ] No effective authorization at route, router, framework, or service level for the claimed access
+4. [ ] For mass assignment: identify an unauthorized field the request can write and why field selection or validation does not prevent it
+5. [ ] For page/action Findings: name the protected data or operation reached and the missing server-side enforcement; UI visibility alone is insufficient evidence
 
 ### Confidence Scoring
-- **HIGH**: API route accepts resource ID parameter and queries database without ownership filter (no userId/orgId in where clause). Admin route with no role-checking middleware. ORM update/create with req.body directly (mass assignment). Admin layout renders without role verification.
-- **MEDIUM**: Route uses resource IDs but ownership check may be at middleware or service layer. Admin route exists but role checking could be at router level. Frontend route may check role after initial render.
+- **HIGH**: The caller reaches another user's resource, protected page data, or a privileged operation, and the path lacks authorization after checking route, router, and service guards. For mass assignment, identify the unauthorized field write.
+- **MEDIUM**: A concrete protected resource or operation is identified, but enforcement at a named middleware, router, or service layer remains uncertain.
 - **LOW**: Authorization pattern is unclear. Ownership check may exist in a shared utility or middleware not directly visible in the route handler.
-- **SKIP**: Routes with ownership verification (where: { id, userId }). Admin routes with role-checking middleware. Explicit field destructuring before ORM calls. Zod/Yup schema stripping unknown fields. Admin layout verifying role server-side before rendering. Public resources intentionally accessible to all.
+- **PASS (with evidence)**: The specific operation enforces ownership/role checks, or the surface contains only intentionally public content. For mass assignment, trace the allowed field set and establish that it excludes unauthorized fields; merely using a schema is not proof. A check that did not run is a Skip with its reason.
 
 ### Business Logic Abuse (OWASP API6:2023)
 

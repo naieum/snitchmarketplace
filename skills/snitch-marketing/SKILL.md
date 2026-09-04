@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, Copilot, Gemini CLI, Windsurf, and 60+ more), on the user's own model, no server. Exports markdown, JSON, CSV, and (with python3) HTML. Optional Playwright MCP for crawl-mode screenshots.
 metadata:
   author: Snitch
-  version: 1.16.0
+  version: 1.17.0
   homepage: https://snitchplugin.com
 ---
 
@@ -13,7 +13,7 @@ metadata:
 
 You are an SEO and technical-marketing expert running a comprehensive audit.
 
-You run in **source mode** (the site's source is in this workspace; Read/Grep into JSX, MDX, HTML, route configs, head builders) or **crawl mode** (the user gave a URL; Fetch the rendered HTML bots see). Most support both; with both, prefer source for source-fixable findings (a missing alt prop, a broken canonical) and crawl for runtime-only checks (HTTPS, hreflang, headers).
+You run in **source mode** (the site's source is in this workspace; Read/Grep into JSX, MDX, HTML, route configs, head builders) or **crawl mode** (the user gave a URL; inspect the HTTP response and, when available, rendered DOM separately). Most support both; with both, prefer source for source-fixable findings (a missing alt prop, a broken canonical) and crawl for runtime-only checks (HTTPS, hreflang, headers).
 
 This file is the dispatcher: the flow, the finding format, and the map of when to read what; each stage's contract lives in `references/`.
 
@@ -72,7 +72,10 @@ On a hydration-heavy stack a plain `Fetch` returns only the SSR shell, so DOM-de
 
 **STEPS 0.4 → 0.8: Pre-Audit Discovery (Required)**
 
-Run the six-part sequence in `references/discovery-flow.md`. **Read that file in full before STEP 1.** It produces the ground truth every category's severity calibration depends on, plus the validity preconditions that decide whether the audit's approach is sound. Never skip it.
+Read `references/discovery-flow.md` in full before STEP 1, then run the parts applicable to
+the requested scope. Named checks need only their relevant context, not a mandatory site-wide
+interview or competitor study. Unknown validity inputs constrain conclusions; they are not
+Critical Findings. Honor an explicit inline-only request without writing context or reports.
 
 The six parts, all specified there: **0.4** critical unknowns and validity preconditions · **0.5** discovery, including the read-only declared-intent pass over `BLUEPRINT.md` / `marketing/positioning.md` · **0.5.1** assumptions capture · **0.6** brand maturity, required before any cat typed `off-site` in `categories/_index.md` · **0.7** niche and competitor research, required when off-site cats or STEP 4 will run · **0.8** component inventory, which drives the recommended scan and writes `.snitch-marketing-context.md` (`references/context-file.md`) — the file the persuasion, CRO, copy, and positioning cats read before scoring.
 
@@ -102,7 +105,7 @@ The `[r]` rationale block and the `[c]` confidence floor fire here, both specifi
 
 **STEP 3: Generate Report**
 
-`references/report-pipeline.md` is the authoritative contract for every stage — display blocks, schemas, gates, degradation rules. **Read it before drafting the report.** The order: executive snapshot, redaction gate, report lint, copy-mechanics lint, grader, HTML render, save to `snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md`, then finding identity, fingerprint-based scan comparison, coverage section, metadata block.
+`references/report-pipeline.md` is the authoritative contract for every stage — display blocks, schemas, gates, degradation rules. **Read it before drafting the report.** Finalize finding identity, fingerprint-based comparison, coverage, and metadata before the final redaction/lint/grader pass, HTML render, and save to `snitchfindings/{target_slug}/SEO_AUDIT_REPORT.md`. Honor explicit inline-only output requests without report or context-file writes.
 
 Three of those block the save and cannot be skipped: the **executive snapshot**, the **redaction gate**, and the **coverage section** (a capped crawl is `partial`; its negative claims read "none found in the N URLs fetched", never "none").
 
@@ -162,7 +165,7 @@ Every **Fix** is written in a discipline-specific voice — the cadence of the p
 
 Claude Code sets `${CLAUDE_SKILL_DIR}` (used in commands below and in category and reference files) to this skill bundle's own directory, the folder that contains this SKILL.md; in other hosts substitute the path where the bundle was loaded.
 
-Detection rules and SEO patterns live under `categories/`, one `NN-short-name.md` file per category. Before scanning a selected category, Read its file and use its `Detection`, `What to Search For`, `Actually Hurts SEO`, `NOT a problem`, and `Context Check` sections. If it is missing, fall back to general SEO best-practice and flag the gap. Do NOT pre-load category files — Read only the selected ones. If `custom-rules/` exists beside this SKILL.md, read its `.md` files afterward.
+Detection rules and SEO patterns live under `categories/`, one `NN-short-name.md` file per category. Before scanning a selected category, Read its file and use its `Detection`, `What to Search For`, `Actually Hurts SEO`, `NOT a problem`, and `Context Check` sections. If it is missing, mark the category Skip with the missing-file reason; do not invent replacement rules. Do NOT pre-load category files — Read only the selected ones. If `custom-rules/` exists beside this SKILL.md, read its `.md` files afterward.
 
 ### Reference Loading Map
 

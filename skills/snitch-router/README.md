@@ -1,5 +1,5 @@
-# snitch-router v0.3.0
+# snitch-router v0.4.0
 
-Not sure which skill you need? Ask this one and it points you to the right skill or flow.
+Not sure which skill you need? Ask this one and it points you to the right skill or flow. |
 
 Canonical source: the snitchskills repo. This copy is the marketplace distribution.

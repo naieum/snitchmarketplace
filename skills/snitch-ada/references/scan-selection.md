@@ -92,7 +92,9 @@ the confirm gate.
 
 ## The confirm gate
 
-Always fires, for every path into the audit including an explicit request and a bypass. Display:
+Always display the resolved scope. An explicit bounded request (named checks and supplied
+surface, without scope expansion) is already confirmation: display and proceed. Ask and wait
+for ambiguous scope, a broad/full sweep's budget, or proposed expansion. Display:
 
 ```
 Resolved selection: <preset name or "Custom">
@@ -105,7 +107,7 @@ Resolved selection: <preset name or "Custom">
   Criterion coverage: this selection can produce findings against K of the 55 WCAG 2.2 A/AA
     criteria. The other 55-K will appear in the report's coverage block as Skip with a reason.
   Mode: source | crawl | both
-  Page set: <the 5-10 pages from STEP 0.5>
+  Page set: <the scoped component/pages, or representative whole-site sample>
   Locales in scope: <from the STEP 0.5 i18n inventory>
   Runtime checks: <runner available | no runner; runtime-only rows will Skip>
   Estimated cost: ~<low>-<high>K tokens
@@ -121,7 +123,7 @@ Rules for the gate:
 - **`add` and `remove`** re-resolve and re-display the gate. There is no limit on rounds.
 - **`change scope`** returns to STEP 0.5's page set and locale inventory.
 - **`cancel`** exits with `Audit cancelled. No changes made.`
-- Proceed only on an affirmative. Silence is not confirmation.
+- Where confirmation is needed, proceed only on an affirmative. Silence is not confirmation.
 
 ---
 

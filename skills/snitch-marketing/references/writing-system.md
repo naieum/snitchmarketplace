@@ -50,7 +50,7 @@ cat hero-copy.txt | python3 ${CLAUDE_SKILL_DIR}/scripts/copy-lint.py --mode flav
 python3 ${CLAUDE_SKILL_DIR}/scripts/copy-lint.py --mode flavored --json extracted.txt   # for audit_metadata
 ```
 
-The script is the authority for the count: it names each rule it fires, reports weighted
+The script is the authority for the raw count, not for accepted violations or severity: it names each rule it fires, reports weighted
 violations per 100 words, reads a file or stdin, and **never writes a file**. It strips code
 blocks, URLs, frontmatter, and `audit_metadata` blocks before counting, and keeps heading and
 table-cell text, because that is where hero lines and CTAs live. Same input, same mode, same
@@ -71,18 +71,20 @@ code, so the mention never enters the count.
 
 | Score | Reading | In an audit (Cat 117 / Cat 59) |
 |---|---|---|
-| < 2.0 | Clean | Mention as a pass — clean copy is a result |
-| 2.0 – 5.0 | Mechanics drag | Medium finding: quote the worst hits with their rule IDs |
-| > 5.0 | Slop-dense | High finding: the copy is working against the page |
+| < 2.0 | Low raw density | Inspect meaning and claims; no automatic Pass |
+| 2.0 – 5.0 | Moderate raw density | Adjudicate each hit and its reader cost |
+| > 5.0 | High raw density | Review priority only; no automatic High severity |
 
 The severity mapping for audit findings stays with the category files; the bands calibrate, the
-category decides.
+category decides from substantiated impact. Exact labels, technical terms, quoted phrases,
+necessary uncertainty, and supported claims can justify raw hits. Do not remove truth or
+qualifications to force a score target. These rules follow snitch-ux's adjudication boundary.
 
 **The bands assume a denominator of at least 50 words.** Below that, a per-100-word rate is noise —
 one em dash in a 25-word line scores 4.0/100w. For any sample under 50 words (a section fragment, a
 CTA block, a proposed rewrite), report the raw rule hits and the word count instead
 (`W10 ×1, n=25`), never the rate and never a band. The same floor applies to a Verify step: verify a
-short rewrite against **zero hits of the rules the finding named**, not against a density threshold
+short rewrite against **resolution of the substantiated defect**, not zero raw matches or a density threshold
 the sample is too small to carry.
 
 ## How this composes with the rest of the skill

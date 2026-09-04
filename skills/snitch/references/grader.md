@@ -4,29 +4,24 @@ After the audit assembles its findings, after the Coverage section (`references/
 
 A separate, non-optional redaction hard-fail gate (see below) runs before the grader and blocks saving on its own, independent of whether the grader itself is enabled.
 
-## Why grader on top of the anti-hallucination rules
+## What to verify
 
-Rules 1-7 and the False Positive Prevention section in SKILL.md are the existing contract. They catch syntactic/structural violations: no file:line means no finding (Rule 1), a real secret value or a literal dangerous-pattern name in the output (Rule 5), a fix applied before the report is shown (Rule 6). Those rules are checkable by pattern or by presence/absence. The grader catches what those rules can't mechanically enforce — semantic and calibration issues:
-
-- A finding claims "sink reached, tainted input" without actually walking the Rule 7 chain (current function → caller → middleware/validator) — nothing stops the model from writing a trace-shaped sentence that skipped the actual work.
-- Confidence is marked High or Medium on a trace that only reached the fourth Rule 7 bucket (can't reach a definitive source) — a quiet violation of Rule 7's own hard rule, since nothing else re-checks it after the fact.
-- Severity is one tier higher than the evidence + risk narrative supports (High assigned to a finding whose blast radius reads as Medium) — a calibration error, not a missing-evidence error.
-- The CWE ID is from the right vulnerability family but the wrong specific ID (e.g., CWE-89 used for a NoSQL injection that should be CWE-943).
-- The Fix opens with framing prose ("consider improving input handling") instead of the concrete remediation.
-- A dangerous-pattern name slips into prose in a way that's specific enough to defeat Rule 5's intent without being the exact literal forbidden string.
-
-Rules 1-7 cover the mechanical failures — the ones a pattern or a presence check can catch. The grader covers the rest: calibration and semantics, where a finding is correctly shaped and still wrong.
+Check the report against the actual source reads, not just against its prose. Reopen code when
+a trace or protection claim is unsupported. A well-shaped trace is not proof that the control
+works: verify its effect at the specific sink and argument position. Grade evidenced Passes as
+well as Findings for trace rigor and evidence alignment; only Findings enter the per-finding
+score totals below. The grader is a quality check, not a claim of independent verification.
 
 ## The grading rubric (5 criteria, score 0-2 each, max 10 per finding)
 
 ### Criterion 1: Evidence specificity + redaction correctness (0-2)
-- **2** — File:line cited; code quoted verbatim from an actual Read/Grep result (not paraphrased); for a Pass claim, every reached sink in the category carries file:line + trace classification (not a bare count); AND redaction is correct per Rule 5 — any secret shown only as `prefix_XXXXXXXX` style padding (never the real value), and any dangerous pattern described generically rather than named.
-- **1** — File:line + quoted code present, but one redaction nit: the X-padding reveals more of the secret than necessary, or the finding's prose is more specific about a dangerous-pattern name than the Evidence block itself, or a Pass claim is missing trace evidence for one of several sinks the category reached.
-- **0** — No file:line or no verbatim quote (a Rule 1 violation that should have been caught before grading); OR the redaction failure is a live leak (an actual secret value fully or partially recoverable, or a dangerous-pattern name spelled out literally). **A score of 0 here for a live leak also trips the REDACTION HARD-FAIL below and is handled by that gate, not by criterion scoring alone.**
+- **2** — File:line plus an exact source quote, with sensitive values redacted per Rule 5. Ordinary code identifiers remain intact. Any host-required omission is explicitly labeled and the remaining evidence still proves the claim.
+- **1** — Source and location are present but the excerpt omits relevant non-sensitive context; the claim needs another source read.
+- **0** — No checkable source evidence, a paraphrase presented as a quote, or a leaked sensitive value. A leak also triggers the blocking redaction gate below.
 
 ### Criterion 2: Data-flow trace rigor (0-2)
 The "did they actually do the work" criterion: whether Rule 7's trace was genuinely performed, or only written about.
-- **2** — For sink-pattern findings, the trace names the variable's origin in the current function, the caller/call-site one or two levels up, and any middleware/validator/schema check examined, landing in one of Rule 7's four buckets with a named classification. For non-sink findings (config, header, dependency), the evidence directly supports the claim without a spurious trace assertion.
+- **2** — For sink-pattern findings, the trace names source, callers, relevant controls, and the argument or effect reached, with Rule 7's classification. It evaluates what each control prevents and follows the value actually consumed. For non-sink findings, the evidence directly supports the claim without a spurious trace assertion.
 - **1** — A trace is present but shallow: names the immediate source ("comes from req.body.q") without showing what was checked at the caller/middleware layer, or asserts "unsanitized" without naming what was examined and found absent.
 - **0** — The finding asserts "sink reached" / "tainted" / "user-controlled" with no trace chain shown at all — a bare classification with no evidence, which is itself a Rule 7 violation the grader is catching after the fact.
 
@@ -36,10 +31,10 @@ The "did they actually do the work" criterion: whether Rule 7's trace was genuin
 - **0** — Generic/framing prose ("review your security posture", "consider hardening this area") with no concrete action, or a fix that addresses a different problem than the one the trace actually found.
 
 ### Criterion 4: Rule adherence (0-2)
-Covers Rule 5 (dangerous-pattern naming outside Evidence), Rule 6 (never-auto-fix), and the SCOPE RULE together.
-- **2** — No literal dangerous-pattern name anywhere in finding prose outside a scoped Evidence quote; no language implying a fix was already applied during the scan/report phase; the finding stays strictly within the selected-category scope.
-- **1** — One soft slip: prose names a pattern more specifically than Rule 5 intends without using the literal forbidden string, or a stray aside references an out-of-scope category without becoming a full finding/passed-check.
-- **0** — A literal dangerous-pattern name spelled out in prose (distinct from criterion 1, which covers the Evidence block itself), OR text implying a fix was attempted/applied during the read-only scan phase, OR a finding or passed-check for a category outside the selected scan scope (a SCOPE RULE violation).
+Covers Rule 5's defensive framing, Rule 6, and the SCOPE RULE.
+- **2** — Defensive evidence and remediation, no claim that code was fixed during scanning, and only selected-category Findings and Passes.
+- **1** — A stray aside references an out-of-scope category without becoming a Finding or Pass.
+- **0** — Working attack payloads, a fix attempted during the read-only scan, or an out-of-scope Finding or Pass. Ordinary API names are not violations.
 
 ### Criterion 5: Evidence-to-claim alignment (0-2)
 Checks whether the assigned CWE / severity / confidence actually match what the trace showed.
@@ -53,7 +48,7 @@ Directly enforces Rule 7's existing hard rule: *"Do not promote to High confiden
 
 - If the trace landed in bucket 4 (**trace can't reach a definitive source — tagged `needs human verification`**) and the finding's `Confidence` field reads **High** or **Medium** → `confidence_trace_calibration: fail`. Flag for immediate re-tier: confidence must drop to Low with the `needs human verification` tag present.
 - If the trace is already Low + tagged correctly for a bucket-4 classification → pass.
-- If the trace reached one of the three definitive buckets (literal, validated-upstream, or user-controlled-unsanitized), any confidence level is permitted based on evidence strength — this check only fails on **overstatement** of an incomplete trace, matching Rule 7's rule precisely (Rule 7 never says a complete trace must be High confidence, only that an incomplete one must not be promoted).
+- If the trace reached a definitive bucket (literal, protected for this sink, or user-controlled without effective protection), calibrate confidence to the evidence. The presence of a validator or prompt label alone does not establish protection.
 
 ## REDACTION hard-fail (blocking gate — NOT a scored criterion, NOT a normal pass/fail check)
 
@@ -61,12 +56,15 @@ This is categorically different from every other check in this document and is e
 
 **Trigger conditions:**
 - Any string matching a live-secret shape that is not fully X-redacted per Rule 5 (e.g., `sk_live_`, `AKIA`, `ghp_`, a connection-string password segment) followed by what looks like real remaining characters rather than a run of X's.
-- Any literal dangerous-pattern name (the exact function/method/property names Rule 5 says never to write literally — DOM write methods, raw HTML property assignment, shell-exec calls, dynamic code evaluation, deserialization calls, OS command functions) appearing anywhere in report prose outside a describe-generically context.
+- Any other unredacted credential or real personal data, even without a recognizable key prefix. Check values in context; a shape match alone does not establish whether a value is real.
+
+Ordinary function, method, property, and module names do not trigger this gate. Apply actual
+host-specific restrictions per Rule 5 without turning them into secret-redaction failures.
 
 **On trigger:**
 1. Set `redaction_hard_fail: true`.
-2. **Do not save the report.** This blocks STEP 3's save action outright — it is not "flag and continue," it is stop-the-line. A leaked live credential in a saved artifact is itself a new security exposure (the report becomes something that needs its own incident response), not merely a lower-quality finding, so it cannot be handled by the normal score-and-maybe-rewrite loop.
-3. Perform a **narrow, mechanical redaction-only rewrite**: replace only the offending span (the leaked characters with X's, or the literal pattern name with its Rule-5-approved generic description). Do not touch the rest of the finding's content — this is not a quality rewrite.
+2. **Do not present or save the report.** Redact the leak before output, regardless of the quality score.
+3. Perform a **narrow redaction-only rewrite**: replace only sensitive values with X's. Preserve code identifiers, locations, and the rest of the evidence.
 4. Re-scan immediately. Repeat until `redaction_hard_fail: false`.
 5. Only then does the per-finding 5-criteria + confidence-trace-calibration scoring pass proceed toward save.
 
@@ -92,9 +90,9 @@ grader:
 When `rewrite_failures: true` (default):
 1. Grader produces a list of failing findings with the specific failing criteria called out per finding.
 2. Agent reads the failing finding + the grader's specific criticism.
-3. Agent rewrites the finding to address the criticism (this is a quality rewrite — distinct from the redaction gate's narrow rewrite).
+3. Agent reopens source as needed and rewrites the finding from evidence. Never fill a missing trace with invented detail to improve a score; unresolved evidence gaps remain explicit.
 4. Grader re-runs on the rewritten finding, including the confidence-trace calibration check.
-5. If the rewrite still fails, mark `grader_failure: true` in the report's hidden metadata and surface it to the human as a follow-up — never silently ship a failing finding as if it passed.
+5. Re-run the redaction gate on the rewritten draft. If quality still fails, mark `grader_failure: true` in metadata and surface it to the human — never silently ship a failing finding as if it passed.
 
 When `rewrite_failures: false`: the report is produced but not auto-rewritten; failures are recorded in metadata only.
 
@@ -139,7 +137,7 @@ The REDACTION hard-fail gate is never optional, in either case.
 
 ## Forbidden claims
 
-- A `confidence_trace_calibration: pass` on a finding whose trace evidence actually shows bucket 4 (can't reach a definitive source) — this is the exact overstatement Rule 7 already forbids; the grader must catch it, not rubber-stamp it.
+- A `confidence_trace_calibration: pass` on a bucket-4 finding still assigned High or Medium confidence. Low confidence with the human-verification tag is the correct calibrated outcome.
 - Treating the redaction hard-fail gate as "just another criterion" that can be scored 0/1/2 and deferred to the normal rewrite loop — a live leak blocks the save outright.
 - A `pass_rate` computed by excluding findings that failed and were never successfully rewritten (`findings_still_failing` must be counted against the denominator, not dropped).
 - Grading a finding's severity/CWE calibration (Criterion 5) as a substitute for the severity × likelihood fix-ordering overlay in `references/risk-prioritization.md` — that overlay answers "which to fix first"; this criterion answers "is this finding's write-up internally consistent." Keep both; do not collapse one into the other.

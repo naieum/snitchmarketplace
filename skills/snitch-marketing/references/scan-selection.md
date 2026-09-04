@@ -93,7 +93,8 @@ When in doubt, show the menu. Tokens spent on a bad scope are far more expensive
 
 **STEP 1.5: Component-driven Recommendation**
 
-Build the recommended scan from the component inventory produced by STEP 0.8, using `references/component-cat-map.md` to map each detected component to its applicable cats. Universal-foundation cats run regardless of components; component-specific cats are added per detected component.
+Build the recommended scan from the component inventory produced by STEP 0.8, using `references/component-cat-map.md` to map each detected component to its applicable cats. For an open-ended recommendation, include the baseline set and applicable components.
+A user-named category list is already the scope: never add baseline categories to it.
 
 Algorithm (deterministic, evidence-based):
 
@@ -108,7 +109,9 @@ for component in step_0_8_inventory:
 final_recommended = sorted(set(recommended_cats))
 ```
 
-**Critical: universal-foundation cats run in every audit, regardless of mode or detected components.** This includes Cat 96 (brand SERP defense). Even in source-only mode where SERP queries can't run live, Cat 96 still fires and produces a finding marked "needs crawl-mode follow-up to complete the brand-SERP capture; on-site Organization schema check still ran in source." The universal-foundation set is the floor; component-driven additions are on top of it. Never strip cats out of the universal set when building the recommendation, even if a specific cat seems hard to run in the current mode. The cat decides for itself whether to skip via its own pre-flight check; the recommendation engine doesn't second-guess.
+**Scope wins.** The baseline set is a recommendation for open-ended audits, not a floor
+that overrides an explicit selection. Unavailable evidence produces Skip, never a placeholder
+Finding. The category's own pre-flight controls applicability after selection.
 
 Display the recommendation with reasoning before the full menu so the customer can audit which detected component drove which cats. Show:
 
@@ -176,7 +179,8 @@ Parse the input with the picker parser in Part 3 (same syntax, comma-separated n
 Updated: 9 cats. Estimated cost: ~13-19K tokens. Run? [y/n]
 ```
 
-Only proceed to STEP 2 after explicit confirmation. If `confirm-categories: false` is set in `snitch-marketing.config.md` OR the user picked `[v]` to disable in the menu, skip this step (suitable for batch / CI runs).
+An explicit bounded request naming categories and supplying the surface already confirms
+that scope: show it and proceed. Otherwise proceed after explicit confirmation. If `confirm-categories: false` is set in `snitch-marketing.config.md` OR the user picked `[v]` to disable in the menu, skip this step (suitable for batch / CI runs).
 
 **Why this step:** the preset is a guess at what to run. The user often knows their brand's surface better than the heuristic does. Letting them drop the obviously-irrelevant cats BEFORE tokens spend is the cleanest token-saver in the audit.
 

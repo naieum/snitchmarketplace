@@ -40,7 +40,7 @@ Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more.
 /plugin install snitch@snitch
 ```
 
-**Any terminal — snitch-security only:**
+**Any terminal — the full Snitch skill family:**
 
 ```
 curl -fsSL https://snitchplugin.com/snitch.sh | sh
@@ -60,18 +60,18 @@ Then ask in plain words: *"run a snitch security scan."*
 
 | Skill | Version | What it does |
 |---|---|---|
-| [`snitch`](skills/snitch) | 9.5.0 | Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence. [Site](https://snitchplugin.com/security) · [Docs](https://snitchplugin.com/docs/security) |
-| [`snitch-marketing`](skills/snitch-marketing) | 1.16.0 | Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding. [Site](https://snitchplugin.com/marketing) · [Docs](https://snitchplugin.com/docs/marketing) |
-| [`snitch-ada`](skills/snitch-ada) | 0.1.0 | Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages. [Site](https://snitchplugin.com/ada) · [Docs](https://snitchplugin.com/docs/ada) |
-| [`snitch-ux`](skills/snitch-ux) | 0.10.1 | Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion. [Site](https://snitchplugin.com/ux) · [Docs](https://snitchplugin.com/docs/ux) |
-| [`snitch-focusedcopy`](skills/snitch-focusedcopy) | 0.2.0 | Is your landing page copy in the wrong order? Restructures it around a widely taught sales-call framework and checks every claim. [Site](https://snitchplugin.com/focusedcopy) · [Docs](https://snitchplugin.com/docs/focusedcopy) |
-| [`snitch-devready`](skills/snitch-devready) | 0.5.0 | Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs. [Site](https://snitchplugin.com/devready) · [Docs](https://snitchplugin.com/docs/devready) |
-| [`snitch-docwriter`](skills/snitch-docwriter) | 0.4.1 | Does your writing sound like AI wrote it? Rewrites docs in plain controlled English and scores the result. [Site](https://snitchplugin.com/docwriter) · [Docs](https://snitchplugin.com/docs/docwriter) |
-| [`snitch-adsready`](skills/snitch-adsready) | 0.4.0 | Ready to run paid ads? Checks your pixels, conversion tracking, and consent setup across ten ad platforms. [Site](https://snitchplugin.com/adsready) · [Docs](https://snitchplugin.com/docs/adsready) |
-| [`snitch-storeready`](skills/snitch-storeready) | 0.3.1 | Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit. [Site](https://snitchplugin.com/storeready) · [Docs](https://snitchplugin.com/docs/storeready) |
-| [`snitch-cmo`](skills/snitch-cmo) | 0.3.0 | Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish. [Site](https://snitchplugin.com/cmo) · [Docs](https://snitchplugin.com/docs/cmo) |
-| [`snitch-blueprint`](skills/snitch-blueprint) | 0.3.0 | Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. [Site](https://snitchplugin.com/blueprint) · [Docs](https://snitchplugin.com/docs/blueprint) |
-| [`snitch-router`](skills/snitch-router) | 0.3.0 | Not sure which skill you need? Ask this one and it points you to the right skill or flow. [Site](https://snitchplugin.com/router) · [Docs](https://snitchplugin.com/docs/router) |
+| [`snitch`](skills/snitch) | 9.6.0 | Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence. | [Site](https://snitchplugin.com/security) · [Docs](https://snitchplugin.com/docs/security) |
+| [`snitch-marketing`](skills/snitch-marketing) | 1.17.0 | Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding. | [Site](https://snitchplugin.com/marketing) · [Docs](https://snitchplugin.com/docs/marketing) |
+| [`snitch-ada`](skills/snitch-ada) | 0.2.0 | Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages. | [Site](https://snitchplugin.com/ada) · [Docs](https://snitchplugin.com/docs/ada) |
+| [`snitch-ux`](skills/snitch-ux) | 0.11.0 | Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion. | [Site](https://snitchplugin.com/ux) · [Docs](https://snitchplugin.com/docs/ux) |
+| [`snitch-focusedcopy`](skills/snitch-focusedcopy) | 0.3.0 | Is your landing page copy in the wrong order? Restructures it around a widely taught sales-call framework and checks every claim. | [Site](https://snitchplugin.com/focusedcopy) · [Docs](https://snitchplugin.com/docs/focusedcopy) |
+| [`snitch-devready`](skills/snitch-devready) | 0.6.0 | Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs. | [Site](https://snitchplugin.com/devready) · [Docs](https://snitchplugin.com/docs/devready) |
+| [`snitch-docwriter`](skills/snitch-docwriter) | 0.5.0 | Are your technical docs hard to follow? Rewrites them in plain English without changing meaning; a linter flags wording to inspect. | [Site](https://snitchplugin.com/docwriter) · [Docs](https://snitchplugin.com/docs/docwriter) |
+| [`snitch-adsready`](skills/snitch-adsready) | 0.5.0 | Ready to run paid ads? Checks your pixels, conversion tracking, and consent setup across ten ad platforms. | [Site](https://snitchplugin.com/adsready) · [Docs](https://snitchplugin.com/docs/adsready) |
+| [`snitch-storeready`](skills/snitch-storeready) | 0.4.0 | Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit. | [Site](https://snitchplugin.com/storeready) · [Docs](https://snitchplugin.com/docs/storeready) |
+| [`snitch-cmo`](skills/snitch-cmo) | 0.4.0 | Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish. | [Site](https://snitchplugin.com/cmo) · [Docs](https://snitchplugin.com/docs/cmo) |
+| [`snitch-blueprint`](skills/snitch-blueprint) | 0.4.0 | Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. | [Site](https://snitchplugin.com/blueprint) · [Docs](https://snitchplugin.com/docs/blueprint) |
+| [`snitch-router`](skills/snitch-router) | 0.4.0 | Not sure which skill you need? Ask this one and it points you to the right skill or flow. | [Site](https://snitchplugin.com/router) · [Docs](https://snitchplugin.com/docs/router) |
 
 ## Platform hardening skills
 

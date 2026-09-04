@@ -29,11 +29,11 @@ a literal-with-binds, not an unparameterized call. Trace first, then classify.
 | `Prisma.raw(v)` / `sql.raw(v)` — anywhere, including inside a tagged template | Spliced into SQL text unbound. **Always a finding** when `v` is user-controlled |
 | `knex.raw(str, [binds])` | `?` binds a value, `??` an escaped identifier. Only the bound positions are protected |
 | `pg` — `client.query(text, values)` | `$1`-style placeholders with a `values` array are bound. The finding is a template literal or concatenation inside `text`. A parameterless literal query is a Pass — a missing `values` array is only relevant when `text` is non-literal |
-| `mysql2` — `conn.execute(sql, params)` | True server-side prepared statement; `?` binds a value, `??` an escaped identifier |
+| `mysql2` — `conn.execute(sql, params)` | True server-side prepared statement; `?` binds values. It does not support `??` identifier placeholders; choose identifiers through a trusted allow-list |
 | `mysql2` — `conn.query(sql, params)` / `mysql.format(sql, params)` | Client-side interpolation via `SqlString`. The finding is concatenation or template-literal interpolation inside `sql`. `format()` escapes **scalars** — see the non-scalar rule below before passing it |
 | `better-sqlite3` — `db.prepare(sql).run/get/all(params)` | Named (`:name`) and positional (`?`) params bind. The finding is user input inside the `prepare()` string |
 
-Two rules the table depends on:
+Rules the table depends on:
 
 - **Parameterization is per-value, not per-query.** A statement may bind one clause and concatenate
   another; the concatenated clause is still injectable. `knex.raw("... tenant = '" + t + "' AND active = ?", [true])`
@@ -50,15 +50,18 @@ Two rules the table depends on:
   returns rows, and is equally a Pass. The reason is binding, full stop.) Only a `Prisma.Sql` value
   becomes SQL text. Do not flag concatenation reflexively; flag it where it lands in the query
   *string* (`$queryRawUnsafe`, `knex.raw`, driver-level `query(text)`).
-- **Escaping protects scalars, not objects — bindings do not make a non-scalar safe.**
+- **MySQL client-side formatting is type-dependent; do not generalize it to all bindings.**
   `SqlString.escape` (mysql/mysql2 `query`, `format`) expands a plain object into `` `k` = v ``
   pairs via `objectToValues` and an array into a comma list via `arrayToList` — SQL syntax, not a
-  quoted string. Express's default query parser produces objects and arrays from `?id[a]=b` and
-  `?id=1&id=2`, so `` format("... id = ?", [req.query.id]) `` **is injectable** even though `?` was
-  used correctly. Before passing any escaped or bound value, establish it is a string: a schema
-  parse, an explicit `String()`, or a source that cannot be non-scalar (`req.params.*` is always a
-  string; `req.query.*` and `req.body.*` are not). Same caveat applies to `knex.raw` `?` binds.
-  A finding here is type confusion reaching the query, not a missing placeholder.
+  quoted string. Establish whether the installed request parser permits those shapes and whether
+  the formatter expands them in a way that changes the query's intended predicate. Do not assume
+  an Express parser default across versions. For ``format("... id = ?", [req.query.id])``, trace
+  the parser and any schema/type conversion before judging the argument.
+  The expected scalar type must reach this client-side formatter; a schema can enforce that type
+  while the formatter supplies SQL escaping. Missing parser/driver evidence leaves confidence Low.
+  PostgreSQL bound objects/arrays remain parameter data; they are not MySQL-style SQL expansion.
+  For `knex.raw`, read the configured client and trace whether each slot is a bound value or an
+  explicit SQL fragment. Never apply the MySQL formatter rule to every Knex binding.
 
   **An un-traced slot is not a Pass.** If you cannot determine a slot's type — it comes from a
   helper, a cross-file assignment, or a function parameter — trace it per Rule 7. A bare identifier
@@ -76,7 +79,7 @@ bound, and it is a Pass.
 - A template literal **evaluated into a string** and passed as the query text — `` db.query(`... ${v}`) ``, `` $queryRawUnsafe(`... ${v}`) ``. The distinguishing test is whether the method received a *string* or a *tag*
 - A `Prisma.raw` / `sql.raw` value reaching any query, including inside an otherwise-bound tagged template
 - A `${}` slot whose contents you could not trace (Low confidence, `needs human verification`)
-- An escaped or bound value that may be a non-scalar (`req.query.*`, `req.body.*` with no schema parse)
+- A non-scalar reaching MySQL client-side formatting whose expansion changes the intended predicate; establish the accepted input shape and driver behavior
 
 ### NOT Vulnerable
 - Parameterized queries with placeholders ($1, ?, :name) — for the *values that are bound*; check every clause
@@ -89,7 +92,7 @@ bound, and it is a Pass.
 
 ### Context Check
 1. Does user input actually flow into this query?
-2. Is there validation/sanitization before this line?
+2. Does a traced control prevent SQL syntax at this argument position? A schema's string/length checks alone do not protect concatenated SQL text; binding the parsed value does.
 3. Is this in test code or production code?
 
 ### Evidence Chain
@@ -103,9 +106,9 @@ bound, and it is a Pass.
 
 **Severity ladder** (SKILL.md requires Severity + CVSS on every finding):
 - **Critical** (CVSS ~9.0-9.8) — user input becomes SQL text on a reachable, unauthenticated path: concatenation into a raw query, `$queryRawUnsafe` with a built string, `Prisma.raw` on a request value
-- **High** (CVSS ~7.0-8.9) — same splice but constrained: behind an auth gate you located, an identifier position (`ORDER BY`) rather than a full predicate, or a tenant-scoping clause behind an auth gate you located
-- **Medium** (CVSS ~4.0-6.9) — the tainted value is narrowed but not bound (numeric cast, length cap, partial allow-list), or the sink is reachable only from an internal/admin surface
-- **Low** — pattern present, source un-traceable within scope; pair with `needs human verification`
+- **High** (CVSS ~7.0-8.9) — same splice with one evidenced reachability or expressivity constraint under the precedence rule below; an identifier position alone is not such a constraint
+- **Medium** (CVSS ~4.0-6.9) — remaining SQL influence is demonstrably constrained or the sink is reachable only from an internal/admin surface; apply the precedence rule below. The mere presence of a length cap or schema is not a severity reduction
+- An untraceable source lowers **confidence**, not severity by itself. State potential impact and the unknown preconditions; do not imply confirmed exploitation
 
 **Precedence — apply in this order, or two auditors will grade the same finding differently.**
 Start at **Critical** based on the *sink form* alone. Then downgrade **one tier per reachability

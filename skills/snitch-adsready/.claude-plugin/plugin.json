@@ -1,7 +1,7 @@
 {
   "name": "snitch-adsready",
-  "description": "Ready to run paid ads? Checks your pixels, conversion tracking, and consent setup across ten ad platforms.",
-  "version": "0.4.0",
+  "description": "Ready to run paid ads? Checks your pixels, conversion tracking, and consent setup across ten ad platforms. |",
+  "version": "0.5.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

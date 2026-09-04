@@ -1,6 +1,6 @@
-# snitch-marketing v1.16.0
+# snitch-marketing v1.17.0
 
-SEO + marketing audit with evidence-based findings — technical SEO, GEO/AI-search, schema, Core Web Vitals.
+Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding. |
 
 ## Install
 

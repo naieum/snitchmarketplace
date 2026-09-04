@@ -6,7 +6,9 @@ Distinct from Cat 81 (positioning), Cat 60 (conversion & trust), Cat 99 (funnel 
 
 ### Pre-flight: always run
 
-Universal. Every brand has copy; every copy line either substantiates its claim or it doesn't.
+Run on the selected marketing surfaces. Separate missing visible substantiation from
+unverified truth and demonstrated falsehood. Read linked evidence and effective implementation
+when available; a missing citation or an inaccessible source does not prove fabrication.
 
 ### What this category audits
 
@@ -67,13 +69,12 @@ the "NOT a problem" qualified-flavor-word carve-out below needs judgment the scr
 adjudicate each W8 hit against that carve-out before it becomes part of a finding. If
 python3 is unavailable, apply W1-W14 by hand and mark the evidence `copy-lint: manual`.
 
-Score bands (from `references/writing-system.md`): under 2.0 is clean and worth reporting as
-a pass; 2.0-5.0 supports a Medium mechanics finding; over 5.0 supports High. The bands need a
-denominator of at least 50 words — under that, quote the raw rule hits with `n` and place the
-sample in no band, and gate a proposed rewrite on zero hits of the rules the finding named
-rather than on a rate the sample is too short to carry. Bands calibrate
-the *mechanics* finding only — a dark-pattern or hidden-price finding keeps its own severity
-from the table below regardless of how cleanly it is written.
+Scores describe raw surface-rule density, not severity or a Pass. Adjudicate all hits,
+including necessary uncertainty, exact UI labels, technical terms, quotes, and supported
+comparisons. A mechanics Finding requires a concrete clarity or decision cost. For samples
+under 50 words, report raw hits and word count only; never combine unrelated fragments to
+reach a denominator. Verify a rewrite resolves the substantiated defect without changing
+meaning, not that every raw match disappears.
 
 ### What to search for
 
@@ -91,7 +92,9 @@ from the table below regardless of how cleanly it is written.
 
 - `\b(only \d+ left|limited time|24 hours? only|ends today|hurry|act now|don't miss out|last chance|few spots? (left|remaining))\b` — flag if no real date or real inventory is verifiable in source or crawl.
 - Countdown timer JS / HTML (`<countdown-timer>`, `setTimeout` resetting a deadline, fake-deadline libraries).
-- "X people viewing this right now" lines — flag unconditionally (almost always fabricated).
+- "X people viewing this right now" — inspect the counting source and meaning. A real,
+  accurately described activity count is not fake scarcity; unavailable backing is verification
+  Skip, while hardcoded/random counts presented as live activity support a Finding.
 
 **Hidden-price patterns:**
 
@@ -159,7 +162,9 @@ from the table below regardless of how cleanly it is written.
 
 ### Severity tagging
 
-- Copy-lint score over 5.0 violations/100w on a critical surface (hero, pricing) → High; 2.0-5.0 → Medium. Under 2.0, no mechanics finding — report the pass.
+- Mechanics severity follows the substantiated reader decision cost, never the score alone.
+  State risks as risks; no measured conversion loss, authorship inference, or search penalty
+  without independent evidence. A low score does not establish a Pass.
 - Hero copy is entirely vague adjectives / hidden price on self-serve product → Critical.
 - Unsupported superlatives in hero / dark-pattern urgency without real deadline / weak social proof in hero → High.
 - Buzzword density in hero or subhead / logo wall without context / vague adjectives in body copy → Medium.

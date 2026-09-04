@@ -9,96 +9,96 @@
   {
    "name": "snitch",
    "source": "./skills/snitch",
-   "description": "Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence.",
-   "version": "9.5.0",
+   "description": "Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence. |",
+   "version": "9.6.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-marketing",
    "source": "./skills/snitch-marketing",
-   "description": "Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding.",
-   "version": "1.16.0",
+   "description": "Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding. |",
+   "version": "1.17.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-ada",
    "source": "./skills/snitch-ada",
-   "description": "Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages.",
-   "version": "0.1.0",
+   "description": "Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages. |",
+   "version": "0.2.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-ux",
    "source": "./skills/snitch-ux",
-   "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion.",
-   "version": "0.10.1",
+   "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion. |",
+   "version": "0.11.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-devready",
    "source": "./skills/snitch-devready",
-   "description": "Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs.",
-   "version": "0.5.0",
+   "description": "Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs. |",
+   "version": "0.6.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-docwriter",
    "source": "./skills/snitch-docwriter",
-   "description": "Does your writing sound like AI wrote it? Rewrites docs in plain controlled English and scores the result.",
-   "version": "0.4.1",
+   "description": "Are your technical docs hard to follow? Rewrites them in plain English without changing meaning; a linter flags wording to inspect. |",
+   "version": "0.5.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-focusedcopy",
    "source": "./skills/snitch-focusedcopy",
-   "description": "Is your landing page copy in the wrong order? Restructures it around a widely taught sales-call framework and checks every claim.",
-   "version": "0.2.0",
+   "description": "Is your landing page copy in the wrong order? Restructures it around a widely taught sales-call framework and checks every claim. |",
+   "version": "0.3.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-adsready",
    "source": "./skills/snitch-adsready",
-   "description": "Ready to run paid ads? Checks your pixels, conversion tracking, and consent setup across ten ad platforms.",
-   "version": "0.4.0",
+   "description": "Ready to run paid ads? Checks your pixels, conversion tracking, and consent setup across ten ad platforms. |",
+   "version": "0.5.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-blueprint",
    "source": "./skills/snitch-blueprint",
-   "description": "Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on.",
-   "version": "0.3.0",
+   "description": "Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. |",
+   "version": "0.4.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-storeready",
    "source": "./skills/snitch-storeready",
-   "description": "Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit.",
-   "version": "0.3.1",
+   "description": "Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit. |",
+   "version": "0.4.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-cmo",
    "source": "./skills/snitch-cmo",
-   "description": "Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish.",
-   "version": "0.3.0",
+   "description": "Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish. |",
+   "version": "0.4.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },
   {
    "name": "snitch-router",
    "source": "./skills/snitch-router",
-   "description": "Not sure which skill you need? Ask this one and it points you to the right skill or flow.",
-   "version": "0.3.0",
+   "description": "Not sure which skill you need? Ask this one and it points you to the right skill or flow. |",
+   "version": "0.4.0",
    "license": "MIT with Commons Clause",
    "homepage": "https://snitchplugin.com"
   },

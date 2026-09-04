@@ -6,8 +6,8 @@ An optional, server-free record of what Snitch learned about THIS repo across sc
 
 At scan start, if `.snitch/memory.md` exists at the project root, read it before scanning. Use it to:
 
-- Skip or down-rank patterns already confirmed as false positives here.
-- Start Rule 7 traces from known-good sanitizers/middleware (the file says where they live).
+- Use past false positives to locate the relevant controls, then recheck their current behavior.
+- Start Rule 7 traces at the recorded sanitizers/middleware; memory is a pointer, not Pass evidence.
 - Account for stack quirks that change how a finding should be judged.
 
 ## Format
@@ -15,9 +15,9 @@ At scan start, if `.snitch/memory.md` exists at the project root, read it before
 One lesson per `###` block: a one-line summary on the heading, then the reason it matters.
 
 ```
-### Auth middleware sanitizes all req.body at src/middleware/validate.ts
-Every route mounts validate() before handlers, so req.body.* reaching a sink is
-already schema-checked. Trace to validate.ts before reporting body-derived input.
+### Request schemas live at src/middleware/validate.ts
+Trace through validate() and inspect the parsed value actually consumed by each sink.
+String/length validation does not clear SQL interpolation; verify binding at the query.
 
 ### lib/legacy/query.ts raw SQL is build-time only, not request-reachable
 Flagged as SQLi in past scans; the input is a hardcoded migration constant. Pass, not a finding.

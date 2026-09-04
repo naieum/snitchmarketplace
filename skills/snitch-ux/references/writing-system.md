@@ -8,8 +8,8 @@ files run together in Workflow Step 1, move 6, and neither substitutes for the o
 
 The method is adapted from controlled-language systems used in safety-critical technical
 documentation — writing standards built so that a stressed, non-native reader cannot misread
-an instruction. Their core insight transfers to interface copy: **machine-checkable rules
-outperform style advice**, and a deterministic score outperforms both. Their vocabulary
+an instruction. Their useful property here is repeatability: **machine-checkable rules
+surface candidates for judgment**, not proof of quality or user harm. Their vocabulary
 restrictions do not transfer — those systems ban persuasive writing outright, and interface
 copy has to persuade — so this file keeps the *method* (checkable rules, a two-mode split,
 a violations-per-100-words score) and rebuilds the rule set for UX copy.
@@ -17,6 +17,14 @@ a violations-per-100-words score) and rebuilds the rule set for UX copy.
 > Gate first: `ethics-gate.md`. A sentence can score 0.0 violations and still be a dark
 > pattern — fabricated urgency written in clean active voice is *more* dangerous, not less.
 > The `writing-system` config key narrows this file's scored lens; it never touches the gate.
+
+**Adjudicate before rating or rewriting.** The script reports lexical candidates. Its score
+does not establish truth, task failure, or severity. Exempt justified technical terms, quoted
+language, and constructions whose rewrite would lose meaning; name the rule and reason.
+Keep the raw score reproducible, and distinguish accepted hits from dismissed ones. The
+shipping targets below apply to actionable hits; never erase necessary uncertainty, safety
+information, or brand rhythm merely to lower a number. `finding-rules.md` decides Findings
+and severity; a high raw score alone is not a Finding and zero hits is not a usability Pass.
 
 ## The two modes
 
@@ -69,12 +77,12 @@ violation the script reports carries its rule ID, so a score is arguable line by
 | W6 | **Filler and inflators.** "in order to", "utilize", "leverage" (as a verb), "very", "really", "simply", "basically", "actually" (adverbial), "needless to say", "at the end of the day", "it's worth noting". | any | any |
 | W7 | **AI-tell phrases.** "delve", "tapestry of", "in today's fast-paced world", "it's important to note", "navigate the complexities", "harness the power", "unlock the potential", "elevate your", "supercharge", "seamlessly", "game-changing" (any inflection), "in the ever-evolving", "dive into", "look no further", "let's explore". | any | any |
 | W8 | **Vague adjectives.** powerful, seamless, robust, world-class, best-in-class, cutting-edge, next-gen, revolutionary, innovative, intuitive, user-friendly, enterprise-grade, state-of-the-art, frictionless, effortless, amazing, game-changing, premier, leading-edge. | full weight | half weight — a *qualified* flavor word ("powerful at the workloads you actually run") is legitimate; the script can't judge qualification, so flavored downweights and the agent adjudicates each hit |
-| W9 | **Unsupported superlative.** "the best / the fastest / the only / #1 / leading [noun]" with no digit and no proper noun within 50 words. Proof nearby clears it. | on | on |
+| W9 | **Superlative needing review.** "the best / the fastest / the only / #1 / leading [noun]" with no digit and no proper noun within 50 words. Nearby digits/names suppress this heuristic, but do not prove the claim; inspect substantiation separately. | on | on |
 | W10 | **Em-dash density** > 1 per 200 words. Em dashes are fine as punctuation, not as connective filler. | on | on |
 | W11 | **Transition-opener density.** Sentences opening with Furthermore / Additionally / Moreover / However: > 15% of sentences, or ≥ 3 occurrences. | on | on |
 | W12 | **Sentence-start repetition.** 3+ consecutive sentences opening with the same word. | on | **off** — anaphora is a legitimate flavored device |
 | W13 | **Exclamation marks.** | any | > 1 per 100 words |
-| W14 | **Round-number social proof.** "thousands of", "millions of users", "countless". Real counts are specific and odd (`copywriting.md`: specificity = trust). | on | on |
+| W14 | **Vague social-proof wording.** "thousands of", "millions of users", "countless". The script's historical rule label is round-number social proof; these matches establish neither fabrication nor a need for odd numbers. | on | on |
 
 ## Agent-judged rules (A1–A7)
 
@@ -99,14 +107,14 @@ These need judgment the script does not have. They are part of the copy pass, no
 
 ## Score bands
 
-The score is **weighted violations per 100 words**, computed by the linter. In review mode
-the bands calibrate severity for copy-mechanics findings:
+The raw score is **weighted violations per 100 words**, computed by the linter. Use the
+bands to prioritize inspection, not to assign severity:
 
 | Score | Reading | In a review |
 |---|---|---|
-| < 2.0 | Clean | Mention as a pass — a clean surface is a result |
-| 2.0 – 5.0 | Mechanics drag | Medium finding: quote the worst hits with their rule IDs |
-| > 5.0 | Slop-dense | High finding: the copy is working against the surface |
+| < 2.0 | Few lexical hits | Still check meaning, claims and task clarity |
+| 2.0 – 5.0 | Review candidates | Adjudicate hits and explain any task cost |
+| > 5.0 | Dense candidates | Prioritize inspection; no automatic High Finding |
 
 Generation side, the bands are a shipping bar, not a rating: strict prose ships under 2.0,
 flavored under 4.0, and every individually-banned phrase is removed regardless of score.
@@ -150,7 +158,7 @@ backticks: the preprocessor strips inline code, so the mention never enters the 
 
 - **Workflow Step 1, move 6** runs this file alongside `copywriting.md`: extract the
   surface's visible copy, lint it (strict or flavored per the surface-type table above),
-  and let the score bands calibrate any copy-mechanics finding. The score goes in the
+  and adjudicate the score's hits before rating any copy-mechanics finding. The score goes in the
   finding's **Evidence** field: `copy-lint: 6.1 violations/100w (n=214) — top: W8 vague
   adjectives ×4, W5 hedge stacking ×2`. **Every rule the run reported gets named somewhere in
   the finding.** Truncating to "top hits" is fine for readability, but then say how many you

@@ -56,9 +56,3 @@ Confirm with the evidence before auto-suppressing.
   (it's a signal; re-verify before auto-suppressing).
 - Collapsing distinct attackable siblings into one finding to make the count smaller — give each an
   `instance`.
-
----
-
-*Stable-identity scheme (ruleId + semantic anchor + instance + fingerprint) informed by OpenAI's
-codex-security finding model, reimplemented under snitch's evidence-first rules. Internal reference;
-the identity block it specifies IS customer-facing.*

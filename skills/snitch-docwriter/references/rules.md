@@ -1,8 +1,8 @@
 # The rule set: controlled technical English
 
-Distilled from ASD-STE100 Simplified Technical English. The full standard is free but
-copyrighted (https://asd-ste100.org). Do not reproduce its dictionary. This file carries
-only the distilled, machine-checkable core plus the judgment calls a linter cannot make.
+A compact controlled-language system: machine-checkable preferences plus the judgment
+calls a linter cannot make. Meaning, safety conditions, exact labels, and technical terms
+outrank substitutions and score targets. Token matches need contextual adjudication.
 Rule IDs (W/V/S/P/T) are what audit findings cite.
 
 ## WORDS
@@ -31,15 +31,16 @@ Rule IDs (W/V/S/P/T) are what audit findings cite.
 
 - **W3: one meaning per word.** `fall` means to move down, not to decrease. `test` is a
   noun or a verb in one document, not both.
-- **W4: no marketing adjectives.** Banned outright, both modes: `seamless`, `robust`,
+- **W4: no marketing adjectives.** Reject promotional use in both modes, after adjudication: `seamless`, `robust`,
   `powerful`, `cutting-edge`, `effortless`, `world-class`, `next-generation`,
   `revolutionary`, `blazing`, `lightning-fast`, `elegant`, `delightful`, `turnkey`,
   `best-in-class`, `state-of-the-art`, `game-changing`, `first-class`, `battle-tested`,
   `enterprise-grade`, `supercharge`, `unlock`, `unleash`, `empower`.
-- **W5: no filler frames.** Banned outright, both modes: `it is important to note`,
+- **W5: no filler frames.** Remove unnecessary framing in both modes, preserving meaning: `it is important to note`,
   `it should be noted`, `it is worth noting`, `please note that`, `due to the fact that`,
   `in the event that`, `a variety of`, `aforementioned`, `henceforth`, `therein`.
-- **W6: American spelling.**
+- **W6: consistent spelling.** Follow the user's dialect or established project style;
+  use American spelling only when neither specifies one. Preserve literal commands.
 
 ## VERBS
 
@@ -48,8 +49,9 @@ Rule IDs (W/V/S/P/T) are what audit findings cite.
 - **V2: a verb for an action.** `Analyze the log`, not `perform an analysis of the log`.
   Nominalizations (`perform`/`conduct`/`carry out`/`make use of` + noun, `___tion of`)
   hide the action.
-- **V3: no stacked auxiliaries or hedges.** Not `it is important to note that this may
-  help to improve`. Write `this improves X`.
+- **V3: remove redundant framing, preserve uncertainty.** Replace `it is important to
+  note that this may help improve X` with `this may help improve X`, not `this improves X`.
+  Never strengthen may/can/should into will/must or drop a safety condition.
 - **V4: no "-ing" main verb where a simple tense works.** `The server logs each request`,
   not `the server is logging each request` (unless the progressive is the point).
 - **V5: no phrasal verbs where a plain verb exists.** start (not `spin up`), contact (not
@@ -70,9 +72,8 @@ Rule IDs (W/V/S/P/T) are what audit findings cite.
 ## PUNCTUATION
 
 - **P1: no semicolons.** Write two sentences.
-- **P2: no em dashes.** STE itself bans only the semicolon. This skill also bans the em
-  dash, because it is the single strongest "written by AI" tell. Rewrite the sentence.
-  Use a period, a comma, or parentheses.
+- **P2: prefer simpler punctuation.** Replace an unnecessary em dash with a period,
+  comma, or parentheses when meaning stays intact. Punctuation cannot identify authorship.
 
 ## STRUCTURE
 
@@ -90,10 +91,11 @@ Both modes apply every rule above. They differ in two concrete, checkable ways:
   score band.
 - **W2's table.** Flavored treats it as a preference: the short word wins, but an
   occasional longer word that reads naturally is a scored violation, not a blocker.
-  Strict treats it as mandatory: any "Not"-column word is a rewrite, not a judgment call.
+  Strict prefers the substitution, except when it changes an exact term, label, dialect,
+  meaning, or necessary condition.
 
-Both modes hold W4 and W5 to zero regardless. See each rule's "banned outright, both
-modes" note. The score bands themselves (strict ≤ 1.5/100w, flavored ≤ 2.5/100w) are in
+Both modes target zero substantiated W4/W5 violations; legitimate technical terms, exact
+labels, and quoted examples are not promotional use. Keep raw linter counts separate. The score bands themselves (strict ≤ 1.5/100w, flavored ≤ 2.5/100w) are in
 `SKILL.md`.
 
 ## Which rules the linter checks
@@ -114,7 +116,7 @@ migration` is a real passive.
 | W3 | one meaning per word | no |
 | W4 | no marketing adjectives | yes |
 | W5 | no filler frames | yes |
-| W6 | American spelling | no |
+| W6 | consistent requested/project spelling | no |
 | V1 | active voice | yes |
 | V2 | a verb for an action | yes |
 | V3 | no stacked auxiliaries or hedges | no |
@@ -133,8 +135,8 @@ migration` is a real passive.
 
 ## What only judgment can check
 
-A zero-violation score does not certify the content. It certifies the form only. Full
-STE also requires judgment no linter can give: the right technical noun, whether a
-sentence "makes good sense," whether a paragraph is true. When rewriting, the
+A zero-violation score means only that the implemented heuristics found no matches.
+It certifies neither form nor content. Judgment must check the right technical noun,
+clarity, and whether a paragraph is true. When rewriting, the
 fact-preservation rule (keep every fact, number, name, and code span) is the judgment
 half of the job.

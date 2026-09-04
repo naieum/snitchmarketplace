@@ -1,7 +1,7 @@
 {
   "name": "snitch-devready",
-  "description": "Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs.",
-  "version": "0.5.0",
+  "description": "Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs. |",
+  "version": "0.6.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

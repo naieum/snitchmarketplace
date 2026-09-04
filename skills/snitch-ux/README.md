@@ -1,6 +1,6 @@
-# snitch-ux v0.10.1
+# snitch-ux v0.11.0
 
-Behavioral-design / UX-psychology skill — clarity + persuasion lenses for any user-facing surface, plus brand messaging, taglines & naming, and messaging-campaign guidance.
+Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion. |
 
 ## Install
 

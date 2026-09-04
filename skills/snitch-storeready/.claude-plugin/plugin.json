@@ -1,7 +1,7 @@
 {
   "name": "snitch-storeready",
-  "description": "Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit.",
-  "version": "0.3.1",
+  "description": "Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit. |",
+  "version": "0.4.0",
   "author": {
     "name": "Snitch",
     "url": "https://snitchplugin.com"

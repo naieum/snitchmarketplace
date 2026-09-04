@@ -7,6 +7,10 @@ itself** — the conceptual models, gulfs, and errors that explain why a thing f
 feels broken. Read it to reason from first principles when a situation isn't covered by a
 specific rule — not to memorize facts.
 
+Treat these models and approximate numbers as prompts for hypotheses, not universal laws,
+audience measurements, or automatic Finding thresholds. Observed behavior and task context
+outrank a model. A user declining an offer can be a successful, informed outcome.
+
 On **working surfaces** (settings, admin, editors, destructive actions) Part 2 is the most
 useful material in the skill: most of the persuasion catalog is inert there, and what breaks
 those screens is a bad conceptual model, a missing signifier, or an unbridged gulf of
@@ -35,18 +39,15 @@ evaluation.
 # Part 1 — How the mind works
 ## The master frame: two systems
 
-The mind runs two modes:
+One useful abstraction distinguishes two kinds of processing:
 
-- **System 1 — fast, automatic, emotional, effortless.** Runs almost everything: pattern
-  recognition, first impressions, "gut" reactions, snap judgments. It's always on and it
-  decides *first*.
-- **System 2 — slow, deliberate, effortful, lazy.** Reasoning, comparison, careful
-  reading. It's expensive, tires quickly, and defers to System 1 whenever it can.
+- **System 1 — fast and automatic.** Pattern recognition, first impressions and habitual
+  responses can shape how a person reads a screen.
+- **System 2 — deliberate and effortful.** Reasoning, comparison and careful reading matter
+  when the decision calls for them. These are not literal isolated brain systems.
 
-**Design consequence:** you are almost always designing for System 1. People react before
-they reason, then rationalize the reaction. "Don't make me think" is literally "don't force
-me into System 2." Every principle below is a way of working *with* System 1 instead of
-demanding System 2 that users won't spend.
+**Design consequence:** reduce avoidable decoding while supporting informed deliberation.
+Do not make a consequential decision faster by removing the information needed to consider it.
 
 ---
 
@@ -137,13 +138,14 @@ demanding System 2 that users won't spend.
   loop). → Extremely potent for engagement, and the sharpest edge of the ethics line.
 - **Progress motivates; small wins compound.** People push harder as a goal nears
   (goal-gradient), and a head start they didn't earn still works (endowed progress). →
-  Show progress; never start the meter at zero. (See goal-gradient in `principles.md`.)
+  Show accurate progress, including zero when nothing is complete; label granted bonuses
+  separately. (See goal-gradient in `principles.md`.)
 - **Intrinsic beats extrinsic — and extrinsic can *destroy* intrinsic.** Paying/rewarding
   someone for something they already enjoyed reduces their internal drive (over-justification
   effect). Autonomy, mastery, and purpose sustain motivation; generic points and badges
   often don't. → Reward carefully; don't bolt extrinsic carrots onto intrinsic joy.
-- **Value is relative, never absolute.** People judge against a reference point, not on
-  merits. → This is the root of anchoring and contrast (`principles.md`).
+- **Reference points can influence value judgments.** They do not replace the product's
+  merits or make comparison pricing mandatory (`principles.md`).
 - **Scarcity raises perceived value** — but only when real.
 - **Habits form through a loop.** A behavior becomes automatic by repeating a cycle: a
   **trigger** (an external cue, or increasingly an *internal* one like boredom, loneliness,
@@ -168,9 +170,9 @@ action. **A behavior happens only when three things line up in the same moment:*
   thinking required).
 - **A prompt** — something *tells them to act* right now, and they notice it.
 
-All three, together. Remove any one and nothing happens — and that's the diagnostic power of
-the model: **when a user doesn't act, exactly one of the three is missing, and which one
-tells you what to fix.**
+Use these as possible explanations, not a diagnosis from non-action alone. More than one
+factor can be missing, and the user may reasonably choose not to act. Check the explanation
+against observed behavior and the person's goal before proposing a fix.
 
 - Motivated and prompted but didn't act? **Ability** was too low — the action was too hard,
   too many steps, too costly. Reduce the effort (this is the whole "reduce friction" half of

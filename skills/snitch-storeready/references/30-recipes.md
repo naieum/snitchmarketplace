@@ -34,9 +34,9 @@ Write the report to `{working_directory}/snitchfindings/{target_slug}/STOREREADY
 
 Every audit / readiness / triage report MUST follow:
 
-1. **One-line verdict** at the top ("Not submission-ready: 3 blockers on Play, 1 on App Store." or "Submission-ready for both stores; 4 warnings worth fixing first.").
+1. **One-line verdict** at the top ("Not submission-ready: 3 blockers on Play, 1 on App Store." or "No known blockers in the checks run; console and runtime gaps are listed as Skip.").
 2. **Markdown tables only** for findings, coverage, and checklist state. No bare `[FAIL] foo`. No prose paragraphs between sections except a single transitional sentence.
-3. **Status column** uses one of `🔴 FAIL`, `🟡 WARN`, `⚪ N/A`, `🟢 OK`. Sort: 🔴 > 🟡 > ⚪ > 🟢. A 🔴 FAIL is something a reviewer will reject or an upload gate will block; a 🟡 WARN is a rejection risk or quality-bar issue.
+3. **Status column** uses one of `🔴 FAIL`, `🟡 WARN`, `⚪ SKIP` (including N/A with a reason), `🟢 OK`. Sort: 🔴 > 🟡 > ⚪ > 🟢. A 🔴 FAIL is an evidenced applicable policy violation or upload blocker, not a prediction of a human review; a 🟡 WARN is a rejection risk or quality-bar issue.
 4. **Section bodies are tables**, not prose. H2 headings group sections: `## Findings`, `## Store-console checklist`, `## Next steps`.
 5. **Close with "Next steps"** — at most three imperative bullets.
 6. **MANDATORY: every 🔴 FAIL row gets a "Want help fixing this?" prompt in the agent's reply.** After the findings table, list each FAIL with two concrete options. Example:
@@ -69,7 +69,7 @@ Every finding row needs Evidence: `file:line` for static checks, "user-confirmed
 | Status | Store | Item | State | Blocks submission? |
 |---|---|---|---|---|
 | 🔴 FAIL | Play | Closed-testing gate (new personal account) | 4 of 12 testers, day 3 of 14 (gate defined in references/08-play-account-release.md) | Yes — production access application unavailable until met |
-| 🟡 WARN | Apple | Privacy nutrition labels | User unsure whether crash SDK data is declared | Rejection risk under 5.1.1 |
+| ⚪ SKIP | Apple | Privacy nutrition labels | User unsure whether crash SDK data is declared | Unknown — inspect the submitted declaration and actual SDK collection |
 | 🟢 OK | Apple | Demo account | Credentials prepared in review notes | — |
 ```
 
@@ -82,7 +82,7 @@ When expanding a finding outside the table (triage mode), use the family block:
 - **Risk:** which guideline/policy it violates and what the store does about it
 - **Fix:** the specific remediation
 
-Critical = upload-blocked or guaranteed rejection. High = documented common rejection cause. Medium = reviewer-discretion risk or quality-bar issue. Low = post-launch risk (Vitals, discoverability).
+Critical = evidenced applicable upload blocker or explicit policy violation with critical submission impact. High = documented common rejection cause. Medium = reviewer-discretion risk or quality-bar issue. Low = post-launch risk (Vitals, discoverability).
 
 ## Common mistakes
 
@@ -92,4 +92,4 @@ Critical = upload-blocked or guaranteed rejection. High = documented common reje
 - Don't claim an app "will pass review" — review has human discretion. The honest ceiling is "no known blockers found".
 - Don't mutate project files without showing the proposed diff first and getting per-item confirmation.
 - Don't skip the "Want help fixing this?" prompt on FAILs — it's mandatory.
-- Don't invent guideline numbers or policy names. If you cannot cite the specific rule, report the concern as a WARN with plain-language reasoning.
+- Don't invent guideline numbers or policy names. If the applicable rule cannot be verified, Skip that determination with the missing evidence; do not manufacture a WARN from uncertainty alone.

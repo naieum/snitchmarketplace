@@ -6,7 +6,7 @@ compatibility: Standalone skill — the bundled shell tools need bash + jq; arti
 allowed-tools: Bash(${CLAUDE_SKILL_DIR}/devready.sh:*)
 metadata:
   author: Snitch
-  version: 0.5.0
+  version: 0.6.0
   homepage: https://snitchplugin.com
 ---
 
@@ -55,8 +55,9 @@ confirm with the user when it's ambiguous.
   a copy: a `CLAUDE.md` containing `@AGENTS.md` (Claude Code follows imports), a
   `.github/copilot-instructions.md` that says "follow AGENTS.md", and so on. **One
   canonical document, N pointers — never N diverging copies.**
-- **A repo that already has both** with different content is a finding, not a choice:
-  show the diff, merge into the canonical one, demote the other to a pointer.
+- **A repo that already has both:** compare shared instructions for actual contradictions.
+  An import plus tool-specific additions is valid, not drift. Preserve those additions and
+  the team's existing canonical layout; propose merging only duplicated or conflicting rules.
 
 Everything this skill writes into the context file — the spec sections, the standards
 section from Recipe E — is plain markdown with no tool-specific syntax, so it works
@@ -75,6 +76,19 @@ CI gate from Recipe E are tool-agnostic by nature* and cover every agent the tea
 | brownfield repo, CLAUDE.md still has `<!-- INTENDED -->` tags | reconciliation | D |
 | "set up coding standards" (standalone, or chained after A/C) | the standards move | E |
 
+## Evidence and permission boundary
+
+`standards` is a **presence-only inventory**, including its legacy `gates` and `gaps`
+fields. Before calling a rule enforced, trace the real command, its selected files and
+triggers, activation, and failure propagation. Check placeholder scripts, `continue-on-error`,
+`|| true`, and skipped paths. CI execution is not proof of required merge checks; host
+protection settings need separate evidence. Proposed or untested hooks remain unverified.
+Do not run untrusted project scripts or install dependencies merely to classify the repo.
+
+Audit/proposal requests stop at evidence and diffs; they do not authorize artifact writes.
+The generated permission starter grants no authority in the current session. Preserve existing
+policy, and propose narrowly scoped commands only after inspecting what they execute.
+
 ## Plan before you write (show this first)
 
 After `detect` and picking the recipe, present a **component plan** table and get a yes before
@@ -87,7 +101,7 @@ writing anything (pairs with the "never silently overwrite" rule). Fill the last
 | Coding-standards section + hooks | The agent's code is machine-checked, not advised (Recipe E) | brownfield/thin — from `standards` output |
 | `.claude/commands/` | Repeatable slash-command workflows | yes / skip |
 | Feedback loop (`.mcp.json` screenshot, or the test runner) | Lets the agent *see* its output and iterate | only if `.ui` / has tests |
-| `.claude/settings.local.json` perms | Stops re-prompting on common commands | yes — {project_kind} |
+| `.claude/settings.local.json` perms | Personal, reviewed preapprovals | optional — preserve policy; no stack executors by default |
 | `SKILL.md` (via `template skill-md`) | A project-authored skill, if the repo warrants one | optional |
 
 Mark each row keep / skip with a one-line reason, confirm, then write artifacts as diffs.
@@ -106,7 +120,7 @@ ${CLAUDE_SKILL_DIR}/devready.sh template <name>            # → a bundled templ
 clause, a lean imperative body, progressive-disclosure `references/` note). Offer it when the
 repo would benefit from its own checked-in skill — don't write one unprompted.
 
-## Artifacts this skill produces (all checked in, shareable)
+## Artifacts this skill can produce (shared or personal as appropriate)
 - **CLAUDE.md** — short; greenfield uses `template claude-md` with `INTENDED` tags,
   brownfield describes reality. Keep it tight (context bloat is the failure mode).
 - **Coding-standards section** (`template standards-claude-md`) — the two-tier
@@ -120,8 +134,9 @@ repo would benefit from its own checked-in skill — don't write one unprompted.
 - **Feedback loop** — the highest-leverage artifact. Document the test runner; for UI
   projects propose a Playwright `.mcp.json` so the agent can *see* its output
   and iterate. Establish it from feature #1.
-- **.claude/settings.local.json** — a stack-appropriate `perms` allowlist + an illustrative
-  deny/ask list, so common commands aren't re-prompted.
+- **.claude/settings.local.json** — personal permissions, not a checked-in team artifact.
+  `perms` starts with a few exact read-only git commands, with no stack executors preapproved.
+  Add only reviewed operations the user wants to preapprove; never broaden an existing policy.
 
 ## Hard rules
 - **Never write product code or scaffold the app** (no `npm create`, no source/tests) —
@@ -134,7 +149,7 @@ repo would benefit from its own checked-in skill — don't write one unprompted.
   starter templates, the templates lose. Recipe E adds gates and promotes rules; it never
   relaxes, disables, or inline-suppresses an existing check.
 - Keep CLAUDE.md short.
-- Always print the **manual follow-ups** the skill can't do: `/terminal-setup`, `/theme`,
+- Print only host-appropriate, relevant **manual follow-ups** the skill can't do: `/terminal-setup`, `/theme`,
   `/install-github-app`, macOS Dictation, and the keybindings (see recipes).
 
 ## Reference

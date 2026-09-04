@@ -53,7 +53,8 @@ carry:
   Search, Contact, Sign in. Keep to ~4–5.
 - **A way home** — a reset / "get out of jail free" for the lost. The logo usually doubles
   as this.
-- **A way to search** — just a box, a button, and the word "Search." No cute label ("Quick
+- **A way to search when the content calls for it** — a small, directly navigable site need
+  not have search. When present, use a box, a button, and the word "Search." No cute label ("Quick
   Find"), no instructions inside the box, no scope dropdown crammed in. Offer scope on the
   *results* page if it's useful there.
 
@@ -146,10 +147,13 @@ Guard the big picture; it's the one thing nobody inside the org will notice is m
 
 ---
 
-# The mobile component — bottom navigation hard rules
+# The mobile component — bottom navigation review prompts
 
 The bottom bar is the app's backbone and one of the most-tapped areas on the screen.
 Every icon, label, color, and state is a deliberate decision.
+The counts, colors and component choices below are starting points, not automatic Finding
+conditions. Explain the navigation task a departure impedes. Search need not exist on a small
+site that users can navigate directly; the parachute test adapts to the available content.
 ## What goes in it
 
 - **Only the most essential, most-frequent destinations.** Good candidates: home / feed /
@@ -167,9 +171,11 @@ Every icon, label, color, and state is a deliberate decision.
 - **3–5 tabs.** Both platforms top out there: above five, Material directs you to a different
   component rather than a six-tab bar, and iOS collapses the overflow into a "More" tab. More
   options also cause choice paralysis and shrink each target.
-- **Tap target 44–48px** (average thumb): 44pt is Apple HIG and WCAG 2.2 AAA (2.5.5), 48dp is
-  Material. **24×24 CSS px is the WCAG 2.2 AA floor** (2.5.8) — conformant, not comfortable;
-  a nav bar tapped hundreds of times a day should sit at 44–48, not at the minimum.
+- **Keep target-size units distinct:** iOS guidance uses 44pt, Android 48dp; WCAG 2.2 AAA
+  (2.5.5) uses **44×44 CSS px**, not points. AA (2.5.8) uses **24×24 CSS px** with exceptions.
+  Check the target platform, actual hit area and spacing before judging reachability. See
+  [Apple control sizing](https://developer.apple.com/design/tips/) and
+  [Android touch targets](https://developer.android.com/guide/topics/ui/accessibility/views/apps-views).
 - **Icon ~24px** — recognizable without dominating.
 - **Labels 10–12px**, concise, **single line** (never wrap to two).
 - **Respect the safe area** — keep the bar above the home indicator with breathing room;

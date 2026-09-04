@@ -6,7 +6,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.3.0
+  version: 0.4.0
   homepage: https://snitchplugin.com
 ---
 
@@ -15,14 +15,17 @@ metadata:
 You don't remember every Snitch skill, so ask. Read the user's situation, walk the map below,
 and name the one or two skills that fit — with the boundary line that separates them from the
 near-misses. When the user then wants one run, call the Skill tool with its name (one skill
-per call).
+per call). If the host has no Skill tool, do not claim a call occurred: name the skill
+and use the host's supported loading mechanism only when execution is requested. A routing
+question is recommendation-only; never install tools or run an entire lifecycle to answer it.
 
 The family splits by **when in the product's life you are** and **what a finding is judged
 against**. Those two questions route almost everything.
 
 ## The build flow: decide → bootstrap → build → tell → grade
 
-The route greenfield work travels. You're starting (or restarting) a site, app, or product.
+A map of possible stages, not a mandatory sequence. Select the smallest task the user asked
+for; planning does not authorize building, and auditing does not authorize fixes.
 
 1. **`snitch-blueprint`** makes the load-bearing product decisions before and while you
    build — audience, the one conversion action, surface inventory, build order, and the
@@ -68,9 +71,10 @@ The classic confusions, settled:
   visitor knows what to do next → ux.
 - **An unlabelled input, a 3:1 contrast ratio, a 20px tap target**: scored as a WCAG criterion
   and the exposure of failing it → ada (it owns the conformance sweep, the criterion table and
-  the legal read); scored as a barrier that stops a specific user finishing the task, or as a
+  the legal read); scored as a barrier that impedes or stops a specific user's task, or as a
   pattern a vulnerable user meets on their decision path → ux. The same broken element can be a
   finding in both; neither drops its half.
+  A criterion miss is not a UX severity score, and untested impact is not an evidence-backed Pass.
 - **`lang`, hreflang, and translations**: read as a search signal — how engines are told which
   locale a page serves (hreflang, locale canonicals, `lang` as machine readability) and whether
   a rendered translated page reads well → marketing; read as conformance and code readiness —
@@ -78,6 +82,9 @@ The classic confusions, settled:
   catalogs are built to carry another language at all → ada.
 - **`debuggable=true`** (and friends): judged against store policy → storeready; judged
   against attacker impact → security. The same fact can be two findings.
+- **Admin navigation**: whether a visible link or empty shell confuses the visitor → ux;
+  whether a caller receives protected data or performs an unauthorized action → security.
+  A visible link alone is not an authorization Finding; inspect page responses and server handlers.
 - **Tracking code**: the pixel and consent wiring itself — pixel install completeness, CAPI
   pairing, Consent Mode v2 defaults and CMP behavior — → adsready; the site's analytics
   instrumentation — install, tag-manager hygiene, event taxonomy, UTM consistency, and whether
@@ -96,7 +103,8 @@ The classic confusions, settled:
 
 - **`snitch-docwriter`** — technical prose (docs, READMEs, PR descriptions, error messages,
   runbooks). Its controlled style strips voice on purpose, and it scores prose with a
-  deterministic linter. Never route marketing copy through it.
+  deterministic linter while preserving meaning, uncertainty, and exact technical terms.
+  Its score is not an authorship detector. Never route marketing copy through it.
 - **`snitch-focusedcopy`** — one persuasive page or funnel's *structure*: the CLOSER stage
   map, reordering sections, verifying every claim before it's written. Reach for it when one
   page's persuasion arc is the problem. It takes the piece as given, whoever wrote it — a
@@ -108,7 +116,8 @@ The classic confusions, settled:
   (the villain, the About-page long story), **naming** (company, product, feature), and
   **sales collateral** (lead generators, sales emails, pitch decks, long-form sales copy) —
   written here from scratch, restructured later by focusedcopy.
-  All of it driven by the checked-in foundation. No foundation, no drafting.
+  Use the relevant checked-in foundation or an explicit approved brief for a bounded draft.
+  One launch post does not require a six-document strategy project.
 - **UI microcopy, CTAs, taglines, and the on-surface brand message** live in
   **`snitch-ux`**'s copy passes — the hero, the one-liner, the tagline as the visitor meets
   them, judged against the decision path rather than against a channel. The boundary with cmo
@@ -130,17 +139,22 @@ section order → focusedcopy; decide the number → blueprint; decide the strat
 ## Standalones and preconditions
 
 - **`snitch-adsready`** also *sets up* tracking (idempotent fixes, stepped walkthroughs), not
-  just audits it — reach for it the moment paid spend is planned. Its structured-data surface
+  just audits it — reach for it when paid-media planning needs tracking depth. Framework
+  hints and composite scores cannot prove readiness; actual event and performance evidence can. Its structured-data surface
   stops at the markup an ad platform itself consumes (Product/Offer for a shopping feed);
   everything else schema-shaped, plus llms.txt and AI search, hreflang and localized landing
   pages, and local business listings, is marketing's; the code's i18n readiness is ada's.
 - **`snitch-storeready`** also runs a web-to-store feasibility mode when there's no native
-  target yet ("can I put my web app in the App Store?").
+  target yet ("can I put my web app in the App Store?"). It judges effective release artifacts
+  and actual app utility, not debug-only settings or a framework label. Unknown console
+  declarations are Skips; no report promises approval.
 - **`snitch-devready`** is runnable any time on brownfield too — "make this repo
-  Claude-ready" needs no blueprint.
+  Claude-ready" needs no blueprint. Its standards inventory is presence-only; enforcement
+  requires tracing real commands and failure handling. Permissions start narrowly.
 - **`snitch-blueprint`** is not greenfield-only either: it has a brownfield entry for the
   mid-build case where pages exist but nobody decided who they're for. It derives the
   blueprint from what already exists, surfaces the undeclared decisions, and course-corrects.
+  A scoped addition changes only the affected records and preserves settled Decisions.
 - Gates travel with the skills, and they are not one gate (see `CONTEXT.md`):
   - the **UI ethics gate** — `snitch-ux` owns the canonical version; `snitch-blueprint`
     carries only the one-line general test and defers to ux's gate when UI gets built;

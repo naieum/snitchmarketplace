@@ -3,8 +3,11 @@
 The checked-in decisions document. One file at the repo root (or where the user names),
 short enough to stay maintained — a working doc agents load before building, not a strategy
 deck. Every line is one of the four record types from the decisions gate: **Fact** (with
-`file:line` / URL evidence), **Decision**, **Default** (labeled, with reason), or **Open
+`file:line` / URL or explicitly attributed user-supplied evidence), **Decision**, **Default** (labeled, with reason), or **Open
 question**. Prose that is none of these doesn't belong in the file.
+
+For a new blueprint, use the sections below. For a scoped update, change only affected
+records; do not force a full rewrite or reopen settled Decisions.
 
 ## Required sections
 
@@ -24,9 +27,8 @@ Who buys (the person and the moment), what they use today instead, the one-sente
 wedge. Verbatim user language where possible — later copy passes mine this section.
 
 ## Conversion action
-The ONE action, its rank-2 fallback if any, and HOW it is instrumented (the event name,
-the analytics destination). An uninstrumented conversion action is an open question,
-not a decision.
+The ONE action, its rank-2 fallback if any, and the measurement Decision: agreed event and
+destination, explicit no analytics, or an Open question if genuinely undecided.
 
 ## Claim inventory
 Everything surfaces may claim, each with its evidence or owner. Anything absent from
@@ -65,11 +67,8 @@ questions; it is not usable with silent guesses.
 ## Done-when
 
 - Every section present; every line typed as Fact / Decision / Default / Open.
-- The conversion action is singular, ranked, and instrumented (or its instrumentation is
-  the top open question).
-- The build order has at least one DEFERRED entry. A blueprint that defers nothing hasn't
-  made choices — it's a wishlist, and wishlists are what audits later flag as ten
-  half-built surfaces.
+- The conversion action and measurement Decision are explicit; no analytics is valid.
+- The deferred list records real deferred work, or says none. Never invent work to fill it.
 - The claim inventory contains zero unverified numbers.
 - The user has seen the diff and confirmed. The blueprint is theirs; the skill drafts it.
 
@@ -77,7 +76,7 @@ questions; it is not usable with silent guesses.
 
 - New surface requested → add it to Surfaces & build order + write its spec *before*
   writing its code. The spec-then-code order is the whole point of the skill.
-- Pivot / new service line / re-platform → re-run the interview delta, update, commit. The
+- Pivot / new service line / re-platform → re-run only the interview delta and propose the update. Commit only when requested. The
   git history of BLUEPRINT.md is the strategy changelog.
 - snitch-marketing and snitch-ux, when run later, read this file: findings that contradict a
   recorded Decision are surfaced as "decision vs. best practice" tensions for the user, not

@@ -127,7 +127,7 @@ Control: AC-01 — Parameterized queries enforced
 Objective: Confirm no user-controlled input reaches a SQL sink unsanitized.
 Procedure: Snitch Cat 01 scan with Rule 7 data-flow tracing across all DB sink patterns.
 Population / sample: <N> DB call sites reached; <M> traced (note if sampled vs exhaustive — say which).
-Expected evidence: every reached sink traces to a literal, a bound parameter, or a validated source.
+Expected evidence: every reached sink traces to a literal or a control proven effective for that SQL argument position, such as a bound value. A schema or length check alone is not sufficient.
 Result: <pass evidence per sink, or findings with file:line + trace>
 Exceptions: <any sink that could not be traced — Low confidence / needs human verification>
 Conclusion: Effective | Deficiency | Significant deficiency | Material weakness

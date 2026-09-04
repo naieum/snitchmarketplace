@@ -30,6 +30,20 @@ prose the user can't check, argue with, or act on.
 The same discipline applies in generative mode whenever you critique existing code you're
 building on.
 
+**Evidence outranks the catalog.** Reference patterns are review prompts, not mandatory UI
+features. No anchor, no testimonial, a round count, an honest 0% meter, or a different headline
+shape is not by itself a Finding. Name the task-specific defect and its causal mechanism.
+An optional improvement without that evidence is a test hypothesis, outside the Findings list.
+No quota of Findings or required persuasion techniques applies, even on acquisition surfaces.
+
+**Do not manufacture evidence in the Fix.** Preserve verified product facts and commitments.
+Never invent a trial, discount, review count, deadline, performance result, integration,
+cancellation promise, or completed step to improve the copy or a lint score. If a rewrite
+needs a missing fact, give a clearly marked template and name the fact needed before use.
+State behavioral predictions as risks or hypotheses; measured lift requires cited analytics
+or study evidence relevant to this surface. A screenshot can prove visible copy without
+proving an interaction, and source can prove a branch without proving it ran in a browser.
+
 ## The finding format
 
 ```
@@ -48,18 +62,16 @@ field, and new output uses **Risk**.
 
 ## Evidencing absence (rule 2's hard half)
 
-Absence is evidenced, not asserted: name what you searched and what came back empty — the
-search, the scope, and the count. "Grepped the template for `aria-live`; no matches, so the
-async result is announced to nobody." "No `<label>` or `aria-label` on any of the six inputs."
-"Read every handler in the file; nothing writes to storage, so the draft is lost on reload."
-Some of the most valuable findings in a UX review are things that are missing — no total shown
-before the charge, no tagline, no "you are here". A rule that only accepts quotable text would
-delete all of them.
+Absence is evidenced, not asserted: name the search, its scope, and what would satisfy the
+requirement. A missing token proves only that token is missing. Check equivalent mechanisms:
+wrapping labels and `aria-labelledby` can label inputs; `role="status"` and `role="alert"`
+have implicit live behavior; native forms can submit without JavaScript. Persistence and
+destructive guards may live in imports, shared handlers, or the server. Trace those before
+calling a control dead, a draft unsaved, or a deletion unguarded. If unavailable, record a
+Skip for the unresolved behavior and report only the visible defect you can support.
 
-Those three examples are **lexical** absences: there is a token to search for, so the search
-*is* the evidence. The most valuable absences are usually **semantic** — no total, no tagline,
-no "you are here" — and nothing can be grepped for them, because what is missing is a meaning,
-not a string. Do not let that difference quietly delete them. A semantic absence is evidenced by
+Some valuable absences are semantic — no total before commitment, no usable location cue —
+rather than missing strings. A semantic absence is evidenced by
 naming **what you read in full, and what would have satisfied it**: "Read all 34 lines of the
 summary block; it lists three line items and a shipping method, and no element states a total —
 the largest number on the page is the $89 line item." That is checkable: a reader can open the
@@ -108,7 +120,7 @@ The bands rate what the defect does to the user, not how much it bothers you.
   that figure rather than a lower headline one; where a trial precedes it, check both moments are
   stated. Reserve the money clause for that: a cost that is absent,
   contradicted, or disclosed below legibility. A dishonest-but-legible claim (fake countdown,
-  round social proof) is an ethics-gate finding at High — real, reportable, and not the same
+  proven-false social proof) is an ethics-gate finding at High — real, reportable, and not the same
   as the user not knowing the price.
   **Also Critical — irreversible destruction**: a single step irreversibly destroys or exposes
   data or access the user **already has** — a delete, wipe, revoke, or make-public that commits
@@ -137,8 +149,9 @@ The bands rate what the defect does to the user, not how much it bothers you.
   not about a change they chose going unconfirmed.) Outside a funnel there is no drop-off to measure, so read "loss" as
   the user giving up, guessing, or getting it wrong — the band is sized by what that costs them,
   not by whether money was involved.
-- **Medium** — friction most users push through: extra taps, a blank field you could pre-fill,
-  an unanchored number, a weak ask.
+- **Medium** — evidenced friction users can work around: avoidable repeated entry, confusing
+  units, or extra steps that obstruct this task. A blank field or unanchored price alone
+  does not meet this band.
 - **Low** — polish: tone, spacing, a label that could be sharper. Craft items live here — shadow
   tinting, card treatment, palette discipline, a glow that could guide the eye better. The page
   works and could read better.
@@ -149,8 +162,9 @@ The word "hierarchy" covers two very different things in this skill, and they ra
 each other:
 
 - **The reader cannot find where to start, or is pointed at the wrong thing → rate by effect,
-  typically High.** Scanning is one of the three facts this whole skill rests on, so a page whose
-  headings and body are all one size has no entry point, and that is not polish. Neither is
+  typically High.** Equal heading and body styles can weaken scanning cues, but do not alone
+  prove there is no entry point. Consider grouping, position, whitespace and other emphasis;
+  rate the supported task cost rather than a CSS pattern. Also inspect
   **inverted hierarchy, which is the commoner failure**: emphasis pointed at the wrong element,
   rated by what the user misses rather than by how tidy the page looks. Ask which element the
   styling would have you act on, then whether that is the one that matters — a newsletter banner
@@ -169,16 +183,20 @@ yes and it could simply look better, Low.
 Confidence is a separate axis, and it has **two** things to separate. State which you mean
 when they differ:
 
-- *Artifact confidence* — how well you could see the thing. **High** when you read the
-  component and the behavior is unambiguous, **Medium** when it depends on data or state you
-  couldn't see, **Low** when you're inferring from a screenshot or a partial render.
+- *Artifact confidence* — how well the evidence supports the precise claim. **High** for
+  clearly visible screenshot text or unambiguous source behavior; **Medium** when relevant
+  state is partly available; **Low** when the artifact only indirectly supports the claim.
+  Do not downgrade visible evidence merely because it is a screenshot, or upgrade inferred
+  runtime behavior merely because you read source.
 - *Judgement confidence* — how sure you are the claim is true given what you saw. You can read
   `Only 2 spots left` perfectly (artifact High) and still not know whether it's false, because
-  that depends on a business fact you can't check (judgement Medium). Report the lower of the
-  two and name which one is doing the limiting — "High that the string is hardcoded and
-  unsourced; Medium that the underlying claim is false" tells the reader what to go check.
+  that depends on a business fact you can't check. Record claim verification as a Skip,
+  not a speculative dishonesty Finding. Report the lower axis on supported Findings and name
+  its limit. A claim excluded by a supplied claim inventory is independently reportable as
+  unsupported declared intent; that still does not prove the underlying statement false.
 
-A low-confidence Critical is still worth reporting — it just gets reported as one.
+Confidence never substitutes for evidence: a conjecture does not become a Critical Finding
+by attaching "Low confidence."
 
 ## Decision tensions — when the workspace declares its own intent
 
@@ -201,15 +219,13 @@ Decision: a Decision to hide the recurring price is not a trade-off to respect; 
 ## Worked example
 
 ```
-## Finding: Plan price shown with nothing to compare it to
-- **Surface:** app/pricing/PlanCard.tsx:64
-- **Evidence:** `<span className="price">$19/mo</span>` — the only number on the card: no
-  second plan, no crossed-out reference, no per-day breakdown.
-- **Principle:** Anchoring / contrast — never show a cost in isolation.
-- **Risk:** The user answers "is this worth $19?" (hard question, easy answer "later")
-  instead of "which plan?" — the decision gets deferred at the moment of highest intent.
-- **Fix:** Render the annual plan beside it as the default-selected option with the monthly
-  equivalent struck through, so $19 is read against a number you chose.
-- **Severity:** High — this is the decision point the whole funnel feeds.
+## Finding: Confirmation amount excludes the selected add-on
+- **Surface:** app/checkout/Confirm.tsx:64; app/checkout/charge.ts:18
+- **Evidence:** Confirmation says "$24 total"; the selected $6 add-on is included by the
+  charge handler. Read the full confirmation block: it contains no $30 total.
+- **Principle:** Cost transparency at commitment.
+- **Risk:** The user approves $24 but is charged $30.
+- **Fix:** Show the calculated $30 total beside the final action, with its itemized charges.
+- **Severity:** Critical — the stated charge contradicts the amount collected.
 - **Confidence:** High
 ```

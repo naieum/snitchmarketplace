@@ -1,6 +1,6 @@
 # lib/standards.sh — enforcement-surface detection for snitch-devready.
-# Answers: what coding standards does this repo DEFINE, and which of them are
-# actually GATED (a tool that fails the build/edit/commit when violated)?
+# Inventory only: candidate standards and potential gate files by presence.
+# Does not establish command execution, activation, scope, or failure propagation.
 # A standard the repo doesn't gate is advice; the agent uses this JSON to build
 # the enforcement-coverage table and the two-tier CLAUDE.md standards section.
 #
@@ -141,6 +141,8 @@ run_standards() {
     '{
       schema: "snitch-devready.standards",
       schema_version: 1,
+      evidence_level: "presence-only",
+      enforcement_verified: false,
       defined: {
         linters: $linters,
         formatters: $formatters,

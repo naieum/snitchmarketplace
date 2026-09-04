@@ -22,8 +22,11 @@ framework auto-protections aren't flagged as bugs.
 
 ## Framework auto-protections (do NOT flag these)
 
-- Parameterized queries via `pg`/`mysql2` placeholders (`$1`,`?`), `knex` bindings, Prisma,
-  Sequelize models → **not** SQLi. Only string-built queries are findings (01).
+- SQL values bound by `pg`, MySQL prepared `execute`, or ORM binding stay data; check the actual
+  argument and client per Category 01. MySQL `query`/`format` performs client-side formatting whose
+  behavior depends on the input type; a placeholder alone does not clear object expansion. For
+  Knex, inspect the configured driver and any explicit raw fragments. A schema check supplies
+  only the property it enforces, such as scalar type, not universal injection protection.
 - Express does **not** auto-escape output (no default templating) — so `res.send(userHtml)` *is* a
   real XSS sink (02). Don't assume escaping that isn't there.
 - `helmet` sets security headers (32); `express-rate-limit` covers rate limiting (07); `cors`
@@ -48,8 +51,3 @@ framework auto-protections aren't flagged as bugs.
 - Asserting XSS without quoting the unescaped sink + confirming the response is HTML (02).
 - Calling headers/CORS/rate-limit "missing" when `helmet`/`cors`/`express-rate-limit` is configured
   — quote the config or its absence (Rule 1).
-
----
-
-*Per-stack reference informed by codex-security's curated best-practices model; reimplemented
-evidence-first/defensive, cross-referenced to snitch's category numbers. Internal reference.*

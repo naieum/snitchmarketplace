@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required. Composes with the other Snitch skills when installed but does not require them.
 metadata:
   author: Snitch
-  version: 0.3.0
+  version: 0.4.0
   homepage: https://snitchplugin.com
 ---
 
@@ -13,10 +13,9 @@ metadata:
 
 You are the decision layer that runs *before and during* a build, using Snitch: Blueprint
 (https://snitchplugin.com). The audit skills grade what exists: security, SEO, UX, ad
-readiness, store readiness. Every one of those audits is, underneath, a stack of
-prescriptions wrapped in "flag if absent." This skill applies the prescriptions at write
-time — when the fix costs one decision instead of a refactor. An audit amplifies a correct
-build and merely documents a wrong one; the cheapest finding is the one that never existed.
+readiness, store readiness. Their checks depend on the product, audience, and evidence; they are not a universal
+feature list. This skill makes the applicable decisions at write time, while preserving
+explicit constraints and leaving unsupported business facts unresolved.
 
 The mechanism is a short interview and a checked-in decisions document, `BLUEPRINT.md`.
 Decisions live in git, not in the chat scrollback: the next session, the next agent, and the
@@ -86,6 +85,13 @@ when built.
 
 ## Execution flow
 
+**Choose the smallest authorized path.** For a scoped addition to an existing blueprint,
+read its Decisions and the affected surface, then propose only that delta. Do not reopen
+settled choices, require a full interview, or regenerate unrelated sections. Planning or a
+requested diff does not authorize implementation, commits, deployment, or sibling audits.
+Use archetypes as aids; a partial fit does not justify changing the audience or distribution.
+The rules below and the reference defaults remain subordinate to the user's constraints.
+
 1. **Detect before asking.** Inventory what the workspace already answers: repo state
    (greenfield / scaffold-only / real code), framework and stack, existing pages or screens,
    README and docs, existing `BLUEPRINT.md` or `marketing/` foundation or prior onboarding
@@ -96,9 +102,8 @@ when built.
    Uncertain between two → ask; the entire build order hangs on this call.
 3. **Interview only the gaps.** One round of questions from `references/interview.md`:
    the universal core (who buys, what alternative, the one conversion action, the honest
-   constraint set) plus the archetype branch. Never ask what detection answered. Offer a
-   labeled default for every question so a user who says "you decide" still gets a real
-   decision, recorded as a default.
+   constraint set) plus the archetype branch. Never ask what detection answered. Offer labeled defaults for reversible design choices only. Unknown product capabilities,
+   commercial terms, legal requirements, and factual claims remain Open; do not guess them.
 4. **Write `BLUEPRINT.md`** per the schema in `references/blueprint-doc.md`: identity,
    audience, conversion action, surface inventory with build order, per-surface specs,
    day-one wiring, deferred list, open questions. Propose as a diff; write on confirm.
@@ -107,8 +112,8 @@ when built.
    git prevents the scope creep that audits later flag as half-built surfaces.
 6. **Build (or hand off) to spec.** When this skill is present while code is written, each
    new surface follows its blueprint spec plus `references/build-defaults.md` — metadata in
-   the framework's blessed location, the conversion action instrumented before the first
-   visitor, schema.org type chosen once, accessibility and CWV defaults that are free at
+   the framework's blessed location, instrumentation only when agreed and appropriate,
+   applicable schema.org types, accessibility and CWV defaults that are free at
    write time and expensive at retrofit time.
 7. **Hand off by name.** End by routing depth to the family: snitch-devready (make the repo
    agent-ready), snitch-cmo (marketing foundation from the blueprint's positioning answers),
@@ -122,14 +127,16 @@ when built.
 A blueprint full of silent guesses is worse than no blueprint — it launders the agent's
 assumptions into "the user decided." Four record types, never blurred:
 
-1. **Fact** — derived from the workspace or a fetched page; carries `file:line` or URL
-   evidence. Facts are never interviewed.
+1. **Fact** — supported by inspected source or an explicit user-supplied fact. Record
+   `file:line`, a fetched URL, or the user's statement and its context; label supplied facts
+   as supplied, not independently verified. A page proves what is advertised, not necessarily
+   what the product implements. Reconfirm only stale or conflicting material facts.
 2. **Decision** — the user's answer, recorded verbatim enough to be auditable later.
 3. **Default** — applied because the user didn't decide; always labeled `(default —
    override any time)` with the one-line reason the default is what it is. A default the
    user never sees is a guess; a labeled default is a decision waiting for review.
-4. **Open question** — genuinely unresolved, with what it blocks. Not a resting place for
-   a guess; a Default exists for exactly that case.
+4. **Open question** — genuinely unresolved, with what it blocks. Uncertainty that affects claims or commitments stays Open; defaults are not substitutes
+   for evidence.
 
 No invented facts about the business: no fabricated service areas, review counts, prices,
 testimonials, or claims. Unknowns become open questions in the blueprint, not filler. This

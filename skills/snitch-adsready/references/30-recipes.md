@@ -4,7 +4,8 @@ The orchestration playbook: which tools to run for a given ask, in what order, a
 
 ## Audit / readiness check on a website
 
-Run in parallel:
+Start with supplied evidence or the smallest relevant tools. These are options, not a
+mandatory batch: `score` already fetches site and performance data, so avoid duplicate calls.
 
 ```
 bash ads-ready.sh doctor          # env health — badges, not JSON
@@ -39,7 +40,7 @@ bash ads-ready.sh setup structured-data       # only when a shopping / catalog f
 
 ## "Should I add platform X?"
 
-Works offline.
+Stack inspection works offline; site checks and current vendor recommendations need access.
 
 ```
 bash ads-ready.sh detect                # stack signals
@@ -50,9 +51,9 @@ bash ads-ready.sh state site <url>      # see if pixel already installed
 
 | Verdict | Plan |
 |---|---|
-| `strong` | install pixel + CAPI, ship it |
-| `partial` | install but plan migration to a stronger stack — see fit-matrix entry |
-| `weak` | don't add; recommend stack-level work first (SSR migration, headless) |
+| `strong` | Integration starting point; verify the required platform and runtime behavior |
+| `partial` | Inspect actual gaps; no automatic migration |
+| `weak` | Historical caution only; measure before recommending stack work |
 
 A B2C SaaS doesn't need LinkedIn. An iOS-only app doesn't need ads.txt. Mark those ⚪ SKIP with the reason — never a silent omission and never a 🔴.
 
@@ -136,8 +137,8 @@ Every row is checkable or it does not ship.
 ```markdown
 | Status | Area | Platform | Finding | Evidence | Remediation |
 |---|---|---|---|---|---|
-| 🔴 FAIL | pixels | meta | No Meta Pixel in the served HTML | `state site https://example.com` → `.pixels.meta.detected = false`, `.pixels.meta.ids = []` | `fix pixel-install meta` |
-| 🔴 FAIL | consent | — | No CMP detected; site has EU traffic | `.consent = {platform:"none", consent_mode_v2:false, has_data_layer:false}` | `recommend cmp` |
+| ⚪ SKIP | pixels | meta | Initial-HTML signature absent; runtime install unverified | `state site https://example.com` → `.pixels.meta.detected = false`, `.pixels.meta.ids = []` | Confirm platform need, consent state, container and runtime events |
+| ⚪ SKIP | consent | — | Static signature absent; consent behavior unverified | `.consent = {platform:"none", consent_mode_v2:false, has_data_layer:false}` | Inspect actual consent states and applicable requirements |
 | 🟡 WARN | core-web-vitals | — | LCP p75 3.2s on mobile (target 2.5s) | `state crux https://example.com mobile` → `.data.field_data.metrics.LARGEST_CONTENTFUL_PAINT_MS.percentile = 3200` | See `06-core-web-vitals.md` |
 | ⚪ SKIP | apple | apple | Apple Search Ads not evaluated — no iOS app | no App Store link in `.robots.body`/head, `APPLE_SEARCH_ADS_*` unset. Unblock: point the skill at the app's site or set the env | — |
 | 🟢 PASS | security-headers | — | HSTS and CSP both served | `.security_headers.strict_transport_security = "max-age=63072000; includeSubDomains"`, `.content_security_policy` non-null | — |
@@ -161,7 +162,9 @@ Every row is checkable or it does not ship.
 and never let it override what the digest actually shows. Its value is the delta between two
 runs. Show the weights so the reader can check the arithmetic; they are in the JSON.
 
-Real shape: `.components.<name>` are integers 0-100, `.weights.<name>` are the percentages,
+Score schema v2: CWV and overall score are `null` with grade `UNRATED` when complete URL
+field data is unavailable. Lab/origin results remain separate evidence, not substitutes.
+Otherwise `.components.<name>` are integers 0-100, `.weights.<name>` are the percentages,
 `.overall_score` is 0-100 and `.overall_grade` is a letter (A ≥ 90, B ≥ 75, C ≥ 60, D ≥ 40,
 else F). There are no `composite_*` keys and no `/80` denominator.
 
@@ -187,7 +190,7 @@ else F). There are no `composite_*` keys and no `/80` denominator.
 | Stack detected | Verdict | Recommended path |
 |---|---|---|
 | nextjs | 🟢 strong | install pixels via @next/third-parties; CAPI via App Router routes |
-| vue (plain SPA) | 🟡 partial | migrate to Nuxt for SSR before scaling ad spend |
+| vue (plain SPA) | 🟡 partial | verify routing, consent, conversions, and measured performance |
 ```
 
 ## Run `score` in CI
@@ -197,7 +200,8 @@ The skill ships no workflow file. If the runner already has the skill on disk, t
 ```bash
 bash "$SKILL_DIR/ads-ready.sh" score "$URL" > score.json
 jq -r '"snitch-adsready score: \(.overall_grade) (\(.overall_score)/100)"' score.json
-jq -e '.overall_score >= 60' score.json   # exit 1 below your own floor
+jq -e '.overall_score != null and .overall_score >= 60' score.json
+# A false result may mean unavailable data, not a readiness defect. Inspect before gating.
 ```
 
 ## Common mistakes

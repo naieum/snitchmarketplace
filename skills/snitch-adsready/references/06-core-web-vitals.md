@@ -1,6 +1,7 @@
 # 06 — Core Web Vitals
 
-Read when an audit returns 🔴/🟡 on `state crux` or `state lighthouse`. CWV affects Google Ads Quality Score, organic SERP, AI Overview eligibility, and Meta's quality ranking.
+Read when an audit returns 🔴/🟡 on `state crux` or `state lighthouse`. Measure user experience directly; do not claim a specific ad score, AI eligibility, or
+ranking effect from these metrics alone.
 
 ## Targets (mobile-first)
 
@@ -17,7 +18,9 @@ Field data (CrUX) > lab data (Lighthouse). Field is what Google and the user act
 - **`state crux`**: 28-day rolling Chrome User Experience Report. Uses PageSpeed Insights API. Free; `PSI_API_KEY` raises quota.
 - **`state lighthouse`**: synthetic lab run via local lighthouse CLI. Falls back to PSI category scores if not installed (`npm i -g lighthouse`).
 
-If a URL has < 5,000 unique visitors / 28 days, CrUX returns no field data — fall back to Lighthouse.
+CrUX does not publish a fixed visitor threshold. Missing field data can reflect eligibility
+or insufficient samples; mark it unknown and label any Lighthouse result as lab, not field.
+Methodology checked 2026-09-04: https://developer.chrome.com/docs/crux/methodology
 
 ## LCP — slow causes
 
@@ -35,7 +38,9 @@ Pixels rarely become the LCP element but compete for main-thread CPU during load
 
 ## INP — interaction to next paint
 
-INP measures the worst interaction latency (75th percentile) across the page session. Pixels run callbacks on every click; bad pixels = bad INP.
+INP describes interaction responsiveness over a page visit, with outlier handling for long
+visits. The field threshold is assessed at the 75th percentile across visits, not the 75th
+percentile of interactions inside one session. Trace long tasks before blaming a pixel.
 
 | Cause | Fix |
 |---|---|
@@ -61,15 +66,16 @@ Off-main-thread tag execution via Partytown is one of the biggest INP wins. Astr
 ## Verification
 
 1. `state lighthouse <url>` for instant lab feedback.
-2. Wait 24-72h for CrUX to roll new field data.
+2. Record the field collection window; rolling data mixes old and new experiences after a fix.
 3. `state crux <url> mobile` to confirm field improved.
 4. Cross-check Search Console → Core Web Vitals report.
 
 ## When CWV can't be saved without rework
 
-- Pure SPAs with client-only routing: LCP measures the SHELL, not the actual content. Migrate to SSR (Next/Nuxt/Astro).
-- WordPress + 30+ plugins: realistically the wrong stack for ad-funded sites with strict CWV; recommend Hugo + Decap CMS or headless WP + Astro.
-- Heavy bundlers blocking main thread: Hydrogen for Shopify, headless commerce for others.
+Recommend architectural rework only when measured bottlenecks and constraints justify it.
+SPAs are not measured as static shells; client route transitions can have attribution
+limitations, so name the page/window measured. Plugin count alone proves no failure.
+Compare scoped optimizations before proposing a migration; no framework guarantees good CWV.
 
 ## See also
 

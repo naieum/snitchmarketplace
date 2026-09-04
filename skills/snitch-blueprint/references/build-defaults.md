@@ -1,9 +1,9 @@
 # Build Defaults — cross-cutting day-one wiring
 
-What every web-facing surface gets at write time, regardless of archetype. Each item here
-is the prescription behind a sibling audit's finding, applied while the file is being
-created — when it costs one decision — instead of retrofitted after a report. Items marked
-**[free]** cost nothing beyond doing it in the right place the first time.
+Starting points for applicable web surfaces, not mandatory features. Existing Decisions,
+privacy constraints, task scope, and platform capabilities take precedence. Record omissions
+with reasons; absence of a default is not by itself a Finding. **[free]** means low-cost at
+write time, not a promise of zero implementation or maintenance cost.
 
 ## Metadata goes where the framework wants it [free]
 
@@ -25,12 +25,11 @@ Every page ships with: unique title (format decided once: `{Page} — {Brand}` o
 variant), meta description, canonical, OG title/description/image. One OG image template at
 launch beats twelve bespoke ones never made.
 
-## The conversion action is instrumented before the first visitor
+## Decide whether and how to measure the conversion action
 
-- One analytics property (GA4 or a privacy-light alternative per the user's constraint
-  set), installed site-wide, with the conversion action as a named event from day one.
-  Retro-instrumenting after launch destroys the baseline forever — day one is the only
-  chance to measure the whole history.
+- An explicit no-analytics Decision is valid. Do not install analytics, pixels, or consent
+  tooling solely to complete this checklist. If measurement is wanted, agree the minimum
+  events, destination, consent needs, and data retention before implementation.
 - The event name is recorded in BLUEPRINT.md → Conversion action. Phone-number conversion
   on local-service sites: the number is an `href="tel:"` link and the click is the event.
 - **Consent before tags in consent jurisdictions.** If the audience includes EU/UK (or the
