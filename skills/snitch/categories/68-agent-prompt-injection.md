@@ -3,6 +3,8 @@
 
 Category 15 (AI API Security) covers the LLM-API boundary (keys, output handling, direct prompt injection at the chat input, cost controls). This category targets the *agent / tool-use* layer, where untrusted data reaches the model through retrieval, tool output, or upstream side-channels — the attacker never types into the prompt, but still steers the model.
 
+**Boundary.** This category owns non-voice agents. When the agent answers or places phone calls, or runs a realtime speech session, its tool surface, dial and transfer control, and injection through speech are judged on the call path — hand off by calling the Skill tool with "snitch-voice".
+
 **Data flow tracing required (SKILL.md Rule 7).** Trace retrieved content, tool output, and shared memory into the prompt, then into the tools, protected context, or downstream operations available to the model. An attacker-influenced source is a candidate, not a Finding by itself. Establish who can modify it and the unauthorized effect a steered model can cause. Hardcoded prompt text clears only that input source; it does not clear other messages or tool results.
 
 ### Detection

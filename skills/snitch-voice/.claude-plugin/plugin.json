@@ -1,0 +1,21 @@
+{
+  "name": "snitch-voice",
+  "description": "Can a caller talk your AI phone agent into moving money, dialing out, or leaking keys? Audits the whole call path, from the carrier webhook to the recording, and proves each finding with file and line evidence.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "voice-agent",
+    "telephony",
+    "prompt-injection",
+    "toll-fraud",
+    "webhook-security",
+    "call-recording",
+    "audit",
+    "snitch"
+  ]
+}

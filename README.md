@@ -6,8 +6,8 @@
 
 <p align="center">
   <strong>AI writes your code fast. Snitch checks it.</strong><br>
-  Twelve free Agent Skills for AI-built products: audits for security, SEO and
-  marketing, accessibility and legal exposure, UX, paid-ads readiness, and
+  Thirteen free Agent Skills for AI-built products: audits for security, SEO and
+  marketing, accessibility and legal exposure, AI voice agents, UX, paid-ads readiness, and
   app-store readiness, plus a build-time blueprint, a marketing foundation and
   drafting skill, persuasive page structure, controlled technical writing, a repo
   bootstrap for AI development, and a router that tells you which one fits.<br>
@@ -60,9 +60,10 @@ Then ask in plain words: *"run a snitch security scan."*
 
 | Skill | Version | What it does |
 |---|---|---|
-| [`snitch`](skills/snitch) | 9.6.0 | Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence. | [Site](https://snitchplugin.com/security) · [Docs](https://snitchplugin.com/docs/security) |
+| [`snitch`](skills/snitch) | 9.6.1 | Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence. | [Site](https://snitchplugin.com/security) · [Docs](https://snitchplugin.com/docs/security) |
 | [`snitch-marketing`](skills/snitch-marketing) | 1.17.0 | Why isn't your site ranking or converting? Audits your SEO, AI-search visibility, page speed, and how well the pages persuade, with evidence for every finding. | [Site](https://snitchplugin.com/marketing) · [Docs](https://snitchplugin.com/docs/marketing) |
 | [`snitch-ada`](skills/snitch-ada) | 0.2.0 | Could someone sue you over your site, or just not be able to use it? Checks every page against the WCAG 2.2 AA accessibility standard, tells you which laws apply to you, and checks whether your code is ready for other languages. | [Site](https://snitchplugin.com/ada) · [Docs](https://snitchplugin.com/docs/ada) |
+| [`snitch-voice`](skills/snitch-voice) | 0.2.0 | Can a caller talk your AI phone agent into moving money, dialing out, or leaking keys? Audits the whole call path, from the carrier webhook to the recording, and proves each finding with file and line evidence. | [Site](https://snitchplugin.com/voice) · [Docs](https://snitchplugin.com/docs/voice) |
 | [`snitch-ux`](skills/snitch-ux) | 0.11.0 | Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion. | [Site](https://snitchplugin.com/ux) · [Docs](https://snitchplugin.com/docs/ux) |
 | [`snitch-focusedcopy`](skills/snitch-focusedcopy) | 0.3.0 | Is your landing page copy in the wrong order? Restructures it around a widely taught sales-call framework and checks every claim. | [Site](https://snitchplugin.com/focusedcopy) · [Docs](https://snitchplugin.com/docs/focusedcopy) |
 | [`snitch-devready`](skills/snitch-devready) | 0.6.0 | Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs. | [Site](https://snitchplugin.com/devready) · [Docs](https://snitchplugin.com/docs/devready) |
@@ -71,7 +72,7 @@ Then ask in plain words: *"run a snitch security scan."*
 | [`snitch-storeready`](skills/snitch-storeready) | 0.4.0 | Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit. | [Site](https://snitchplugin.com/storeready) · [Docs](https://snitchplugin.com/docs/storeready) |
 | [`snitch-cmo`](skills/snitch-cmo) | 0.4.0 | Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish. | [Site](https://snitchplugin.com/cmo) · [Docs](https://snitchplugin.com/docs/cmo) |
 | [`snitch-blueprint`](skills/snitch-blueprint) | 0.4.0 | Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. | [Site](https://snitchplugin.com/blueprint) · [Docs](https://snitchplugin.com/docs/blueprint) |
-| [`snitch-router`](skills/snitch-router) | 0.4.0 | Not sure which skill you need? Ask this one and it points you to the right skill or flow. | [Site](https://snitchplugin.com/router) · [Docs](https://snitchplugin.com/docs/router) |
+| [`snitch-router`](skills/snitch-router) | 0.5.0 | Not sure which skill you need? Ask this one and it points you to the right skill or flow. | [Site](https://snitchplugin.com/router) · [Docs](https://snitchplugin.com/docs/router) |
 
 ## Platform hardening skills
 

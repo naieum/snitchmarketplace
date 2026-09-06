@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch Voice"
+  short_description: "Audit an AI voice agent for what a caller can make it do, spend, or say — evidence per finding"

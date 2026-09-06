@@ -1,6 +1,8 @@
 ## CATEGORY 19: SMS/Communication Security (Twilio)
 > Type: sink-pattern · Groups: modern-stack · CWE: CWE-798
 
+**Boundary.** This category owns standalone SMS endpoints. An SMS or call an AI voice agent sends or places mid-call is judged on the call path — hand off by calling the Skill tool with "snitch-voice".
+
 **Data flow tracing required (SKILL.md Rule 7).** Trace the destination phone number (and message body) back to its source before reporting. Hardcoded or ownership-verified numbers are Passes; a number taken from `req.*` and passed to the send call without validation or verification is a finding (SMS pumping / toll fraud). Un-traceable sources downgrade to Low confidence + `needs human verification`.
 
 ### Detection

@@ -1,11 +1,11 @@
 ---
 name: snitch-security
-description: Audit AI-written code for security vulnerabilities, with evidence-based findings (file:line + CWE/OWASP mapping) and false-positive prevention. Use when the user asks for a security audit, code review for vulnerabilities, OWASP scan, SARIF output, pre-deploy security check, post-LLM code review, or compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX). Do NOT use for general code review unrelated to security, license auditing, dependency-version bumps, or paid-ads / pixel readiness (use snitch-adsready) or SEO (use snitch-marketing).
+description: Audit AI-written code for security vulnerabilities, with evidence-based findings (file:line + CWE/OWASP mapping) and false-positive prevention. Use when the user asks for a security audit, code review for vulnerabilities, OWASP scan, SARIF output, pre-deploy security check, post-LLM code review, or compliance evidence (HIPAA, SOC 2, PCI-DSS, GDPR, CCPA, SOX). Do NOT use for general code review unrelated to security, license auditing, dependency-version bumps, a voice agent's call path — telephony webhooks, speech injection, dial and transfer control, recordings and consent (use snitch-voice), or paid-ads / pixel readiness (use snitch-adsready) or SEO (use snitch-marketing).
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Installs to the standard `<agent>/skills/` directory. LLM-backed scans use the user's existing model; no separate server required. Exports findings as SARIF and CSV on its own.
 metadata:
   author: Snitch
-  version: 9.6.0
+  version: 9.6.1
   homepage: https://snitchplugin.com
 ---
 

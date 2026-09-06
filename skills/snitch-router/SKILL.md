@@ -6,7 +6,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.4.0
+  version: 0.5.0
   homepage: https://snitchplugin.com
 ---
 
@@ -47,6 +47,8 @@ for; planning does not authorize building, and auditing does not authorize fixes
    auto-fix. For ada that cuts both ways: a recorded Decision such as "English-only at launch"
    makes its i18n categories a Skip citing that line, while an accessibility barrier is never
    waived by a Decision. **`snitch-security` audits the code**; it needs no blueprint to do it.
+   **`snitch-voice` audits a voice agent's call path** the same way, reading a recorded
+   Decision such as "no outbound calling at launch" as the reason its outbound rows Skip.
 
 ## The audits: pick by what the finding is judged against
 
@@ -57,6 +59,7 @@ hands the other over by name. The confusions below settle the pairs that come up
 | The finding is judged against... | Skill |
 |---|---|
 | Attacker impact (vulnerabilities, CWE/OWASP, compliance evidence) | `snitch-security` |
+| What a caller can make an AI voice agent do, spend, or say (telephony webhooks, speech injection, tool and dial control, toll fraud, recordings, consent and AI-disclosure rules) | `snitch-voice` |
 | Search and traffic outcomes (SEO, GEO/AI citation, schema, CWV contributors) | `snitch-marketing` |
 | WCAG 2.2 AA conformance and the legal exposure a failure carries (ADA, Section 508, the European Accessibility Act) | `snitch-ada` |
 | Whether the site is built to serve people in their own language and script (i18n readiness: strings, plurals, locale formatting, RTL, catalogs) | `snitch-ada` |
@@ -80,6 +83,14 @@ The classic confusions, settled:
   a rendered translated page reads well → marketing; read as conformance and code readiness —
   `lang` against SC 3.1.1 / 3.1.2, and whether the strings, plurals, formats, RTL layout and
   catalogs are built to carry another language at all → ada.
+- **A voice agent's tool handler**: judged by what a caller can make it do across the call
+  path — a spoken instruction reaching the prompt, a model-chosen transfer destination, a
+  tool webhook the carrier never signed, a card number landing in a transcript → voice (it owns
+  every hop from the carrier webhook to the recording, and the recording, consent and
+  AI-disclosure regimes that attach); judged as code off the call path — the SQL string the
+  argument reaches, a server-only secret, a chat endpoint, a non-voice agent's tools → security.
+  The same handler can carry one finding in each: voice names the hop and the voice-borne
+  argument, security names the sink.
 - **`debuggable=true`** (and friends): judged against store policy → storeready; judged
   against attacker impact → security. The same fact can be two findings.
 - **Admin navigation**: whether a visible link or empty shell confuses the visitor → ux;
@@ -148,6 +159,12 @@ section order → focusedcopy; decide the number → blueprint; decide the strat
   target yet ("can I put my web app in the App Store?"). It judges effective release artifacts
   and actual app utility, not debug-only settings or a framework label. Unknown console
   declarations are Skips; no report promises approval.
+- **`snitch-voice`** is source-mode only: it reads the workspace and never places a call or
+  touches a live platform account. A setting that lives only in a vendor dashboard is a Skip
+  naming the export that would unblock it, never a finding and never a Pass. It is
+  product-agnostic — carriers, hosted agent platforms, realtime speech APIs and open-source
+  voice frameworks all resolve to the same eleven call-path hops — with per-platform notes on
+  what each one already verifies, signs, or caps by default.
 - **`snitch-devready`** is runnable any time on brownfield too — "make this repo
   Claude-ready" needs no blueprint. Its standards inventory is presence-only; enforcement
   requires tracing real commands and failure handling. Permissions start narrowly.
@@ -161,7 +178,7 @@ section order → focusedcopy; decide the number → blueprint; decide the strat
   - cmo's **channel-conduct gate** — same shape, different surface: published channel content,
     not interface design;
   - the **evidence / anti-fabrication gates** (`snitch-cmo`, `snitch-focusedcopy`);
-  - the **redaction gate** (`snitch-security`, `snitch-marketing`, `snitch-ada`,
+  - the **redaction gate** (`snitch-security`, `snitch-marketing`, `snitch-ada`, `snitch-voice`,
     `snitch-storeready`).
 
   Those, and the never-auto-fix / human-publishes rules, hold no matter which route you took in.
@@ -169,6 +186,7 @@ section order → focusedcopy; decide the number → blueprint; decide the strat
 ## Not in this family
 
 Paid-ads campaign management, penalty-recovery negotiation, deploying tracking code to
-third-party dashboards, publishing content, app-store submission itself, and the legal side of
+third-party dashboards, publishing content, app-store submission itself, rotating a leaked
+key or changing a live telephony setting, placing test calls, and the legal side of
 an accessibility complaint — filing a VPAT, answering a demand letter, commissioning a certified
 audit — are all human work the skills prepare but never perform.
