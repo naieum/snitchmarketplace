@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.11.0
+  version: 0.12.0
   homepage: https://snitchplugin.com
 ---
 
@@ -54,6 +54,7 @@ worked example. Do not assign a Severity or Confidence value from memory.
 - **Principle:** [the clarity or persuasion principle it violates]
 - **Risk:** [what the user or the funnel actually loses — a behaviour or a number, not the Principle restated]
 - **Fix:** [the specific change]
+- **Verify:** [the observable that would show the fix worked — a task to put in front of three users, or a named number: completion, errors, time on task, drop-off between two steps]
 - **Severity:** Critical | High | Medium | Low
 - **Confidence:** High | Medium | Low — report the lower axis and name which one limits
 ```
@@ -66,6 +67,11 @@ fine" is none of the three.
 component or copy changes. When the user also requests fixes, finish the evidence pass, state
 the supported changes, then implement and verify within that authorization. Ask only when a
 fix needs a new product decision, unverified business fact, or expanded scope.
+
+**A fix is confirmed by its Verify line, not by the edit landing.** When fixes ship, re-run
+the affected checks on the changed surface and report each finding's Verify observable as
+confirmed, unconfirmed, or Skip (no data yet). Watch the second-order number as well as the
+near one (`usability-testing.md`).
 
 ## Workflow
 
@@ -93,6 +99,10 @@ scored lens runs. Read that file for the keys and their valid values — never a
   Decision is a **Decision tension**, an on-surface claim missing from the claim inventory is a
   finding, and neither file present is a Skip, never an interview. The rule is CONTEXT.md's
   Declared intent entry; the ux-specific step is in `finding-rules.md`.
+- **Ask for the behavioral data that already exists.** Funnel or drop-off numbers, session
+  recordings, heatmaps, support themes, survey answers, prior test notes. Supplied data is
+  evidence: cite it in the finding it supports. Nothing supplied is a Skip ("no behavioral
+  data supplied; source-inspected only"), never a licence to assert a number.
 - **Ask when scope or intent is unclear — ask, don't guess.** Which surfaces, the goal
   (conversion? clarity? accessibility? reduce a specific drop-off?), generative or review, and
   the audience/stakes (vulnerable users or high-stakes decisions? → `inclusive-design.md`).
@@ -206,7 +216,7 @@ the same report inline and say which happened.
 | File | Read it when |
 |---|---|
 | `ethics-gate.md` | Always, at Step 1 move 4, before any persuasion move. The canonical gate; every other file states it in one line |
-| `finding-rules.md` | Before writing any finding — evidence, absence, merge/split, severity, confidence, Decision tensions |
+| `finding-rules.md` | Before writing any finding — evidence, absence, merge/split, severity, confidence, the Verify line, Decision tensions |
 | `review-checklist.md` | At Step 1 move 7, on every surface. The operative audit tool |
 | `clarity.md` | Step 1 move 2, and any "is this understandable" brief |
 | `principles.md` | Step 1 move 5 — the persuasion catalog, indexed by its own Contents |
@@ -216,7 +226,7 @@ the same report inline and say which happened.
 | `writing-system.md` | Step 1 move 6 — how the sentences are built, plus the linter and score bands |
 | `paywalls.md` | Any surface that sells a subscription |
 | `inclusive-design.md` | Vulnerable users, high-stakes decisions, `high-stakes: true`, or whenever stakes are ambiguous |
-| `usability-testing.md` | A contested call, a novel pattern, or a question about whether a metric is honest |
+| `usability-testing.md` | A contested call, a novel pattern, a question about whether a metric is honest, or a fix that has shipped and needs its Verify line read |
 | `brand-message.md` | Brand-level surfaces: hero, tagline, value prop, welcome blurb, onboarding narrative |
 
 ## Guardrails

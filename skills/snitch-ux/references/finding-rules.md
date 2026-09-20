@@ -52,6 +52,7 @@ proving an interaction, and source can prove a branch without proving it ran in 
 - **Principle:** [the clarity or persuasion principle it violates]
 - **Risk:** [what the user or the funnel actually loses — name a behaviour or a number, not the principle restated. "The decision gets deferred at the moment of highest intent" is a Risk; "violates anchoring" is the Principle field again]
 - **Fix:** [the specific change]
+- **Verify:** [how you would know the fix worked — see below]
 - **Severity:** Critical | High | Medium | Low
 - **Confidence:** High | Medium | Low — lower axis first
 ```
@@ -59,6 +60,22 @@ proving an interaction, and source can prove a branch without proving it ran in 
 **Risk** is the family's shared term (CONTEXT.md: a Finding is Impact/Severity, Evidence, Risk,
 Fix). Earlier versions of this skill called the same field **Cost**; the two names mean one
 field, and new output uses **Risk**.
+
+## The Verify line — how you would know it is fixed
+
+Every finding names the observable that would confirm its Fix, so the team can close it on
+evidence instead of on the edit landing. Two shapes are acceptable:
+
+- **A task to watch.** "Put 'find and change your billing date' in front of three users; the
+  finding is closed when they reach the setting without opening the help page."
+- **A named number.** Task completion rate, error rate, time on task, or drop-off between two
+  named steps — "drop-off between /signup step 2 and step 3", not "conversion".
+
+Rules: the Verify observable must only improve when the *user* is better off (a number a dark
+pattern could lift is the wrong number — `usability-testing.md`, *Measure honestly*). Never
+invent a baseline; if no behavioral data was supplied, say the observable has no current value
+and the first reading is the baseline. Verify is a promise about the *future* check, so it
+carries no claim that anything was measured now.
 
 ## Evidencing absence (rule 2's hard half)
 

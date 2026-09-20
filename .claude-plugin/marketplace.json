@@ -41,8 +41,8 @@
     {
       "name": "snitch-ux",
       "source": "./skills/snitch-ux",
-      "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion. |",
-      "version": "0.11.0",
+      "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion.",
+      "version": "0.12.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },

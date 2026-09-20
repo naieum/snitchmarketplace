@@ -39,6 +39,10 @@ technique is not a Finding, and a heuristic match is not proof of a broken task.
 - [ ] Is it **obvious what's clickable**? Buttons look like buttons, links like links?
 - [ ] Are you **using conventions** where one exists, or reinventing the wheel without a
       clearly-better reason?
+- [ ] Do labels, headings and messages use the **user's words** — the terms they would type
+      into search — rather than internal names, status codes or the team's jargon? Do the
+      steps follow the order the task happens in the real world? (`substrate.md` Part 2,
+      *Knowledge in the head vs. knowledge in the world*.)
 - [ ] Any needless words to cut — **happy talk**, **instructions** for things that should be
       self-explanatory? (See `copywriting.md`.)
 - [ ] **Navigation parachute test:** on a deep page, can you instantly answer — what site is
@@ -54,6 +58,10 @@ technique is not a Finding, and a heuristic match is not proof of a broken task.
 - [ ] Is advanced complexity **progressively disclosed** rather than dumped upfront?
 - [ ] Does the input control **match the context** (slider for setup, stepper for frequent)?
 - [ ] Recognition over recall — are you showing, not making them remember?
+- [ ] Is there a **fast path for the frequent user** — keyboard shortcuts, last-used or
+      recent items, bulk actions, remembered inputs — that the first-time user never has to
+      notice? Efficiency for the expert must not cost the novice any clarity; both paths
+      lead to the same result.
 - [ ] Did a simplification **move complexity onto the user** instead of removing it — a
       hidden gesture as the only route, a rule the form enforces but never states, a
       "clean" screen that requires remembering what it no longer shows? Complexity is
@@ -119,6 +127,10 @@ technique is not a Finding, and a heuristic match is not proof of a broken task.
       worst moment (the error, the wait, the payment) gets the most design attention, not
       the least. A flow that works but just trails off is leaving its memory to chance.
 - [ ] Is the **empty state** a CTA, not a dead end?
+- [ ] When the user gets stuck, is **help reachable from the spot** (inline hint, a link
+      beside the field, a contextual "how do I…") and shaped as the task's steps rather
+      than a product tour? Is it searchable? A help page nobody can reach from the point of
+      failure is not help.
 - [ ] Does **search** offer suggestions on focus?
 - [ ] Is the experience **personalized** (name, lifecycle stage) where it can be?
 

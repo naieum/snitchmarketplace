@@ -103,6 +103,22 @@ ways that quietly cost you. Keep measurement honest:
 The through-test matches the skill's guardrail: **would this still look like a win if you
 measured the user's outcome instead of yours?**
 
+## After the fix ships — re-check, don't assume
+
+A finding is closed by its Verify line, not by the merged diff. When fixes land:
+
+- **Re-run the affected checks** on the changed surface, and re-run the parachute test if
+  navigation moved. A fix routinely trades one problem for another (see *Don't break what
+  works* above); the re-check is where that shows up.
+- **Read the Verify observable.** Confirmed, unconfirmed, or Skip (no data yet) — one word
+  per finding, with the number or the session it came from. No data is a Skip, never a
+  "probably fine".
+- **Wait for the far number.** The near metric moves first; churn, refunds and support load
+  arrive later. A fix that lifted the near number and has not yet been read against the
+  second-order one is *unconfirmed*, not done.
+- **Keep it routine.** Fold the re-check into the same monthly morning as the next test
+  round so review, fix and confirmation stay one loop rather than a one-off audit.
+
 ## When to reach for this
 
 Any time a design decision has turned into an argument, or you're about to ship something

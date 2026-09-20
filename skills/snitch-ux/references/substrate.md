@@ -372,6 +372,12 @@ remember it, you just perceive it — but only if the design puts it there.
   recognition-over-recall in Part 1).
 - → Every time you require the user to *remember* something across steps, you've moved
   knowledge into the head — a tax. Carry it for them.
+- → **Use the user's words, in the user's order.** A label in the vocabulary the user
+  already has (the term they would type into search) is knowledge in the world; a label in
+  the system's vocabulary — internal names, status codes, database fields, the team's
+  jargon — forces a translation the user has to carry in the head. The same applies to
+  sequence: steps in the order the task happens in the world need no explaining; steps in
+  the order the system stores them do.
 
 ## Human error is a design problem
 
