@@ -1,0 +1,3 @@
+interface:
+  display_name: "Snitch Storyboard"
+  short_description: "Make storyboard images and test sequence timing"

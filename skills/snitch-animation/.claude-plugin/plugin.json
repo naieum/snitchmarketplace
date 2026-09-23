@@ -1,0 +1,18 @@
+{
+  "name": "snitch-animation",
+  "description": "Write a connected 2–5 minute animated story and timed script.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "filmmaking",
+    "animation",
+    "live-action",
+    "animation",
+    "snitch"
+  ]
+}

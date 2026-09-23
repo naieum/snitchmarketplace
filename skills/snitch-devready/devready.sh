@@ -25,16 +25,23 @@ Read tools (JSON on stdout):
   standards              the repo's enforcement surface: defined standards
                          (linters, formatters, typecheck, tests) vs actual gates
                          (commit hooks, CI, Claude Code hooks) + the gaps
+  extensions [--window N] [--no-cli]
+                         the agent extension surface loaded for this project:
+                         skills (with est. listing cost vs the ~1% budget),
+                         enabled plugins (cost via `claude plugin details`),
+                         MCP servers by scope, and the overrides already in
+                         effect. --no-cli skips the `claude` subprocess.
   perms [project_kind]   starter permissions allow/deny for settings.local.json
                          (kinds: node|python|rust|go|ruby|php|jvm|dotnet)
   template <name>        print a bundled template to stdout
                          (names: claude-md | standards-claude-md | settings |
                           settings-hooks | mcp-screenshot |
                           cmd-plan-then-build | cmd-build-feature |
-                          cmd-commit-push-pr | cmd-what-did-i-ship | skill-md)
+                          cmd-commit-push-pr | cmd-what-did-i-ship | skill-md |
+                          settings-extensions)
 
 Utility:
-  doctor                 check prerequisites (jq, git)
+  doctor                 check prerequisites (jq; optional git, claude CLI)
   help
 
 Artifacts are written by the AGENT, not this script — see SKILL.md for the flow.
@@ -42,14 +49,15 @@ EOF
 }
 
 doctor_run() {
-  local jq_ok="false" git_ok="false"
-  command -v jq  >/dev/null 2>&1 && jq_ok="true"
-  command -v git >/dev/null 2>&1 && git_ok="true"
+  local jq_ok="false" git_ok="false" claude_ok="false"
+  command -v jq     >/dev/null 2>&1 && jq_ok="true"
+  command -v git    >/dev/null 2>&1 && git_ok="true"
+  command -v claude >/dev/null 2>&1 && claude_ok="true"
   if [[ "$jq_ok" == "true" ]]; then
-    jq -n --argjson jq "$jq_ok" --argjson git "$git_ok" \
-      '{ jq: $jq, git: $git, ok: $jq }'
+    jq -n --argjson jq "$jq_ok" --argjson git "$git_ok" --argjson claude "$claude_ok" \
+      '{ jq: $jq, git: $git, claude_cli: $claude, ok: $jq }'
   else
-    printf '{"jq":false,"git":%s,"ok":false,"error":"jq is required; install with: brew install jq"}\n' "$git_ok"
+    printf '{"jq":false,"git":%s,"claude_cli":%s,"ok":false,"error":"jq is required; install with: brew install jq"}\n' "$git_ok" "$claude_ok"
   fi
 }
 
@@ -60,6 +68,7 @@ template_run() {
     standards-claude-md)  cat "$TPL_DIR/CLAUDE-standards.md.tmpl" ;;
     settings)             cat "$TPL_DIR/settings.local.json.tmpl" ;;
     settings-hooks)       cat "$TPL_DIR/settings.hooks.json.tmpl" ;;
+    settings-extensions)  cat "$TPL_DIR/settings.extensions.json.tmpl" ;;
     mcp-screenshot)       cat "$TPL_DIR/mcp.screenshot.json.tmpl" ;;
     cmd-plan-then-build)  cat "$TPL_DIR/commands/plan-then-build.md" ;;
     cmd-build-feature)    cat "$TPL_DIR/commands/build-feature.md" ;;
@@ -76,6 +85,7 @@ main() {
   case "$cmd" in
     detect)    . "$LIB_DIR/detect.sh";    run_detect "$@" ;;
     standards) . "$LIB_DIR/standards.sh"; run_standards "$@" ;;
+    extensions) . "$LIB_DIR/extensions.sh"; run_extensions "$@" ;;
     perms)     . "$LIB_DIR/perms.sh";     run_perms "$@" ;;
     template) template_run "$@" ;;
     doctor)   doctor_run ;;

@@ -26,6 +26,7 @@ the manifest wins and the roster is the bug.
 - Insecure Deserialization (65)
 - Type Coercion Bypasses (67)
 - HTTP/Protocol Header Injection (72)
+- Web Cache Poisoning & Cacheability (73)
 
 ## `secrets-auth` — mode `preset:secrets-auth`
 - Hardcoded Secrets (3)
@@ -74,6 +75,6 @@ the manifest wins and the roster is the bug.
 - Data Classification & Lifecycle (38)
 
 ## Mode `full` — the Full System Scan
-Every manifest row with Status `active`: 62 categories. The reserved numbers are 11, 24, 25, 26, 41,
+Every manifest row with Status `active`: 63 categories. The reserved numbers are 11, 24, 25, 26, 41,
 46, 64, 69, 70, and 71 — each a redirect or deprecation stub, and none of them scannable. Resolve the
 set from the manifest, never from a number range.

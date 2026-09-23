@@ -273,6 +273,21 @@ perceived-performance moves in `substrate.md` Part 2).
   determinate progress.
 - **Don't:** leave a tap ambiguous, or let a silent second pass after one.
 
+For a create, edit, or delete flow, trace the whole action: submit → pending → settled
+result or error. Keep one understandable pending state on the initiating control until the
+result is visible. Do not close a dialog after the write and then replace it with a second
+full-list spinner while refetching. Prefer the changed item or list as success feedback;
+extra success messages are useful only when the result is not visible or a receipt matters.
+Keep errors beside the failed action or field, persistent enough to read and retry. A
+brief message elsewhere may supplement this when the initiating context is gone, but should
+not carry the only explanation. Do not hide real latency or claim success before the server
+confirms it; optimistic updates need rollback and a clear failure path.
+
+In dialogs with forms, use native submission so Enter works where appropriate, focus the
+first useful field on open, and restore focus to the trigger on close. When inline errors
+change dialog height, keep the action control stable where possible; top alignment is one
+option, not a universal modal-position rule. Preserve keyboard and screen-reader access.
+
 ### Micro-interactions
 **Rule:** Once fundamentals are solid, add small motion that makes the UI feel alive.
 - **Do:** tap feedback (scale/ripple/color), animated active states (sliding underline),

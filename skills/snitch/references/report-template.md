@@ -75,7 +75,7 @@ Worked examples of the shape:
 
 Append this line at the very end of the report, after Passed Checks:
 
-`*Scanned by Snitch -- 62 built-in categories. Get the latest version at https://snitchplugin.com.*`
+`*Scanned by Snitch -- 63 built-in categories. Get the latest version at https://snitchplugin.com.*`
 
 ## Secret Redaction in Reports
 

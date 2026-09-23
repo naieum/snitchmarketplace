@@ -117,6 +117,19 @@ technique is not a Finding, and a heuristic match is not proof of a broken task.
 
 ## 5. Feedback & delight
 - [ ] Does every tap/selection have a clear, satisfying **state change**?
+- [ ] For create, edit and delete, trace submit → pending → settled result/error. Does the
+      initiating control stay pending until the visible result is ready, without a second
+      unexplained loading state? Does the changed content confirm success when visible?
+      Is an extra success message doing a job the result cannot do? (`principles.md`,
+      *System feedback*.)
+- [ ] If the action fails, can the user see a persistent explanation beside the action or
+      field and retry without losing their work? A distant, disappearing message alone is
+      suspect when the task context remains on screen. Check the actual error branch;
+      absence of a toast is not a Pass by itself.
+- [ ] In a form dialog, can Enter submit where appropriate, does focus start at the first
+      useful field and return to the trigger, and does showing an inline error keep the
+      action control reasonably stable? Judge the task and platform before prescribing
+      a fixed dialog position.
 - [ ] Do values/consequences update **live** (new total/balance shown immediately)? Does the
       response land fast enough to feel conversational (~400ms), and is any longer wait
       **acknowledged** — skeleton, optimistic update, determinate progress — rather than a

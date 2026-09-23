@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required. Composes with the other Snitch skills when installed but does not require them.
 metadata:
   author: Snitch
-  version: 0.4.0
+  version: 0.5.0
   homepage: https://snitchplugin.com
 ---
 
@@ -114,7 +114,8 @@ The rules below and the reference defaults remain subordinate to the user's cons
    new surface follows its blueprint spec plus `references/build-defaults.md` — metadata in
    the framework's blessed location, instrumentation only when agreed and appropriate,
    applicable schema.org types, accessibility and CWV defaults that are free at
-   write time and expensive at retrofit time.
+   write time and expensive at retrofit time. For action flows, record the settled result,
+   pending and error behavior in the per-surface spec; snitch-ux owns the detailed review.
 7. **Hand off by name.** End by routing depth to the family: snitch-devready (make the repo
    agent-ready), snitch-cmo (marketing foundation from the blueprint's positioning answers),
    snitch-focusedcopy (deep persuasion pass on the money page), snitch-adsready (when paid spend

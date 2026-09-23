@@ -10,7 +10,7 @@
       "name": "snitch",
       "source": "./skills/snitch",
       "description": "Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence. |",
-      "version": "9.6.1",
+      "version": "9.7.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },
@@ -42,7 +42,7 @@
       "name": "snitch-ux",
       "source": "./skills/snitch-ux",
       "description": "Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion.",
-      "version": "0.12.0",
+      "version": "0.13.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },
@@ -50,7 +50,7 @@
       "name": "snitch-devready",
       "source": "./skills/snitch-devready",
       "description": "Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs. |",
-      "version": "0.6.0",
+      "version": "0.7.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },
@@ -82,7 +82,7 @@
       "name": "snitch-blueprint",
       "source": "./skills/snitch-blueprint",
       "description": "Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. |",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },
@@ -106,7 +106,71 @@
       "name": "snitch-router",
       "source": "./skills/snitch-router",
       "description": "Not sure which skill you need? Ask this one and it points you to the right skill or flow. |",
-      "version": "0.5.0",
+      "version": "0.11.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-animation",
+      "source": "./skills/snitch-animation",
+      "description": "Write a connected 2–5 minute animated story and timed script.",
+      "version": "0.2.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-cinematography",
+      "source": "./skills/snitch-cinematography",
+      "description": "Plan camera, optics, movement, lighting, and coverage.",
+      "version": "0.1.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-director",
+      "source": "./skills/snitch-director",
+      "description": "Plan the staging, shots, continuity, edit, and sound of a film.",
+      "version": "0.3.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-editor",
+      "source": "./skills/snitch-editor",
+      "description": "Plan or audit the selected cut, coverage, and pickups.",
+      "version": "0.1.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-productiondesign",
+      "source": "./skills/snitch-productiondesign",
+      "description": "Design film locations, characters, costumes, props, and their states.",
+      "version": "0.1.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-screenwriter",
+      "source": "./skills/snitch-screenwriter",
+      "description": "Develop screenplay scenes, dialogue, and story continuity.",
+      "version": "0.1.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-sound",
+      "source": "./skills/snitch-sound",
+      "description": "Plan film dialogue, ambience, effects, music, and silence.",
+      "version": "0.1.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-storyboard",
+      "source": "./skills/snitch-storyboard",
+      "description": "Make visual panels when image creation is available and plan an animatic.",
+      "version": "0.2.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },

@@ -1,4 +1,4 @@
-# snitch-security v9.6.1
+# snitch-security v9.7.0
 
 Is your AI-written code secure? Scans it for real vulnerabilities and proves each one with file and line evidence. |
 

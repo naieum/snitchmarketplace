@@ -1,4 +1,4 @@
-# snitch-router v0.5.0
+# snitch-router v0.11.0
 
 Not sure which skill you need? Ask this one and it points you to the right skill or flow. |
 

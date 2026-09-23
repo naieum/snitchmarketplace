@@ -1,0 +1,51 @@
+// Extension surface for this repo — the skills, plugins and MCP servers a
+// contributor working here actually needs. Merge these keys into the file named
+// beside each block; do NOT paste this whole document anywhere. JSON has no
+// comments, so strip every // line before writing.
+//
+// Three levers, three homes. The home is not a style choice — it is what makes
+// the setting take effect:
+//
+//   .claude/settings.json        skillOverrides. Checked in, so a fresh clone and
+//                                every teammate inherit the same lean surface.
+//   .claude/settings.local.json  enabledPlugins false-flips and
+//                                disabledMcpjsonServers. Settings precedence is
+//                                user < project < local, so a `false` written into
+//                                .claude/settings.json cannot switch off a plugin
+//                                that user settings enable — it must be local.
+//   ~/.claude.json               user/local-scope MCP servers. Not a file to edit:
+//                                the user runs `/mcp disable <server>` per project.
+//
+// Every entry below is reversible: delete the line, or run the named command.
+
+// ---------------------------------------------------------------- settings.json
+{
+  // "off"                  hidden from the model and from /name
+  // "user-invocable-only"  hidden from the model, still typable as /name
+  // "name-only"            listed without its description (cheap, still routable)
+  // Absent = on. Leave a skill absent rather than writing "on".
+  "skillOverrides": {
+    "{{SKILL_NAME}}": "off"                  // {{WHY_THIS_REPO_DOES_NOT_NEED_IT}}
+    // "{{SKILL_NAME_2}}": "user-invocable-only"  // kept for humans, off the model's list
+  }
+}
+
+// ---------------------------------------------------- settings.local.json (personal)
+{
+  "enabledPlugins": {
+    "{{PLUGIN}}@{{MARKETPLACE}}": false      // {{WHY}} — re-enable with /plugin
+  },
+
+  // Only for servers defined in this repo's .mcp.json.
+  "disabledMcpjsonServers": ["{{SERVER}}"]
+}
+
+// ------------------------------------------------------------ run, don't write
+// User- and local-scope MCP servers are disabled per project by command:
+//
+//   /mcp disable {{SERVER}}        (undo: /mcp enable {{SERVER}})
+//
+// This applies to the current project only, even for a user-scope server — repeat
+// it in any other project where the server should be off. Never use
+// `claude mcp remove` to disable one: that deletes the server config, its env
+// vars and headers, and wipes its stored OAuth tokens.
