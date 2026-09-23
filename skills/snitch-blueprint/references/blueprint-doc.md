@@ -50,6 +50,10 @@ One short block per built-or-next surface:
 - **Conversion presence:** where the conversion action appears on this surface.
 - **Claims used:** which claim-inventory lines this surface draws on.
 - **Wiring:** metadata, schema.org type, and any surface-specific instrumentation.
+- **Action states (when this surface changes data):** what the person sees while the action
+  runs, when the changed result is visible, and where a failed action can be read and retried.
+  Record a labeled Default for routine interaction behavior; leave server guarantees or
+  product commitments Open if unknown. Omit this line on read-only surfaces.
 
 ## Day-one wiring
 The cross-cutting checklist from references/build-defaults.md, with each item marked

@@ -6,7 +6,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.5.0
+  version: 0.11.0
   homepage: https://snitchplugin.com
 ---
 
@@ -28,13 +28,15 @@ A map of possible stages, not a mandatory sequence. Select the smallest task the
 for; planning does not authorize building, and auditing does not authorize fixes.
 
 1. **`snitch-blueprint`** makes the load-bearing product decisions before and while you
-   build — audience, the one conversion action, surface inventory, build order, and the
-   price *number* (a four-question price-sensitivity survey when the user is stuck on what to
+   build — audience, the one conversion action, surface inventory, build order,
+   action-state expectations for data-changing flows, and the price *number* (a
+   four-question price-sensitivity survey when the user is stuck on what to
    charge) — and checks them into `BLUEPRINT.md`. The seam it owns: it decides what *should*
    exist; the audits below grade what *does*.
 2. **`snitch-devready`** runs beside it on greenfield: blueprint makes the product decisions
    good, devready makes the repo good for agents (CLAUDE.md/AGENTS.md, commands, permissions,
-   the two-tier coding standard wired to real gates). Neither replaces the other.
+   the two-tier coding standard wired to real gates, and a scoped extension surface — which
+   skills, plugins and MCP servers this repo loads). Neither replaces the other.
 3. Build to the blueprint's specs. For any new persuasive page, the blueprint cites CLOSER as
    the default section order; the deep per-stage work belongs to **`snitch-focusedcopy`**.
 4. **`snitch-cmo`** inherits the blueprint: when `BLUEPRINT.md` exists, cmo reads its audience
@@ -63,13 +65,23 @@ hands the other over by name. The confusions below settle the pairs that come up
 | Search and traffic outcomes (SEO, GEO/AI citation, schema, CWV contributors) | `snitch-marketing` |
 | WCAG 2.2 AA conformance and the legal exposure a failure carries (ADA, Section 508, the European Accessibility Act) | `snitch-ada` |
 | Whether the site is built to serve people in their own language and script (i18n readiness: strings, plurals, locale formatting, RTL, catalogs) | `snitch-ada` |
-| The user's decision path (clarity, persuasion, usability, UI copy) | `snitch-ux` |
+| The user's decision path (clarity, persuasion, action feedback, usability, UI copy) | `snitch-ux` |
 | Ad-platform requirements (pixels, CAPI, conversion tracking, Consent Mode v2, ads.txt) | `snitch-adsready` |
 | Store policy and upload gates (App Store / Play review, privacy declarations) | `snitch-storeready` |
 | A controlled-language rule set — "audit my docs", "does this sound like AI" | `snitch-docwriter` |
+| Film staging, shot coverage, continuity, and the intended screen experience | `snitch-director` |
+| Camera position, optics, movement, lighting, and shot feasibility | `snitch-cinematography` |
+| Film world appearance, sets, characters, costumes, props, and their states | `snitch-productiondesign` |
+| Screenplay cause, scene change, dialogue, and story continuity | `snitch-screenwriter` |
+| Visual storyboard panels, layout, transitions, and animatic-plan timing | `snitch-storyboard` |
+| Selected cut, coverage, pacing, and source/handle feasibility | `snitch-editor` |
+| Film sound cues, acoustic perspective, and listening continuity | `snitch-sound` |
 
 The classic confusions, settled:
 
+- **A save or delete flow**: blueprint records what pending, success, and failure should mean
+  in the surface spec; ux checks the built interaction from action through visible result or
+  recoverable error. A toast is neither automatically a Finding nor proof that feedback works.
 - **A headline**: scored on keyword and intent match → marketing; scored on whether the
   visitor knows what to do next → ux.
 - **An unlabelled input, a 3:1 contrast ratio, a 20px tap target**: scored as a WCAG criterion
@@ -110,7 +122,49 @@ The classic confusions, settled:
 - **Store-listing text**: complies with metadata rules → storeready; sells → marketing /
   focusedcopy.
 
-## The writing lane: pick by whether the prose keeps a voice
+## The writing and filmmaking lane: pick by the artifact and its purpose
+
+- **`snitch-director`** — turns a supplied script, treatment, or scene into staging,
+  performance, camera/light choices, shot coverage, continuity, and sound/edit intent for
+  animation or live action at the requested length. It writes plans and optional portable
+  prompts; production/rendering remains a separate workflow. It can coordinate bounded
+  specialist roles when requested, without requiring installed department agents. For a
+  focused camera/light request, cinematography owns the depth; for a focused world/asset
+  request, productiondesign owns the depth. Focused boards, edit, and sound belong to
+  their specialist Skills. Director resolves these in an integrated plan.
+- **`snitch-screenwriter`** — develops treatments, outlines, screenplay scenes, dialogue,
+  revisions, and script audits for animation or live action beyond the focused 2–5 minute
+  animated-short lane. It writes what happens; director decides how it reaches the screen.
+- **`snitch-cinematography`** — camera and light for a supplied scene or sequence:
+  framing, optics, movement, lighting, coverage, feasibility, or an evidenced audit.
+  It hands story/performance integration to director and world/asset design to
+  productiondesign. It writes a plan, not finished footage.
+- **`snitch-productiondesign`** — world and asset design for a supplied story: usable
+  locations, sets, characters, costumes, props, visual rules, and continuity states.
+  Camera/light choices belong to cinematography; an integrated film plan belongs to
+  director. It writes a bible or scene specification, not built sets or rendered art.
+- **`snitch-storyboard`** — tests the visual sequence before production through panel
+  images when an authorized image capability is available, plus layout, transitions, and
+  an animatic plan. It honors text-only requests; written panels are not rendered boards,
+  and estimated timing is not measured playback. Director supplies integrated intent,
+  and cinematography owns deeper camera and light decisions.
+- **`snitch-editor`** — plans or audits the selected cut, timing, coverage gaps, and pickups
+  from a script, boards, source inventory, or inspected footage. It separates paper edits
+  from observations of actual media. Storyboard owns preproduction panels; sound owns
+  detailed listening design.
+- **`snitch-sound`** — plans or audits dialogue, ambience, effects, music, silence,
+  perspective, and cue timing for a supplied sequence. It writes a cue/recording brief,
+  not recorded audio or a finished mix. Editor owns picture assembly; director integrates
+  sound with the full scene.
+- **`snitch-animation`** — 2–5 minute animated narrative shorts: a premise becomes a
+  causally connected beat outline, a complete timed script, and notes for storyboarding.
+  It also revises or audits existing scripts, including silent stories. It estimates time;
+  a timed performance or animatic must confirm it. It writes the story rather than rendering
+  or publishing a video. For a branded narrative, it uses the supplied brief; campaign
+  strategy and UGC briefs remain cmo's, and a persuasive page remains focusedcopy's.
+  The seam with director is story versus realization: animation writes what happens and
+  supplies basic storyboard notes; storyboard develops detailed panels, and director
+  develops integrated staging and shot coverage. Screenwriter handles broader scripts.
 
 - **`snitch-docwriter`** — technical prose (docs, READMEs, PR descriptions, error messages,
   runbooks). Its controlled style strips voice on purpose, and it scores prose with a
@@ -167,7 +221,11 @@ section order → focusedcopy; decide the number → blueprint; decide the strat
   what each one already verifies, signs, or caps by default.
 - **`snitch-devready`** is runnable any time on brownfield too — "make this repo
   Claude-ready" needs no blueprint. Its standards inventory is presence-only; enforcement
-  requires tracing real commands and failure handling. Permissions start narrowly.
+  requires tracing real commands and failure handling. Permissions start narrowly. Its
+  extension-surface move judges skills, plugins and MCP servers on **fit with this repo**
+  and checks the answer in for the team; it is not the host's own machine-wide, usage-history
+  cleanup (on Claude Code that is `/doctor`), and it reports no token saving for MCP servers
+  whose tool schemas are deferred.
 - **`snitch-blueprint`** is not greenfield-only either: it has a brownfield entry for the
   mid-build case where pages exist but nobody decided who they're for. It derives the
   blueprint from what already exists, surfaces the undeclared decisions, and course-corrects.

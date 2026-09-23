@@ -1,4 +1,4 @@
-# snitch-ux v0.12.0
+# snitch-ux v0.13.0
 
 Will people actually use this screen? Reviews your interface and its on-screen copy for clarity and honest persuasion.
 

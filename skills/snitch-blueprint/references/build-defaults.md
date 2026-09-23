@@ -68,6 +68,21 @@ Pick the entity type at blueprint time and emit JSON-LD from a single shared com
 - JS discipline: no client-side rendering for content pages when the framework offers
   static/SSR; third-party scripts enter through the DEFERRED list, not by paste.
 
+## Action-state defaults for data-changing flows
+
+- Keep one visible pending state on the initiating control until the result the user needs
+  is visible. If a save requires a refetch, do not close the dialog only to show a second
+  unexplained list spinner. Never present unconfirmed work as settled success.
+- Let the changed item or list confirm success when it is visible. Use a separate success
+  message when the effect is off-screen, delayed, or needs a receipt. Show errors near the
+  failed action or field with a retry path; preserve the user's input.
+- For form dialogs, use native submission so Enter works where appropriate; focus the first
+  useful field on open and restore focus on close. Keep the action control stable as inline
+  errors appear. Apply platform conventions and the full snitch-ux pass during UI work.
+
+These are reversible build defaults, not product Decisions. Record exceptions in the
+surface spec with their reason; do not apply this section to read-only content.
+
 ## Hygiene that is only cheap now [free]
 
 - `robots.txt` + sitemap generated, staging/preview environments `noindex` from creation

@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.12.0
+  version: 0.13.0
   homepage: https://snitchplugin.com
 ---
 

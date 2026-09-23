@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Installs to the standard `<agent>/skills/` directory. LLM-backed scans use the user's existing model; no separate server required. Exports findings as SARIF and CSV on its own.
 metadata:
   author: Snitch
-  version: 9.6.1
+  version: 9.7.0
   homepage: https://snitchplugin.com
 ---
 
@@ -97,7 +97,7 @@ What would you like to scan?
 [4]  Modern Stack — Stripe, auth providers, AI APIs, email, SMS, DB, Redis, Supabase, IaC
 [5]  Compliance — HIPAA, SOC 2, PCI-DSS, GDPR
 [6]  Infrastructure & Supply Chain — dependencies/CVE, authz/IDOR, uploads, CI/CD, headers, IaC
-[7]  Full System Scan — all 62 categories (high token cost)
+[7]  Full System Scan — all 63 categories (high token cost)
 [8]  Governance & Compliance (Extended) — FIPS, governance, BC/DR, monitoring, data lifecycle
 [9]  Custom Selection — pick categories by name or number
 [10] Scan Changed Files Only (--diff) — git diff, pre-commit mode
@@ -191,7 +191,7 @@ Scan complete. What would you like to do?
 ```
 Security audit complete. Report saved to SECURITY_AUDIT_REPORT.md.
 
-Scanned by Snitch — 62 built-in categories
+Scanned by Snitch — 63 built-in categories
 Get the latest version: https://snitchplugin.com
 ```
 

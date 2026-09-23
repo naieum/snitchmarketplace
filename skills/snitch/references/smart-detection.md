@@ -183,8 +183,13 @@ a dual-key (`*_KEY_CURRENT` / `*_KEY_PREVIOUS`) arrangement:
 Found California user data patterns, SOX compliance keywords (`ccpa`, `sox`, `sarbanes`, `california_consumer`, `financial_reporting`):
 - Add Category 53 (CCPA/SOX)
 
-Found OAuth/OIDC libraries (`passport-oauth2`, `openid-client`, `@auth0/*`, `oidc-provider`, `oauth2-server`):
-- Add Category 54 (OAuth/OIDC)
+Found OAuth/OIDC libraries (`passport-oauth2`, `openid-client`, `@auth0/*`, `oidc-provider`,
+`oauth2-server`), or SAML libraries and artifacts (`@node-saml/node-saml`,
+`@node-saml/passport-saml`, `passport-saml`, `samlify`, `saml2-js`, `python3-saml`, `pysaml2`,
+`djangosaml2`, `ruby-saml`, `omniauth-saml`, `spring-security-saml2-service-provider`, `OpenSAML`,
+`Sustainsys.Saml2`, an `EntityDescriptor` element in a checked-in `*.xml`, or a route handling a
+`SAMLResponse` form field):
+- Add Category 54 (Federated Identity: OAuth/OIDC & SAML)
 
 Found Kubernetes/service mesh configs (`k8s`, `istio`, `envoy`, `linkerd`, `consul`), or microservice communication patterns:
 - Add Category 55 (Microservices)
@@ -228,6 +233,14 @@ Ruby project:
 Found AI SDKs + agent/tool-use frameworks — npm and PyPI names mixed, match either (`@anthropic-ai/sdk` / `anthropic`, `openai`, `ai`, `@ai-sdk/*`, `@google/genai` / `google-genai`, `@google/generative-ai` / `google-generativeai` (both superseded, still deployed), `langchain`, `@langchain/core`, `langgraph`, `llamaindex` / `llama-index`, `@mastra/core`, `crewai`, `autogen`, `pydantic-ai`, `@anthropic-ai/claude-agent-sdk` / `claude-agent-sdk`, `@openai/agents` / `openai-agents`, `@modelcontextprotocol/sdk` / `mcp`) combined with a vector DB (`pinecone`, `@pinecone-database/pinecone`, `weaviate`, `chromadb`, `pgvector`, `@cloudflare/vectorize`) OR a `tools:` array / function-calling pattern:
 - Add Category 68 (Agent & Indirect Prompt Injection)
 
+Found a shared-cache surface — `vercel.json` / `netlify.toml` with a `headers` or `routes` block,
+`wrangler.toml` plus `caches.default` or `cacheEverything`, a CloudFront/Fastly/Varnish config
+(`aws_cloudfront_cache_policy`, `*.vcl`), an nginx `proxy_cache`, a response-cache package
+(`apicache`, `@fastify/caching`), or source writing `s-maxage`, `CDN-Cache-Control`,
+`Surrogate-Control`, or a Next.js `export const revalidate` — **and** an authenticated route in the
+same project:
+- Add Category 73 (Web Cache Poisoning & Cacheability)
+
 ## Validation Signal Activation (Auto in Quick Scan)
 
 Trigger VS checks when relevant patterns are detected:
@@ -256,7 +269,7 @@ findings stay precise and framework defaults aren't reported as bugs.
 
 Load more than one when the repo spans stacks (e.g., a Next.js frontend + a Go service). If no
 per-stack reference exists for the detected stack, proceed with the category guidance alone (the
-62 active categories are cross-cutting and stack-agnostic).
+63 active categories are cross-cutting and stack-agnostic).
 
 ## Example Output
 

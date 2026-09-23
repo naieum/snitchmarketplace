@@ -17,7 +17,7 @@ means the category is reached only by mode `full`, mode `custom`, or a smart-det
 `deprecated` = retired; the number stays reserved and the file is a stub explaining why. Both are
 out of every group, every preset, and the Full System Scan.
 
-Active categories: 62.
+Active categories: 63.
 
 | ID | Slug | Title | Type | Groups | OWASP 2025 | CWE | Status |
 |----|------|-------|------|--------|------------|-----|--------|
@@ -74,7 +74,7 @@ Active categories: 62.
 | 51 | debug-endpoints | Debug Endpoints in Production | posture | — | A02 Security Misconfiguration | CWE-489 | active |
 | 52 | secrets-rotation | Secrets Rotation & Lifecycle | posture | — | A07 Authentication Failures | CWE-324 | active |
 | 53 | ccpa-sox | CCPA & SOX Compliance | compliance | — | A01 Broken Access Control | CWE-359 | active |
-| 54 | oauth-oidc | OAuth/OIDC Deep Security | posture | — | A07 Authentication Failures | CWE-287 | active |
+| 54 | oauth-oidc | Federated Identity Deep Security (OAuth/OIDC & SAML) | posture | — | A07 Authentication Failures | CWE-287 | active |
 | 55 | microservices | Microservices & Service Mesh Security | posture | — | A02 Security Misconfiguration | CWE-284 | active |
 | 56 | websocket-security | WebSocket Security | posture | — | A02 Security Misconfiguration | CWE-1385 | active |
 | 57 | graphql-deep | GraphQL Deep Security | posture | — | A01 Broken Access Control | CWE-862 | active |
@@ -93,6 +93,7 @@ Active categories: 62.
 | 70 | dead-code-unused-deps | Dead Code & Unused Dependencies | posture | — | A03 Software Supply Chain Failures | CWE-1104 | merged→33 |
 | 71 | iac-misconfiguration | IaC Misconfiguration | posture | — | A02 Security Misconfiguration | CWE-16 | merged→43 |
 | 72 | header-injection | HTTP/Protocol Header Injection | sink-pattern | web | A05 Injection | CWE-113 | active |
+| 73 | cache-poisoning | Web Cache Poisoning & Cacheability | posture | web | A02 Security Misconfiguration | CWE-524 | active |
 
 Notes:
 - The OWASP/CWE columns are the canonical per-category standards mapping (formerly duplicated in

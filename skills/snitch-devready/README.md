@@ -1,4 +1,4 @@
-# snitch-devready v0.6.0
+# snitch-devready v0.7.0
 
 Is your repo ready for an AI coding assistant? Sets up the config, commands, and permissions it needs. |
 

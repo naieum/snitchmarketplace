@@ -46,7 +46,7 @@ Advanced Security
 Protocol & Session Security
   [47] CSRF (47)                       [48] Race Conditions (48)
   [49] XXE / XML (49)                  [50] Timing Attacks (50)
-  [54] OAuth/OIDC (54)                 [56] WebSocket (56)
+  [54] Federated Identity (54)         [56] WebSocket (56)
   [57] GraphQL Deep (57)
 
 Operations & Compliance
@@ -60,7 +60,7 @@ Modern Attack Classes
   [63] JWT Algorithm Attacks (63)      [65] Insecure Deserialization (65)
   [66] Typosquatting/Postinstall (66)
   [67] Type Coercion Bypasses (67)     [68] Agent Prompt Injection (68)
-  [72] Header Injection (72)
+  [72] Header Injection (72)            [73] Web Cache Poisoning (73)
 
 ======================================================================
 
@@ -169,7 +169,7 @@ Support flexible matching:
 "debug" or "debug endpoints" or "metrics endpoint" or "profiling" -> 51
 "secrets rotation" or "key rotation" or "credential rotation" or "rotate secrets" -> 52
 "ccpa" or "sox" or "sarbanes-oxley" or "california privacy" -> 53
-"oauth" or "oidc" or "openid" or "openid connect" or "oauth2" -> 54
+"oauth" or "oidc" or "openid" or "openid connect" or "oauth2" or "saml" or "sso" or "single sign-on" or "federated identity" or "enterprise sso" or "xsw" or "signature wrapping" -> 54
 "microservices" or "service mesh" or "istio" or "envoy" or "k8s networking" -> 55
 "websocket" or "ws" or "wss" or "socket.io" or "websocket security" -> 56
 "graphql deep" or "graphql security" or "graphql introspection" or "graphql depth" -> 57
@@ -185,6 +185,7 @@ Support flexible matching:
 "type coercion" or "type juggling" or "loose comparison" -> 67
 "agent injection" or "agent prompt injection" or "indirect prompt injection" -> 68
 "header injection" or "crlf" or "response splitting" or "header smuggling" -> 72
+"cache poisoning" or "web cache" or "web cache poisoning" or "cache deception" or "cacheability" or "cdn cache" or "cache-control" -> 73
 "vulnerable dependencies" or "sca" or "osv" -> 27  (alias of merged 69)
 "dead code" -> 33  (alias of merged 70)
 "iac misconfiguration" -> 43  (alias of merged 71)
