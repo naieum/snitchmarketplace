@@ -40,12 +40,6 @@ Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more.
 /plugin install snitch@snitch
 ```
 
-**Any terminal — the full Snitch skill family:**
-
-```
-curl -fsSL https://snitchplugin.com/snitch.sh | sh
-```
-
 **Every other tool — copy one folder:**
 
 ```
