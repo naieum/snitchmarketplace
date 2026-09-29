@@ -1,10 +1,10 @@
 ---
 name: snitch-screenwriter
-description: Develop or revise a screenplay for animation or live action from a premise, treatment, outline, or draft. Use for film treatments, scene outlines, screenplay pages, dialogue, story structure, character arcs, and script audits across short or long forms. Do NOT use for the focused 2–5 minute animated-short story workflow (use snitch-animation), integrated staging and shot direction of a supplied script (use snitch-director), or a visual-world bible (use snitch-productiondesign).
+description: Develop or revise a screenplay, or extract reusable story beats from a reference video of any length. Use for video beat breakdowns, timestamped beat maps, adapting a video's structure to a new story, film treatments, scene outlines, screenplay pages, dialogue, character arcs, and script audits. Do NOT use for the focused premise-to-script 2–5 minute animated-short workflow (use snitch-animation), selected cuts and edit notes (use snitch-editor), integrated staging and shot direction (use snitch-director), or a visual-world bible (use snitch-productiondesign).
 license: MIT with Commons Clause
 metadata:
   author: Snitch
-  version: 0.1.0
+  version: 0.2.0
   homepage: https://snitchplugin.com
 ---
 
@@ -16,6 +16,11 @@ dialogue. Preserve the user's premise, genre, voice, protected scenes, and endin
 asked to change them. This Skill writes and diagnoses the story; it does not decide camera
 setups or make finished media. Work across live action, animation, stop motion, and mixed
 media, at the length the user requests.
+
+What makes a reference video work as a story? Inspect it to map its beats, separate what
+happens from each beat's function, and carry that structure into a new subject when asked.
+This includes narrative films, explainers, interviews, demonstrations, and other video
+forms; a two-minute clip and an hour-long video use the same evidence discipline.
 
 For the focused workflow that turns a premise into a timed 2–5 minute animated story,
 call the Skill tool with "snitch-animation". For integrated staging, performance, shots,
@@ -34,6 +39,8 @@ the story version first and carry its scene IDs and protected decisions into dir
 | Write a script | Complete requested scenes or screenplay pages with action and exact dialogue |
 | Revise supplied pages | Diagnosis, revised requested scope, and a change ledger |
 | Audit a draft | Evidenced Findings, Passes, and Skips; no unsolicited rewrite |
+| Break down a reference video | Timestamped beat map, reusable structure, and inspection coverage |
+| Use a reference video's beats for a new story | Source beat map plus an adaptation outline at the requested length; pages only if requested |
 
 Read the supplied draft/version, outline, character and world notes, required lines,
 ending, references, medium, target length, audience, format, and production limits. Keep
@@ -41,6 +48,19 @@ existing scene IDs; otherwise assign stable IDs such as `SC01`. Label source fac
 interpretations, and new proposals. Ask only for a missing decision that blocks a
 consequential choice. Otherwise state reversible assumptions and proceed. A logline request
 does not authorize an invented feature screenplay.
+
+## Extract beats from a video
+
+For a video file, link, or supplied transcript used as a structural reference, read
+[references/video-beats.md](references/video-beats.md). Inspect accessible media with the
+host's available capabilities; the Skill itself does not provide video playback or
+transcription. State the material and intervals actually inspected. A transcript-only or
+sampled-frame breakdown must stay labeled as such. Never infer unseen scenes from a title,
+thumbnail, or reputation. Record observed events separately from interpreted story functions
+and proposed adaptations. The reference workflow belongs here even for a 2–5 minute
+animated clip; when the next requested task is a focused animated-short script, carry the
+beat map into the snitch-animation handoff above. For selected cuts or edit notes, call
+the Skill tool with "snitch-editor".
 
 ## Develop and test the story
 
@@ -116,5 +136,5 @@ contradiction unless the supplied material rules out a coherent path. Do not inv
 footage, audience reactions, approval, or measured duration.
 
 Return inline unless files were requested or the project has an output convention. The
-Skill ends at writing or auditing; casting, filming, rendering, editing, and publishing
+Skill ends at story analysis, writing, or auditing; casting, filming, rendering, editing, and publishing
 need their own requested workflows.

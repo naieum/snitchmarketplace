@@ -1,11 +1,11 @@
 ---
 name: snitch-blueprint
-description: Make the load-bearing product decisions BEFORE and WHILE building, instead of discovering them in an audit afterward. Detects what the workspace already answers, interviews the user for only the gaps, classifies the project by how it is bought (local service business, SaaS / web app, e-commerce, content site, mobile app, CLI / library / API), then writes a checked-in BLUEPRINT.md — audience, the one conversion action, surface inventory, build order, per-surface specs — that the build follows and that snitch-marketing and snitch-ux later read to report tensions against; snitch-security audits the code directly. Triggers on "help me build this right from the start", "what should I build first", "set up a new site/app for a <business>", "plan this build", "blueprint this project", "I'm building a site for a local business / a store / an app", "greenfield marketing/UX decisions", "which pages do I need", "make the right choices while we code". Do NOT use for grading an existing site (use snitch-marketing / snitch-ux / snitch-security — they audit what exists; this skill decides what should exist), writing marketing strategy prose or channel content (use snitch-cmo), fixing one page's persuasion arc (use snitch-focusedcopy), AI-dev-tooling bootstrap like CLAUDE.md and permissions (use snitch-devready — the two compose on greenfield), or pixel/consent implementation depth (use snitch-adsready).
+description: Make the load-bearing product decisions BEFORE and WHILE building, instead of discovering them in an audit afterward. Detects what the workspace already answers, interviews the user for only the gaps, classifies the project by how it is bought (local service business, SaaS / web app, e-commerce, content site, mobile app, CLI / library / API), then writes a checked-in BLUEPRINT.md — audience, the one conversion action, surface inventory, build order, per-surface specs with Done-when checks — that the build follows and that snitch-marketing and snitch-ux later read to report tensions against; snitch-security audits the code directly. When asked, also writes a docs/PLAN.md build plan shaped by the project's own hard parts: the best option for each with the rejected ones and why, reviewed adversarially, then phases, verification including what must be refused, and an optional task list for an agent build loop. Triggers on "help me build this right from the start", "what should I build first", "set up a new site/app for a <business>", "plan this build", "blueprint this project", "I'm building a site for a local business / a store / an app", "greenfield marketing/UX decisions", "which pages do I need", "make the right choices while we code", "plan the build", "how should we build this", "write a PLAN.md", "plan this for a build loop". Do NOT use for grading an existing site (use snitch-marketing / snitch-ux / snitch-security — they audit what exists; this skill decides what should exist), writing marketing strategy prose or channel content (use snitch-cmo), fixing one page's persuasion arc (use snitch-focusedcopy), AI-dev-tooling bootstrap like CLAUDE.md and permissions (use snitch-devready — the two compose on greenfield), or pixel/consent implementation depth (use snitch-adsready).
 license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). Pure guidance; no server, tools, or external calls required. Composes with the other Snitch skills when installed but does not require them.
 metadata:
   author: Snitch
-  version: 0.5.0
+  version: 0.6.0
   homepage: https://snitchplugin.com
 ---
 
@@ -110,13 +110,21 @@ The rules below and the reference defaults remain subordinate to the user's cons
 5. **Derive the build order** from the archetype reference — what ships first, what is
    explicitly deferred and why. The deferred list is load-bearing: "not yet" recorded in
    git prevents the scope creep that audits later flag as half-built surfaces.
-6. **Build (or hand off) to spec.** When this skill is present while code is written, each
+6. **Plan the build (only when asked).** When the user asks how to build it, or wants a plan
+   an agent build loop can run from, follow `references/build-plan.md`: record the current
+   state, find the project's few hard parts, compare real options for each against current
+   official docs and pick the best with the rejected ones recorded, run an adversarial review
+   of the draft, then write the spine (phases with a usable result, verification including
+   refusal checks, what stays human). The plan's layout comes from this project's risks,
+   never from another project's plan. Propose it as a diff; write on confirm. A plan does not
+   authorize building.
+7. **Build (or hand off) to spec.** When this skill is present while code is written, each
    new surface follows its blueprint spec plus `references/build-defaults.md` — metadata in
    the framework's blessed location, instrumentation only when agreed and appropriate,
    applicable schema.org types, accessibility and CWV defaults that are free at
    write time and expensive at retrofit time. For action flows, record the settled result,
    pending and error behavior in the per-surface spec; snitch-ux owns the detailed review.
-7. **Hand off by name.** End by routing depth to the family: snitch-devready (make the repo
+8. **Hand off by name.** End by routing depth to the family: snitch-devready (make the repo
    agent-ready), snitch-cmo (marketing foundation from the blueprint's positioning answers),
    snitch-focusedcopy (deep persuasion pass on the money page), snitch-adsready (when paid spend
    is planned), snitch-storeready (before store submission), and — once real traffic or a
@@ -136,8 +144,13 @@ assumptions into "the user decided." Four record types, never blurred:
 3. **Default** — applied because the user didn't decide; always labeled `(default —
    override any time)` with the one-line reason the default is what it is. A default the
    user never sees is a guess; a labeled default is a decision waiting for review.
-4. **Open question** — genuinely unresolved, with what it blocks. Uncertainty that affects claims or commitments stays Open; defaults are not substitutes
+4. **Open question** — genuinely unresolved, with what it blocks and what will resolve it. Uncertainty that affects claims or commitments stays Open; defaults are not substitutes
    for evidence.
+
+Three tags sharpen these records (schema in `references/blueprint-doc.md`): **Rejected**
+(the alternatives a Decision or Default beat, and why), **Settled (date)** (a Decision the user
+closed; reviewers and audits judge against it and never re-propose alternatives), and
+**Resolved by** (what will close an Open question).
 
 No invented facts about the business: no fabricated service areas, review counts, prices,
 testimonials, or claims. Unknowns become open questions in the blueprint, not filler. This
@@ -174,6 +187,10 @@ over-asks).
   per-archetype branches, and the labeled-default rule.
 - `references/blueprint-doc.md` — the `BLUEPRINT.md` schema: required sections, record
   types, per-surface spec format, done-when criteria.
+- `references/build-plan.md`: the build-plan method: current state, finding the hard parts,
+  comparing options against current docs, adversarial review of the draft, the required spine
+  (phases, verification with refusal checks, what stays human), and the optional task-list
+  export for an agent build loop. No fixed layout; two contrasting worked shapes.
 - `references/build-defaults.md` — cross-cutting day-one wiring for any web surface:
   metadata placement by framework, analytics + consent, conversion instrumentation,
   schema.org, accessibility and CWV defaults, and what NOT to install yet.

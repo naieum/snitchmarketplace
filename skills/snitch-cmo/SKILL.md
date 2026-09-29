@@ -5,7 +5,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills (Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, Windsurf, Goose, Cline, Zed, OpenCode, and 60+ more). LLM-backed work uses the user's existing model; no separate server required. Web fetch (built-in) used for crawl mode and competitor research when available; degrades to source-only with hedged competitor sections when not.
 metadata:
   author: Snitch
-  version: 0.4.0
+  version: 0.5.0
   homepage: https://snitchplugin.com
 ---
 
@@ -177,6 +177,14 @@ done-when criteria — live in `references/foundation-docs.md`; read it before w
    make.
 3. **Research competitors** (crawl mode): fetch each competitor's homepage and pricing page;
    extract positioning, price points, and gaps with URL evidence per the evidence gate.
+   When a consequential uncertainty requires investigation beyond those comparisons, call the
+   Skill tool with "snitch-research" for a bounded evidence assignment: pass the decision it
+   informs, constraints, existing sources, and unresolved questions, not a conclusion to defend.
+   If the host lacks a Skill tool, use its supported skill-loading mechanism; never claim an
+   unavailable call occurred. If the skill is unavailable, keep the gap explicit and use the
+   available evidence without pretending the deeper investigation ran. Review returned
+   counterevidence and limitations before making strategy calls. Research supplies evidence;
+   this skill still owns the Foundation. A routine comparison does not require a separate run.
 4. **Write the six docs in dependency order** — product-information first (everything cites
    it), then positioning, then the rest (each schema in `references/foundation-docs.md`
    names its inputs). Keep each doc short enough to stay maintained: these are working docs

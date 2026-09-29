@@ -81,8 +81,8 @@
     {
       "name": "snitch-blueprint",
       "source": "./skills/snitch-blueprint",
-      "description": "Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. |",
-      "version": "0.5.0",
+      "description": "Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order before you write code, or partway through a build nobody made those calls on. Ask it to plan the build too: it finds the risky parts, picks the best option for each, and says how you'll prove it works.",
+      "version": "0.6.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },
@@ -97,16 +97,24 @@
     {
       "name": "snitch-cmo",
       "source": "./skills/snitch-cmo",
-      "description": "Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish. |",
-      "version": "0.4.0",
+      "description": "Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish.",
+      "version": "0.5.0",
+      "license": "MIT with Commons Clause",
+      "homepage": "https://snitchplugin.com"
+    },
+    {
+      "name": "snitch-research",
+      "source": "./skills/snitch-research",
+      "description": "What do we need to know, and what have we overlooked? Investigates relevant questions, weighs supporting and conflicting evidence, and reports what it means for the task.",
+      "version": "0.1.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },
     {
       "name": "snitch-router",
       "source": "./skills/snitch-router",
-      "description": "Not sure which skill you need? Ask this one and it points you to the right skill or flow. |",
-      "version": "0.11.0",
+      "description": "Not sure which skill you need? Ask this one and it points you to the right skill or flow.",
+      "version": "0.13.1",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },
@@ -153,8 +161,8 @@
     {
       "name": "snitch-screenwriter",
       "source": "./skills/snitch-screenwriter",
-      "description": "Develop screenplay scenes, dialogue, and story continuity.",
-      "version": "0.1.0",
+      "description": "Extract reusable beats from reference videos and develop screenplay scenes, dialogue, and story continuity.",
+      "version": "0.2.0",
       "license": "MIT with Commons Clause",
       "homepage": "https://snitchplugin.com"
     },

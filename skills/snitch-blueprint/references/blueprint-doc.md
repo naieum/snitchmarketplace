@@ -6,6 +6,19 @@ deck. Every line is one of the four record types from the decisions gate: **Fact
 `file:line` / URL or explicitly attributed user-supplied evidence), **Decision**, **Default** (labeled, with reason), or **Open
 question**. Prose that is none of these doesn't belong in the file.
 
+Three optional tags sharpen a record without adding a fifth type:
+
+- **Rejected** on a Decision or Default: the alternatives considered and the reason each lost,
+  e.g. `Decision: bookings go to the shop's existing scheduler. Rejected: a custom booking
+  form, because nobody would answer it on weekends.` A later agent cannot quietly reintroduce a
+  rejected option; doing so is a Decision tension.
+- **Settled (YYYY-MM-DD)** on a Decision: the user closed the question after discussing it.
+  Reviewers and audits judge the build *against* a Settled Decision and do not propose
+  alternatives to it; new evidence is raised as a tension for the user, never as a fix.
+- **Resolved by** on an Open question: what will close it (a measurement, a phase, a named
+  person, a date), e.g. `Open: Pro price. Blocks: pricing page. Resolved by: 30 days of usage
+  data from phase 1.` An Open question with no route to an answer is a stall.
+
 For a new blueprint, use the sections below. For a scoped update, change only affected
 records; do not force a full rewrite or reopen settled Decisions.
 
@@ -38,6 +51,9 @@ no social-proof sections yet.
 ## Surfaces & build order
 Numbered list of surfaces (pages / screens / docs) in build order. Each entry:
 status (built / next / deferred), one-line purpose, link to its spec below.
+When more than one release is planned, group the list into **phases**. Each phase names the
+result a real person can use when it ships ("visitors can book a slot", not "backend done")
+and the phases it depends on.
 The DEFERRED sublist is mandatory and carries the reason + the trigger that promotes
 it ("city pages for Tier-2 cities — deferred until Tier-1 ranks; trigger: 3-pack
 presence in prove-out city").
@@ -54,6 +70,11 @@ One short block per built-or-next surface:
   runs, when the changed result is visible, and where a failed action can be read and retried.
   Record a labeled Default for routine interaction behavior; leave server guarantees or
   product commitments Open if unknown. Omit this line on read-only surfaces.
+- **Done when:** 3 to 6 checks, each with a stable ID (`T-<surface>-NN`), that a test or a
+  person can run to prove the surface works. At least one is a failure path: what must be
+  refused, rejected or shown as an error (`T-booking-02 a slot already taken is refused
+  with a message`). These IDs are what an acceptance-test author writes first, so keep
+  each check observable through the surface, not tied to one implementation.
 
 ## Day-one wiring
 The cross-cutting checklist from references/build-defaults.md, with each item marked
@@ -64,8 +85,8 @@ in place.
 Budget posture, maintainer, timeline, refused channels/tactics.
 
 ## Open questions
-Everything unresolved, each with what it blocks. The blueprint is usable with open
-questions; it is not usable with silent guesses.
+Everything unresolved, each with what it blocks and what resolves it. The blueprint is
+usable with open questions; it is not usable with silent guesses.
 ```
 
 ## Done-when
@@ -74,6 +95,8 @@ questions; it is not usable with silent guesses.
 - The conversion action and measurement Decision are explicit; no analytics is valid.
 - The deferred list records real deferred work, or says none. Never invent work to fill it.
 - The claim inventory contains zero unverified numbers.
+- Every built-or-next surface spec has Done-when checks, at least one of them a failure path.
+- Every Open question says what blocks on it and what resolves it.
 - The user has seen the diff and confirmed. The blueprint is theirs; the skill drafts it.
 
 ## Maintenance
@@ -85,3 +108,9 @@ questions; it is not usable with silent guesses.
 - snitch-marketing and snitch-ux, when run later, read this file: findings that contradict a
   recorded Decision are surfaced as "decision vs. best practice" tensions for the user, not
   auto-fixes. snitch-security audits the code directly and doesn't need this file to do it.
+- A reviewer or audit that proposes an alternative to a **Settled** Decision is out of scope
+  for that Decision: record the evidence as a tension for the user and keep building to the
+  Decision until the user reopens it.
+- When a build plan exists (`references/build-plan.md`), it cites this file and never
+  contradicts it. A plan finding that should change a Decision comes back here as a proposed
+  diff for the user, not as a silent edit in the plan.

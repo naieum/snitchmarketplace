@@ -6,7 +6,7 @@ license: MIT with Commons Clause
 compatibility: Standalone skill — runs in any AI coding tool that loads Agent Skills. Pure guidance; no server, tools, or external calls required.
 metadata:
   author: Snitch
-  version: 0.11.0
+  version: 0.13.1
   homepage: https://snitchplugin.com
 ---
 
@@ -19,8 +19,23 @@ per call). If the host has no Skill tool, do not claim a call occurred: name the
 and use the host's supported loading mechanism only when execution is requested. A routing
 question is recommendation-only; never install tools or run an entire lifecycle to answer it.
 
-The family splits by **when in the product's life you are** and **what a finding is judged
-against**. Those two questions route almost everything.
+Start with the purpose: gathering evidence, making decisions, creating an artifact, or auditing
+what exists. For product work, **when in the product's life you are** and **what a finding is
+judged against** then separate the nearby skills.
+
+## Research: evidence for any task
+
+**`snitch-research`** investigates the current task, derives consequential questions the user
+has not asked, and follows relevant uncertainty deeply. It scores relevance separately from
+evidence strength and seeks counterevidence, including evidence against the user's or parent
+agent's preferred conclusion. It uses no predefined subject checklist and does not silently
+change project decisions.
+
+Use it standalone or for a bounded evidence assignment at any stage, not as a mandatory
+preflight. A simple factual lookup needs no research project. Research supplies evidence and
+implications; **cmo** owns marketing strategy, **blueprint** owns product decisions, and
+**screenwriter** owns video beat extraction. Existing specialist evidence checks stay with
+their owners; broad investigation and unresolved assumptions are research's lane.
 
 ## The build flow: decide → bootstrap → build → tell → grade
 
@@ -32,7 +47,10 @@ for; planning does not authorize building, and auditing does not authorize fixes
    action-state expectations for data-changing flows, and the price *number* (a
    four-question price-sensitivity survey when the user is stuck on what to
    charge) — and checks them into `BLUEPRINT.md`. The seam it owns: it decides what *should*
-   exist; the audits below grade what *does*.
+   exist; the audits below grade what *does*. Asked how to build it, blueprint also writes a
+   `docs/PLAN.md` shaped by the project's own hard parts (best option per part, rejected
+   options, phases, verification that includes what must be refused), optionally exported
+   as a task list for an agent build loop. Planning does not authorize building.
 2. **`snitch-devready`** runs beside it on greenfield: blueprint makes the product decisions
    good, devready makes the repo good for agents (CLAUDE.md/AGENTS.md, commands, permissions,
    the two-tier coding standard wired to real gates, and a scoped extension surface — which
@@ -134,7 +152,12 @@ The classic confusions, settled:
   their specialist Skills. Director resolves these in an integrated plan.
 - **`snitch-screenwriter`** — develops treatments, outlines, screenplay scenes, dialogue,
   revisions, and script audits for animation or live action beyond the focused 2–5 minute
-  animated-short lane. It writes what happens; director decides how it reaches the screen.
+  animated-short lane. It also extracts timestamped story beats and reusable structure from
+  reference videos of any length, including short animated clips, and adapts that structure
+  to a new subject when requested. It distinguishes inspected footage from transcript-only
+  or sampled analysis. Story functions belong here; selected cuts and edit notes belong to
+  editor. A subsequent focused animated-short script belongs to animation, carrying the beat
+  map forward. Screenwriter writes what happens; director decides how it reaches the screen.
 - **`snitch-cinematography`** — camera and light for a supplied scene or sequence:
   framing, optics, movement, lighting, coverage, feasibility, or an evidenced audit.
   It hands story/performance integration to director and world/asset design to

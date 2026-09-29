@@ -1,0 +1,17 @@
+{
+  "name": "snitch-research",
+  "description": "What do we need to know, and what have we overlooked? Investigates relevant questions, weighs supporting and conflicting evidence, and reports what it means for the task.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Snitch",
+    "url": "https://snitchplugin.com"
+  },
+  "homepage": "https://snitchplugin.com",
+  "license": "MIT with Commons Clause",
+  "keywords": [
+    "research",
+    "evidence",
+    "due-diligence",
+    "snitch"
+  ]
+}

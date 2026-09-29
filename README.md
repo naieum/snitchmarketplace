@@ -6,9 +6,9 @@
 
 <p align="center">
   <strong>AI writes your code fast. Snitch checks it.</strong><br>
-  Twenty-one core Agent Skills for AI-built products and films: audits for security, SEO and
+  Twenty-two core Agent Skills for AI-built products and films: audits for security, SEO and
   marketing, accessibility and legal exposure, AI voice agents, UX, paid-ads readiness, and
-  app-store readiness, plus a build-time blueprint, a marketing foundation and
+  app-store readiness, plus a research skill, a build-time blueprint and build planner, a marketing foundation and
   drafting skill, persuasive page structure, controlled technical writing, a repo
   bootstrap for AI development, and a router that tells you which one fits, and an eight-skill filmmaking lane.<br>
   Audit findings cite their evidence. Film plans state what remains unverified.
@@ -64,13 +64,14 @@ Then ask in plain words: *"run a snitch security scan."*
 | [`snitch-docwriter`](skills/snitch-docwriter) | 0.5.0 | Are your technical docs hard to follow? Rewrites them in plain English without changing meaning; a linter flags wording to inspect. | [Site](https://snitchplugin.com/docwriter) · [Docs](https://snitchplugin.com/docs/docwriter) |
 | [`snitch-adsready`](skills/snitch-adsready) | 0.5.0 | Ready to run paid ads? Checks your pixels, conversion tracking, and consent setup across ten ad platforms. | [Site](https://snitchplugin.com/adsready) · [Docs](https://snitchplugin.com/docs/adsready) |
 | [`snitch-storeready`](skills/snitch-storeready) | 0.4.0 | Will Apple or Google reject your app? Audits it against both stores' submission rules before you submit. | [Site](https://snitchplugin.com/storeready) · [Docs](https://snitchplugin.com/docs/storeready) |
-| [`snitch-cmo`](skills/snitch-cmo) | 0.4.0 | Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish. | [Site](https://snitchplugin.com/cmo) · [Docs](https://snitchplugin.com/docs/cmo) |
-| [`snitch-blueprint`](skills/snitch-blueprint) | 0.5.0 | Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order — before you write code, or partway through a build nobody made those calls on. | [Site](https://snitchplugin.com/blueprint) · [Docs](https://snitchplugin.com/docs/blueprint) |
-| [`snitch-router`](skills/snitch-router) | 0.11.0 | Not sure which skill you need? Ask this one and it points you to the right skill or flow. | [Site](https://snitchplugin.com/router) · [Docs](https://snitchplugin.com/docs/router) |
+| [`snitch-cmo`](skills/snitch-cmo) | 0.5.0 | Don't have a marketing strategy yet? Builds one from your product's real facts: who to sell to, what the price you already charge says about you, your brand story and your names. Then drafts the posts and sales copy for you to publish. | [Site](https://snitchplugin.com/cmo) · [Docs](https://snitchplugin.com/docs/cmo) |
+| [`snitch-blueprint`](skills/snitch-blueprint) | 0.6.0 | Not sure what to build, or what to charge for it? Decides your audience, pages, price, and build order before you write code, or partway through a build nobody made those calls on. Ask it to plan the build too: it finds the risky parts, picks the best option for each, and says how you'll prove it works. | [Site](https://snitchplugin.com/blueprint) · [Docs](https://snitchplugin.com/docs/blueprint) |
+| [`snitch-research`](skills/snitch-research) | 0.1.0 | What do we need to know, and what have we overlooked? Investigates relevant questions, weighs supporting and conflicting evidence, and reports what it means for the task. | [Docs](https://snitchplugin.com/docs/research) |
+| [`snitch-router`](skills/snitch-router) | 0.13.1 | Not sure which skill you need? Ask this one and it points you to the right skill or flow. | [Site](https://snitchplugin.com/router) · [Docs](https://snitchplugin.com/docs/router) |
 
 | [`snitch-animation`](skills/snitch-animation) | 0.2.0 | Write a connected 2–5 minute animated story and timed script. | [Site](https://snitchplugin.com/animation) · [Docs](https://snitchplugin.com/docs/animation) |
 | [`snitch-director`](skills/snitch-director) | 0.3.0 | Plan the staging, shots, continuity, edit, and sound of a film. | [Site](https://snitchplugin.com/director) · [Docs](https://snitchplugin.com/docs/director) |
-| [`snitch-screenwriter`](skills/snitch-screenwriter) | 0.1.0 | Develop screenplay scenes, dialogue, and story continuity. | [Site](https://snitchplugin.com/screenwriter) · [Docs](https://snitchplugin.com/docs/screenwriter) |
+| [`snitch-screenwriter`](skills/snitch-screenwriter) | 0.2.0 | Extract reusable beats from reference videos and develop screenplay scenes, dialogue, and story continuity. | [Site](https://snitchplugin.com/screenwriter) · [Docs](https://snitchplugin.com/docs/screenwriter) |
 | [`snitch-cinematography`](skills/snitch-cinematography) | 0.1.0 | Plan camera, optics, movement, lighting, and coverage. | [Site](https://snitchplugin.com/cinematography) · [Docs](https://snitchplugin.com/docs/cinematography) |
 | [`snitch-productiondesign`](skills/snitch-productiondesign) | 0.1.0 | Design film locations, characters, costumes, props, and their states. | [Site](https://snitchplugin.com/productiondesign) · [Docs](https://snitchplugin.com/docs/productiondesign) |
 | [`snitch-storyboard`](skills/snitch-storyboard) | 0.2.0 | Make visual panels when image creation is available and plan an animatic. | [Site](https://snitchplugin.com/storyboard) · [Docs](https://snitchplugin.com/docs/storyboard) |
